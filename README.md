@@ -29,37 +29,101 @@ This project has a **dual purpose**:
 
 ## 📚 Documentation
 
+### Planning & Requirements
+- **[Product Requirements Document (PRD)](_bmad-output/planning-artifacts/prd.md)** - Comprehensive requirements, architecture decisions, and success criteria
 - **[Product Brief](_bmad-output/planning-artifacts/product-brief-lab-clean-architecture-react-2026-01-14.md)** - Complete project vision, users, metrics, and MVP scope
-- **Architecture Docs** - Coming soon (Architecture Decision Records, patterns, diagrams)
-- **Lessons Learned** - Coming soon (What worked, what didn't, trade-offs)
+- **[Next Steps](./next-steps.md)** - Roadmap and recommended workflow for implementation
+
+### Architecture (Coming Soon)
+- Architecture Decision Records (ADRs)
+- Clean Architecture patterns and diagrams
+- Repository and Use Case examples
+
+### Learnings (Coming Soon)
+- DECISIONS.md - Real-time architectural decisions
+- LEARNINGS.md - Weekly insights and retrospectives
+- REGRETS.md - Honest mistakes and lessons learned
 
 ---
 
 ## 🚀 MVP Features (v1.0)
 
-- **📚 Game Collection Catalog** - Complete CRUD for game inventory management
-- **📖 Metadata Enrichment** - Auto-populate game details via external APIs (IGDB, RAWG)
-- **🏆 Trophy Sync** - Multi-platform synchronization (PSN, Xbox, Steam)
-- **🛒 Wishlist** - Price tracking with configurable alerts
-- **🔧 Maintenance System** - Console/collection maintenance tracking with photo documentation
+**Phase 1: Core Collection (Weeks 1-4)**
+- **📚 Game Collection CRUD** - Manual entry (title, platform, format, date, notes)
+- **🖼️ Cover Art** - Upload and display game covers
+- **🔍 Search & Filter** - Text search + platform/status filters
+
+**Phase 1: Wishlist (Weeks 7-8)**
+- **🛒 Wishlist Management** - Add games, set priority, track budget
+- **💰 Price Tracking** - Manual entry or API-based (if validated in Phase 0)
+
+**Phase 1: PWA (Weeks 9-10)**
+- **📱 Installable App** - Home screen installation
+- **🔌 Offline Support** - Full functionality without network
+- **⚡ Fast Loading** - App shell caching, instant startup
+
+**Post-MVP (Phase 2+)**
+- **📖 Metadata Auto-Fetch** - IGDB/RAWG API integration (conditional on Phase 0)
+- **🏆 Trophy Sync** - PSN/Xbox/Steam achievements (conditional on Phase 0)
+- **🔧 Maintenance System** - Console upkeep tracking with photos
+- **📊 Statistics** - Collection insights and analytics
+- **☁️ Backend Migration** - Firebase or NestJS (demonstrates Clean Arch flexibility)
+
+**Development Philosophy:**
+- ✅ Ship 1 feature per week (no exceptions)
+- ✅ "Good enough" code > perfect paralysis
+- ✅ Max 5h/week development (sustainable pace)
+- ✅ Document architectural decisions in real-time
 
 ---
 
 ## 🛠️ Tech Stack
 
 **Frontend:**
-- React 18+ (with TypeScript)
-- _(More details as architecture solidifies)_
+- React 19+ with TypeScript (strict mode)
+- Rsbuild (build tooling)
+- React Router (Browser History mode)
+- React Hook Form (form management)
+
+**State Management:**
+- TanStack Query Core + InversifyJS (dependency injection)
+- React hooks (local UI state)
+
+**Storage:**
+- IndexedDB with `idb` library (MVP - offline-first)
+- Future: Firebase or NestJS backend (demonstrates Clean Arch flexibility)
 
 **Architecture:**
-- Clean Architecture principles (Entities, Use Cases, Adapters, Frameworks)
+- Clean Architecture principles (Domain, Use Cases, Infrastructure, Presentation)
+- Repository pattern for data abstraction
 - Dependency Inversion throughout
-- Repository pattern for data access
-- Adapter pattern for external services
+- InversifyJS for Dependency Injection
 
-**Platform:**
-- Responsive Web Application (Desktop, Tablet, Mobile)
+**PWA:**
+- Rsbuild PWA Plugin
+- Service Worker (app shell caching)
 - Offline-first capabilities
+
+**Testing:**
+- Vitest + React Testing Library
+- Unit tests (Use Cases, Entities)
+- Integration tests (Repository adapters)
+
+**Browser Support:**
+- Modern browsers only (last 2 years)
+- Chrome/Edge, Firefox, Safari (desktop + mobile)
+- No IE or legacy Edge support
+- ✅ MVP scope validated
+
+**Next Steps:**
+- 📋 **Phase 0**: API Research Sprint (2-3 days) - Validate external APIs before coding
+- 🏗️ **Phase 1**: Architecture Design (1 week) - Define Clean Architecture structure
+- 🎨 **Phase 2**: UX Design (optional, 3-5 days) - Mobile-first wireframes
+- 📦 **Phase 3**: Epic Breakdown (2-3 days) - Transform FRs into implementable stories
+- 💻 **Phase 4**: Development Setup (1-2 days) - Rsbuild + React + IndexedDB + PWA
+- 🚀 **Phase 5**: MVP Development (Weeks 1-10) - Ship 1 feature per week
+
+See [Next Steps](docs/next-steps.md) for detailed roadmap.ilities
 
 ---
 
