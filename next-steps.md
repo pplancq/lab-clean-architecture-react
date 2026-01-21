@@ -48,35 +48,47 @@
 - Detailed folder structure
 - Naming conventions and code standards
 
+**UX Integration Context** (now available):
+- 12 custom components to architect (Widget Card, Platform Badge, Game List Item, Console Card Tabs, Status Indicator, Toast, Timeline, Photo Upload, Cover Thumbnail, Search Bar, Textarea Field, Select Field)
+- shelter-ui integration strategy (17 base components + custom extensions)
+- Presentation layer patterns (mobile-first, responsive, accessibility-first)
+- Component testing strategy (Vitest Browser + visual regression)
+
 **Critical decisions to make**:
 - [ ] Resolve PWA + MSW Service Workers conflict (30min spike)
 - [ ] Final data fetching choice (Standard Fetch vs Query Core)
 - [ ] DI structure with InversifyJS
-- [ ] Testing strategy (unit, integration, e2e)
+- [ ] Testing strategy (unit, integration, e2e) - aligned with UX testing strategy
+- [ ] Component architecture for 12 custom components (Clean Arch in Presentation layer)
 
 ---
 
-### Phase 2: UX Design (Optional but recommended)
+### Phase 2: UX Design ✅ COMPLETE
 
-**Timeline**: 3-5 days
+**Timeline**: 3-5 days (COMPLETED: January 21, 2026)
 **Agent**: UX-Designer Agent
 **Workflow**: `workflow create-ux-design`
 
-**Objective**: Turn User Journeys into wireframes and prototypes.
+**Status**: ✅ **COMPLETE**
 
-**Expected deliverables**:
-- Mobile-first wireframes (smartphone prioritized)
-- User flows for the 3 documented journeys
-- Basic design system (components, colors, typography)
-- Accessibility patterns (WCAG AA compliance)
-- Interactive prototypes (Figma/Excalidraw)
+**Delivered artifacts**:
+- ✅ Complete UX Design Specification (`_bmad-output/planning-artifacts/ux-design-specification.md`)
+- ✅ Mobile-first responsive strategy (320px-1440px, shelter-ui breakpoints)
+- ✅ 4 critical user journey flows documented (Verify Ownership, Add Game, Browse Collection, Console Maintenance)
+- ✅ Component strategy: 17 shelter-ui components + 12 custom components fully specified
+- ✅ UX consistency patterns (buttons, feedback, forms, navigation, empty states, search/filters)
+- ✅ Responsive design & accessibility strategy (WCAG 2.1 AA+, "ARIA less is best")
+- ✅ Design direction: Elevated Cards with Platform Identity (hybrid Direction 3+5+8)
+- ✅ Visual foundation: Colors, typography (shelter-ui: Raleway/Nunito/Oswald/JetBrains Mono), spacing (8px grid)
+- ✅ Design directions mockups (`ux-design-directions.html`)
+- ✅ 4-sprint implementation roadmap (Foundation → Collection UI → Maintenance → Polish)
 
-**Working base**:
-- 37 Functional Requirements from the PRD
-- 3 detailed User Journeys
-- Constraints: Mobile-first, touch-friendly (44x44px), full-screen PWA
-
-**Note**: Can be done in parallel with architecture if you want to move faster.
+**Key decisions**:
+- Design system: shelter-ui (custom Sass/CSS Modules, no Tailwind)
+- Platform colors: PS5=#006FCD, Xbox=#107C10, Nintendo=#E60012, PC=#888888
+- Emotional goals: Serenity + Confidence ("control tower" metaphor)
+- Testing: Vitest (code), Vitest Browser (components), Playwright (e2e), Axe (accessibility)
+- Implementation: Mobile-first media queries, `rem` units (ps-to-rem()), semantic HTML first
 
 ---
 
@@ -208,8 +220,17 @@
 **Immediate recommended action**:
 
 1. **Phase 0 API Research** (2-3 days) - Validate API feasibility BEFORE coding
-2. **Architecture Design** (1 week) - Solid Clean Arch structure
-3. **Development Setup** (1-2 days) - Ready environment
-4. **Week 1 Coding** - First functional CRUD
+2. **Phase 1 Architecture Design** (1 week) - Solid Clean Arch structure with UX context
+3. ✅ **Phase 2 UX Design** (COMPLETE) - Mobile-first spec, component strategy, patterns ready
+4. **Phase 3 Epic Breakdown** (2-3 days) - Transform FRs + UX spec into implementable stories
+5. **Phase 4 Development Setup** (1-2 days) - Rsbuild + React + IndexedDB + PWA + shelter-ui
+6. **Phase 5 Week 1 Coding** - First functional CRUD with UX patterns applied
+
+**UX Specification is ready to guide**:
+- ✅ Component implementation (12 custom + 17 shelter-ui)
+- ✅ Responsive breakpoints (mobile/tablet/desktop strategy)
+- ✅ Accessibility requirements (WCAG AA, keyboard nav, screen readers)
+- ✅ Interaction patterns (buttons, forms, navigation, feedback)
+- ✅ Visual design (colors, typography, spacing tokens)
 
 **Good luck! 🚀**

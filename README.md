@@ -32,7 +32,11 @@ This project has a **dual purpose**:
 ### Planning & Requirements
 - **[Product Requirements Document (PRD)](_bmad-output/planning-artifacts/prd.md)** - Comprehensive requirements, architecture decisions, and success criteria
 - **[Product Brief](_bmad-output/planning-artifacts/product-brief-lab-clean-architecture-react-2026-01-14.md)** - Complete project vision, users, metrics, and MVP scope
+- **[UX Design Specification](_bmad-output/planning-artifacts/ux-design-specification.md)** - Complete UX strategy, component specs, patterns, responsive design & accessibility
 - **[Next Steps](./next-steps.md)** - Roadmap and recommended workflow for implementation
+
+### UX Design Assets
+- **[Design Directions Mockups](_bmad-output/planning-artifacts/ux-design-directions.html)** - Visual design direction mockups
 
 ### Architecture (Coming Soon)
 - Architecture Decision Records (ADRs)
@@ -118,12 +122,12 @@ This project has a **dual purpose**:
 **Next Steps:**
 - 📋 **Phase 0**: API Research Sprint (2-3 days) - Validate external APIs before coding
 - 🏗️ **Phase 1**: Architecture Design (1 week) - Define Clean Architecture structure
-- 🎨 **Phase 2**: UX Design (optional, 3-5 days) - Mobile-first wireframes
+- ✅ **Phase 2**: UX Design (COMPLETE) - Mobile-first wireframes, component strategy, patterns
 - 📦 **Phase 3**: Epic Breakdown (2-3 days) - Transform FRs into implementable stories
 - 💻 **Phase 4**: Development Setup (1-2 days) - Rsbuild + React + IndexedDB + PWA
 - 🚀 **Phase 5**: MVP Development (Weeks 1-10) - Ship 1 feature per week
 
-See [Next Steps](docs/next-steps.md) for detailed roadmap.ilities
+See [Next Steps](./next-steps.md) for detailed roadmap.
 
 ---
 
@@ -132,8 +136,15 @@ See [Next Steps](docs/next-steps.md) for detailed roadmap.ilities
 **Current Phase**: Planning & Architecture Definition
 
 - ✅ Product Brief complete
+- ✅ Product Requirements Document (PRD) complete
+- ✅ UX Design Specification complete
+  - Mobile-first responsive strategy (320px-1440px)
+  - 12 custom components specified (extending shelter-ui)
+  - WCAG 2.1 AA+ accessibility compliance
+  - 4 critical user journey flows documented
+  - Complete UX patterns for consistency
 - ⏳ Architecture design in progress
-- ⏳ Tech stack selection
+- ⏳ Tech stack finalization
 - ⏳ Development setup
 
 ---

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Collection Manager - Design Directions</title>
+    <style>
+        /* Import Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&family=Nunito:wght@400;700&family=Oswald:wght@600&family=JetBrains+Mono:wght@500&display=swap');
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* shelter-ui color tokens - Light Theme */
+            --color-primary-main-light: #204CCF;
+            --color-primary-main-medium: #163591;
+            --color-primary-main-strong: #0D1E53;
+            --color-primary-main-on: #FFFFFF;
+            --color-primary-alt-base: #E9EDFA;
+
+            --color-secondary-main-light: #673AB7;
+            --color-secondary-main-medium: #482980;
+
+            --color-tertiary-main-light: #B30000;
+
+            --color-background-body: #F0F1F3;
+            --color-background-surface: #E1E2E6;
+            --color-background-alt: #D2D4DB;
+
+            --color-text-primary: #15161A;
+            --color-text-secondary: #525252;
+            --color-text-hint: #7A7A7A;
+            --color-text-disabled: #949494;
+
+            --color-signal-success: #28A344;
+            --color-signal-warning: #FFC107;
+            --color-signal-info: #18ACC3;
+
+            /* Spacing tokens (8px base) */
+            --gap-1: 8px;
+            --gap-2: 16px;
+            --gap-3: 24px;
+            --gap-4: 32px;
+            --padding-1: 8px;
+            --padding-2: 16px;
+            --padding-3: 24px;
+            --padding-4: 32px;
+            --margin-2: 16px;
+            --margin-4: 32px;
+            --margin-6: 48px;
+
+            /* Typography */
+            --font-family-display: 'Raleway', sans-serif;
+            --font-family-heading: 'Raleway', sans-serif;
+            --font-family-content: 'Nunito', sans-serif;
+            --font-family-label: 'Oswald', sans-serif;
+
+            /* Border radius */
+            --border-radius-small: 4px;
+            --border-radius-medium: 8px;
+            --border-radius-large: 16px;
+
+            /* Shadows */
+            --shadow-small: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0px 4px 8px rgba(0, 0, 0, 0.12);
+            --shadow-large: 0px 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: var(--font-family-content);
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Showcase Navigation */
+        .showcase-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: var(--padding-2);
+            display: flex;
+            gap: var(--gap-2);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .showcase-nav h1 {
+            font-family: var(--font-family-display);
+            font-size: 18px;
+            margin-right: auto;
+            color: #fff;
+        }
+
+        .direction-btn {
+            padding: 8px 16px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            font-family: var(--font-family-content);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .direction-btn:hover {
+            background: #333;
+            border-color: var(--color-primary-main-light);
+        }
+
+        .direction-btn.active {
+            background: var(--color-primary-main-light);
+            border-color: var(--color-primary-main-light);
+            color: white;
+        }
+
+        /* Mockup Container */
+        .mockup-container {
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+            display: none;
+        }
+
+        .mockup-container.active {
+            display: block;
+        }
+
+        .mockup-header {
+            background: #111;
+            padding: var(--padding-4);
+            border-bottom: 1px solid #222;
+        }
+
+        .mockup-header h2 {
+            font-family: var(--font-family-display);
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--color-primary-main-light);
+        }
+
+        .mockup-header p {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Mockup Frame */
+        .mockup-frame {
+            background: var(--color-background-body);
+            min-height: 800px;
+            position: relative;
+        }
+
+        /* Common Widget Styles */
+        .widget {
+            background: white;
+            border-radius: var(--border-radius-medium);
+            padding: var(--padding-3);
+            transition: all 0.3s;
+        }
+
+        .widget-title {
+            font-family: var(--font-family-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--gap-2);
+            display: flex;
+            align-items: center;
+            gap: var(--gap-1);
+        }
+
+        .widget-count {
+            font-family: var(--font-family-content);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-primary-main-light);
+        }
+
+        .game-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-background-alt);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-item:last-child {
+            border-bottom: none;
+        }
+
+        .game-title {
+            font-size: 14px;
+            color: var(--color-text-primary);
+            font-weight: 400;
+        }
+
+        .game-platform {
+            font-family: var(--font-family-label);
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            background: var(--color-background-surface);
+            padding: 4px 8px;
+            border-radius: var(--border-radius-small);
+        }
+
+        /* Navigation Styles */
+        .top-nav {
+            background: white;
+            padding: var(--padding-2) var(--margin-4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--color-background-alt);
+        }
+
+        .nav-logo {
+            font-family: var(--font-family-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary-main-light);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            background: var(--color-text-primary);
+            border-radius: 2px;
+        }
+
+        /* Direction 1: Minimal Dashboard - Ultra Airy */
+        .direction-1 .dashboard {
+            padding: var(--margin-6) var(--margin-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-4);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-1 .widget {
+            box-shadow: none;
+            border: 1px solid var(--color-background-alt);
+        }
+
+        .direction-1 .widget:hover {
+            border-color: var(--color-primary-main-light);
+            transform: translateY(-2px);
+        }
+
+        /* Direction 2: Information Dense */
+        .direction-2 .dashboard {
+            padding: var(--margin-2) var(--margin-2);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--gap-2);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-2 .widget {
+            padding: var(--padding-2);
+            box-shadow: none;
+            border: 1px solid var(--color-background-alt);
+        }
+
+        .direction-2 .widget-title {
+            font-size: 16px;
+            margin-bottom: var(--gap-1);
+        }
+
+        .direction-2 .game-item {
+            padding: 8px 0;
+        }
+
+        /* Direction 3: Card-Heavy with Shadows */
+        .direction-3 .dashboard {
+            padding: var(--margin-4) var(--margin-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--gap-3);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-3 .widget {
+            box-shadow: var(--shadow-medium);
+            border: none;
+        }
+
+        .direction-3 .widget:hover {
+            box-shadow: var(--shadow-large);
+            transform: translateY(-4px);
+        }
+
+        /* Direction 4: Flat Modern */
+        .direction-4 .dashboard {
+            padding: var(--margin-4) var(--margin-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-3);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-4 .widget {
+            box-shadow: none;
+            border: 2px solid var(--color-background-alt);
+            border-radius: var(--border-radius-small);
+        }
+
+        .direction-4 .widget:hover {
+            border-color: var(--color-primary-main-light);
+        }
+
+        /* Direction 5: Platform-Centric Colors */
+        .direction-5 .dashboard {
+            padding: var(--margin-4) var(--margin-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-3);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-5 .widget {
+            box-shadow: var(--shadow-small);
+            border-left: 4px solid var(--color-primary-main-light);
+        }
+
+        .direction-5 .widget.ps { border-left-color: #006FCD; }
+        .direction-5 .widget.xbox { border-left-color: #107C10; }
+        .direction-5 .widget.nintendo { border-left-color: #E60012; }
+        .direction-5 .widget.pc { border-left-color: #888; }
+
+        .direction-5 .widget-title { color: var(--color-primary-main-light); }
+        .direction-5 .widget.ps .widget-title { color: #006FCD; }
+        .direction-5 .widget.xbox .widget-title { color: #107C10; }
+        .direction-5 .widget.nintendo .widget-title { color: #E60012; }
+
+        /* Direction 6: Neutral Professional */
+        .direction-6 .dashboard {
+            padding: var(--margin-4) var(--margin-4);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--gap-3);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-6 .widget {
+            background: #FAFAFA;
+            border: 1px solid #E0E0E0;
+            box-shadow: none;
+        }
+
+        .direction-6 .widget-title {
+            color: #333;
+        }
+
+        .direction-6 .widget-count {
+            color: #666;
+        }
+
+        /* Direction 7: Split View */
+        .direction-7 .dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--gap-4);
+            padding: var(--margin-4);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .direction-7 .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--gap-3);
+        }
+
+        .direction-7 .quick-list {
+            background: white;
+            border-radius: var(--border-radius-medium);
+            padding: var(--padding-3);
+            box-shadow: var(--shadow-small);
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        /* Direction 8: Grid Gallery */
+        .direction-8 .dashboard {
+            padding: var(--margin-4) var(--margin-4);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .direction-8 .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: var(--gap-3);
+            margin-top: var(--margin-4);
+        }
+
+        .direction-8 .game-card {
+            background: white;
+            border-radius: var(--border-radius-medium);
+            overflow: hidden;
+            box-shadow: var(--shadow-small);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .direction-8 .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .direction-8 .game-cover {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--color-primary-main-light), var(--color-secondary-main-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .direction-8 .game-info {
+            padding: 12px;
+        }
+
+        .direction-8 .game-info .game-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .direction-8 .game-info .game-platform {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Showcase Navigation -->
+    <nav class="showcase-nav">
+        <h1>🎮 Game Collection Manager - Design Directions</h1>
+        <button class="direction-btn active" onclick="showDirection(1)">1. Minimal Airy</button>
+        <button class="direction-btn" onclick="showDirection(2)">2. Info Dense</button>
+        <button class="direction-btn" onclick="showDirection(3)">3. Card Depth</button>
+        <button class="direction-btn" onclick="showDirection(4)">4. Flat Modern</button>
+        <button class="direction-btn" onclick="showDirection(5)">5. Platform Colors</button>
+        <button class="direction-btn" onclick="showDirection(6)">6. Neutral Pro</button>
+        <button class="direction-btn" onclick="showDirection(7)">7. Split View</button>
+        <button class="direction-btn" onclick="showDirection(8)">8. Gallery Grid</button>
+    </nav>
+
+    <!-- Direction 1: Minimal Airy Dashboard -->
+    <div class="mockup-container direction-1 active" id="direction-1">
+        <div class="mockup-header">
+            <h2>Direction 1: Minimal Airy Dashboard</h2>
+            <p><strong>Philosophy:</strong> Maximum breathing room, Apple Music-inspired spaciousness. Generous whitespace creates serenity. Focus on essentials only.<br>
+            <strong>Best for:</strong> Users who value calm aesthetics over information density. Desktop-first experience.<br>
+            <strong>Key Features:</strong> 32px gaps, subtle borders, minimal shadows, hover transforms</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget">
+                    <div class="widget-title">
+                        Recently Added
+                        <span class="widget-count" style="margin-left: auto;">5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">
+                        Wishlist
+                        <span class="widget-count" style="margin-left: auto;">8</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Final Fantasy XVI</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Starfield</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda: Tears of Kingdom</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">
+                        PlayStation 5
+                        <span class="widget-count" style="margin-left: auto;">42</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon Forbidden West</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 2: Information Dense -->
+    <div class="mockup-container direction-2" id="direction-2">
+        <div class="mockup-header">
+            <h2>Direction 2: Information Dense</h2>
+            <p><strong>Philosophy:</strong> Maximize visible information. Efficient use of space for power users who want to see everything at a glance.<br>
+            <strong>Best for:</strong> Users managing large collections (200+ games). Data-heavy workflows.<br>
+            <strong>Key Features:</strong> Compact spacing (16px gaps), reduced padding, more widgets per row, smaller fonts</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget">
+                    <div class="widget-title">Recently Added <span class="widget-count" style="margin-left: auto;">5</span></div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">XSX</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Mario Kart 8</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">Wishlist <span class="widget-count" style="margin-left: auto;">8</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Final Fantasy XVI</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Starfield</span>
+                        <span class="game-platform">XSX</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda TOTK</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Cyberpunk 2077</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">PS5 <span class="widget-count" style="margin-left: auto;">42</span></div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digi</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon FW</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Ratchet & Clank</span>
+                        <span class="game-platform">Digi</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">Xbox 360 <span class="widget-count" style="margin-left: auto;">38</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Gears of War 3</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo 4</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Fable III</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Mass Effect 2</span>
+                        <span class="game-platform">Phys</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 3: Card-Heavy with Depth -->
+    <div class="mockup-container direction-3" id="direction-3">
+        <div class="mockup-header">
+            <h2>Direction 3: Card-Heavy with Depth</h2>
+            <p><strong>Philosophy:</strong> Material Design-inspired elevation. Cards float with distinct shadows, hover animations emphasize depth.<br>
+            <strong>Best for:</strong> Users who appreciate tactile, interactive interfaces. Modern app feel.<br>
+            <strong>Key Features:</strong> Medium/large shadows, pronounced hover lifts, no borders, depth hierarchy</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget">
+                    <div class="widget-title">Recently Added <span class="widget-count" style="margin-left: auto;">5</span></div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">Wishlist <span class="widget-count" style="margin-left: auto;">8</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Final Fantasy XVI</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Starfield</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda: Tears of Kingdom</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">PlayStation 5 <span class="widget-count" style="margin-left: auto;">42</span></div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon Forbidden West</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 4: Flat Modern -->
+    <div class="mockup-container direction-4" id="direction-4">
+        <div class="mockup-header">
+            <h2>Direction 4: Flat Modern</h2>
+            <p><strong>Philosophy:</strong> Pure flat design, no shadows or depth illusions. Bold borders define spaces. Clean, contemporary aesthetic.<br>
+            <strong>Best for:</strong> Users who prefer minimalist, distraction-free interfaces. Performance-focused (no shadow rendering).<br>
+            <strong>Key Features:</strong> No shadows, 2px borders, sharp corners (4px radius), hover border color changes</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget">
+                    <div class="widget-title">Recently Added <span class="widget-count" style="margin-left: auto;">5</span></div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">Wishlist <span class="widget-count" style="margin-left: auto;">8</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Final Fantasy XVI</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Starfield</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda: Tears of Kingdom</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">PlayStation 5 <span class="widget-count" style="margin-left: auto;">42</span></div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon Forbidden West</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 5: Platform-Centric Colors -->
+    <div class="mockup-container direction-5" id="direction-5">
+        <div class="mockup-header">
+            <h2>Direction 5: Platform-Centric Colors</h2>
+            <p><strong>Philosophy:</strong> Brand colors dominant. Each platform gets signature color accent. Visual distinction through color hierarchy.<br>
+            <strong>Best for:</strong> Users who organize by platform first. Strong brand recognition. Colorful, playful aesthetic.<br>
+            <strong>Key Features:</strong> Bold left border (4px), colored titles, platform-specific palettes (PS=blue, Xbox=green, Nintendo=red, PC=gray)</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget ps">
+                    <div class="widget-title">PlayStation 5 <span class="widget-count" style="margin-left: auto;">42</span></div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon Forbidden West</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+
+                <div class="widget xbox">
+                    <div class="widget-title">Xbox 360 <span class="widget-count" style="margin-left: auto;">38</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Gears of War 3</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo 4</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Fable III</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+
+                <div class="widget nintendo">
+                    <div class="widget-title">Nintendo Switch <span class="widget-count" style="margin-left: auto;">24</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda: Breath of the Wild</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Mario Kart 8 Deluxe</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Animal Crossing</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 6: Neutral Professional -->
+    <div class="mockup-container direction-6" id="direction-6">
+        <div class="mockup-header">
+            <h2>Direction 6: Neutral Professional</h2>
+            <p><strong>Philosophy:</strong> Conservative color palette. Grays dominate, minimal accent colors. Business-like, mature aesthetic.<br>
+            <strong>Best for:</strong> Users who want understated, professional appearance. Work-appropriate UI. Focus on content over design.<br>
+            <strong>Key Features:</strong> Muted backgrounds (#FAFAFA), gray borders, desaturated accents, minimal color use</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widget">
+                    <div class="widget-title">Recently Added <span class="widget-count" style="margin-left: auto;">5</span></div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">Wishlist <span class="widget-count" style="margin-left: auto;">8</span></div>
+                    <div class="game-item">
+                        <span class="game-title">Final Fantasy XVI</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Starfield</span>
+                        <span class="game-platform">Xbox Series X</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda: Tears of Kingdom</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">PlayStation 5 <span class="widget-count" style="margin-left: auto;">42</span></div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">Digital</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Horizon Forbidden West</span>
+                        <span class="game-platform">Physical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 7: Split View Dashboard -->
+    <div class="mockup-container direction-7" id="direction-7">
+        <div class="mockup-header">
+            <h2>Direction 7: Split View Dashboard</h2>
+            <p><strong>Philosophy:</strong> Dual-pane layout. Widgets on left, persistent quick-access list on right. Desktop-optimized layout.<br>
+            <strong>Best for:</strong> Desktop power users. Multi-monitor setups. Users who need quick reference alongside overview.<br>
+            <strong>Key Features:</strong> 2-column grid (2fr/1fr), sticky sidebar, independent scrolling areas, desktop-first</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <div class="widgets-grid">
+                    <div class="widget">
+                        <div class="widget-title">Recently Added <span class="widget-count" style="margin-left: auto;">5</span></div>
+                        <div class="game-item">
+                            <span class="game-title">The Last of Us Part II</span>
+                            <span class="game-platform">PS5</span>
+                        </div>
+                        <div class="game-item">
+                            <span class="game-title">Halo Infinite</span>
+                            <span class="game-platform">XSX</span>
+                        </div>
+                        <div class="game-item">
+                            <span class="game-title">Elden Ring</span>
+                            <span class="game-platform">PC</span>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <div class="widget-title">Wishlist <span class="widget-count" style="margin-left: auto;">8</span></div>
+                        <div class="game-item">
+                            <span class="game-title">Final Fantasy XVI</span>
+                            <span class="game-platform">PS5</span>
+                        </div>
+                        <div class="game-item">
+                            <span class="game-title">Starfield</span>
+                            <span class="game-platform">XSX</span>
+                        </div>
+                        <div class="game-item">
+                            <span class="game-title">Zelda TOTK</span>
+                            <span class="game-platform">Switch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-list">
+                    <div class="widget-title">All Games (187)</div>
+                    <div class="game-item">
+                        <span class="game-title">The Last of Us Part II</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo Infinite</span>
+                        <span class="game-platform">XSX</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Elden Ring</span>
+                        <span class="game-platform">PC</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">God of War Ragnarök</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Spider-Man 2</span>
+                        <span class="game-platform">PS5</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Gears of War 3</span>
+                        <span class="game-platform">X360</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Halo 4</span>
+                        <span class="game-platform">X360</span>
+                    </div>
+                    <div class="game-item">
+                        <span class="game-title">Zelda BOTW</span>
+                        <span class="game-platform">Switch</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direction 8: Grid Gallery View -->
+    <div class="mockup-container direction-8" id="direction-8">
+        <div class="mockup-header">
+            <h2>Direction 8: Grid Gallery View</h2>
+            <p><strong>Philosophy:</strong> Visual-first approach. Game covers take center stage. Browse like a physical shelf or Steam library.<br>
+            <strong>Best for:</strong> Users with strong visual memory. Cover art enthusiasts. Alternative to list/widget views.<br>
+            <strong>Key Features:</strong> Grid layout (auto-fill), 3:4 aspect ratio covers, hover lift animations, compact info cards</p>
+        </div>
+        <div class="mockup-frame">
+            <div class="top-nav">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-logo">My Game Collection</div>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="dashboard">
+                <h2 style="font-family: var(--font-family-heading); font-size: 30px; color: var(--color-text-primary); margin-bottom: var(--margin-2);">
+                    Recently Added
+                </h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-cover">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">The Last of Us Part II</div>
+                            <div class="game-platform">PS5 • Physical</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-cover" style="background: linear-gradient(135deg, #107C10, #3A9612);">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">Halo Infinite</div>
+                            <div class="game-platform">Xbox Series X • Digital</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-cover" style="background: linear-gradient(135deg, #888, #555);">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">Elden Ring</div>
+                            <div class="game-platform">PC • Steam</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-cover">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">God of War Ragnarök</div>
+                            <div class="game-platform">PS5 • Physical</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-cover">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">Spider-Man 2</div>
+                            <div class="game-platform">PS5 • Digital</div>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-cover" style="background: linear-gradient(135deg, #E60012, #FF4040);">COVER ART</div>
+                        <div class="game-info">
+                            <div class="game-title">Zelda: Tears of the Kingdom</div>
+                            <div class="game-platform">Switch • Physical</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDirection(num) {
+            // Hide all mockups
+            document.querySelectorAll('.mockup-container').forEach(m => m.classList.remove('active'));
+            // Show selected mockup
+            document.getElementById('direction-' + num).classList.add('active');
+
+            // Update button states
+            document.querySelectorAll('.direction-btn').forEach((btn, idx) => {
+                btn.classList.remove('active');
+                if (idx === num - 1) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
