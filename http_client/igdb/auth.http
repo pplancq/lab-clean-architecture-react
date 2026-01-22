@@ -1,0 +1,10 @@
+### Authentication to IGDB API
+POST {{ host.auth }}/oauth2/token?client_id={{ clientId }}&client_secret={{ clientSecret }}&grant_type=client_credentials
+
+> {%
+  client.test("Request executed successfully", function () {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+
+  client.global.set("bearerToken", response.body['access_token'])
+%}

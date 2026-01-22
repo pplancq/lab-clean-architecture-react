@@ -6,37 +6,45 @@
 
 ## 📋 Recommended Steps
 
-### Phase 0: API Research Sprint (MANDATORY - Before any code)
+### Phase 0: API Research Sprint ✅ COMPLETE
 
-**Timeline**: 2-3 days max
-**Tools**: WebStorm HTTP Client
+**Timeline**: January 21-22, 2026 (2 days)
+**Tools**: WebStorm HTTP Client, web research
 **Agent**: Analyst Agent
+**Status**: ✅ **COMPLETE**
 
 **Objective**: Validate the availability and feasibility of external APIs before starting implementation.
 
-**APIs to validate**:
-- ✅ **IGDB** - Game metadata (title, cover art, genre, platform)
-- ✅ **RAWG** - Alternative/complement to IGDB
-- ✅ **PSN (PlayStation Network)** - Sync trophies and playtime
-- ✅ **Xbox Live** - Sync achievements and playtime
-- ✅ **Steam** - Sync achievements and playtime
-- ✅ **Price Monitoring Services** - Wishlist price tracking
+**Research Completed**:
+- ✅ **IGDB** - Game metadata (SELECTED: Partial FR support, 4 req/sec free tier)
+- ✅ **RAWG** - Alternative metadata (EVALUATED: English only, backup option)
+- ✅ **PSN Trophies** - psn-api library (DEFERRED POST-MVP: Reverse-engineered, ban risk)
+- ✅ **Xbox Achievements** - No free option (DEFERRED POST-MVP: XAPI.us £5/month)
+- ✅ **Price Tracking** - IsThereAnyDeal API (DEFERRED POST-MVP: Focus on core MVP)
+- ✅ **General Marketplaces** - eBay/Amazon/Leboncoin (NOT SUITABLE: No price history or approval required)
 
-**Deliverables**:
-- Documented HTTP requests for each API (WebStorm HTTP Client)
-- Captured and analyzed response examples
-- Evaluation of quotas/rate limits/pricing
-- **Go/No-Go decision per API**
+**Delivered Artifacts**:
+- ✅ [Metadata API Research](/_bmad-output/planning-artifacts/research/technical-api-metadata-jeux-research-2026-01-21.md) - IGDB selected
+- ✅ [Price Tracking Research](/_bmad-output/planning-artifacts/research/technical-price-tracking-wishlist-research-2026-01-22.md) - DEFERRED POST-MVP
+- ✅ HTTP Client tests (http_client/igdb/auth.http, games.http) - IGDB validated
+- ✅ Go/No-Go decisions documented per API
 
-**Contingency**: If >50% of APIs are unavailable/paid → Pivot to manual-first MVP
+**Key Decisions**:
+1. ✅ **IGDB for Metadata** - MVP will auto-fetch game data (title, cover, genre, platform)
+2. ⏸️ **Trophies DEFERRED** - Manual entry only in MVP, psn-api researched for future
+3. ⏸️ **Price Tracking DEFERRED** - Manual wishlist in MVP, IsThereAnyDeal researched for future
+4. ✅ **Manual-First MVP** - Core CRUD + search without complex external APIs
+
+**Pivot Applied**: Manual-first approach for MVP (no trophy sync, no automated price alerts)
 
 ---
 
-### Phase 1: Technical Architecture
+### Phase 1: Technical Architecture ⏭️ NEXT
 
 **Timeline**: 1 week
 **Agent**: Architect Agent
 **Workflow**: `workflow create-architecture`
+**Status**: ⏭️ **READY TO START**
 
 **Objective**: Define the Clean Architecture structure before writing any code.
 
@@ -226,11 +234,19 @@
 5. **Phase 4 Development Setup** (1-2 days) - Rsbuild + React + IndexedDB + PWA + shelter-ui
 6. **Phase 5 Week 1 Coding** - First functional CRUD with UX patterns applied
 
-**UX Specification is ready to guide**:
+**Phase 0 API Research Complete**:
+- ✅ IGDB metadata API selected (partial FR support, free tier)
+- ⏸️ Trophy sync deferred post-MVP (psn-api researched, ban risk)
+- ⏸️ Price tracking deferred post-MVP (IsThereAnyDeal researched)
+- ✅ Manual-first MVP approach validated
+
+**UX Specification Ready to Guide**:
 - ✅ Component implementation (12 custom + 17 shelter-ui)
 - ✅ Responsive breakpoints (mobile/tablet/desktop strategy)
 - ✅ Accessibility requirements (WCAG AA, keyboard nav, screen readers)
 - ✅ Interaction patterns (buttons, forms, navigation, feedback)
 - ✅ Visual design (colors, typography, spacing tokens)
+
+**Next Immediate Action**: Phase 1 Architecture Design (1 week)
 
 **Good luck! 🚀**

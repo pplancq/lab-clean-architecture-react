@@ -59,18 +59,23 @@ This project has a **dual purpose**:
 
 **Phase 1: Wishlist (Weeks 7-8)**
 - **🛒 Wishlist Management** - Add games, set priority, track budget
-- **💰 Price Tracking** - Manual entry or API-based (if validated in Phase 0)
+- **💰 Price Tracking** - Manual entry only (automated tracking deferred post-MVP)
 
 **Phase 1: PWA (Weeks 9-10)**
 - **📱 Installable App** - Home screen installation
 - **🔌 Offline Support** - Full functionality without network
 - **⚡ Fast Loading** - App shell caching, instant startup
 
+**MVP Confirmed (Weeks 1-10)**
+- **📖 Metadata Auto-Fetch** - IGDB API integration (Phase 0 validated)
+- **🔍 Advanced Search** - Filter by genre, platform, year, rating
+- **📊 Basic Statistics** - Collection count, platform breakdown
+
 **Post-MVP (Phase 2+)**
-- **📖 Metadata Auto-Fetch** - IGDB/RAWG API integration (conditional on Phase 0)
-- **🏆 Trophy Sync** - PSN/Xbox/Steam achievements (conditional on Phase 0)
+- **🏆 Trophy Sync** - PSN achievements via psn-api (researched, deferred due to ban risk)
+- **💰 Automated Price Tracking** - IsThereAnyDeal API integration (researched, deferred to focus MVP)
 - **🔧 Maintenance System** - Console upkeep tracking with photos
-- **📊 Statistics** - Collection insights and analytics
+- **📊 Advanced Statistics** - Collection insights, completion rates, playtime trends
 - **☁️ Backend Migration** - Firebase or NestJS (demonstrates Clean Arch flexibility)
 
 **Development Philosophy:**
@@ -133,19 +138,28 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
 
 ## 🏗️ Project Status
 
-**Current Phase**: Planning & Architecture Definition
+**Current Phase**: Phase 1 - Architecture Design ⏭️
 
-- ✅ Product Brief complete
-- ✅ Product Requirements Document (PRD) complete
-- ✅ UX Design Specification complete
+**Completed Phases**:
+- ✅ **Phase 0: API Research** (Jan 21-22, 2026)
+  - IGDB metadata API selected (partial FR support)
+  - Trophy sync research complete (deferred post-MVP)
+  - Price tracking research complete (deferred post-MVP)
+  - Manual-first MVP approach validated
+- ✅ **Product Brief** complete
+- ✅ **Product Requirements Document (PRD)** complete
+- ✅ **UX Design Specification** complete
   - Mobile-first responsive strategy (320px-1440px)
   - 12 custom components specified (extending shelter-ui)
   - WCAG 2.1 AA+ accessibility compliance
   - 4 critical user journey flows documented
   - Complete UX patterns for consistency
-- ⏳ Architecture design in progress
-- ⏳ Tech stack finalization
-- ⏳ Development setup
+
+**Next Steps**:
+- ⏭️ **Phase 1: Architecture Design** (1 week) - Define Clean Architecture structure
+- ⏳ **Phase 3: Epic Breakdown** (2-3 days) - Transform FRs into stories
+- ⏳ **Phase 4: Development Setup** (1-2 days) - Rsbuild + React + IndexedDB
+- ⏳ **Phase 5: MVP Development** (Weeks 1-10) - Ship 1 feature/week
 
 ---
 

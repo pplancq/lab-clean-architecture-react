@@ -1,0 +1,19 @@
+import auth.http
+
+### Authenticate to IGDB
+run #Authentication to IGDB API
+
+### Get Games from IGDB
+POST {{ host.api }}/games
+Client-ID: {{ clientId }}
+Authorization: Bearer {{ bearerToken }}
+Content-Type: text/plain
+
+fields name,
+       summary,
+       age_ratings.rating_category.rating,
+       age_ratings.rating_category.organization.name,
+       language_supports.language.name,
+       language_supports.language.locale,
+       language_supports.language_support_type.name;
+where id = 1942;

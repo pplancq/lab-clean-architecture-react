@@ -1,2 +1,3 @@
 .ds*
 /.idea/
+*.private.env.json
