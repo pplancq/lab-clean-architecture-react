@@ -38,10 +38,9 @@ This project has a **dual purpose**:
 ### UX Design Assets
 - **[Design Directions Mockups](_bmad-output/planning-artifacts/ux-design-directions.html)** - Visual design direction mockups
 
-### Architecture (Coming Soon)
-- Architecture Decision Records (ADRs)
-- Clean Architecture patterns and diagrams
-- Repository and Use Case examples
+### Architecture ✅
+- **[Architecture Decision Document](_bmad-output/planning-artifacts/architecture.md)** - Complete Clean Architecture + DDD structure, 10 core decisions, implementation patterns
+- **[Project Context](./project-context.md)** - Critical rules and patterns for AI agents (naming conventions, code patterns, anti-patterns)
 
 ### Learnings (Coming Soon)
 - DECISIONS.md - Real-time architectural decisions
@@ -138,7 +137,7 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
 
 ## 🏗️ Project Status
 
-**Current Phase**: Phase 1 - Architecture Design ⏭️
+**Current Phase**: Phase 3 - Epic Breakdown ⏭️
 
 **Completed Phases**:
 - ✅ **Phase 0: API Research** (Jan 21-22, 2026)
@@ -154,11 +153,17 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
   - WCAG 2.1 AA+ accessibility compliance
   - 4 critical user journey flows documented
   - Complete UX patterns for consistency
+- ✅ **Phase 1: Architecture Design** (Jan 26, 2026)
+  - Complete Clean Architecture + DDD Bounded Contexts structure
+  - 10 core architectural decisions documented
+  - 15+ implementation patterns defined
+  - 3 bounded contexts specified (Collection, Wishlist, Maintenance)
+  - Project structure with 200+ file paths
+  - Project context file for AI agent consistency
 
 **Next Steps**:
-- ⏭️ **Phase 1: Architecture Design** (1 week) - Define Clean Architecture structure
-- ⏳ **Phase 3: Epic Breakdown** (2-3 days) - Transform FRs into stories
-- ⏳ **Phase 4: Development Setup** (1-2 days) - Rsbuild + React + IndexedDB
+- ⏭️ **Phase 3: Epic Breakdown** (2-3 days) - Transform FRs into implementable stories
+- ⏳ **Phase 4: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
 - ⏳ **Phase 5: MVP Development** (Weeks 1-10) - Ship 1 feature/week
 
 ---
