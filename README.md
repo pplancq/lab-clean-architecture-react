@@ -33,6 +33,7 @@ This project has a **dual purpose**:
 - **[Product Requirements Document (PRD)](_bmad-output/planning-artifacts/prd.md)** - Comprehensive requirements, architecture decisions, and success criteria
 - **[Product Brief](_bmad-output/planning-artifacts/product-brief-lab-clean-architecture-react-2026-01-14.md)** - Complete project vision, users, metrics, and MVP scope
 - **[UX Design Specification](_bmad-output/planning-artifacts/ux-design-specification.md)** - Complete UX strategy, component specs, patterns, responsive design & accessibility
+- **[Epics & Stories](_bmad-output/planning-artifacts/epics.md)** - 6 epics with 39 implementation-ready stories and acceptance criteria
 - **[Next Steps](./next-steps.md)** - Roadmap and recommended workflow for implementation
 
 ### UX Design Assets
@@ -137,7 +138,7 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
 
 ## 🏗️ Project Status
 
-**Current Phase**: Phase 3 - Epic Breakdown ⏭️
+**Current Phase**: Phase 4 - Development Setup ⏭️
 
 **Completed Phases**:
 - ✅ **Phase 0: API Research** (Jan 21-22, 2026)
@@ -160,10 +161,16 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
   - 3 bounded contexts specified (Collection, Wishlist, Maintenance)
   - Project structure with 200+ file paths
   - Project context file for AI agent consistency
+- ✅ **Phase 3: Epic Breakdown** (Jan 26, 2026)
+  - 6 epics organized by user value (Foundation, Collection, Search, API, Wishlist, Backup)
+  - 39 implementation-ready stories with detailed acceptance criteria
+  - 100% coverage of 37 functional requirements
+  - Accessibility integrated transversally in all stories
+  - Story dependencies validated (no forward dependencies)
+  - Epic independence validated (each epic is standalone)
 
 **Next Steps**:
-- ⏭️ **Phase 3: Epic Breakdown** (2-3 days) - Transform FRs into implementable stories
-- ⏳ **Phase 4: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
+- ⏭️ **Phase 4: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
 - ⏳ **Phase 5: MVP Development** (Weeks 1-10) - Ship 1 feature/week
 
 ---

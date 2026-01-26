@@ -102,34 +102,70 @@
 
 ---
 
-### Phase 3: Epic Breakdown ⏭️ NEXT
+### Phase 3: Epic Breakdown ✅ COMPLETE
 
-**Timeline**: 2-3 days
-**Agent**: PM Agent
+**Timeline**: January 26, 2026 (1 day)
+**Agent**: PM Agent (John)
 **Workflow**: `workflow create-epics-and-stories`
-**Status**: ⏭️ **READY TO START**
+**Status**: ✅ **COMPLETE**
 
 **Objective**: Turn FRs into epics and implementable user stories.
 
-**Expected deliverables**:
-- Epics organized by feature area (Collection, Wishlist, Maintenance)
-- User stories with acceptance criteria
-- Complexity estimation (story points or T-shirt sizes)
-- MVP vs Post-MVP prioritization
-- Suggested sprint planning (features per week)
+**Delivered artifacts**:
+- ✅ Complete Epic & Story Breakdown (`_bmad-output/planning-artifacts/epics.md`)
+- ✅ 6 epics organized by user value (not technical layers)
+- ✅ 39 implementation-ready stories with detailed acceptance criteria
+- ✅ 100% coverage of 37 functional requirements validated
+- ✅ Accessibility integrated transversally in all stories (FR28-FR32)
+- ✅ Story dependencies validated (sequential, no forward dependencies)
+- ✅ Epic independence validated (each epic is standalone)
 
-**Context available**:
-- ✅ Complete architecture decisions and patterns
-- ✅ UX design specification with component strategy
-- ✅ 3 bounded contexts with mapped requirements
-- ✅ Technical constraints and implementation patterns
+**Epic Structure**:
+1. **Epic 1: Foundation, Clean Architecture & PWA Setup** (6 stories)
+   - FRs: FR23-FR27, FR33-FR37
+   - Delivers: Functional project with Clean Arch, PWA installable from day one
+
+2. **Epic 2: Core Game Collection Management with IndexedDB** (8 stories)
+   - FRs: FR1, FR4-FR7, FR18-FR20
+   - Delivers: Complete CRUD + offline persistence
+
+3. **Epic 3: Search, Filter & Sort Collection** (6 stories)
+   - FRs: FR8-FR12
+   - Delivers: Fast search (<10s store moment), filters, sorting
+
+4. **Epic 4: Game Metadata Enrichment via External APIs** (6 stories)
+   - FRs: FR2-FR3
+   - Delivers: IGDB integration, auto-import metadata, cover art caching
+
+5. **Epic 5: Wishlist Management & Prioritization** (9 stories)
+   - FRs: FR13-FR17
+   - Delivers: Complete wishlist CRUD, priorities, move to collection
+
+6. **Epic 6: Data Portability & Backup** (4 stories)
+   - FRs: FR21-FR22
+   - Delivers: Export/import JSON, conflict resolution
+
+**Key Decisions**:
+- Stories sized for single dev agent completion (~1 week with 5h/week)
+- Acceptance criteria use Given/When/Then format
+- Each epic delivers complete standalone value
+- Accessibility (FR28-FR32) integrated in ALL stories, not separate epic
+- PWA in Foundation (Epic 1) forces proper architecture from start
+- IndexedDB integrated with Collection (Epic 2), not separate
+
+**GitHub Issues Strategy**:
+- Epic = GitHub Issue with `epic` label
+- Story = Sub-issue linked to parent epic
+- Templates created for consistent formatting
+- Labels: type, priority, status, epic context, scope
 
 ---
 
-### Phase 4: Development Setup
+### Phase 4: Development Setup ⏭️ NEXT
 
 **Timeline**: 1-2 days
 **Yourself** (no agent, technical setup)
+**Status**: ⏭️ **READY TO START**
 
 **Initial setup**:
 - [ ] Clone starter template: `@pplancq/dev-tools/react-template`
@@ -224,9 +260,12 @@
 
 ## 📚 Quick References
 
-- **Full PRD**: [docs/prd.md](./prd.md)
-- **Product Brief**: [docs/product-brief.md](./product-brief.md)
-- **Brainstorming Session**: [../_bmad-output/analysis/brainstorming-session-2026-01-14.md](../_bmad-output/analysis/brainstorming-session-2026-01-14.md)
+- **Product Requirements Document (PRD)**: [_bmad-output/planning-artifacts/prd.md](_bmad-output/planning-artifacts/prd.md)
+- **Product Brief**: [_bmad-output/planning-artifacts/product-brief-lab-clean-architecture-react-2026-01-14.md](_bmad-output/planning-artifacts/product-brief-lab-clean-architecture-react-2026-01-14.md)
+- **UX Design Specification**: [_bmad-output/planning-artifacts/ux-design-specification.md](_bmad-output/planning-artifacts/ux-design-specification.md)
+- **Architecture Document**: [_bmad-output/planning-artifacts/architecture.md](_bmad-output/planning-artifacts/architecture.md)
+- **Epics & Stories**: [_bmad-output/planning-artifacts/epics.md](_bmad-output/planning-artifacts/epics.md)
+- **Brainstorming Session**: [_bmad-output/analysis/brainstorming-session-2026-01-14.md](_bmad-output/analysis/brainstorming-session-2026-01-14.md)
 
 ---
 
@@ -237,9 +276,9 @@
 1. ✅ **Phase 0 API Research** (COMPLETE) - API feasibility validated
 2. ✅ **Phase 1 Architecture Design** (COMPLETE) - Clean Arch structure defined
 3. ✅ **Phase 2 UX Design** (COMPLETE) - Mobile-first spec, component strategy ready
-4. ⏭️ **Phase 3 Epic Breakdown** (2-3 days) - Transform FRs into implementable stories
-5. **Phase 4 Development Setup** (1-2 days) - Initialize with @pplancq/react-app
-6. **Phase 5 Week 1 Coding** - First functional CRUD with architectural patterns
+4. ✅ **Phase 3 Epic Breakdown** (COMPLETE) - 6 epics, 39 stories, 100% FR coverage
+5. ⏭️ **Phase 4 Development Setup** (1-2 days) - Initialize with @pplancq/react-app
+6. **Phase 5 Week 1 Coding** - Epic 1 Story 1: Initialize project with template
 
 **Phase 0 API Research Complete**:
 - ✅ IGDB metadata API selected (partial FR support, free tier)
@@ -257,15 +296,23 @@
 - ✅ Event Bus for cross-context communication
 - ✅ Result<T, E> pattern for type-safe errors
 
-**UX Specification Ready to Guide**:
+**Phase 2 UX Specification Complete**:
 - ✅ Component implementation (12 custom + 17 shelter-ui)
 - ✅ Responsive breakpoints (mobile/tablet/desktop strategy)
 - ✅ Accessibility requirements (WCAG AA, keyboard nav, screen readers)
 - ✅ Interaction patterns (buttons, forms, navigation, feedback)
 - ✅ Visual design (colors, typography, spacing tokens)
 
-**Next Immediate Action**: Phase 3 Epic Breakdown (2-3 days)
+**Phase 3 Epic Breakdown Complete**:
+- ✅ 6 epics organized by user value (Foundation, Collection, Search, API, Wishlist, Backup)
+- ✅ 39 implementation-ready stories with detailed acceptance criteria
+- ✅ 100% coverage of 37 functional requirements
+- ✅ Accessibility integrated transversally (not separate epic)
+- ✅ Story dependencies validated (sequential flow, no forward deps)
+- ✅ Each epic delivers standalone value
 
-**Command to start**: `workflow create-epics-and-stories`
+**Next Immediate Action**: Phase 4 Development Setup (1-2 days)
+
+**Command to start**: Initialize with `@pplancq/react-app` template
 
 **Good luck! 🚀**
