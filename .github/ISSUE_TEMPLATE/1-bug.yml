@@ -1,0 +1,189 @@
+name: Bug Report
+description: Report a bug or incorrect behavior
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+
+        Thank you for reporting this bug! Please provide as much detail as possible to help with resolution.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Bug severity
+      options:
+        - Critical - App unusable / data loss
+        - High - Major feature broken
+        - Medium - Feature broken with workaround
+        - Low - Minor or cosmetic bug
+      default: 1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Application area affected
+      options:
+        - Collection Management
+        - Wishlist
+        - Search/Filter
+        - API Integration (IGDB)
+        - PWA/Offline
+        - Backup/Export
+        - UI/UX
+        - Accessibility
+        - Performance
+        - Architecture/Infrastructure
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clear and concise bug description
+      placeholder: |
+        When I try to add a game with an empty title, the application crashes instead of displaying a validation error.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the bug
+      placeholder: |
+        1. Open the "Add Game" page
+        2. Click "Save" without filling the title field
+        3. Observe the crash
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Expected behavior
+      placeholder: |
+        An error message should display: "Title is required"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: Observed behavior
+      placeholder: |
+        The application crashes with a console error: "Cannot read property 'title' of undefined"
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Error Messages
+      description: Screenshots or error messages (if applicable)
+      placeholder: |
+        Paste screenshots or console error messages here
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Browser where the bug occurs
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile Safari (iOS)
+        - Mobile Chrome (Android)
+        - Other
+      multiple: true
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser Version
+      description: Browser version
+      placeholder: "Chrome 120.0.6099.109"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      description: Device type
+      options:
+        - Desktop
+        - Mobile
+        - Tablet
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Additional environment details
+      placeholder: |
+        - OS: macOS 14.2
+        - Screen size: 1920x1080
+        - Network: Offline mode
+        - IndexedDB version: 1
+    validations:
+      required: false
+
+  - type: dropdown
+    id: regression
+    attributes:
+      label: Is this a regression?
+      description: Did this bug exist in a previous version?
+      options:
+        - "Yes - It worked before"
+        - "No - Never worked"
+        - "Unknown"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any additional useful context
+      placeholder: |
+        - This bug only appears in offline mode
+        - Related to issue #123
+        - Possible workaround: ...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Before submitting
+      options:
+        - label: I have verified that an issue does not already exist for this bug
+          required: true
+        - label: I have tested on the latest version
+          required: true
+        - label: I have provided clear reproduction steps
+          required: true

@@ -1,0 +1,223 @@
+name: Enhancement
+description: Propose an improvement or new feature
+title: "[Enhancement]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Enhancement Request
+
+        Propose an improvement or new feature for the project.
+
+  - type: dropdown
+    id: enhancement-type
+    attributes:
+      label: Enhancement Type
+      description: Type of enhancement
+      options:
+        - New Feature
+        - UX Improvement
+        - Performance Optimization
+        - Accessibility Enhancement
+        - Architecture Improvement
+        - Developer Experience
+        - Documentation
+        - Testing
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Application area affected
+      options:
+        - Collection Management
+        - Wishlist
+        - Search/Filter
+        - API Integration
+        - PWA/Offline
+        - Backup/Export
+        - UI/UX
+        - Accessibility
+        - Performance
+        - Architecture/Infrastructure
+        - Documentation
+        - Testing
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What problem does this enhancement solve?
+      placeholder: |
+        Currently, when I search for a game, I cannot filter by genre. If I have 200 action games, it's hard to find a specific RPG.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Detailed proposed solution
+      placeholder: |
+        Add a "Genre" filter in the search bar with options: Action, RPG, Puzzle, Strategy, etc.
+
+        **Implementation approach:**
+        - Add genre field to Game entity
+        - Update IndexedDB schema with genre index
+        - Create FilterByGenre use case
+        - Add genre filter UI component
+      value: |
+        **What:**
+        [Description of the proposed feature]
+
+        **How:**
+        [Suggested implementation approach]
+
+        **Benefits:**
+        [User and/or technical benefits]
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story (Optional)
+      description: If applicable, format "As a... I want... So that..."
+      placeholder: |
+        **As a** Paul (user with large collection),
+        **I want** to filter games by genre,
+        **So that** I can quickly find games of a specific type to play.
+      value: |
+        **As a** [user type],
+        **I want** [capability],
+        **So that** [value/benefit].
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Alternative solutions considered
+      placeholder: |
+        1. Use tags instead of fixed genres (more flexible but harder to filter)
+        2. Use free-text search in description (less precise)
+        3. Add multi-select genre filter (more complex UI)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority-suggestion
+    attributes:
+      label: Priority Suggestion
+      description: Suggested priority (will be validated by the team)
+      options:
+        - Critical - Major blocker
+        - High - Important improvement
+        - Medium - Nice to have
+        - Low - Future consideration
+      default: 2
+    validations:
+      required: false
+
+  - type: dropdown
+    id: mvp-scope
+    attributes:
+      label: MVP Scope
+      description: Should this feature be in the MVP?
+      options:
+        - "Yes - Essential for MVP"
+        - "No - Post-MVP"
+        - "Maybe - To discuss"
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria (Optional)
+      description: If already identified, acceptance criteria in Given/When/Then format
+      placeholder: |
+        **Given** I am viewing my collection
+        **When** I select "RPG" in the genre filter
+        **Then** only RPG games are displayed
+        **And** the filter count shows "X RPG games"
+      value: |
+        **Given** [precondition]
+        **When** [action]
+        **Then** [expected outcome]
+        **And** [additional criteria]
+    validations:
+      required: false
+
+  - type: textarea
+    id: architecture-impact
+    attributes:
+      label: Architecture Impact
+      description: Architecture impact (if known)
+      placeholder: |
+        - Requires new Genre value object in domain layer
+        - Needs IndexedDB schema migration (add genre index)
+        - New FilterByGenre use case in application layer
+        - UI component in presentation layer
+    validations:
+      required: false
+
+  - type: textarea
+    id: ux-considerations
+    attributes:
+      label: UX Considerations
+      description: UX or design considerations
+      placeholder: |
+        - Should be accessible via keyboard
+        - Mobile: Bottom sheet for filter selection
+        - Desktop: Inline dropdown
+        - Must maintain 44x44px touch targets
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to references (designs, articles, examples)
+      placeholder: |
+        - Similar feature in App X: [link]
+        - Design inspiration: [link]
+        - Related issue: #123
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: willing-to-contribute
+    attributes:
+      label: Contribution
+      description: Are you willing to contribute to this enhancement?
+      options:
+        - label: I am willing to implement this feature
+          required: false
+        - label: I can help with design/UX
+          required: false
+        - label: I can help with testing
+          required: false
+        - label: I can help with documentation
+          required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any additional useful context
+      placeholder: |
+        - This feature has been requested by multiple users
+        - Could be combined with issue #456
+        - Attention to performance with large collections
+    validations:
+      required: false

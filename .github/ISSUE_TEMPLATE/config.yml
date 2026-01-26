@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: � Documentation
+    url: https://github.com/pplancq/lab-clean-architecture-react/blob/main/README.md
+    about: Read the project documentation

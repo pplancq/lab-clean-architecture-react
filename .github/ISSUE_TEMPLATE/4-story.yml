@@ -1,0 +1,182 @@
+name: Story
+description: User story for a feature implementable by a single developer
+title: "Story N.M: [Story Title]"
+labels: ["story"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📖 Story Template
+
+        ⚠️ **Maintainers Only** - This template is reserved for project maintainers to break down epics into implementable stories.
+
+        If you want to propose a new feature, please use the [Enhancement](?template=2-enhancement.yml) template instead.
+
+        ---
+
+        Use this template to create a user story implementable in ~1 week (5h of dev).
+
+  - type: input
+    id: story-number
+    attributes:
+      label: Story Number
+      description: Story number (e.g., 1.1, 2.3, 3.2...)
+      placeholder: "2.1"
+    validations:
+      required: true
+
+  - type: input
+    id: parent-epic
+    attributes:
+      label: Parent Epic
+      description: Parent epic issue number
+      placeholder: "#1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: User Type
+      description: Concerned user type
+      options:
+        - Paul (user)
+        - developer
+        - Alex (developer learning Clean Arch)
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Story au format "As a... I want... So that..."
+      placeholder: |
+        **As a** developer,
+        **I want** to create the Game domain entity with its value objects,
+        **So that** I have a pure business logic representation of a game without infrastructure dependencies.
+      value: |
+        **As a** [user type],
+        **I want** [capability],
+        **So that** [value/benefit].
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Acceptance criteria in Given/When/Then format
+      placeholder: |
+        **Given** the bounded context structure exists
+        **When** I create the Game entity
+        **Then** a `Game` entity class exists in `src/collection/domain/entities/Game.ts`
+        **And** the Game entity includes properties: id, title, description, platform, format
+        **And** value objects exist for GameId, Platform, Format, Status
+
+        **Given** the entity is created
+        **When** I validate the entity
+        **Then** validation logic exists in the domain layer
+        **And** the entity is pure TypeScript with NO infrastructure dependencies
+      value: |
+        **Given** [precondition]
+        **When** [action]
+        **Then** [expected outcome]
+        **And** [additional criteria]
+
+        ---
+
+        **Given** [precondition 2]
+        **When** [action 2]
+        **Then** [expected outcome 2]
+        **And** [additional criteria 2]
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-notes
+    attributes:
+      label: Implementation Notes
+      description: Technical details, specific approaches, or architectural considerations
+      placeholder: |
+        - Repository pattern must follow IGameRepository interface
+        - Use Result<T, E> pattern for error handling
+        - No React dependencies in use cases
+        - Register in DI container after implementation
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: testing-requirements
+    attributes:
+      label: Testing Requirements
+      description: Types of tests required for this story
+      options:
+        - label: Unit tests (domain/use cases)
+          required: false
+        - label: Integration tests (repository/adapters)
+          required: false
+        - label: React component tests
+          required: false
+        - label: Accessibility tests (keyboard, screen reader)
+          required: false
+        - label: E2E tests (if critical)
+          required: false
+
+  - type: checkboxes
+    id: accessibility-requirements
+    attributes:
+      label: Accessibility Requirements (Transversal)
+      description: Accessibility requirements to validate
+      options:
+        - label: Keyboard navigation works
+          required: false
+        - label: Appropriate ARIA labels
+          required: false
+        - label: WCAG AA contrast met
+          required: false
+        - label: Screen reader tested (VoiceOver/NVDA)
+          required: false
+        - label: Touch targets >= 44x44px (mobile)
+          required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Dependencies or blockers
+      placeholder: |
+        **Depends on:** #10 (Story 2.1 must be completed first)
+        **Blocks:** #15 (Story 2.3 cannot start until this is done)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: Story completion criteria
+      options:
+        - label: All acceptance criteria are validated
+          required: false
+        - label: Tests written and passing (unit + integration)
+          required: false
+        - label: Code reviewed and approved
+          required: false
+        - label: Accessibility requirements verified
+          required: false
+        - label: Documentation updated (if necessary)
+          required: false
+        - label: Merged into main branch
+          required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Additional context or questions
+      placeholder: |
+        - Question: Should we use X or Y approach?
+        - Note: This might require updates to...
+    validations:
+      required: false

@@ -1,0 +1,130 @@
+name: Epic
+description: Epic to group multiple stories linked by a common user value
+title: "Epic N: [Epic Title]"
+labels: ["epic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎯 Epic Template
+
+        ⚠️ **Maintainers Only** - This template is reserved for project maintainers to manage the development roadmap.
+
+        If you want to propose a new feature, please use the [Enhancement](?template=2-enhancement.yml) template instead.
+
+        ---
+
+        Use this template to create an epic grouping multiple stories around the same user value.
+
+  - type: input
+    id: epic-number
+    attributes:
+      label: Epic Number
+      description: Epic number (e.g., 1, 2, 3...)
+      placeholder: "1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: epic-goal
+    attributes:
+      label: Epic Goal
+      description: Main objective of the epic (what users will be able to accomplish)
+      placeholder: |
+        Developers have a functional project with documented Clean Architecture, established bounded contexts structure, and PWA foundations configured.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-outcome
+    attributes:
+      label: User Outcome
+      description: Concrete outcome for the end user after completing this epic
+      placeholder: |
+        Paul can add, view, edit, and delete games in his collection. Data is saved locally in IndexedDB and available offline immediately.
+    validations:
+      required: true
+
+  - type: input
+    id: frs-covered
+    attributes:
+      label: FRs Covered
+      description: Functional requirements numbers covered (comma-separated)
+      placeholder: "FR1, FR4, FR5, FR6, FR7, FR18, FR19, FR20"
+    validations:
+      required: true
+
+  - type: input
+    id: nfrs-covered
+    attributes:
+      label: NFRs Covered
+      description: Non-functional requirements numbers covered (optional)
+      placeholder: "NFR7, NFR10, NFR14, NFR17, NFR18"
+    validations:
+      required: false
+
+  - type: textarea
+    id: architecture-notes
+    attributes:
+      label: Architecture Requirements
+      description: Specific architectural requirements or constraints
+      placeholder: |
+        - IndexedDB single database with 'games' object store
+        - Repository pattern (IGameRepository → IndexedDBGameRepository)
+        - Use Cases (AddGame, EditGame, DeleteGame, GetGames)
+        - Domain entities (Game, GameId, Platform, Status)
+    validations:
+      required: false
+
+  - type: textarea
+    id: ux-requirements
+    attributes:
+      label: UX Requirements
+      description: Specific UX requirements (optional)
+      placeholder: |
+        - Mobile-first design
+        - Thumb-friendly UI with 44x44px minimum touch targets
+        - Smart defaults and minimal required fields
+    validations:
+      required: false
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Justification for this epic (why standalone, how it integrates)
+      placeholder: |
+        Standalone and complete epic - CRUD + persistence together because they're inseparable. Paul can manage his collection offline immediately. Foundation for all other epics.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: Epic completion criteria
+      options:
+        - label: All epic stories are completed
+          required: false
+        - label: Code reviewed and merged
+          required: false
+        - label: Unit and integration tests pass
+          required: false
+        - label: Documentation updated
+          required: false
+        - label: Accessibility requirements (WCAG AA) met
+          required: false
+        - label: Performance NFRs validated
+          required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Additional context, dependencies, or considerations
+      placeholder: |
+        - Depends on Epic X for...
+        - Blocks Epic Y until...
+        - Note: ...
+    validations:
+      required: false
