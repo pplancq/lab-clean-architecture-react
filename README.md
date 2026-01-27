@@ -140,6 +140,8 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
 
 **Current Phase**: Phase 4 - Development Setup ⏭️
 
+**GitHub Board**: [Issues Board](https://github.com/pplancq/lab-clean-architecture-react/issues)
+
 **Completed Phases**:
 - ✅ **Phase 0: API Research** (Jan 21-22, 2026)
   - IGDB metadata API selected (partial FR support)
@@ -161,16 +163,22 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
   - 3 bounded contexts specified (Collection, Wishlist, Maintenance)
   - Project structure with 200+ file paths
   - Project context file for AI agent consistency
-- ✅ **Phase 3: Epic Breakdown** (Jan 26, 2026)
+- ✅ **Phase 3: Epic Breakdown + GitHub Issues** (Jan 27, 2026)
   - 6 epics organized by user value (Foundation, Collection, Search, API, Wishlist, Backup)
-  - 39 implementation-ready stories with detailed acceptance criteria
+  - 46 implementation-ready stories with detailed acceptance criteria
   - 100% coverage of 37 functional requirements
   - Accessibility integrated transversally in all stories
   - Story dependencies validated (no forward dependencies)
   - Epic independence validated (each epic is standalone)
+  - **52 GitHub Issues created** (6 epics + 46 stories)
+  - All stories sized (2 XS, 13 S, 17 M, 6 L, 0 XL)
+  - All stories prioritized (14 P0, 18 P1, 14 P2)
+  - Story #36 decomposed into 6 sub-stories (#46-#51)
+  - CI + SonarCloud + GitHub Copilot story added (#52)
 
 **Next Steps**:
-- ⏭️ **Phase 4: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
+- ⏭️ **Phase 4a: Sprint Planning** (recommended) - Use SM agent to initialize Sprint 1
+- ⏭️ **Phase 4b: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
 - ⏳ **Phase 5: MVP Development** (Weeks 1-10) - Ship 1 feature/week
 
 ---

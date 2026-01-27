@@ -102,48 +102,71 @@
 
 ---
 
-### Phase 3: Epic Breakdown ✅ COMPLETE
+### Phase 3: Epic Breakdown + GitHub Issues ✅ COMPLETE
 
-**Timeline**: January 26, 2026 (1 day)
+**Timeline**: January 27, 2026 (1 day)
 **Agent**: PM Agent (John)
 **Workflow**: `workflow create-epics-and-stories`
 **Status**: ✅ **COMPLETE**
 
-**Objective**: Turn FRs into epics and implementable user stories.
+**Objective**: Turn FRs into epics and implementable user stories, then create GitHub Issues.
 
 **Delivered artifacts**:
 - ✅ Complete Epic & Story Breakdown (`_bmad-output/planning-artifacts/epics.md`)
 - ✅ 6 epics organized by user value (not technical layers)
-- ✅ 39 implementation-ready stories with detailed acceptance criteria
+- ✅ 46 implementation-ready stories with detailed acceptance criteria
 - ✅ 100% coverage of 37 functional requirements validated
 - ✅ Accessibility integrated transversally in all stories (FR28-FR32)
 - ✅ Story dependencies validated (sequential, no forward dependencies)
 - ✅ Epic independence validated (each epic is standalone)
+- ✅ **52 GitHub Issues created** (6 epics + 46 stories)
+- ✅ 20-label system deployed (type, priority, epic context, functional, contributors)
+- ✅ 4 GitHub Issue templates + PR template created
 
 **Epic Structure**:
-1. **Epic 1: Foundation, Clean Architecture & PWA Setup** (6 stories)
+1. **Epic 1: Foundation, Clean Architecture & PWA Setup** ([#7](https://github.com/pplancq/lab-clean-architecture-react/issues/7)) - 7 stories
    - FRs: FR23-FR27, FR33-FR37
-   - Delivers: Functional project with Clean Arch, PWA installable from day one
+   - Stories: #1, #2, #3, #4, #5, #6, #52 (all P0)
+   - Sizes: 2 XS, 5 S
+   - Delivers: Functional project with Clean Arch, PWA installable, CI/SonarCloud/GitHub Copilot ready
 
-2. **Epic 2: Core Game Collection Management with IndexedDB** (8 stories)
+2. **Epic 2: Core Game Collection Management with IndexedDB** ([#8](https://github.com/pplancq/lab-clean-architecture-react/issues/8)) - 8 stories
    - FRs: FR1, FR4-FR7, FR18-FR20
+   - Stories: #9-#16 (all P0)
+   - Sizes: 6 S, 2 M
    - Delivers: Complete CRUD + offline persistence
 
-3. **Epic 3: Search, Filter & Sort Collection** (6 stories)
+3. **Epic 3: Search, Filter & Sort Collection** ([#17](https://github.com/pplancq/lab-clean-architecture-react/issues/17)) - 6 stories
    - FRs: FR8-FR12
+   - Stories: #18-#23 (all P1)
+   - Sizes: 4 S, 1 M, 1 L
    - Delivers: Fast search (<10s store moment), filters, sorting
 
-4. **Epic 4: Game Metadata Enrichment via External APIs** (6 stories)
+4. **Epic 4: Game Metadata Enrichment via External APIs** ([#24](https://github.com/pplancq/lab-clean-architecture-react/issues/24)) - 6 stories
    - FRs: FR2-FR3
+   - Stories: #25-#30 (all P1)
+   - Sizes: 1 S, 4 M, 1 L
    - Delivers: IGDB integration, auto-import metadata, cover art caching
 
-5. **Epic 5: Wishlist Management & Prioritization** (9 stories)
+5. **Epic 5: Wishlist Management & Prioritization** ([#31](https://github.com/pplancq/lab-clean-architecture-react/issues/31)) - 9 stories (including 6 sub-stories)
    - FRs: FR13-FR17
-   - Delivers: Complete wishlist CRUD, priorities, move to collection
+   - Stories: #32-#40 (6x P1, 3x P2)
+   - Story #36 decomposed into sub-stories: #46-#51
+   - Sizes: 1 XS, 3 S, 5 M
+   - Delivers: Complete wishlist CRUD, priorities, move to collection, event bus
 
-6. **Epic 6: Data Portability & Backup** (4 stories)
+6. **Epic 6: Data Portability & Backup** ([#43](https://github.com/pplancq/lab-clean-architecture-react/issues/43)) - 4 stories
    - FRs: FR21-FR22
+   - Stories: #41, #42, #44, #45 (all P2)
+   - Sizes: 1 S, 3 L
    - Delivers: Export/import JSON, conflict resolution
+
+**Story Breakdown:**
+- **Total Issues:** 52 (6 epics + 46 stories)
+- **By Priority:** 14 P0 (critical), 18 P1 (important), 14 P2 (nice-to-have)
+- **By Size:** 2 XS, 13 S, 17 M, 6 L, 0 XL (all stories appropriately sized)
+- **Story #36 Decomposition:** XL story split into 6 manageable stories (#46-#51)
+- **New Infrastructure:** Story #52 added for CI + SonarCloud + GitHub Copilot Agent support
 
 **Key Decisions**:
 - Stories sized for single dev agent completion (~1 week with 5h/week)
@@ -152,16 +175,50 @@
 - Accessibility (FR28-FR32) integrated in ALL stories, not separate epic
 - PWA in Foundation (Epic 1) forces proper architecture from start
 - IndexedDB integrated with Collection (Epic 2), not separate
+- No XL stories remaining - all decomposed for sprint-sized delivery
 
-**GitHub Issues Strategy**:
-- Epic = GitHub Issue with `epic` label
-- Story = Sub-issue linked to parent epic
-- Templates created for consistent formatting
-- Labels: type, priority, status, epic context, scope
+**GitHub Implementation**:
+- ✅ Epic = GitHub Issue with `epic` label
+- ✅ Story = Sub-issue linked to parent epic
+- ✅ 4 Issue templates (Epic, Story, Bug, Enhancement) in English
+- ✅ PR template with Clean Architecture sections
+- ✅ 20-label system: type, priority, epic context, functional, contributors
+- ✅ Labels deployed via `setup-labels.sh` script
+- ✅ All issues have detailed acceptance criteria in Given/When/Then format
 
 ---
 
-### Phase 4: Development Setup ⏭️ NEXT
+### Phase 4a: Sprint Planning ⏭️ RECOMMENDED NEXT
+
+**Timeline**: 1-2 hours
+**Agent**: SM Agent (Scrum Master)
+**Status**: ⏭️ **RECOMMENDED BEFORE DEVELOPMENT**
+
+**Objective**: Initialize Sprint 1 with proper Scrum structure before coding begins.
+
+**Why Sprint Planning First:**
+- ✅ Creates focused Sprint 1 scope (Epic 1 - 7 P0 stories)
+- ✅ Establishes Sprint 1 milestone in GitHub
+- ✅ Configures project board for workflow visualization
+- ✅ Sets velocity baseline for future sprints
+- ✅ Enables proper story assignment to GitHub Copilot Agent
+
+**Recommended Sprint 1:**
+- **Duration:** 2 weeks
+- **Scope:** Epic 1 complete (Foundation & PWA) - Stories #1-#6, #52
+- **Objective:** "Projet initialisé avec Clean Architecture, PWA, et CI opérationnelle"
+- **Estimated Effort:** ~10-12 days (all stories P0, interdependent blockers)
+- **Deliverable:** Installable PWA with automated testing and CI pipeline
+
+**SM Agent Workflow:**
+1. Switch to SM mode: `/mode sm`
+2. Request: "J'ai terminé l'epic breakdown avec 6 epics et 46 stories. Je voudrais initialiser le sprint 1 en commençant par Epic 1 (Foundation). Peux-tu m'aider à organiser le sprint ?"
+3. SM will: validate story selection, create Sprint 1 milestone, assign stories, configure board
+4. After sprint planning: Switch to Dev mode (`/mode dev`) and begin implementation
+
+---
+
+### Phase 4b: Development Setup ⏭️ AFTER SPRINT PLANNING
 
 **Timeline**: 1-2 days
 **Yourself** (no agent, technical setup)
@@ -271,14 +328,17 @@
 
 ## 🚦 Ready to Start?
 
+**GitHub Board**: [View all 52 issues](https://github.com/pplancq/lab-clean-architecture-react/issues)
+
 **Immediate recommended action**:
 
 1. ✅ **Phase 0 API Research** (COMPLETE) - API feasibility validated
 2. ✅ **Phase 1 Architecture Design** (COMPLETE) - Clean Arch structure defined
 3. ✅ **Phase 2 UX Design** (COMPLETE) - Mobile-first spec, component strategy ready
-4. ✅ **Phase 3 Epic Breakdown** (COMPLETE) - 6 epics, 39 stories, 100% FR coverage
-5. ⏭️ **Phase 4 Development Setup** (1-2 days) - Initialize with @pplancq/react-app
-6. **Phase 5 Week 1 Coding** - Epic 1 Story 1: Initialize project with template
+4. ✅ **Phase 3 Epic Breakdown + GitHub Issues** (COMPLETE) - 6 epics, 46 stories, 52 issues created
+5. ⏭️ **Phase 4a Sprint Planning** (1-2 hours, RECOMMENDED) - Use SM agent to initialize Sprint 1
+6. ⏭️ **Phase 4b Development Setup** (1-2 days) - Initialize with @pplancq/react-app
+7. **Phase 5 Sprint 1 Coding** - Epic 1 complete (7 stories, all P0)
 
 **Phase 0 API Research Complete**:
 - ✅ IGDB metadata API selected (partial FR support, free tier)
@@ -303,15 +363,22 @@
 - ✅ Interaction patterns (buttons, forms, navigation, feedback)
 - ✅ Visual design (colors, typography, spacing tokens)
 
-**Phase 3 Epic Breakdown Complete**:
+**Phase 3 Epic Breakdown + GitHub Issues Complete**:
 - ✅ 6 epics organized by user value (Foundation, Collection, Search, API, Wishlist, Backup)
-- ✅ 39 implementation-ready stories with detailed acceptance criteria
+- ✅ 46 implementation-ready stories with detailed acceptance criteria
 - ✅ 100% coverage of 37 functional requirements
 - ✅ Accessibility integrated transversally (not separate epic)
 - ✅ Story dependencies validated (sequential flow, no forward deps)
 - ✅ Each epic delivers standalone value
+- ✅ **52 GitHub Issues created** (6 epics + 46 stories)
+- ✅ All stories sized: 2 XS, 13 S, 17 M, 6 L, 0 XL
+- ✅ All stories prioritized: 14 P0, 18 P1, 14 P2
+- ✅ Story #36 decomposed into 6 sub-stories (#46-#51)
+- ✅ CI + SonarCloud + GitHub Copilot story added (#52)
+- ✅ 20-label system deployed
+- ✅ Issue templates (Epic, Story, Bug, Enhancement) created
 
-**Next Immediate Action**: Phase 4 Development Setup (1-2 days)
+**Next Immediate Action**: Phase 4a Sprint Planning (1-2 hours, use SM agent)
 
 **Command to start**: Initialize with `@pplancq/react-app` template
 

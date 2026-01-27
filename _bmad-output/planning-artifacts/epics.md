@@ -280,6 +280,17 @@ This document provides the complete epic and story breakdown for lab-clean-archi
 
 **Rationale:** Complete foundation including PWA from the beginning because it forces proper Repository separation early. Standalone - functional project even when empty with clear architecture and installable app.
 
+**GitHub Epic:** [#7](https://github.com/pplancq/lab-clean-architecture-react/issues/7)
+
+**Stories (7 total):**
+- Story 1.1: Initialize Project (#1) - Size: XS, Priority: P0
+- Story 1.2: Folder Structure (#2) - Size: XS, Priority: P0
+- Story 1.3: DI Container (#3) - Size: S, Priority: P0
+- Story 1.4: Result Pattern (#4) - Size: S, Priority: P0
+- Story 1.5: PWA Setup (#5) - Size: S, Priority: P0
+- Story 1.6: Documentation (#6) - Size: S, Priority: P0
+- Story 1.7: CI Pipeline + SonarCloud + GitHub Copilot (#52) - Size: S, Priority: P0
+
 ---
 
 ### Epic 2: Core Game Collection Management with IndexedDB Persistence
@@ -310,6 +321,18 @@ This document provides the complete epic and story breakdown for lab-clean-archi
 
 **Rationale:** Standalone and complete epic - CRUD + persistence together because they're inseparable. Paul can manage his collection offline immediately. Foundation for all other epics.
 
+**GitHub Epic:** [#8](https://github.com/pplancq/lab-clean-architecture-react/issues/8)
+
+**Stories (8 total):**
+- Story 2.1: Game Domain Entity (#9) - Size: S, Priority: P0
+- Story 2.2: Collection Repository (#10) - Size: M, Priority: P0
+- Story 2.3: IndexedDB Adapter (#11) - Size: M, Priority: P0
+- Story 2.4: Add Game Use Case (#12) - Size: S, Priority: P0
+- Story 2.5: Edit/Delete Use Cases (#13) - Size: S, Priority: P0
+- Story 2.6: GameList Component (#14) - Size: S, Priority: P0
+- Story 2.7: GameForm Component (#15) - Size: S, Priority: P0
+- Story 2.8: Integration Tests (#16) - Size: S, Priority: P0
+
 ---
 
 ### Epic 3: Search, Filter & Sort Collection
@@ -332,6 +355,16 @@ This document provides the complete epic and story breakdown for lab-clean-archi
 
 **Rationale:** Standalone epic for the critical "store moment". Uses Epic 2 (collection exists) but provides distinct value - rapid discovery.
 
+**GitHub Epic:** [#17](https://github.com/pplancq/lab-clean-architecture-react/issues/17)
+
+**Stories (6 total):**
+- Story 3.1: Search Use Case (#18) - Size: S, Priority: P1
+- Story 3.2: Filter Use Case (#19) - Size: S, Priority: P1
+- Story 3.3: Sort Use Case (#20) - Size: S, Priority: P1
+- Story 3.4: SearchBar Component (#21) - Size: S, Priority: P1
+- Story 3.5: FilterControls Component (#22) - Size: M, Priority: P1
+- Story 3.6: Performance Tests (#23) - Size: L, Priority: P1
+
 ---
 
 ### Epic 4: Game Metadata Enrichment via External APIs
@@ -345,6 +378,16 @@ This document provides the complete epic and story breakdown for lab-clean-archi
 - Cache strategy with ICacheStrategy interface
 - API adapters (IGDBAdapter, RAWGAdapter)
 - Repository pattern for metadata caching
+
+**GitHub Epic:** [#24](https://github.com/pplancq/lab-clean-architecture-react/issues/24)
+
+**Stories (6 total):**
+- Story 4.1: IGDB Adapter (#25) - Size: M, Priority: P1
+- Story 4.2: RAWG Adapter (#26) - Size: M, Priority: P1
+- Story 4.3: Search Metadata Use Case (#27) - Size: M, Priority: P1
+- Story 4.4: Metadata Import Use Case (#28) - Size: M, Priority: P1
+- Story 4.5: API Search Component (#29) - Size: S, Priority: P1
+- Story 4.6: Cover Image Cache (#30) - Size: L, Priority: P1
 - Graceful degradation when API unavailable
 
 **UX Requirements:**
