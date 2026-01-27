@@ -188,37 +188,46 @@
 
 ---
 
-### Phase 4a: Sprint Planning ⏭️ RECOMMENDED NEXT
+### Phase 4a: Sprint Planning ✅ COMPLETE
 
-**Timeline**: 1-2 hours
-**Agent**: SM Agent (Scrum Master)
-**Status**: ⏭️ **RECOMMENDED BEFORE DEVELOPMENT**
+**Timeline**: January 27, 2026 (1 hour)
+**Agent**: SM Agent (Bob, Scrum Master)
+**Status**: ✅ **COMPLETE**
 
 **Objective**: Initialize Sprint 1 with proper Scrum structure before coding begins.
 
-**Why Sprint Planning First:**
-- ✅ Creates focused Sprint 1 scope (Epic 1 - 7 P0 stories)
-- ✅ Establishes Sprint 1 milestone in GitHub
-- ✅ Configures project board for workflow visualization
-- ✅ Sets velocity baseline for future sprints
-- ✅ Enables proper story assignment to GitHub Copilot Agent
+**Delivered artifacts**:
+- ✅ Sprint 1 created in sprint-status.yaml (27 jan → 13 fév 2026)
+- ✅ 15 P0 stories assigned to Sprint 1 (Epic 1 + Epic 2)
+- ✅ All stories moved to `ready-for-dev` status
+- ✅ Epic 1 and Epic 2 moved to `in-progress` status
+- ✅ Sprint goal defined: "Establish technical foundations (Clean Architecture, PWA, IndexedDB) and implement core collection management"
+- ✅ Sprint capacity: 12 days (~2.5 weeks)
+- ✅ GitHub Project Iterations field activated
+- ✅ Complete sprint metrics documented (P0-P2 breakdown, XS-XL sizes)
 
-**Recommended Sprint 1:**
-- **Duration:** 2 weeks
-- **Scope:** Epic 1 complete (Foundation & PWA) - Stories #1-#6, #52
-- **Objective:** "Projet initialisé avec Clean Architecture, PWA, et CI opérationnelle"
-- **Estimated Effort:** ~10-12 days (all stories P0, interdependent blockers)
-- **Deliverable:** Installable PWA with automated testing and CI pipeline
+**Sprint 1 Scope:**
+- **Duration:** 2.5 weeks (27 jan → 13 fév 2026)
+- **Capacity:** 12 working days
+- **Stories:** 15 P0 stories (Epic 1: 7 stories, Epic 2: 8 stories)
+- **Epic 1 (3.5 days):** Foundation, Clean Architecture & PWA Setup - Stories #1-6, #52
+- **Epic 2 (8.5 days):** Core Game Collection Management with IndexedDB - Stories #9-16
+- **Objective:** "Establish technical foundations (Clean Architecture, PWA, IndexedDB) and implement core collection management"
+- **Deliverables:**
+  - Installable PWA with offline-first capability
+  - Complete CRUD collection management
+  - Clean Architecture with DI and error handling
+  - CI/CD Pipeline with SonarCloud
 
-**SM Agent Workflow:**
-1. Switch to SM mode: `/mode sm`
-2. Request: "J'ai terminé l'epic breakdown avec 6 epics et 46 stories. Je voudrais initialiser le sprint 1 en commençant par Epic 1 (Foundation). Peux-tu m'aider à organiser le sprint ?"
-3. SM will: validate story selection, create Sprint 1 milestone, assign stories, configure board
-4. After sprint planning: Switch to Dev mode (`/mode dev`) and begin implementation
+**Key Decisions:**
+- ✅ Combined Epic 1 + Epic 2 in Sprint 1 (both P0, foundational)
+- ✅ All 15 stories sized and prioritized (12 days total effort)
+- ✅ GitHub Project metadata synchronized (P0-P2 priorities, XS-XL sizes)
+- ✅ Sprint tracking file: `_bmad-output/implementation-artifacts/sprint-status.yaml`
 
 ---
 
-### Phase 4b: Development Setup ⏭️ AFTER SPRINT PLANNING
+### Phase 4b: Development Setup ⏭️ NEXT
 
 **Timeline**: 1-2 days
 **Yourself** (no agent, technical setup)
@@ -336,9 +345,9 @@
 2. ✅ **Phase 1 Architecture Design** (COMPLETE) - Clean Arch structure defined
 3. ✅ **Phase 2 UX Design** (COMPLETE) - Mobile-first spec, component strategy ready
 4. ✅ **Phase 3 Epic Breakdown + GitHub Issues** (COMPLETE) - 6 epics, 46 stories, 52 issues created
-5. ⏭️ **Phase 4a Sprint Planning** (1-2 hours, RECOMMENDED) - Use SM agent to initialize Sprint 1
-6. ⏭️ **Phase 4b Development Setup** (1-2 days) - Initialize with @pplancq/react-app
-7. **Phase 5 Sprint 1 Coding** - Epic 1 complete (7 stories, all P0)
+5. ✅ **Phase 4a Sprint Planning** (COMPLETE) - Sprint 1 initialized with 15 P0 stories
+6. ⏭️ **Phase 4b Development Setup** (1-2 days, NEXT) - Initialize with @pplancq/react-app
+7. **Phase 5 Sprint 1 Coding** - Epic 1 + Epic 2 complete (15 stories P0, 12 days)
 
 **Phase 0 API Research Complete**:
 - ✅ IGDB metadata API selected (partial FR support, free tier)
@@ -378,7 +387,17 @@
 - ✅ 20-label system deployed
 - ✅ Issue templates (Epic, Story, Bug, Enhancement) created
 
-**Next Immediate Action**: Phase 4a Sprint Planning (1-2 hours, use SM agent)
+**Phase 4a Sprint Planning Complete**:
+- ✅ Sprint 1 initialized (27 jan → 13 fév 2026, 12 working days)
+- ✅ 15 P0 stories assigned to Sprint 1 (Epic 1: 7 stories, Epic 2: 8 stories)
+- ✅ Sprint goal defined: "Establish technical foundations and implement core collection management"
+- ✅ All stories moved to `ready-for-dev` status
+- ✅ Epic 1 and Epic 2 moved to `in-progress` status
+- ✅ GitHub Project Iterations activated
+- ✅ Complete sprint metrics: 12 days capacity, P0-P2 breakdown, XS-XL sizes
+- ✅ Sprint tracking: `_bmad-output/implementation-artifacts/sprint-status.yaml`
+
+**Next Immediate Action**: Phase 4b Development Setup (1-2 days)
 
 **Command to start**: Initialize with `@pplancq/react-app` template
 

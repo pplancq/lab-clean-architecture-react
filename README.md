@@ -138,9 +138,11 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
 
 ## 🏗️ Project Status
 
-**Current Phase**: Phase 4 - Development Setup ⏭️
+**Current Phase**: Phase 4b - Development Setup ⏭️
 
-**GitHub Board**: [Issues Board](https://github.com/pplancq/lab-clean-architecture-react/issues)
+**Current Sprint**: Sprint 1 (27 jan → 13 fév 2026) - 15 P0 stories ready-for-dev
+
+**GitHub Board**: [Issues Board](https://github.com/pplancq/lab-clean-architecture-react/issues) | [Sprint Status](/_bmad-output/implementation-artifacts/sprint-status.yaml)
 
 **Completed Phases**:
 - ✅ **Phase 0: API Research** (Jan 21-22, 2026)
@@ -175,11 +177,19 @@ See [Next Steps](./next-steps.md) for detailed roadmap.
   - All stories prioritized (14 P0, 18 P1, 14 P2)
   - Story #36 decomposed into 6 sub-stories (#46-#51)
   - CI + SonarCloud + GitHub Copilot story added (#52)
+- ✅ **Phase 4a: Sprint Planning** (Jan 27, 2026)
+  - Sprint 1 initialized (27 jan → 13 fév 2026, 12 working days)
+  - 15 P0 stories assigned to Sprint 1 (Epic 1: 7 stories, Epic 2: 8 stories)
+  - Sprint goal: "Establish technical foundations and implement core collection management"
+  - All stories moved to `ready-for-dev` status
+  - Epic 1 and Epic 2 moved to `in-progress` status
+  - GitHub Project Iterations activated
+  - Sprint tracking file created: `sprint-status.yaml`
 
 **Next Steps**:
-- ⏭️ **Phase 4a: Sprint Planning** (recommended) - Use SM agent to initialize Sprint 1
-- ⏭️ **Phase 4b: Development Setup** (1-2 days) - Initialize with @pplancq/react-app
-- ⏳ **Phase 5: MVP Development** (Weeks 1-10) - Ship 1 feature/week
+- ⏭️ **Phase 4b: Development Setup** (1-2 days, NEXT) - Initialize with @pplancq/react-app
+- ⏳ **Phase 5: Sprint 1 Development** (12 days) - Epic 1 + Epic 2 complete
+- ⏳ **Sprint 2+**: Epic 3-6 implementation (Weeks 3-10)
 
 ---
 

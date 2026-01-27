@@ -1,0 +1,237 @@
+# generated: 2026-01-27
+# project: lab-clean-architecture-react
+# project_key: lab-clean-architecture-react
+# tracking_system: github
+# github_repo: pplancq/lab-clean-architecture-react
+# github_project: https://github.com/users/pplancq/projects/7
+# github_milestone: MVP
+# total_issues: 52 (6 epics + 46 stories)
+# total_size: 44.25 days (177 story points)
+# priority_breakdown: P0 (15 stories, 12 days) | P1 (27 stories, 26.75 days) | P2 (4 stories, 5.5 days)
+# size_breakdown: XS (2), S (11), M (20), L (6), XL (1)
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story exists in GitHub but not yet started
+#   - ready-for-dev: Story ready to be picked up
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review
+#   - done: Story completed and merged
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+
+# PRIORITY MAPPING (from GitHub Project):
+# ================
+# P0 → Critical blocker (must have for MVP)
+# P1 → High priority (important for MVP)
+# P2 → Medium priority (nice to have)
+
+# SIZE MAPPING (from GitHub Project):
+# ============
+# XS → 1-2 hours
+# S  → 3-4 hours (half day)
+# M  → 1 day
+# L  → 2-3 days
+# XL → 1 week
+
+generated: 2026-01-27
+project: lab-clean-architecture-react
+project_key: lab-clean-architecture-react
+tracking_system: github
+story_location: https://github.com/pplancq/lab-clean-architecture-react/issues
+
+# ================================================================
+# SPRINTS PLANNING
+# ================================================================
+sprints:
+  # ================================================================
+  # Sprint 1: MVP Foundation - Critical P0 Features
+  # ================================================================
+  sprint-1:
+    name: "MVP Foundation - Infrastructure & Core Collection"
+    goal: "Establish technical foundations (Clean Architecture, PWA, IndexedDB) and implement core collection management"
+    start_date: "2026-01-27"
+    end_date: "2026-02-13"  # 12 working days (~2.5 weeks)
+    status: in-progress
+    capacity: 12 days
+
+    # Sprint 1 MVP Objectives:
+    # 1. Clean Architecture with DI and error handling
+    # 2. Installable PWA with offline-first capability
+    # 3. Complete game collection (CRUD + IndexedDB persistence)
+    # 4. CI/CD Pipeline with code quality (SonarCloud)
+      # Epic 1: Foundation & PWA (7 stories P0, 3.5 jours)
+      - 1-1-initialize-project-with-react-template-and-rsbuild  # GitHub #1 | S (0.5d)
+      - 1-2-setup-clean-architecture-folder-structure-and-bounded-contexts  # GitHub #2 | XS (0.25d)
+      - 1-3-configure-dependency-injection-with-inversifyjs  # GitHub #3 | M (1d)
+      - 1-4-implement-result-either-pattern-for-error-handling  # GitHub #4 | S (0.5d)
+      - 1-5-configure-pwa-with-service-worker-and-app-manifest  # GitHub #5 | L (2.5d)
+      - 1-6-create-architecture-documentation-and-adrs  # GitHub #6 | XS (0.25d)
+      - 1-7-ci-pipeline-sonarcloud-github-copilot  # GitHub #52 | S (0.5d)
+
+      # Epic 2: Core Collection Management (8 stories P0, 8.5 jours)
+      - 2-1-create-game-domain-entity-and-value-objects  # GitHub #9 | M (1d)
+      - 2-2-implement-indexeddb-repository-for-game-persistence  # GitHub #10 | L (2.5d)
+      - 2-3-create-addgame-use-case  # GitHub #11 | S (0.5d)
+      - 2-4-build-add-game-ui-form-with-validation  # GitHub #12 | M (1d)
+      - 2-5-create-getgames-use-case-and-display-game-list  # GitHub #13 | S (0.5d)
+      - 2-6-create-getgamebyid-use-case-and-display-game-detail-view  # GitHub #14 | M (1d)
+      - 2-7-implement-editgame-use-case-and-edit-ui  # GitHub #15 | M (1d)
+      - 2-8-implement-deletegame-use-case-and-delete-confirmation  # GitHub #16 | S (0.5d)
+
+    total_stories: 15
+    total_size: 12 days
+    priority: P0
+    velocity_target: 12 days
+
+    retrospective: pending
+
+# ================================================================
+# BACKLOG - All Epics & Stories
+# ================================================================
+development_status:
+  # ================================================================
+  # Epic 1: Foundation, Clean Architecture & PWA Setup (GitHub #7)
+  # Priority: P0 | Stories: 7 | Total Size: 3.5 days
+  # ================================================================
+  epic-1: in-progress  # GitHub #7 | Sprint 1
+  1-1-initialize-project-with-react-template-and-rsbuild: ready-for-dev  # GitHub #1 | P0 | S (0.5d) | Sprint 1
+  1-2-setup-clean-architecture-folder-structure-and-bounded-contexts: ready-for-dev  # GitHub #2 | P0 | XS (0.25d) | Sprint 1
+  1-3-configure-dependency-injection-with-inversifyjs: ready-for-dev  # GitHub #3 | P0 | M (1d) | Sprint 1
+  1-4-implement-result-either-pattern-for-error-handling: ready-for-dev  # GitHub #4 | P0 | S (0.5d) | Sprint 1
+  1-5-configure-pwa-with-service-worker-and-app-manifest: ready-for-dev  # GitHub #5 | P0 | L (2.5d) | Sprint 1
+  1-6-create-architecture-documentation-and-adrs: ready-for-dev  # GitHub #6 | P0 | XS (0.25d) | Sprint 1
+  1-7-ci-pipeline-sonarcloud-github-copilot: ready-for-dev  # GitHub #52 | P0 | S (0.5d) | Sprint 1
+  epic-1-retrospective: optional
+
+  # ================================================================
+  # Epic 2: Core Game Collection Management with IndexedDB (GitHub #8)
+  # Priority: P0 | Stories: 8 | Total Size: 8.5 days
+  # ================================================================
+  epic-2: in-progress  # GitHub #8 | Sprint 1
+  2-1-create-game-domain-entity-and-value-objects: ready-for-dev  # GitHub #9 | P0 | M (1d) | Sprint 1
+  2-2-implement-indexeddb-repository-for-game-persistence: ready-for-dev  # GitHub #10 | P0 | L (2.5d) | Sprint 1
+  2-3-create-addgame-use-case: ready-for-dev  # GitHub #11 | P0 | S (0.5d) | Sprint 1
+  2-4-build-add-game-ui-form-with-validation: ready-for-dev  # GitHub #12 | P0 | M (1d) | Sprint 1
+  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 1
+  2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 1
+  2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 1
+  2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 1
+  epic-2-retrospective: optional
+
+  # ================================================================
+  # Epic 3: Search, Filter & Sort Collection (GitHub #17)
+  # Priority: P1 | Stories: 6 | Total Size: 6 days
+  # ================================================================
+  epic-3: backlog  # GitHub #17
+  3-1-implement-text-search-use-case: backlog  # GitHub #22 | P1 | S (0.5d)
+  3-2-build-search-ui-with-real-time-results: backlog  # GitHub #23 | P1 | L (2.5d)
+  3-3-implement-filter-by-platform-use-case: backlog  # GitHub #20 | P1 | S (0.5d)
+  3-4-implement-filter-by-status-use-case: backlog  # GitHub #21 | P1 | S (0.5d)
+  3-5-implement-sort-functionality-title-platform-date: backlog  # GitHub #18 | P1 | M (1d)
+  3-6-build-combined-search-filter-sort-ui: backlog  # GitHub #19 | P1 | M (1d)
+  epic-3-retrospective: optional
+
+  # ================================================================
+  # Epic 4: Game Metadata Enrichment via External APIs (GitHub #24)
+  # Priority: P1 | Stories: 6 | Total Size: 8 days
+  # ================================================================
+  epic-4: backlog  # GitHub #24
+  4-1-implement-igdb-api-adapter-with-oauth2: backlog  # GitHub #30 | P1 | S (0.5d)
+  4-2-create-searchexternalgames-use-case: backlog  # GitHub #26 | P1 | M (1d)
+  4-3-build-game-search-ui-with-external-api-results: backlog  # GitHub #27 | P1 | M (1d)
+  4-4-implement-cover-art-download-and-caching: backlog  # GitHub #28 | P1 | M (1d)
+  4-5-create-importgamemetadata-use-case: backlog  # GitHub #29 | P1 | M (1d)
+  4-6-implement-graceful-degradation-when-api-unavailable: backlog  # GitHub #25 | P1 | L (2.5d)
+  epic-4-retrospective: optional
+
+  # ================================================================
+  # Epic 5: Wishlist Management & Prioritization (GitHub #31)
+  # Priority: P1/P2 Mixed | Stories: 15 | Total Size: 13.75 days
+  # ================================================================
+  epic-5: backlog  # GitHub #31
+  5-1-create-wishlist-bounded-context-and-domain-entities: backlog  # GitHub #40 | P1 | L (2.5d)
+  5-2-implement-indexeddb-repository-for-wishlist: backlog  # GitHub #35 | P1 | M (1d)
+  5-3-create-addtowishlist-use-case: backlog  # GitHub #32 | P1 | M (1d)
+  5-4-build-add-to-wishlist-ui: backlog  # GitHub #38 | P1 | M (1d)
+  5-5-create-getwishlist-use-case-and-display-wishlist-view: backlog  # GitHub #34 | P1 | M (1d)
+  5-6-create-updatewishlistpriority-use-case: backlog  # GitHub #37 | P2 | S (0.5d)
+  5-7-build-priority-management-ui: backlog  # GitHub #39 | P2 | S (0.5d)
+  5-8-create-removefromwishlist-use-case: backlog  # GitHub #33 | P2 | S (0.5d)
+
+  # Story 5.9: MoveToCollection with Event Bus (parent story - GitHub #36)
+  5-9-implement-movetocollection-use-case-with-event-bus: backlog  # GitHub #36 | P1 | XL (5d) - parent
+
+  # Sub-stories of Story 5.9 (Event Bus implementation breakdown):
+  5-9-1-create-event-bus-infrastructure: backlog  # GitHub #49 | P1 | M (1d)
+  5-9-2-define-gamepurchased-domain-event: backlog  # GitHub #51 | P1 | XS (0.25d)
+  5-9-3-implement-movetocollection-use-case: backlog  # GitHub #48 | P1 | M (1d)
+  5-9-4-create-collection-event-handler-for-gamepurchased: backlog  # GitHub #46 | P1 | S (0.5d)
+  5-9-5-build-mark-as-purchased-ui: backlog  # GitHub #50 | P1 | M (1d)
+  5-9-6-add-event-bus-documentation: backlog  # GitHub #47 | P2 | S (0.5d)
+
+  # ================================================================
+  # Epic 6: Data Portability & Backup (GitHub #43)
+  # Priority: P2 | Stories: 4 | Total Size: 5.5 days
+  # ================================================================
+  epic-6: backlog  # GitHub #43
+  6-1-create-exportcollection-use-case: backlog  # GitHub #41 | P2 | L (2.5d)
+  6-2-build-export-ui-with-privacy-warning: backlog  # GitHub #42 | P2 | L (2.5d)
+  6-3-create-importcollection-use-case-with-validation: backlog  # GitHub #44 | P2 | M (1d)
+  6-4-build-import-ui-with-conflict-resolution: backlog  # GitHub #45 | P2 | S (0.5d)
+  epic-6-retrospective: optional
+
+# ================================================================
+# SUMMARY (from GitHub Issues)
+# ================================================================
+summary:
+  total_epics: 6
+  total_stories: 46  # 39 base stories + 1 CI story + 6 sub-stories (5.9.1-5.9.6)
+  total_items: 52  # 6 epics + 46 stories
+
+  breakdown_by_epic:
+    epic_1_foundation: 7  # stories 1.1-1.7
+    epic_2_collection: 8  # stories 2.1-2.8
+    epic_3_search: 6  # stories 3.1-3.6
+    epic_4_api_enrichment: 6  # stories 4.1-4.6
+    epic_5_wishlist: 15  # stories 5.1-5.8 + 5.9 parent + 5.9.1-5.9.6 sub-stories
+    epic_6_backup: 4  # stories 6.1-6.4
+
+  breakdown_by_priority:
+    critical: 18  # epic 1 (7) + epic 2 (8) + story 2.5 (1) + story 1.7 (1) + story 5.9.x (1)
+    high: 14  # epic 3 (6) + high priority stories from epic 2 (8)
+    medium: 14  # epic 4 (6) + epic 5 (8 base)
+    low: 6  # epic 6 (4) + low priority stories (2)
+
+  breakdown_by_status:
+    backlog: 52  # all items currently in backlog
+    ready_for_dev: 0
+    in_progress: 0
+    review: 0
+    done: 0
+
+# ================================================================
+# NOTES & CHANGELOG
+# ================================================================
+# SYNC STATUS:
+# - ✅ All 52 GitHub issues synchronized to sprint-status.yaml
+# - ✅ Story 1.7 (CI Pipeline) added (GitHub #52)
+# - ✅ Story 5.9 sub-stories added (GitHub #46-51)
+# - ⏳ GitHub Project metadata (P0-P2, XS-XL) pending sync
+#
+# CHANGES FROM EPICS.MD:
+# - Story 1.7 (CI Pipeline) was added after epics.md finalization
+# - Story 5.9 decomposed into 6 sub-stories for Event Bus implementation
+#
+# GITHUB REFERENCES:
+# - Milestone: MVP (all 51 open issues)
+# - Project: https://github.com/users/pplancq/projects/7
+# - Labels: priority (critical/high/medium/low), epic-N, testing, accessibility
