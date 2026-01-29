@@ -76,7 +76,9 @@ Notes: many scripts are wrappers around project scripts in ./scripts/\*.js and r
 - Scripts and wrappers:
   - Many repository routines are wrapped by scripts/\*.js (test, playright, lint); prefer npm run <script> rather than calling tools directly.
 - Commit & branching conventions (from CONTRIBUTING.md):
+  - Main branch: `main` (default branch for all development)
   - Conventional Commits are used for commit messages.
+  - **IMPORTANT**: Follow commit message guidelines in `.github/git-commit-instructions.md` for all commits.
   - Branch names: feature/ and bugfix/ prefixes.
 - CI / reporting:
   - Vitest is configured to emit junit and sonar reports when CI env is set.
@@ -100,7 +102,8 @@ Notes: many scripts are wrappers around project scripts in ./scripts/\*.js and r
 ## 5) Existing AI agent configs to consider
 
 - .github/agents/ contains custom agent manifests used in repository workflows; review them if automating task assignment or running sub-agents.
-- .github/git-commit-instructions.md and CONTRIBUTING.md contain commit message and contribution rules to follow.
+- .github/git-commit-instructions.md contains commit message rules to follow (Conventional Commits format, scopes, body/footer format).
+- CONTRIBUTING.md contains contribution and PR guidelines.
 
 ---
 
