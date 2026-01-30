@@ -29,6 +29,10 @@ This project has a **dual purpose**:
 
 ## 📚 Documentation
 
+### Getting Started
+
+- **[Setup & Installation](./docs/setup.md)** - Template initialization, prerequisites, available scripts
+
 ### Planning & Requirements
 
 - **[Product Requirements Document (PRD)](_bmad-output/planning-artifacts/prd.md)** - Comprehensive requirements, architecture decisions, and success criteria
