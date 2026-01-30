@@ -1,11 +1,11 @@
-import { App } from '@Front/components/App';
+import { App } from '@Front/app/App';
+import appHTMLElement from '@Front/app/AppHTMLElement';
 import { waitFor } from '@testing-library/react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
-import bootstrap from '../bootstrap';
 
-vi.mock('@Front/components/App', () => ({
+vi.mock('@Front/app/App', () => ({
   App: () => <div data-testid="app-mock">AppMock</div>,
 }));
 
@@ -13,7 +13,7 @@ vi.mock('react-dom/client', () => ({
   createRoot: vi.fn(),
 }));
 
-describe('bootstrap', () => {
+describe('AppHTMLElement', () => {
   let container: HTMLElement;
   const render = vi.fn();
   const unmount = vi.fn();
@@ -22,7 +22,7 @@ describe('bootstrap', () => {
     unmount,
   }));
 
-  customElements.define('bootstrap-html-element', bootstrap);
+  customElements.define('bootstrap-html-element', appHTMLElement);
 
   beforeEach(() => {
     container = document.createElement('bootstrap-html-element');
