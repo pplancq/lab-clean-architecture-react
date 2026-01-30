@@ -47,7 +47,12 @@ This project has a **dual purpose**:
 
 ### Architecture ✅
 
-- **[Architecture Decision Document](_bmad-output/planning-artifacts/architecture.md)** - Complete Clean Architecture + DDD structure, 10 core decisions, implementation patterns
+- **[Architecture Documentation](./docs/README.md)** - Complete guide to our Clean Architecture + DDD implementation
+  - [Architecture Overview](./docs/architecture/README.md) - Core principles and bounded contexts
+  - [Folder Structure](./docs/architecture/folder-structure.md) - Directory organization explained
+  - [Dependency Rules](./docs/architecture/dependency-rules.md) - Critical dependency constraints
+  - [Domain Layer](./docs/layers/domain-layer.md) - Domain purity and business logic rules
+- **[Architecture Decision Document](_bmad-output/planning-artifacts/architecture.md)** - Planning-phase architecture decisions and patterns
 - **[Project Context](./project-context.md)** - Critical rules and patterns for AI agents (naming conventions, code patterns, anti-patterns)
 
 ### Learnings (Coming Soon)
