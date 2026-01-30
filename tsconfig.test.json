@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src", "mocks", "vitest.setup.ts"]
+  "include": ["src", "mocks", "vitest.setup.ts", "tests/unit"]
 }

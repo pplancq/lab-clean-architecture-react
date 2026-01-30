@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
         'vitest-sonar-reporter': 'sonar-report.xml',
         junit: 'junit-report.xml',
       },
-      include: ['src/**/*.(spec|test|steps).[jt]s?(x)'],
+      include: ['tests/unit/**/*.test.[jt]s?(x)'],
       maxWorkers: env.CI ? 2 : undefined,
       coverage: {
         enabled: env.CI === 'true',
