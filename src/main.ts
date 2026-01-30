@@ -6,6 +6,6 @@
     });
   }
 
-  const { default: AppReact } = await import('./bootstrap');
-  customElements.define('app-react', AppReact);
+  const { default: AppHTMLElement } = await import('./app/AppHTMLElement');
+  customElements.define('app-react', AppHTMLElement);
 })();
