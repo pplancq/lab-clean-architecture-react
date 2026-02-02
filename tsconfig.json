@@ -24,7 +24,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@Front/*": ["src/*"],
+      "@App/*": ["src/app/*"],
+      "@Collection/*": ["src/collection/*"],
+      "@Shared/*": ["src/shared/*"],
       "@Mocks/*": ["mocks/*"]
     }
   },

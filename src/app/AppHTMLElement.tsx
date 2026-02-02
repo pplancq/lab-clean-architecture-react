@@ -1,4 +1,4 @@
-import { App } from '@Front/app/App';
+import { App } from '@App/App';
 import { StrictMode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 
