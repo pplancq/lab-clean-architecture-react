@@ -19,6 +19,7 @@ Core architectural concepts and principles:
 - **[Architecture Overview](./architecture/README.md)** - Introduction to our hybrid Clean Architecture + DDD approach
 - **[Folder Structure](./architecture/folder-structure.md)** - Detailed explanation of directory organization
 - **[Dependency Rules](./architecture/dependency-rules.md)** - Critical rules for maintaining clean dependencies
+- **[Dependency Injection](./architecture/dependency-injection.md)** - InversifyJS configuration and usage patterns
 
 ## 📚 Layers
 
@@ -52,8 +53,9 @@ Recommended reading order for newcomers:
 1. **Start here:** [Architecture Overview](./architecture/README.md)
 2. **Understand structure:** [Folder Structure](./architecture/folder-structure.md)
 3. **Learn constraints:** [Dependency Rules](./architecture/dependency-rules.md)
-4. **Master domain:** [Domain Layer](./layers/domain-layer.md)
-5. **Explore code:** Check `src/` and `project-context.md`
+4. **Setup DI:** [Dependency Injection](./architecture/dependency-injection.md)
+5. **Master domain:** [Domain Layer](./layers/domain-layer.md)
+6. **Explore code:** Check `src/` and `project-context.md`
 
 ## 📝 Contributing to Documentation
 
