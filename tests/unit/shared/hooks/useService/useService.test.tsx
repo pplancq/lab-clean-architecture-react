@@ -1,5 +1,5 @@
-import { ServiceProvider } from '@Front/app/providers/ServiceProvider/ServiceProvider';
-import { useService } from '@Front/shared/ui/hooks/useService/useService';
+import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
+import { useService } from '@Shared/ui/hooks/useService/useService';
 import { renderHook } from '@testing-library/react';
 import { Container } from 'inversify';
 import { describe, expect, it, vi } from 'vitest';

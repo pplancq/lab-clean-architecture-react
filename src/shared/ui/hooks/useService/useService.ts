@@ -1,4 +1,4 @@
-import { ServiceContext } from '@Front/app/providers/ServiceProvider/ServiceContext';
+import { ServiceContext } from '@App/providers/ServiceProvider/ServiceContext';
 import type { ServiceIdentifier } from 'inversify';
 import { useContext } from 'react';
 

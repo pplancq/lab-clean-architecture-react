@@ -1,8 +1,5 @@
-import {
-  type ClientProviderProps,
-  QueryClientProvider,
-} from '@Front/app/providers/QueryClientProvider/QueryClientProvider';
-import { ServiceProvider, type ServiceProviderProps } from '@Front/app/providers/ServiceProvider/ServiceProvider';
+import { type ClientProviderProps, QueryClientProvider } from '@App/providers/QueryClientProvider/QueryClientProvider';
+import { ServiceProvider, type ServiceProviderProps } from '@App/providers/ServiceProvider/ServiceProvider';
 import type { PropsWithChildren } from 'react';
 
 type ProvidersProps = ClientProviderProps & ServiceProviderProps;

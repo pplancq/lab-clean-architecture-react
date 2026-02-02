@@ -1,7 +1,7 @@
-import { HEADERS, METHODS, MIME_TYPES } from '@Front/shared/infrastructure/fetchApi/constant';
-import { fetchApi } from '@Front/shared/infrastructure/fetchApi/fetchApi';
-import { FetchApiError } from '@Front/shared/infrastructure/fetchApi/FetchApiError';
 import { server } from '@Mocks/server';
+import { HEADERS, METHODS, MIME_TYPES } from '@Shared/infrastructure/fetchApi/constant';
+import { fetchApi } from '@Shared/infrastructure/fetchApi/fetchApi';
+import { FetchApiError } from '@Shared/infrastructure/fetchApi/FetchApiError';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 describe('fetchApi', () => {
