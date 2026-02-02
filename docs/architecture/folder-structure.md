@@ -200,6 +200,123 @@ maintenance/
 
 ---
 
+## TypeScript Path Aliases
+
+### Overview
+
+Path aliases provide clean, unambiguous imports that respect architectural boundaries. They replace lengthy relative paths with semantic shortcuts.
+
+### Configured Aliases
+
+Each bounded context and major layer has a dedicated alias:
+
+```typescript
+// tsconfig.json
+"paths": {
+  "@App/*":        ["src/app/*"],
+  "@Shared/*":     ["src/shared/*"],
+  "@Collection/*": ["src/collection/*"],
+  "@Mocks/*":      ["mocks/*"]
+}
+```
+
+### Why Use Aliases?
+
+1. **Clarity** - Import source is immediately obvious:
+
+   ```typescript
+   // ✅ Clear: This comes from Collection context
+   import { Game } from '@Collection/domain/Game';
+
+   // ❌ Confusing: Where does this come from?
+   import { Game } from '../../../collection/domain/Game';
+   ```
+
+2. **Architectural Boundaries** - Prevents accidental cross-context dependencies
+
+   ```typescript
+   // ✅ Intended: Import from another context
+   import { Game } from '@Collection/domain/Game';
+
+   // ❌ Prevented: Relative path bypasses the alias intent
+   import { Game } from '../collection/domain/Game';
+   ```
+
+3. **Refactoring Safety** - Moving folders doesn't break imports:
+
+   ```typescript
+   // If collection/ moves to src/contexts/collection/
+   // Only update: "@Collection/*": ["src/contexts/collection/*"]
+   // All imports still work!
+   ```
+
+4. **IDE Support** - Auto-completion and "Go to Definition" work seamlessly
+
+### Usage Rules
+
+- ✅ **Always use aliases** for same-level or cross-context imports
+- ✅ Use relative imports only **within the same folder**:
+
+  ```typescript
+  // OK: Same folder
+  import { helper } from './helper';
+  import { child } from './child/component';
+
+  // Use alias: Different layer or context
+  import { Game } from '@Collection/domain/Game';
+  ```
+
+- ✅ Prefer **specific aliases** over `@Front/`:
+
+  ```typescript
+  // ✅ Good: Clear context
+  import { Game } from '@Collection/domain/Game';
+
+  // ❌ Avoid: Ambiguous, deprecated
+  import { Game } from '@Front/collection/domain/Game';
+  ```
+
+### Adding New Bounded Contexts
+
+⚠️ **CRITICAL: Do NOT forget this step!**
+
+When creating a new bounded context (e.g., `src/wishlist/`):
+
+1. **Update `tsconfig.json`:**
+
+   ```json
+   "paths": {
+     "@App/*":        ["src/app/*"],
+     "@Shared/*":     ["src/shared/*"],
+     "@Collection/*": ["src/collection/*"],
+     "@Wishlist/*":   ["src/wishlist/*"],      // ← ADD THIS
+     "@Mocks/*":      ["mocks/*"]
+   }
+   ```
+
+2. **Verify Rsbuild Support:**
+   - Rsbuild natively reads `tsconfig.json`
+   - No separate rsbuild configuration needed
+   - Run `npm run build` to verify it works
+
+3. **Update Documentation:**
+   - Add new context to this list
+   - Update the "Future Bounded Contexts" section
+
+### Verification
+
+After updating tsconfig.json, verify aliases work:
+
+```bash
+# Build should succeed with new aliases
+npm run build
+
+# TypeScript should recognize new paths
+npm run test:unit
+```
+
+---
+
 ## Naming Conventions
 
 ### Files
