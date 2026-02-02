@@ -146,6 +146,7 @@ graph LR
 
 - [Folder Structure](./folder-structure.md) - Detailed organization
 - [Dependency Rules](./dependency-rules.md) - Strict rules to follow
+- [Dependency Injection](./dependency-injection.md) - InversifyJS setup and usage
 - [Domain Layer](../layers/domain-layer.md) - Domain purity rules
 
 ## Learning Objectives

@@ -1,0 +1,310 @@
+# Dependency Injection with InversifyJS
+
+## Overview
+
+This project uses **InversifyJS** for dependency injection following Clean Architecture principles. The DI system ensures loose coupling between layers while maintaining strict dependency rules.
+
+## Philosophy
+
+- **NO decorators** - Manual registration only (domain layer must stay pure)
+- **NO reflect-metadata** - Not needed for manual binding
+- **Container per context** - Each bounded context has its own service collection
+- **Composition root** - All containers are composed in `src/app/config/serviceContainer.ts`
+
+## Architecture
+
+```mermaid
+graph TB
+    subgraph APP[Application Layer]
+        SC[serviceContainer.ts<br/>Main Container]
+        SP[ServiceProvider<br/>React Context]
+    end
+
+    subgraph COLLECTION[Collection Context]
+        CC[serviceCollection.ts<br/>Collection Services]
+    end
+
+    subgraph SHARED[Shared Context]
+        SH[useService Hook<br/>Service Retrieval]
+    end
+
+    subgraph UI[UI Components]
+        COMP[React Components<br/>Use useService]
+    end
+
+    CC -->|loaded into| SC
+    SC -->|provided via| SP
+    SP -->|consumed by| SH
+    SH -->|used in| COMP
+
+    style SC fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    style CC fill:#e1f5e1,stroke:#4caf50,stroke-width:2px
+    style SH fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+```
+
+## File Organization
+
+### Service Container (Application Layer)
+
+**Location:** `src/app/config/serviceContainer.ts`
+
+```typescript
+import { serviceCollection } from '@Front/collection/serviceCollection';
+import { Container } from 'inversify';
+
+export const serviceContainer = new Container();
+
+serviceContainer.loadSync(serviceCollection);
+```
+
+This is the **composition root** where all context-specific containers are aggregated.
+
+### Context Service Collections
+
+**Location:** `src/<context>/serviceCollection.ts`
+
+Example for Collection context:
+
+```typescript
+// src/collection/serviceCollection.ts
+import { ContainerModule } from 'inversify';
+
+export const serviceCollection: ContainerModule = new ContainerModule(bind => {
+  // Collection services bindings go here
+  // Example:
+  // bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
+});
+```
+
+### Service Provider (UI Layer)
+
+**Location:** `src/app/providers/ServiceProvider/`
+
+```typescript
+// ServiceContext.ts
+import type { Container } from 'inversify';
+import { createContext } from 'react';
+
+type ServiceContextProps = {
+  container: Container;
+};
+
+export const ServiceContext = createContext<ServiceContextProps | null>(null);
+```
+
+```typescript
+// ServiceProvider.tsx
+import type { Container } from 'inversify';
+import { type PropsWithChildren, useRef } from 'react';
+import { ServiceContext } from './ServiceContext';
+
+export type ContainerProviderProps = {
+  container: Container;
+};
+
+export const ServiceProvider = ({
+  container,
+  children
+}: PropsWithChildren<ContainerProviderProps>) => {
+  const containerRef = useRef({ container });
+
+  return <ServiceContext value={containerRef.current}>{children}</ServiceContext>;
+};
+```
+
+### useService Hook (Shared UI Layer)
+
+**Location:** `src/shared/ui/hooks/useService/useService.ts`
+
+```typescript
+import { ServiceContext } from '@Front/app/providers/ServiceProvider/ServiceContext';
+import type { ServiceIdentifier } from 'inversify';
+import { useContext } from 'react';
+
+export const useService = <T = unknown>(serviceIdentifier: ServiceIdentifier<T>): T => {
+  const context = useContext(ServiceContext);
+
+  if (!context) {
+    throw new Error('useService must be used within a ServiceProvider');
+  }
+
+  return context.container.get<T>(serviceIdentifier);
+};
+```
+
+**Purpose:** Allows React components to retrieve services without importing the container directly.
+
+## Usage Examples
+
+### 1. Define Service Identifiers
+
+Create a `types.ts` file for your context:
+
+```typescript
+// src/collection/types.ts
+export const TYPES = {
+  GameRepository: Symbol.for('GameRepository'),
+  Logger: Symbol.for('Logger'),
+};
+```
+
+### 2. Register Services in Context Container
+
+```typescript
+// src/collection/serviceCollection.ts
+import { ContainerModule } from 'inversify';
+import { TYPES } from './types';
+import { GameRepository } from './infrastructure/GameRepository';
+
+export const serviceCollection: ContainerModule = new ContainerModule(bind => {
+  bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
+});
+```
+
+### 3. Use Services in React Components
+
+```typescript
+// src/collection/ui/pages/GameList.tsx
+import { useService } from '@Front/shared/ui/hooks/useService/useService';
+import { TYPES } from '@Front/collection/types';
+import type { IGameRepository } from '@Front/collection/domain/IGameRepository';
+
+export const GameList = () => {
+  const gameRepo = useService<IGameRepository>(TYPES.GameRepository);
+
+  // Use gameRepo...
+};
+```
+
+## Layer-Specific Rules
+
+### Domain Layer
+
+- ✅ **Define interfaces** for dependencies (e.g., `IGameRepository`)
+- ❌ **NO InversifyJS imports** - domain must stay pure
+- ❌ **NO decorators** (`@injectable()`)
+- ❌ **NO container references**
+
+```typescript
+// ✅ GOOD: Pure interface in domain
+export interface IGameRepository {
+  findById(id: string): Promise<Game | null>;
+  save(game: Game): Promise<void>;
+}
+```
+
+### Infrastructure Layer
+
+- ✅ **Implement domain/application interfaces**
+- ✅ **Can use InversifyJS types** for type hints (optional)
+- ❌ **NO decorators** - use manual binding
+
+```typescript
+// ✅ GOOD: Implementation without decorators
+import type { IGameRepository } from '@Front/collection/domain/IGameRepository';
+import { Game } from '@Front/collection/domain/Game';
+
+export class GameRepository implements IGameRepository {
+  async findById(id: string): Promise<Game | null> {
+    // Implementation...
+  }
+
+  async save(game: Game): Promise<void> {
+    // Implementation...
+  }
+}
+```
+
+### Application Layer
+
+- ✅ **Use cases receive dependencies via constructor**
+- ❌ **NO InversifyJS imports**
+- ❌ **NO decorators**
+
+```typescript
+// ✅ GOOD: Use case with constructor injection
+export class GetGameUseCase {
+  constructor(private readonly gameRepository: IGameRepository) {}
+
+  async execute(id: string): Promise<Game | null> {
+    return this.gameRepository.findById(id);
+  }
+}
+```
+
+### UI Layer
+
+- ✅ **Use `useService` hook** to retrieve dependencies
+- ✅ **Import service identifiers** (symbols)
+- ❌ **NO direct container imports**
+
+```typescript
+// ✅ GOOD: Using useService hook
+const gameRepo = useService<IGameRepository>(TYPES.GameRepository);
+
+// ❌ BAD: Direct container import
+import { serviceContainer } from '@Front/app/config/serviceContainer';
+const gameRepo = serviceContainer.get(TYPES.GameRepository);
+```
+
+## Testing
+
+### Unit Tests for Service Resolution
+
+```typescript
+// tests/unit/shared/hooks/useService/useService.test.tsx
+import { ServiceContext } from '@Front/app/providers/ServiceProvider/ServiceContext';
+import { useService } from '@Front/shared/ui/hooks/useService/useService';
+import { renderHook } from '@testing-library/react';
+import { Container } from 'inversify';
+import { describe, expect, it } from 'vitest';
+
+describe('useService', () => {
+  it('should retrieve service from container', () => {
+    const container = new Container();
+    const testSymbol = Symbol.for('TestService');
+    const testValue = { test: 'value' };
+
+    container.bind(testSymbol).toConstantValue(testValue);
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <ServiceContext value={{ container }}>{children}</ServiceContext>
+    );
+
+    const { result } = renderHook(() => useService(testSymbol), { wrapper });
+
+    expect(result.current).toBe(testValue);
+  });
+
+  it('should throw error when used outside ServiceProvider', () => {
+    expect(() => {
+      renderHook(() => useService(Symbol.for('Test')));
+    }).toThrow('useService must be used within a ServiceProvider');
+  });
+});
+```
+
+## Best Practices
+
+### ✅ DO
+
+- Define service identifiers as symbols in `<context>/types.ts`
+- Use manual binding with `bind<Interface>(symbol).to(ConcreteClass)`
+- Create one `serviceCollection.ts` per bounded context
+- Use `useService` hook in React components
+- Keep domain layer free of DI framework code
+
+### ❌ DON'T
+
+- Use `@injectable()` decorators (violates domain purity)
+- Install `reflect-metadata` (not needed for manual DI)
+- Import container directly in components
+- Mix service registration logic in multiple files
+- Put DI logic in domain or application layers
+
+## Related Documentation
+
+- [Architecture Overview](./README.md)
+- [Dependency Rules](./dependency-rules.md)
+- [Folder Structure](./folder-structure.md)
+- [Domain Layer](../layers/domain-layer.md)
