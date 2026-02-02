@@ -68,9 +68,10 @@ sprints:
     # 2. Installable PWA with offline-first capability
     # 3. Complete game collection (CRUD + IndexedDB persistence)
     # 4. CI/CD Pipeline with code quality (SonarCloud)
-      # Epic 1: Foundation & PWA (7 stories P0, 3.5 jours)
+      # Epic 1: Foundation & PWA (8 stories P0, 3.75 jours)
       - 1-1-initialize-project-with-react-template-and-rsbuild  # GitHub #1 | S (0.5d)
       - 1-2-setup-clean-architecture-folder-structure-and-bounded-contexts  # GitHub #2 | XS (0.25d)
+      - 1-2-1-add-typescript-path-aliases-for-bounded-contexts  # GitHub #56 | XS (0.25d)
       - 1-3-configure-dependency-injection-with-inversifyjs  # GitHub #3 | M (1d)
       - 1-4-implement-result-either-pattern-for-error-handling  # GitHub #4 | S (0.5d)
       - 1-5-configure-pwa-with-service-worker-and-app-manifest  # GitHub #5 | L (2.5d)
@@ -87,8 +88,8 @@ sprints:
       - 2-7-implement-editgame-use-case-and-edit-ui  # GitHub #15 | M (1d)
       - 2-8-implement-deletegame-use-case-and-delete-confirmation  # GitHub #16 | S (0.5d)
 
-    total_stories: 15
-    total_size: 12 days
+    total_stories: 16
+    total_size: 12.25 days
     priority: P0
     velocity_target: 12 days
 
@@ -100,11 +101,12 @@ sprints:
 development_status:
   # ================================================================
   # Epic 1: Foundation, Clean Architecture & PWA Setup (GitHub #7)
-  # Priority: P0 | Stories: 7 | Total Size: 3.5 days
+  # Priority: P0 | Stories: 8 | Total Size: 3.75 days
   # ================================================================
   epic-1: in-progress  # GitHub #7 | Sprint 1
   1-1-initialize-project-with-react-template-and-rsbuild: ready-for-dev  # GitHub #1 | P0 | S (0.5d) | Sprint 1
   1-2-setup-clean-architecture-folder-structure-and-bounded-contexts: ready-for-dev  # GitHub #2 | P0 | XS (0.25d) | Sprint 1
+  1-2-1-add-typescript-path-aliases-for-bounded-contexts: ready-for-dev  # GitHub #56 | P0 | XS (0.25d) | Sprint 1
   1-3-configure-dependency-injection-with-inversifyjs: ready-for-dev  # GitHub #3 | P0 | M (1d) | Sprint 1
   1-4-implement-result-either-pattern-for-error-handling: ready-for-dev  # GitHub #4 | P0 | S (0.5d) | Sprint 1
   1-5-configure-pwa-with-service-worker-and-app-manifest: ready-for-dev  # GitHub #5 | P0 | L (2.5d) | Sprint 1
@@ -194,11 +196,11 @@ development_status:
 # ================================================================
 summary:
   total_epics: 6
-  total_stories: 46  # 39 base stories + 1 CI story + 6 sub-stories (5.9.1-5.9.6)
-  total_items: 52  # 6 epics + 46 stories
+  total_stories: 47  # 39 base stories + 1 CI story + 1 TS aliases story + 6 sub-stories (5.9.1-5.9.6)
+  total_items: 53  # 6 epics + 47 stories
 
   breakdown_by_epic:
-    epic_1_foundation: 7  # stories 1.1-1.7
+    epic_1_foundation: 8  # stories 1.1, 1.2, 1.2.1, 1.3-1.7
     epic_2_collection: 8  # stories 2.1-2.8
     epic_3_search: 6  # stories 3.1-3.6
     epic_4_api_enrichment: 6  # stories 4.1-4.6
@@ -222,8 +224,9 @@ summary:
 # NOTES & CHANGELOG
 # ================================================================
 # SYNC STATUS:
-# - ✅ All 52 GitHub issues synchronized to sprint-status.yaml
+# - ✅ All 53 GitHub issues synchronized to sprint-status.yaml
 # - ✅ Story 1.7 (CI Pipeline) added (GitHub #52)
+# - ✅ Story 1.2.1 (TypeScript Path Aliases) added (GitHub #56)
 # - ✅ Story 5.9 sub-stories added (GitHub #46-51)
 # - ⏳ GitHub Project metadata (P0-P2, XS-XL) pending sync
 #
