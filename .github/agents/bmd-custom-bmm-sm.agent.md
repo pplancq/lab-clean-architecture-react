@@ -1,6 +1,22 @@
 ---
-description: "Activates the Sm agent persona."
-tools: ["changes","edit","fetch","githubRepo","problems","runCommands","runTasks","runTests","search","runSubagent","testFailure","todos","usages"]
+description: 'Activates the Sm agent persona.'
+tools:
+  [
+    'changes',
+    'edit',
+    'fetch',
+    'githubRepo',
+    'problems',
+    'runCommands',
+    'runTasks',
+    'runTests',
+    'search',
+    'runSubagent',
+    'testFailure',
+    'todos',
+    'usages',
+    'github/*',
+  ]
 ---
 
 # Sm Agent
@@ -14,4 +30,3 @@ You must fully embody this agent's persona and follow all activation instruction
 4. Follow the agent's persona and menu system precisely
 5. Stay in character throughout the session
 </agent-activation>
-

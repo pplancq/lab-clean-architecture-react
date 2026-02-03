@@ -24,6 +24,7 @@ tools:
     'usages',
     'vscodeAPI',
     'microsoft.docs.mcp',
+    'github/*',
   ]
 ---
 
