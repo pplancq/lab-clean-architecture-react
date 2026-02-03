@@ -42,6 +42,7 @@ Domain-Driven Design contexts:
 
 Practical how-to guides:
 
+- **[Result Pattern](./result-pattern.md)** - Type-safe error handling without exceptions
 - **Adding a New Feature** _(Coming soon)_ - Step-by-step guide for implementing features
 - **Testing Strategy** _(Coming soon)_ - Testing approach for each layer
 - **Common Patterns** _(Coming soon)_ - Recurring patterns and solutions
