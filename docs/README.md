@@ -30,6 +30,12 @@ Deep dive into each architectural layer:
 - **Infrastructure Layer** _(Coming soon)_ - Adapters and external integrations
 - **UI Layer** _(Coming soon)_ - React components and presentation logic
 
+## ⚙️ Infrastructure
+
+Cross-cutting technical concerns:
+
+- **[PWA Infrastructure](./infrastructure/pwa.md)** - Progressive Web App implementation (Service Worker, caching, offline support)
+
 ## 🎯 Bounded Contexts
 
 Domain-Driven Design contexts:
@@ -38,9 +44,9 @@ Domain-Driven Design contexts:
 - **Wishlist Context** _(Coming soon)_ - Wishlist tracking
 - **Maintenance Context** _(Coming soon)_ - Console maintenance
 
-## 🛠️ Guides
+## 🛠️ Patterns & Guides
 
-Practical how-to guides:
+Practical how-to guides and patterns:
 
 - **[Result Pattern](./result-pattern.md)** - Type-safe error handling without exceptions
 - **Adding a New Feature** _(Coming soon)_ - Step-by-step guide for implementing features
@@ -65,6 +71,7 @@ When adding new documentation:
 - Place architecture docs in `architecture/`
 - Place layer-specific docs in `layers/`
 - Place context-specific docs in `contexts/`
+- Place infrastructure docs in `infrastructure/`
 - Place how-to guides in `guides/`
 - Update this README.md with the new file
 - Keep documentation in English
