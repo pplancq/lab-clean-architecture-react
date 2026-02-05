@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
     "types": [
       "./src/react-app-env.d.ts",
       "@rsbuild/core/types",
@@ -25,6 +25,7 @@
     "baseUrl": ".",
     "paths": {
       "@App/*": ["src/app/*"],
+      "@Pwa/*": ["src/pwa/*"],
       "@Collection/*": ["src/collection/*"],
       "@Shared/*": ["src/shared/*"],
       "@Mocks/*": ["mocks/*"]
