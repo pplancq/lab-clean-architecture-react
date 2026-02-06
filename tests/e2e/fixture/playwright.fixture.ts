@@ -6,7 +6,7 @@ export const test = base.extend<{
   testWithCoverage: string;
   network: NetworkFixture;
 }>({
-  testWithCoverage: createTestWithCoverageFixture,
+  testWithCoverage: createTestWithCoverageFixture(),
   network: createNetworkFixture(),
 });
 
