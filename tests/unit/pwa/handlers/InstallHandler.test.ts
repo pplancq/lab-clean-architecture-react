@@ -76,7 +76,7 @@ describe('InstallHandler', () => {
       expect(mockCache.addAll).toHaveBeenCalledWith(['/index.html', '/app.js', '/styles.css']);
       expect(mockLogger.info).toHaveBeenCalledWith('Caching app shell assets');
       expect(mockLogger.info).toHaveBeenCalledWith('App shell cached successfully');
-      expect(mockSelf.skipWaiting).toHaveBeenCalled();
+      expect(mockSelf.skipWaiting).toHaveBeenCalledWith();
     });
 
     it('should log error when caching fails', async () => {
