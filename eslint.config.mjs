@@ -4,9 +4,9 @@ export default defineConfig({
   enableReact: true,
   enablePrettier: 'on',
   enableVitest: true,
-  unitTestFiles: ['src/**/*.{test,spec,steps}.{js,jsx,ts,tsx}'],
+  unitTestFiles: ['tests/unit/**/*.{test,spec,steps}.{js,jsx,ts,tsx}'],
   enablePlaywright: true,
-  unitE2eFiles: ['tests/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+  unitE2eFiles: ['tests/e2e/**/*.{test,spec}.{js,jsx,ts,tsx}'],
   extendConfig: [
     {
       files: ['mocks/**/*'],
