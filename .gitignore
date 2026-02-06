@@ -32,3 +32,4 @@ test-results/
 /public/mockServiceWorker.js
 *.private.env.json
 .copilot/
+/test-reports/

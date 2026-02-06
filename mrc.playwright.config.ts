@@ -3,7 +3,7 @@ import { CoverageReportOptions } from 'monocart-coverage-reports';
 export const coverageOptions: CoverageReportOptions = {
   enabled: process.env.CI ?? process.env.ENABLED_COVERAGE,
   name: 'Playwright Coverage Report',
-  outputDir: './playwright-report/coverage',
+  outputDir: './test-reports/e2e/coverage',
   baseDir: './src/',
   reports: [
     'text',
