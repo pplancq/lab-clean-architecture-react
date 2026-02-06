@@ -4,6 +4,22 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Build Status
+
+[![Build](https://github.com/pplancq/lab-clean-architecture-react/actions/workflows/build.yaml/badge.svg)](https://github.com/pplancq/lab-clean-architecture-react/actions/workflows/build.yaml)
+
+## Sonarcloud Quality Metrics
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-reacts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=bugs)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=coverage)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=pplancq_lab-clean-architecture-react&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=pplancq_lab-clean-architecture-react)
+
 ---
 
 ## 🎯 Project Purpose
