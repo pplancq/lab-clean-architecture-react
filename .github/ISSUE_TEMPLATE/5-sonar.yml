@@ -1,0 +1,44 @@
+name: Sonar
+description: Issue template for SonarQube findings that require attention from project maintainers. Use this template to document and track Sonar issues, their impact, and the steps needed to resolve them.
+title: 'Sonar: '
+labels: ['sonar']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Maintainers Only** - This template is reserved for project maintainers.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the sonar issue, its impact, and why it should be addressed.
+      placeholder: |
+        The code uses an async Immediately-Invoked Function Expression (IIFE) for module initialization. When the build and runtime support ESM top-level await, using top-level await is clearer and simpler.
+    validations:
+      required: true
+  - type: input
+    id: sonar-rule
+    attributes:
+      label: 'Sonar rule:'
+      description: Sonar rule name and level of severity (e.g., "no-unused-vars (minor)")
+      placeholder: typescript:S7785 (MAJOR)
+    validations:
+      required: true
+  - type: textarea
+    id: sonar-issues
+    attributes:
+      label: 'Affected Sonar issues:'
+      description: List the specific Sonar issues, including file paths and line numbers, with links to the issues.
+      placeholder: |
+        - AZwykAgv_WXaYRYZbpDv — src/main.ts:1 — https://sonarcloud.io/project/issues?id=pplancq_lab-clean-architecture-react&open=AZwykAgv_WXaYRYZbpDv
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-actions
+    attributes:
+      label: 'Suggested actions:'
+      description: Provide clear and actionable steps to resolve the Sonar issues. This may include code changes, refactoring, or other improvements.
+      placeholder: |
+        - If the project build and runtime target support ESM top-level `await`, convert the async IIFE to top-level `await` and update `tsconfig.json` (`module: "esnext"` or compatible) and bundler configuration.
+    validations:
+      required: true
