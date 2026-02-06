@@ -66,13 +66,13 @@ describe('ActivateHandler', () => {
       await promiseToWait;
 
       expect(mockLogger.info).toHaveBeenCalledWith('Activate event');
-      expect(mockCaches.keys).toHaveBeenCalled();
+      expect(mockCaches.keys).toHaveBeenCalledWith();
       expect(mockCaches.delete).toHaveBeenCalledWith('gcm-cache-v1');
       expect(mockCaches.delete).not.toHaveBeenCalledWith('gcm-cache-v2');
       expect(mockCaches.delete).not.toHaveBeenCalledWith('other-cache');
       expect(mockLogger.info).toHaveBeenCalledWith('Deleting old cache:', 'gcm-cache-v1');
       expect(mockLogger.info).toHaveBeenCalledWith('Activated successfully');
-      expect(mockSelf.clients.claim).toHaveBeenCalled();
+      expect(mockSelf.clients.claim).toHaveBeenCalledWith();
     });
 
     it('should not delete current cache', async () => {
@@ -90,7 +90,7 @@ describe('ActivateHandler', () => {
       await promiseToWait;
 
       expect(mockCaches.delete).not.toHaveBeenCalled();
-      expect(mockSelf.clients.claim).toHaveBeenCalled();
+      expect(mockSelf.clients.claim).toHaveBeenCalledWith();
     });
 
     it('should not delete caches with different prefix', async () => {

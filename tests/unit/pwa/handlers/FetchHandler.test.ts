@@ -28,7 +28,7 @@ describe('FetchHandler', () => {
 
       fetchHandler.handle(mockEvent);
 
-      expect(mockEvent.respondWith).toHaveBeenCalled();
+      expect(mockEvent.respondWith).toHaveBeenCalledWith(expect.any(Promise));
       expect(mockCacheStrategy.execute).toHaveBeenCalledWith(mockRequest);
     });
 

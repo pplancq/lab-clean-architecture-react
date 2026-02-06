@@ -52,7 +52,8 @@ describe('RegisterServiceWorker', () => {
   });
 
   it('should handle registration errors gracefully', async () => {
-    const mockRegister = vi.fn().mockRejectedValue(new Error('Registration failed'));
+    const error = new Error('Registration failed');
+    const mockRegister = vi.fn().mockRejectedValue(error);
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     Object.defineProperty(global, 'navigator', {
@@ -67,7 +68,7 @@ describe('RegisterServiceWorker', () => {
 
     await RegisterServiceWorker.register();
 
-    expect(consoleErrorSpy).toHaveBeenCalled();
-    expect(mockRegister).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('[GCM] Service Worker registration failed:', error);
+    expect(mockRegister).toHaveBeenCalledWith('/serviceWorker.js');
   });
 });

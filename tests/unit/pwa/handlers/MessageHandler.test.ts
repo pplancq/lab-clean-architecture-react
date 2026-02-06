@@ -23,7 +23,7 @@ describe('MessageHandler', () => {
 
       messageHandler.handle(mockEvent);
 
-      expect(mockSelf.skipWaiting).toHaveBeenCalled();
+      expect(mockSelf.skipWaiting).toHaveBeenCalledWith();
     });
 
     it('should ignore messages without type', () => {
