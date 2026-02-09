@@ -59,11 +59,11 @@ sprints:
     name: "MVP Foundation - Infrastructure & Core Collection"
     goal: "Establish technical foundations (Clean Architecture, PWA, IndexedDB) and implement core collection management"
     start_date: "2026-01-27"
-    end_date: "2026-02-13"  # 12 working days (~2.5 weeks)
-    status: in-progress  # Epic 1 DONE (8/8 stories), Epic 2 NOT STARTED (0/8 stories)
+    end_date: "2026-02-09"  # Sprint completed
+    status: completed  # Epic 1 DONE (8/8 stories), Epic 2 NOT STARTED (moved to Sprint 2)
     capacity: 12 days
     completed_stories: 8
-    total_stories: 16
+    total_stories: 8  # Only Epic 1 stories (Epic 2 moved to Sprint 2)
 
     # Sprint 1 MVP Objectives:
     # 1. Clean Architecture with DI and error handling
@@ -95,6 +95,60 @@ sprints:
     priority: P0
     velocity_target: 12 days
 
+    retrospective: done  # Completed 2026-02-09 | epic-1-retro-2026-02-09.md
+
+  # ================================================================
+  # Sprint 2: Game Collection CRUD with List View
+  # ================================================================
+  sprint-2:
+    name: "Game Collection CRUD - Add & List"
+    goal: "Enable users to add games and view their collection with offline persistence"
+    start_date: "2026-02-10"
+    end_date: "2026-02-23"  # 2 weeks (~10 working days)
+    status: in-progress
+    capacity: 10 days
+    completed_stories: 0
+    total_stories: 7  # Committed stories (2.1 → 2.5 + 2 SonarCloud fixes)
+
+    # Sprint 2 Objectives:
+    # 1. Game domain model and value objects
+    # 2. IndexedDB persistence layer (Repository pattern)
+    # 3. AddGame use case with UI form
+    # 4. GetGames use case with game list display
+    # 5. End-to-end offline-first collection management
+    # 6. Code quality improvements (SonarCloud critical fixes)
+
+    # Committed Stories (MUST HAVE - 6 days):
+    committed:
+      # Epic 2 Stories (5.5 days):
+      - 2-1-create-game-domain-entity-and-value-objects  # GitHub #9 | P0 | M (1d)
+      - 2-2-implement-indexeddb-repository-for-game-persistence  # GitHub #10 | P0 | L (2.5d)
+      - 2-3-create-addgame-use-case  # GitHub #11 | P0 | S (0.5d)
+      - 2-4-build-add-game-ui-form-with-validation  # GitHub #12 | P0 | M (1d)
+      - 2-5-create-getgames-use-case-and-display-game-list  # GitHub #13 | P0 | S (0.5d)
+      
+      # SonarCloud Quick Wins (0.5 days):
+      - sonar-63-optional-chaining  # GitHub #63 | Critical | MAJOR | XS (0.25d)
+      - sonar-64-switch-to-if-else  # GitHub #64 | Low | MINOR | XS (0.25d)
+
+    # Stretch Goals (NICE TO HAVE - 3 days):
+    # Pull these stories if velocity permits
+    stretch:
+      - 2-6-create-getgamebyid-use-case-and-display-game-detail-view  # GitHub #14 | P0 | M (1d)
+      - 2-7-implement-editgame-use-case-and-edit-ui  # GitHub #15 | P0 | M (1d)
+      - 2-8-implement-deletegame-use-case-and-delete-confirmation  # GitHub #16 | P0 | S (0.5d)
+
+    # Deferred to Post-Sprint 2 (require more analysis):
+    deferred:
+      - sonar-65-top-level-await  # GitHub #65 | Critical | MAJOR | Requires config analysis
+      - sonar-62-globalthis  # GitHub #62 | Low | MINOR | Low priority for browser-only PWA
+
+    committed_size: 6 days  # 5.5 days Epic 2 + 0.5 days SonarCloud
+    stretch_size: 3 days
+    total_potential_size: 9 days  # Committed + stretch (excluding deferred)
+    priority: P0
+    velocity_target: 6 days  # Conservative target (5.5 Epic 2 + 0.5 SonarCloud)
+
     retrospective: pending
 
 # ================================================================
@@ -120,15 +174,15 @@ development_status:
   # Epic 2: Core Game Collection Management with IndexedDB (GitHub #8)
   # Priority: P0 | Stories: 8 | Total Size: 8.5 days
   # ================================================================
-  epic-2: in-progress  # GitHub #8 | Sprint 1
-  2-1-create-game-domain-entity-and-value-objects: ready-for-dev  # GitHub #9 | P0 | M (1d) | Sprint 1
-  2-2-implement-indexeddb-repository-for-game-persistence: ready-for-dev  # GitHub #10 | P0 | L (2.5d) | Sprint 1
-  2-3-create-addgame-use-case: ready-for-dev  # GitHub #11 | P0 | S (0.5d) | Sprint 1
-  2-4-build-add-game-ui-form-with-validation: ready-for-dev  # GitHub #12 | P0 | M (1d) | Sprint 1
-  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 1
-  2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 1
-  2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 1
-  2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 1
+  epic-2: in-progress  # GitHub #8 | Sprint 2 | Started 2026-02-10
+  2-1-create-game-domain-entity-and-value-objects: ready-for-dev  # GitHub #9 | P0 | M (1d) | Sprint 2 (committed)
+  2-2-implement-indexeddb-repository-for-game-persistence: ready-for-dev  # GitHub #10 | P0 | L (2.5d) | Sprint 2 (committed)
+  2-3-create-addgame-use-case: ready-for-dev  # GitHub #11 | P0 | S (0.5d) | Sprint 2 (committed)
+  2-4-build-add-game-ui-form-with-validation: ready-for-dev  # GitHub #12 | P0 | M (1d) | Sprint 2 (committed)
+  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 2 (committed)
+  2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 2 (stretch)
+  2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 2 (stretch)
+  2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 2 (stretch)
   epic-2-retrospective: optional
 
   # ================================================================
