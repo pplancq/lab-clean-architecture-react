@@ -60,8 +60,10 @@ sprints:
     goal: "Establish technical foundations (Clean Architecture, PWA, IndexedDB) and implement core collection management"
     start_date: "2026-01-27"
     end_date: "2026-02-13"  # 12 working days (~2.5 weeks)
-    status: in-progress
+    status: in-progress  # Epic 1 DONE (8/8 stories), Epic 2 NOT STARTED (0/8 stories)
     capacity: 12 days
+    completed_stories: 8
+    total_stories: 16
 
     # Sprint 1 MVP Objectives:
     # 1. Clean Architecture with DI and error handling
@@ -103,16 +105,16 @@ development_status:
   # Epic 1: Foundation, Clean Architecture & PWA Setup (GitHub #7)
   # Priority: P0 | Stories: 8 | Total Size: 3.75 days
   # ================================================================
-  epic-1: in-progress  # GitHub #7 | Sprint 1
-  1-1-initialize-project-with-react-template-and-rsbuild: ready-for-dev  # GitHub #1 | P0 | S (0.5d) | Sprint 1
-  1-2-setup-clean-architecture-folder-structure-and-bounded-contexts: ready-for-dev  # GitHub #2 | P0 | XS (0.25d) | Sprint 1
-  1-2-1-add-typescript-path-aliases-for-bounded-contexts: ready-for-dev  # GitHub #56 | P0 | XS (0.25d) | Sprint 1
-  1-3-configure-dependency-injection-with-inversifyjs: ready-for-dev  # GitHub #3 | P0 | M (1d) | Sprint 1
-  1-4-implement-result-either-pattern-for-error-handling: ready-for-dev  # GitHub #4 | P0 | S (0.5d) | Sprint 1
-  1-5-configure-pwa-with-service-worker-and-app-manifest: ready-for-dev  # GitHub #5 | P0 | L (2.5d) | Sprint 1
-  1-6-create-architecture-documentation-and-adrs: ready-for-dev  # GitHub #6 | P0 | XS (0.25d) | Sprint 1
-  1-7-ci-pipeline-sonarcloud-github-copilot: ready-for-dev  # GitHub #52 | P0 | S (0.5d) | Sprint 1
-  epic-1-retrospective: optional
+  epic-1: done  # GitHub #7 | Sprint 1 | Completed 2026-02-09
+  1-1-initialize-project-with-react-template-and-rsbuild: done  # GitHub #1 | P0 | S (0.5d) | Sprint 1 | PR #53
+  1-2-setup-clean-architecture-folder-structure-and-bounded-contexts: done  # GitHub #2 | P0 | XS (0.25d) | Sprint 1 | PR #54
+  1-2-1-add-typescript-path-aliases-for-bounded-contexts: done  # GitHub #56 | P0 | XS (0.25d) | Sprint 1 | PR #57
+  1-3-configure-dependency-injection-with-inversifyjs: done  # GitHub #3 | P0 | M (1d) | Sprint 1 | PR #55
+  1-4-implement-result-either-pattern-for-error-handling: done  # GitHub #4 | P0 | S (0.5d) | Sprint 1 | PR #58
+  1-5-configure-pwa-with-service-worker-and-app-manifest: done  # GitHub #5 | P0 | L (2.5d) | Sprint 1 | PR #59
+  1-6-create-architecture-documentation-and-adrs: done  # GitHub #6 | P0 | XS (0.25d) | Sprint 1 | PR #60
+  1-7-ci-pipeline-sonarcloud-github-copilot: done  # GitHub #52 | P0 | S (0.5d) | Sprint 1 | PR #61
+  epic-1-retrospective: done  # Completed 2026-02-09 | Retro: epic-1-retro-2026-02-09.md
 
   # ================================================================
   # Epic 2: Core Game Collection Management with IndexedDB (GitHub #8)
