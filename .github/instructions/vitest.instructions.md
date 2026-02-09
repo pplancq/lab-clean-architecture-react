@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.test.ts, **/*.test.tsx, **/*.test.js, **/*.test.jsx'
+applyTo: 'tests/unit/**/*.test.ts, tests/unit/**/*.test.tsx, tests/unit/**/*.test.js, tests/unit/**/*.test.jsx'
 description: Instructions for writing unit and integration tests with Vitest in the front-end project.
 ---
 
@@ -11,7 +11,7 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
 
 ## Structure and Organization
 
-- Tests must be placed in a `__tests__` folder next to the component or function being tested.
+- Tests must be placed in the `tests/unit` folder at the same level as `src`, following the same directory structure as the source code. For example, if a component is located at `src/components/Button.tsx`, its test must be placed at `tests/unit/components/Button.test.tsx`.
 - The test file name must follow the format: `<ComponentOrFunctionName>.test.ts(x)`.
 - Tests must always be grouped in a `describe`, with sub-`describe` blocks if needed (maximum 2 levels).
 - Each test must use the format: `it('should ...', () => { ... })`.
