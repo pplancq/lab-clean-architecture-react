@@ -68,10 +68,9 @@ export const fetchApi = async <T>(url: string, options: RequestInit): Promise<T>
 
   const contentType = response.headers.get(HEADERS.contentType) ?? '';
 
-  switch (true) {
-    case contentType.includes(MIME_TYPES.json):
-      return (await response.json()) as T;
-    default:
-      return (await response.text()) as T;
+  if (contentType.includes(MIME_TYPES.json)) {
+    return (await response.json()) as T;
   }
+
+  return (await response.text()) as T;
 };
