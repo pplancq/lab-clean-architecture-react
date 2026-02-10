@@ -44,7 +44,7 @@ export class RegisterServiceWorker {
   }
 
   private static statechange() {
-    if (this.worker && this.worker.state === 'installed' && navigator.serviceWorker.controller) {
+    if (this.worker?.state === 'installed' && navigator.serviceWorker.controller) {
       console.info('[GCM] New Service Worker installed, ready to activate');
     }
   }
