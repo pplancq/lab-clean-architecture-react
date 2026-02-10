@@ -49,6 +49,7 @@ Domain-Driven Design contexts:
 Practical how-to guides and patterns:
 
 - **[Result Pattern](./result-pattern.md)** - Type-safe error handling without exceptions
+- **[Value Objects](./value-objects.md)** - Immutable value objects with self-validation
 - **Adding a New Feature** _(Coming soon)_ - Step-by-step guide for implementing features
 - **Testing Strategy** _(Coming soon)_ - Testing approach for each layer
 - **Common Patterns** _(Coming soon)_ - Recurring patterns and solutions

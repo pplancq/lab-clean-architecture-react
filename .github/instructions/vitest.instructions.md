@@ -39,6 +39,37 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
 - API mocks are placed in the folder: `<front project root>/mocks`.
 - Only mock external dependencies (hooks, browser, etc.) when relevant for test isolation or stability. Avoid over-mocking.
 
+## Assertions
+
+### Choosing the Right Assertion
+
+- **`toBe()`** for primitive values (string, number, boolean, null, undefined):
+  - Uses `Object.is()` equality - strictly checks **both value AND type**
+  - Example: `expect(3).toBe(3)` ✅ | `expect(3).toBe("3")` ❌ (fails)
+  - This is the equivalent of `===` but even stricter
+- **`toStrictEqual()`** for objects and arrays:
+  - Deep equality comparison
+  - Checks all properties and nested values
+  - Stricter than `toEqual()` (differentiates `undefined` vs absent property)
+- **`toEqual()`** for objects when less strictness is acceptable:
+  - Use sparingly - `toStrictEqual()` is preferred
+  - Only when you intentionally want to ignore `undefined` vs missing properties
+
+### Type Safety in Tests
+
+- Always verify both **value and type** in assertions
+- Never rely on type coercion - tests must fail on type mismatches
+- Example:
+
+  ```typescript
+  // ✅ Good - strict type checking
+  expect(user.age).toBe(25);
+  expect(user.name).toBe('John');
+
+  // ❌ Bad - would fail if types mismatch
+  expect(user.age).toBe('25'); // Fails if age is number
+  ```
+
 ## Best Practices
 
 - Tests must be clear, concise, and isolated.

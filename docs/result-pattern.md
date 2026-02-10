@@ -6,9 +6,9 @@ The Result pattern provides type-safe error handling **without exceptions in the
 
 ### Exception Philosophy
 
-**Exceptions in Result (`getValue()`, `getError()`)** indicate **developer bugs** (misuse), not business logic errors. Business errors are captured as `Err` states. With proper type guards, normal code flow has **zero exceptions**.
+**Exceptions in Result (`unwrap()`, `getError()`)** indicate **developer bugs** (misuse), not business logic errors. Business errors are captured as `Err` states. With proper type guards, normal code flow has **zero exceptions**.
 
-- **Developer bug** (misuse): Calling `getValue()` on Err without type guard → Exception (fail-fast)
+- **Developer bug** (misuse): Calling `unwrap()` on Err without type guard → Exception (fail-fast)
 - **Business error** (expected): Service returns `Err` with error details → Handled via type guard
 
 ## Class Definition
@@ -20,7 +20,7 @@ export class Result<T, E> {
 
   isOk(): boolean;
   isErr(): boolean;
-  getValue(defaultValue?: T): T;
+  unwrap(defaultValue?: T): T;
   getError(): E;
   transform<U>(fn: (value: T) => U): Result<U, E>;
   transformErr<F>(fn: (error: E) => F): Result<T, F>;
@@ -54,7 +54,7 @@ const result = Result.err('Something went wrong');
 ```typescript
 if (result.isOk()) {
   // TypeScript knows this is Result<T, never>
-  const value = result.getValue(); // T - safe to call
+  const value = result.unwrap(); // T - safe to call
 }
 ```
 
@@ -69,20 +69,27 @@ if (result.isErr()) {
 
 ## Extracting Values
 
-### getValue()
+### unwrap()
 
-Extracts the value from an Ok Result:
+Extracts the value from an Ok Result (unwraps it):
 
 ```typescript
 const result = Result.ok(42);
-result.getValue(); // 42
+result.unwrap(); // 42
 
 const errorResult = Result.err('Not found');
-errorResult.getValue(); // throws Error('Not found')
-errorResult.getValue(0); // 0 (uses default, doesn't throw)
+errorResult.unwrap(); // throws Error('Not found')
+errorResult.unwrap(0); // 0 (uses default, doesn't throw)
 ```
 
-⚠️ **Important**: Always use `isOk()` type guard before calling `getValue()` without a default, or provide a default value.
+⚠️ **Important**: Always use `isOk()` type guard before calling `unwrap()` without a default, or provide a default value.
+
+**Why `unwrap()` instead of `getValue()`?**
+
+- ✅ Standard in functional programming (Rust, Haskell)
+- ✅ Semantically clear: "unwrap the Result to extract the value"
+- ✅ Avoids confusion with Value Object `getValue()` methods
+- ✅ Opens the door to `unwrapOr()`, `unwrapOrElse()` in the future
 
 ### getError()
 
@@ -159,7 +166,7 @@ const useCase = new CreateUserUseCase();
 const result = useCase.execute('user@example.com');
 
 if (result.isOk()) {
-  const user = result.getValue(); // Safe - won't throw
+  const user = result.unwrap(); // Safe - won't throw
   console.log('Created:', user);
 } else {
   const error = result.getError(); // Safe - won't throw
@@ -167,7 +174,7 @@ if (result.isOk()) {
 }
 
 // Usage with default value (safe without type guard)
-const user = result.getValue({ id: 'default', email: 'default@example.com' });
+const user = result.unwrap({ id: 'default', email: 'default@example.com' });
 ```
 
 ## Benefits
@@ -180,30 +187,30 @@ const user = result.getValue({ id: 'default', email: 'default@example.com' });
 
 ## Best Practices
 
-1. **Always use type guards**: Check `isOk()`/`isErr()` before calling `getValue()`/`getError()`
+1. **Always use type guards**: Check `isOk()`/`isErr()` before calling `unwrap()`/`getError()`
    - Prevents exceptions in normal flow
    - Leverages TypeScript type narrowing
 2. **Domain Layer**: Use Result for all domain operations instead of throwing
 3. **Error Types**: Define specific error types (not string)
-4. **Default Values**: Use `getValue(default)` when a fallback makes sense
+4. **Default Values**: Use `unwrap(default)` when a fallback makes sense
 5. **Composition**: Chain with transform/transformErr when appropriate
 6. **Fail-fast Philosophy**: Exceptions = developer bugs, Result = business errors
 
 ## Anti-Patterns
 
-❌ **Don't call getValue/getError without type guards**
+❌ **Don't call unwrap/getError without type guards**
 
 ```typescript
 // Bad - might throw!
-const value = result.getValue();
+const value = result.unwrap();
 
 // Good - safe
 if (result.isOk()) {
-  const value = result.getValue();
+  const value = result.unwrap();
 }
 
 // Good - safe with default
-const value = result.getValue(defaultValue);
+const value = result.unwrap(defaultValue);
 ```
 
 ❌ **Don't use try/catch to handle Result**
@@ -211,14 +218,14 @@ const value = result.getValue(defaultValue);
 ```typescript
 // Bad - defeats the purpose
 try {
-  const value = result.getValue();
+  const value = result.unwrap();
 } catch (e) {
   // Use type guards instead!
 }
 
 // Good
 if (result.isOk()) {
-  const value = result.getValue();
+  const value = result.unwrap();
 }
 ```
 

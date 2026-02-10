@@ -22,7 +22,7 @@
  *
  * // Type-safe checking (no exceptions in normal flow)
  * if (success.isOk()) {
- *   console.log(success.getValue()); // 42 - safe
+ *   console.log(success.unwrap()); // 42 - safe
  * }
  * ```
  */
@@ -73,7 +73,7 @@ export class Result<T, E> {
    * @example
    * ```typescript
    * if (result.isOk()) {
-   *   const value = result.getValue();
+   *   const value = result.unwrap();
    * }
    * ```
    */
@@ -99,7 +99,7 @@ export class Result<T, E> {
   }
 
   /**
-   * Extracts the value from an Ok Result
+   * Extracts the value from an Ok Result (unwraps it)
    * Returns default value if provided and Result is Err
    *
    * **Note:** Throws if Result is Err and no defaultValue provided. This indicates
@@ -112,21 +112,21 @@ export class Result<T, E> {
    * @example
    * ```typescript
    * const success = Result.ok(42);
-   * success.getValue();     // 42
-   * success.getValue(0);    // 42
+   * success.unwrap();     // 42
+   * success.unwrap(0);    // 42
    *
    * const error = Result.err("Not found");
-   * error.getValue(0);      // 0 (uses default, safe)
+   * error.unwrap(0);      // 0 (uses default, safe)
    *
    * // Safe with type guard (recommended)
    * if (error.isErr()) {
    *   // won't reach here
    * } else {
-   *   error.getValue();     // Safe, no throw
+   *   error.unwrap();     // Safe, no throw
    * }
    * ```
    */
-  getValue(defaultValue?: T): T {
+  unwrap(defaultValue?: T): T {
     if (this.success) {
       return this.data as T;
     }
