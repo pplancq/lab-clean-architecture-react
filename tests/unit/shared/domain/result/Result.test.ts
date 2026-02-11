@@ -7,14 +7,14 @@ describe('Result Type', () => {
       const result = Result.ok(42);
 
       expect(result.isOk()).toBeTruthy();
-      expect(result.getValue()).toStrictEqual(42);
+      expect(result.unwrap()).toStrictEqual(42);
     });
 
     it('should create Ok Result with string value', () => {
       const result = Result.ok('success');
 
       expect(result.isOk()).toBeTruthy();
-      expect(result.getValue()).toStrictEqual('success');
+      expect(result.unwrap()).toStrictEqual('success');
     });
 
     it('should create Ok Result with object value', () => {
@@ -22,7 +22,7 @@ describe('Result Type', () => {
       const result = Result.ok(value);
 
       expect(result.isOk()).toBeTruthy();
-      expect(result.getValue()).toStrictEqual(value);
+      expect(result.unwrap()).toStrictEqual(value);
     });
 
     it('should return false for Err Result', () => {
@@ -64,17 +64,17 @@ describe('Result Type', () => {
     });
   });
 
-  describe('getValue', () => {
+  describe('unwrap', () => {
     it('should return value for Ok Result', () => {
       const result = Result.ok(42);
-      const value = result.getValue();
+      const value = result.unwrap();
 
       expect(value).toStrictEqual(42);
     });
 
     it('should return value for Ok Result ignoring default', () => {
       const result = Result.ok(42);
-      const value = result.getValue(0);
+      const value = result.unwrap(0);
 
       expect(value).toStrictEqual(42);
     });
@@ -82,12 +82,12 @@ describe('Result Type', () => {
     it('should throw for Err Result without default', () => {
       const result: Result<number, string> = Result.err('error');
 
-      expect(() => result.getValue()).toThrow('error');
+      expect(() => result.unwrap()).toThrow('error');
     });
 
     it('should return default value for Err Result', () => {
       const result: Result<number, string> = Result.err('error');
-      const value = result.getValue(0);
+      const value = result.unwrap(0);
 
       expect(value).toStrictEqual(0);
     });
@@ -114,7 +114,7 @@ describe('Result Type', () => {
       const transformed = result.transform(n => n.toString());
 
       expect(transformed.isOk()).toBeTruthy();
-      expect(transformed.getValue()).toStrictEqual('42');
+      expect(transformed.unwrap()).toStrictEqual('42');
     });
 
     it('should pass through Err unchanged', () => {
@@ -142,7 +142,7 @@ describe('Result Type', () => {
       const transformed = result.transformErr(e => new Error(e));
 
       expect(transformed.isOk()).toBeTruthy();
-      expect(transformed.getValue()).toStrictEqual(42);
+      expect(transformed.unwrap()).toStrictEqual(42);
     });
   });
 });
