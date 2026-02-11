@@ -22,7 +22,6 @@ type PlatformError = {
  * if (result.isOk()) {
  *   const platform = result.unwrap();
  *   console.log(platform.getPlatform()); // 'PlayStation 5'
- *   console.log(platform.toString()); // 'PlayStation 5'
  * }
  * ```
  */
@@ -40,21 +39,30 @@ export class Platform {
    * @returns Result containing Platform or validation error
    */
   static create(value: string): Result<Platform, PlatformError> {
-    if (!value || value.trim().length === 0) {
+    if (!value) {
       return Result.err({
         field: 'platform',
         message: 'Platform name is required',
       });
     }
 
-    if (value.length > 100) {
+    const trimmedValue = value.trim();
+
+    if (trimmedValue.length === 0) {
+      return Result.err({
+        field: 'platform',
+        message: 'Platform name is required',
+      });
+    }
+
+    if (trimmedValue.length > 100) {
       return Result.err({
         field: 'platform',
         message: 'Platform name cannot exceed 100 characters',
       });
     }
 
-    return Result.ok(new Platform(value.trim()));
+    return Result.ok(new Platform(trimmedValue));
   }
 
   /**

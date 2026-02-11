@@ -49,7 +49,7 @@ export class MyValue {
     return Result.ok(new MyValue(value.trim()));
   }
 
-  getValue(): string {
+  getMyValue(): string {
     return this.value;
   }
 }
@@ -153,23 +153,24 @@ static create(value: string): Result<GameDescription, GameDescriptionError> {
 
 ```typescript
 export enum StatusType {
-  Owned = 'Owned',
-  Wishlist = 'Wishlist',
-  Sold = 'Sold',
-  Borrowed = 'Borrowed',
+  OWNED = 'Owned',
+  WISHLIST = 'Wishlist',
+  SOLD = 'Sold',
+  LOANED = 'Loaned',
 }
 
 static create(value: string): Result<Status, StatusError> {
-  const normalizedValue = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  const trimmedValue = value?.trim() ?? '';
+  const statusValue = Object.values(StatusType).find(s => s.toLowerCase() === trimmedValue.toLowerCase());
 
-  if (!Object.values(StatusType).includes(normalizedValue as StatusType)) {
+  if (!statusValue) {
     return Result.err({
       field: 'status',
-      message: `Invalid status. Allowed values: ${Object.values(StatusType).join(', ')}`,
+      message: `Invalid status: ${value}. Valid statuses are: ${Object.values(StatusType).join(', ')}`,
     });
   }
 
-  return Result.ok(new Status(normalizedValue as StatusType));
+  return Result.ok(new Status(statusValue as StatusType));
 }
 ```
 

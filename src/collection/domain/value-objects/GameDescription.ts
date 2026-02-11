@@ -16,8 +16,8 @@ type GameDescriptionError = {
  * ```typescript
  * const result = GameDescription.create('A classic adventure game');
  * if (result.isOk()) {
- *   const description = result.getValue();
- *   console.log(description.getValue()); // 'A classic adventure game'
+ *   const description = result.unwrap();
+ *   console.log(description.getDescription()); // 'A classic adventure game'
  * }
  * ```
  */

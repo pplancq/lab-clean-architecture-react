@@ -16,8 +16,8 @@ type GameIdError = {
  * ```typescript
  * const result = GameId.create('game-123');
  * if (result.isOk()) {
- *   const gameId = result.getValue();
- *   console.log(gameId.getValue()); // 'game-123'
+ *   const gameId = result.unwrap();
+ *   console.log(gameId.getId()); // 'game-123'
  * }
  * ```
  */

@@ -44,9 +44,9 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
 ### Choosing the Right Assertion
 
 - **`toBe()`** for primitive values (string, number, boolean, null, undefined):
-  - Uses `Object.is()` equality - strictly checks **both value AND type**
+  - Uses `Object.is()` equality to strictly check **both value AND type**
   - Example: `expect(3).toBe(3)` ✅ | `expect(3).toBe("3")` ❌ (fails)
-  - This is the equivalent of `===` but even stricter
+  - Behaves similarly to `===`, but uses `Object.is()` (for example, `NaN` equals `NaN` and `+0` is different from `-0`)
 - **`toStrictEqual()`** for objects and arrays:
   - Deep equality comparison
   - Checks all properties and nested values

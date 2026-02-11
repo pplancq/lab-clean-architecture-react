@@ -160,7 +160,7 @@ describe('Game', () => {
   });
 
   describe('getters', () => {
-    it('should return all properties as value objects', () => {
+    it('should return all properties through getters', () => {
       const purchaseDate = new Date('2024-01-15');
       const game = Game.create({
         id: 'game-123',

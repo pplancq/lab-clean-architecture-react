@@ -23,8 +23,8 @@ type StatusError = {
  * ```typescript
  * const result = Status.create('Owned');
  * if (result.isOk()) {
- *   const status = result.getValue();
- *   console.log(status.getValue()); // StatusType.OWNED
+ *   const status = result.unwrap();
+ *   console.log(status.getStatus()); // StatusType.OWNED
  * }
  * ```
  */
@@ -42,7 +42,8 @@ export class Status {
    * @returns Result containing Status or validation error
    */
   static create(value: string): Result<Status, StatusError> {
-    const statusValue = Object.values(StatusType).find(s => s.toLowerCase() === value.toLowerCase());
+    const trimmedValue = value?.trim() ?? '';
+    const statusValue = Object.values(StatusType).find(s => s.toLowerCase() === trimmedValue.toLowerCase());
 
     if (!statusValue) {
       return Result.err({

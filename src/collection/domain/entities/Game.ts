@@ -42,7 +42,8 @@ type GameProps = {
  *
  * Business rules:
  * - All properties are validated through value objects
- * - Platform, format, and status are immutable
+ * - Platform and format are immutable
+ * - Status can be updated via `updateStatus`
  * - Title and description can be updated
  * - Purchase date is optional (null for wishlist items)
  *
@@ -254,7 +255,7 @@ export class Game {
    * @returns True if game is in wishlist status
    */
   isInWishlist(): boolean {
-    return this.status.getStatus() === 'Wishlist';
+    return this.status.getStatus() === StatusType.WISHLIST;
   }
 
   /**
@@ -263,6 +264,6 @@ export class Game {
    * @returns True if game is owned
    */
   isOwned(): boolean {
-    return this.status.getStatus() === 'Owned';
+    return this.status.getStatus() === StatusType.OWNED;
   }
 }

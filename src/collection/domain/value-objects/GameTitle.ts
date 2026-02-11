@@ -17,8 +17,8 @@ type GameTitleError = {
  * ```typescript
  * const result = GameTitle.create('The Legend of Zelda');
  * if (result.isOk()) {
- *   const title = result.getValue();
- *   console.log(title.getValue()); // 'The Legend of Zelda'
+ *   const title = result.unwrap();
+ *   console.log(title.getTitle()); // 'The Legend of Zelda'
  * }
  * ```
  */
@@ -45,7 +45,7 @@ export class GameTitle {
       });
     }
 
-    if (value.length > 200) {
+    if (trimmedValue.length > 200) {
       return Result.err({
         field: 'title',
         message: 'Game title cannot exceed 200 characters',
