@@ -78,7 +78,7 @@
     "msw": "^2.12.9",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
-    "rsbuild-plugin-stylelint": "^1.0.1",
+    "rsbuild-plugin-stylelint": "^1.1.0",
     "stylelint": "^17.0.0",
     "stylelint-prettier": "^5.0.3",
     "tsc-files": "^1.1.4",
