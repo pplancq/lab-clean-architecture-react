@@ -35,6 +35,7 @@ Deep dive into each architectural layer:
 Cross-cutting technical concerns:
 
 - **[PWA Infrastructure](./infrastructure/pwa.md)** - Progressive Web App implementation (Service Worker, caching, offline support)
+- **[IndexedDB Persistence](./persistence-indexeddb.md)** - Repository pattern implementation with IndexedDB for client-side data storage
 
 ## 🎯 Bounded Contexts
 

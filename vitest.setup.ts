@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/vitest';
 import { server } from '@Mocks/server';
 import { cleanup } from '@testing-library/react';
 import * as matchers from 'vitest-axe/matchers';
+import 'fake-indexeddb/auto';
 
 expect.extend(matchers);
 

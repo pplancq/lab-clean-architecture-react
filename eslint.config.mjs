@@ -21,5 +21,17 @@ export default defineConfig({
         'import/no-extraneous-dependencies': 'off',
       },
     },
+    {
+      files: ['**/src/**/*.d.ts'],
+      rules: {
+        '@typescript-eslint/no-empty-object-type': 'off',
+      },
+    },
+    {
+      files: ['**/src/**/*.ts'],
+      rules: {
+        'class-methods-use-this': 'off',
+      },
+    },
   ],
 });
