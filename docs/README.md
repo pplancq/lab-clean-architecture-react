@@ -30,6 +30,12 @@ Deep dive into each architectural layer:
 - **Infrastructure Layer** _(Coming soon)_ - Adapters and external integrations
 - **UI Layer** _(Coming soon)_ - React components and presentation logic
 
+## 🎯 Use Cases
+
+Application-layer orchestration:
+
+- **[AddGame Use Case](./use-cases/add-game.md)** - Adding games to the collection with domain validation
+
 ## ⚙️ Infrastructure
 
 Cross-cutting technical concerns:
