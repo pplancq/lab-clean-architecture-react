@@ -14,4 +14,9 @@ export const COLLECTION_SERVICES = Object.freeze({
    * Repository interface for Game entity persistence
    */
   GameRepository: Symbol.for('Collection.GameRepository'),
+
+  /**
+   * Use case for adding a game to the collection
+   */
+  AddGameUseCase: Symbol.for('Collection.AddGameUseCase'),
 } as const);
