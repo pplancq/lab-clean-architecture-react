@@ -150,6 +150,8 @@ export const TYPES = {
 
 ### 2. Register Services in Context Container
 
+#### Basic Pattern
+
 ```typescript
 // src/collection/serviceCollection.ts
 import { ContainerModule } from 'inversify';
@@ -160,6 +162,217 @@ export const serviceCollection: ContainerModule = new ContainerModule(bind => {
   bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
 });
 ```
+
+#### Real-World Example: Collection Context
+
+Here's the actual implementation from the Collection bounded context:
+
+```typescript
+// src/collection/config/serviceIdentifiers.ts
+export const COLLECTION_SERVICES = Object.freeze({
+  IndexedDB: Symbol.for('Collection.IndexedDB'),
+  GameRepository: Symbol.for('Collection.GameRepository'),
+} as const);
+
+// src/collection/serviceCollection.ts
+import { ContainerModule } from 'inversify';
+import type { GameRepositoryInterface } from './domain/repositories/GameRepositoryInterface';
+import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
+import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
+import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
+import { COLLECTION_SERVICES } from './config/serviceIdentifiers';
+
+export const serviceCollection: ContainerModule = new ContainerModule(options => {
+  // Bind IndexedDB implementation to interface
+  options
+    .bind<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)
+    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .inSingletonScope();
+
+  // Bind GameRepository implementation to interface
+  options
+    .bind<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)
+    .toDynamicValue(
+      services => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
+    )
+    .inSingletonScope();
+});
+```
+
+**Key Points:**
+
+1. **Symbol Identifiers**: Services use Symbol.for() for unique identifiers
+2. **Bind to Interfaces**: Bind implementations to interfaces following Clean Architecture
+3. **Object.freeze**: Ensures service identifiers cannot be modified at runtime
+4. **`toDynamicValue`**: Allows custom instantiation logic with dependencies
+5. **`inSingletonScope()`**: Ensures only one instance exists (shared state)
+6. **Dependency Resolution**: `services.get<T>(identifier)` retrieves typed dependencies
+7. **Configuration on Creation**: IndexedDB is configured with database name, version, and store name
+
+#### Service Binding Strategies
+
+InversifyJS offers multiple binding strategies:
+
+##### a) `to()` - Simple Class Binding
+
+Use when the class has no constructor parameters or uses `@inject` decorators:
+
+```typescript
+options.bind<GameRepositoryInterface>(TYPES.GameRepository).to(GameRepository);
+```
+
+**Note:** We avoid this pattern since we don't use decorators.
+
+##### b) `toDynamicValue()` - Factory Function
+
+Use for custom instantiation logic, dependency resolution, or configuration:
+
+```typescript
+// Simple factory
+options
+  .bind(Logger)
+  .toDynamicValue(() => new Logger('Collection'))
+  .inSingletonScope();
+
+// With dependency injection
+options
+  .bind(GameRepository)
+  .toDynamicValue(ctx => new GameRepository(ctx.container.get(IndexedDB), ctx.container.get(Logger)))
+  .inSingletonScope();
+
+// With configuration
+options
+  .bind(IndexedDB)
+  .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+  .inSingletonScope();
+```
+
+**Advantages:**
+
+- Full control over instantiation
+- Can pass configuration values
+- Can resolve dependencies manually
+- No need for decorators
+
+##### c) `toConstantValue()` - Pre-Instantiated Objects
+
+Use for singletons or pre-configured instances:
+
+```typescript
+const logger = new Logger('Collection');
+options.bind(Logger).toConstantValue(logger);
+
+// Or with configuration
+const config = {
+  dbName: 'GameCollectionDB',
+  version: 1,
+  storeName: 'games',
+};
+options.bind(TYPES.Config).toConstantValue(config);
+```
+
+**Use when:**
+
+- You need to initialize the service before container setup
+- Sharing an instance across multiple containers
+- Wrapping external libraries
+
+##### d) `toSelf()` - Bind to Own Class
+
+Bind a class to itself (useful for concrete classes without interfaces):
+
+```typescript
+options.bind(IndexedDB).toSelf().inSingletonScope();
+```
+
+#### Lifecycle Scopes
+
+Control the lifetime of your services:
+
+##### `inSingletonScope()` - One Instance Per Container
+
+```typescript
+options
+  .bind(IndexedDB)
+  .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+  .inSingletonScope(); // ✅ Single shared instance
+```
+
+**Use for:**
+
+- Database connections
+- Caches
+- Configuration objects
+- Stateful services
+
+##### `inTransientScope()` - New Instance Each Time (Default)
+
+```typescript
+options
+  .bind(GameService)
+  .toDynamicValue(ctx => new GameService(ctx.container.get(GameRepository)))
+  .inTransientScope(); // New instance every time
+```
+
+**Use for:**
+
+- Stateless services
+- Request handlers
+- Short-lived objects
+
+##### `inRequestScope()` - One Instance Per Request
+
+```typescript
+options.bind(RequestContext).to(RequestContext).inRequestScope(); // One per request (requires middleware)
+```
+
+**Note:** Rarely used in frontend applications.
+
+#### Complex Example: Multiple Dependencies
+
+```typescript
+export const serviceCollection: ContainerModule = new ContainerModule(options => {
+  // Infrastructure - IndexedDB
+  options
+    .bind(IndexedDB)
+    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .inSingletonScope();
+
+  // Infrastructure - Logger
+  options
+    .bind(Logger)
+    .toDynamicValue(() => new Logger('Collection'))
+    .inSingletonScope();
+
+  // Repository - Game Repository
+  options
+    .bind(GameRepository)
+    .toDynamicValue(ctx => new GameRepository(ctx.container.get(IndexedDB), ctx.container.get(Logger)))
+    .inSingletonScope();
+
+  // Application - Use Cases
+  options
+    .bind(AddGameUseCase)
+    .toDynamicValue(ctx => new AddGameUseCase(ctx.container.get(GameRepository), ctx.container.get(Logger)))
+    .inTransientScope(); // New instance per call
+
+  options
+    .bind(GetGameUseCase)
+    .toDynamicValue(ctx => new GetGameUseCase(ctx.container.get(GameRepository)))
+    .inTransientScope();
+});
+```
+
+#### Service Registration Checklist
+
+When adding a new service:
+
+- [ ] Import the service class and its dependencies
+- [ ] Choose the appropriate binding strategy (`toDynamicValue`, `toConstantValue`, etc.)
+- [ ] Decide on lifecycle scope (singleton vs transient)
+- [ ] Resolve dependencies via `ctx.container.get()` or pass configuration
+- [ ] Keep services in logical groups (infrastructure, repositories, use cases)
+- [ ] Test service resolution in integration tests
 
 ### 3. Use Services in React Components
 
