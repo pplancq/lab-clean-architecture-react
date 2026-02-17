@@ -173,7 +173,7 @@ describe('AddGameUseCase', () => {
 
       // Assert
       expect(result.isErr()).toBeTruthy();
-      const error = result.getError() as ValidationError;
+      const error = result.getError() as RepositoryError;
       expect(error).toBeInstanceOf(RepositoryError);
       expect(error.type).toBe('Repository');
       expect(error.message).toContain('Failed to save game');

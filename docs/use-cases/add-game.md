@@ -74,12 +74,13 @@ If additional data arrives empty or invalid from the UI, the domain validation w
 ### Basic Usage
 
 ```typescript
-import { container } from '@/collection/serviceCollection';
-import { COLLECTION_SERVICES } from '@/collection/serviceIdentifiers';
-import { AddGameDTO } from '@/collection/application/dtos/AddGameDTO';
+import { serviceContainer } from '@App/config/serviceContainer';
+import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
+import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
+import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
 
 // Get the use case from DI container
-const addGameUseCase = container.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
+const addGameUseCase = serviceContainer.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
 
 // Create DTO from user input
 const dto = new AddGameDTO(
@@ -107,10 +108,11 @@ if (result.isOk()) {
 
 ```typescript
 import { useCallback, useState } from 'react';
-import { container } from '@/collection/serviceCollection';
-import { COLLECTION_SERVICES } from '@/collection/serviceIdentifiers';
-import type { AddGameUseCaseInterface } from '@/collection/application/use-cases/AddGameUseCaseInterface';
-import type { ApplicationErrorInterface } from '@/collection/application/errors/ApplicationErrorInterface';
+import { serviceContainer } from '@App/config/serviceContainer';
+import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
+import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
+import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
+import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
 
 export function useAddGame() {
   const [isLoading, setIsLoading] = useState(false);
@@ -120,7 +122,7 @@ export function useAddGame() {
     setIsLoading(true);
     setError(null);
 
-    const useCase = container.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
+    const useCase = serviceContainer.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
 
     const result = await useCase.execute(dto);
 
