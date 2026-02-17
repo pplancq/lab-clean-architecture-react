@@ -37,14 +37,22 @@ export class IndexedDB implements IndexedDBInterface {
    * ```
    */
   async getDatabase(): Promise<IDBDatabase> {
+    // If database promise exists, try to resolve it
     if (this.dbPromise) {
-      return this.dbPromise;
+      try {
+        return await this.dbPromise;
+      } catch {
+        // Clear failed promise and retry
+        this.dbPromise = null;
+      }
     }
 
+    // Create new promise to open database
     this.dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.dbVersion);
 
       request.onerror = () => {
+        this.dbPromise = null; // Clear promise on error to allow retry
         reject(new Error(`Failed to open database: ${request.error?.message ?? 'Unknown error'}`));
       };
 

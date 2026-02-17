@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import type { Game } from '@Collection/domain/entities/Game';
 import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
 import type { GameDTO } from '@Collection/infrastructure/persistence/dtos/GameDTO';

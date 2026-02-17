@@ -133,7 +133,7 @@ if (saveResult.isOk()) {
   console.log('Game saved successfully');
 } else {
   const error = saveResult.getError();
-  if (error.type === 'QuotaExceeded') {
+  if (error instanceof QuotaExceededError) {
     // Handle storage quota exceeded
   }
 }
@@ -145,7 +145,7 @@ if (findResult.isOk()) {
   console.log(`Found: ${game.getTitle()}`);
 } else {
   const error = findResult.getError();
-  if (error.type === 'NotFound') {
+  if (error instanceof NotFoundError) {
     console.log('Game not found');
   }
 }
@@ -183,19 +183,15 @@ type RepositoryError =
 const result = await repository.save(game);
 
 if (result.isErr()) {
-  const error = result.unwrapErr();
+  const error = result.getError();
 
-  switch (error.type) {
-    case 'QuotaExceededError':
-      // Show user: "Storage full, please free up space"
-      break;
-    case 'NotFoundError':
-      // Entity doesn't exist (shouldn't happen on save)
-      break;
-    case 'UnknownError':
-      // Log error details and show generic error message
-      console.error('Database error:', error.details);
-      break;
+  if (error instanceof QuotaExceededError) {
+    // Show user: "Storage full, please free up space"
+  } else if (error instanceof NotFoundError) {
+    // Entity doesn't exist (shouldn't happen on save)
+  } else if (error instanceof UnknownError) {
+    // Log error details and show generic error message
+    console.error('Database error:', error.originalError);
   }
 }
 ```

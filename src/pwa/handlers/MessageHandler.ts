@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import type { HandlerInterface } from '@Pwa/handlers/HandlerInterface';
 
 declare const self: ServiceWorkerGlobalScope;

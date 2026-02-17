@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { RepositoryInterface } from '@Shared/domain/repositories/RepositoryInterface';
 import type { Game } from '../entities/Game';
 

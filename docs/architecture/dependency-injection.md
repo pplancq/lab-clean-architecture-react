@@ -168,33 +168,46 @@ export const serviceCollection: ContainerModule = new ContainerModule(bind => {
 Here's the actual implementation from the Collection bounded context:
 
 ```typescript
+// src/collection/config/serviceIdentifiers.ts
+export const COLLECTION_SERVICES = Object.freeze({
+  IndexedDB: Symbol.for('Collection.IndexedDB'),
+  GameRepository: Symbol.for('Collection.GameRepository'),
+} as const);
+
 // src/collection/serviceCollection.ts
-import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
 import { ContainerModule } from 'inversify';
+import type { GameRepositoryInterface } from './domain/repositories/GameRepositoryInterface';
+import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
+import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
 import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
+import { COLLECTION_SERVICES } from './config/serviceIdentifiers';
 
 export const serviceCollection: ContainerModule = new ContainerModule(options => {
-  // Register IndexedDB service with configuration
+  // Bind IndexedDB implementation to interface
   options
-    .bind(IndexedDB)
+    .bind<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)
     .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
     .inSingletonScope();
 
-  // Register Game Repository with dependency injection
+  // Bind GameRepository implementation to interface
   options
-    .bind(IndexedDBGameRepository)
-    .toDynamicValue(service => new IndexedDBGameRepository(service.get(IndexedDB)))
+    .bind<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)
+    .toDynamicValue(
+      services => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
+    )
     .inSingletonScope();
 });
 ```
 
 **Key Points:**
 
-1. **No Symbol Identifiers**: Services are bound directly to their classes
-2. **`toDynamicValue`**: Allows custom instantiation logic with dependencies
-3. **`inSingletonScope()`**: Ensures only one instance exists (shared state)
-4. **Dependency Resolution**: `service.get(IndexedDB)` retrieves the IndexedDB dependency
-5. **Configuration on Creation**: IndexedDB is configured with database name, version, and store name
+1. **Symbol Identifiers**: Services use Symbol.for() for unique identifiers
+2. **Bind to Interfaces**: Bind implementations to interfaces following Clean Architecture
+3. **Object.freeze**: Ensures service identifiers cannot be modified at runtime
+4. **`toDynamicValue`**: Allows custom instantiation logic with dependencies
+5. **`inSingletonScope()`**: Ensures only one instance exists (shared state)
+6. **Dependency Resolution**: `services.get<T>(identifier)` retrieves typed dependencies
+7. **Configuration on Creation**: IndexedDB is configured with database name, version, and store name
 
 #### Service Binding Strategies
 
