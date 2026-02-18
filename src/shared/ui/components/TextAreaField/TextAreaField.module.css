@@ -1,0 +1,90 @@
+.textAreaField {
+  all: unset;
+  display: grid;
+  grid-template-areas:
+    'label'
+    'input'
+    'helper-text';
+  align-items: center;
+  gap: 6px;
+
+  & :global(.label) {
+    grid-area: label;
+  }
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  & :global(.helper-text) {
+    grid-area: helper-text;
+  }
+}
+
+.textAreaFieldInline {
+  grid-template-areas:
+    'label input'
+    'null helper-text';
+
+  & :global(.label) {
+    min-width: 100px;
+  }
+}
+
+.textArea {
+  --textarea-padding-vertical: var(--padding-1);
+  --textarea-padding-horizontal: var(--padding-2);
+  --textarea-border-radius: var(--border-radius-small);
+  --textarea-border-color: var(--color-background-alt);
+  --textarea-border-width: 1px;
+  --textarea-color: var(--color-text-primary);
+  --textarea-background-color: var(--color-neutral-light);
+
+  all: unset;
+  padding: var(--textarea-padding-vertical) var(--textarea-padding-horizontal);
+  border: var(--textarea-border-width) solid var(--textarea-border-color);
+  border-radius: var(--textarea-border-radius);
+  grid-area: input;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-default);
+  line-height: var(--line-height-24);
+  color: var(--textarea-color);
+  background-color: var(--textarea-background-color);
+  resize: both;
+
+  &::placeholder {
+    --textarea-color: var(--color-text-hint);
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 1px var(--textarea-border-color) inset;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-main-light);
+    outline-offset: 2px;
+  }
+
+  &:hover,
+  &:not(&:placeholder-shown, &:disabled) {
+    --textarea-border-color: var(--color-primary-main-light);
+  }
+
+  &:is(&:disabled) {
+    --textarea-border-color: var(--color-disabled-foreground);
+    --textarea-color: var(--color-text-disabled);
+    --textarea-background-color: var(--color-disabled-background);
+
+    box-shadow: unset;
+    cursor: not-allowed;
+  }
+}
+
+.textAreaError {
+  --textarea-color: var(--color-tertiary-main-light);
+
+  &:hover,
+  &:focus,
+  &:not(&:disabled) {
+    --textarea-border-color: var(--color-tertiary-main-light);
+  }
+}
