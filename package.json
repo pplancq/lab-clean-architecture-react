@@ -37,6 +37,7 @@
     "postinstall": "msw init"
   },
   "dependencies": {
+    "@hookform/devtools": "^4.4.0",
     "@hookform/resolvers": "^5.2.2",
     "@pplancq/shelter-ui-css": "^1.0.0-alpha.4",
     "@pplancq/shelter-ui-icon": "^1.0.0-alpha.4",
