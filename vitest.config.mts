@@ -1,7 +1,6 @@
 import react from '@vitejs/plugin-react-swc';
 import { resolve } from 'node:path';
 import { loadEnv } from 'vite';
-import svgr from 'vite-plugin-svgr';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 // eslint-disable-next-line import/no-unresolved
 import { defineConfig } from 'vitest/config';
@@ -15,15 +14,21 @@ export default defineConfig(({ mode }) => {
       viteTsconfigPaths({
         projects: [resolve(__dirname, './tsconfig.test.json')],
       }),
-      svgr(),
     ],
     envPrefix: env.ENV_PREFIX ?? 'FRONT_',
+    build: {
+      assetsInlineLimit: 0,
+    },
     test: {
       globals: true,
       environment: 'jsdom',
       setupFiles: 'vitest.setup.ts',
       clearMocks: true,
-      css: false,
+      css: {
+        modules: {
+          classNameStrategy: 'non-scoped',
+        },
+      },
       reporters: ['default', 'junit', 'vitest-sonar-reporter'],
       outputFile: {
         'vitest-sonar-reporter': 'test-reports/unit/sonar-report.xml',
@@ -31,6 +36,11 @@ export default defineConfig(({ mode }) => {
       },
       include: ['tests/unit/**/*.test.[jt]s?(x)'],
       maxWorkers: env.CI ? 2 : undefined,
+      server: {
+        deps: {
+          inline: ['@pplancq/shelter-ui-react'],
+        },
+      },
       coverage: {
         enabled: env.CI === 'true',
         reporter: ['lcovonly', 'html', 'text', 'text-summary'],

@@ -13,4 +13,5 @@ export const HEADERS = Object.freeze({
 export const MIME_TYPES = Object.freeze({
   json: 'application/json',
   text: 'text/plain',
+  svg: 'image/svg+xml',
 });
