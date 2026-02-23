@@ -105,7 +105,7 @@ sprints:
     goal: "Enable users to add games and view their collection with offline persistence"
     start_date: "2026-02-10"
     end_date: "2026-02-23"  # 2 weeks (~10 working days)
-    status: in-progress
+    status: completed
     capacity: 10 days
     completed_stories: 0
     total_stories: 7  # Committed stories (2.1 → 2.5 + 2 SonarCloud fixes)
@@ -149,6 +149,62 @@ sprints:
     priority: P0
     velocity_target: 6 days  # Conservative target (5.5 Epic 2 + 0.5 SonarCloud)
 
+    completed_stories: 6  # 2.1, 2.2, 2.3, 2.4 + sonar-63 + sonar-64 (updated 2026-02-23 from GitHub)
+
+    retrospective: done  # 2026-02-23 | epic-2-retro-2026-02-23.md (partial retro)
+
+  # ================================================================
+  # Sprint 3: Complete Epic 2 CRUD + UX Foundation
+  # ================================================================
+  sprint-3:
+    name: "Complete Collection CRUD & UX Foundation"
+    goal: "Complete Epic 2 (2.5–2.8), establish UX direction for Epic 3, fix Sonar #106"
+    start_date: "2026-02-24"
+    end_date: "2026-03-09"  # 2 weeks (~10 working days)
+    status: planned
+    capacity: 10 days
+
+    # Sprint 3 Objectives:
+    # 1. Complete Epic 2 — GetGames, GetGameById, EditGame, DeleteGame
+    # 2. UX wireframe session with Sally (foundations for Epic 3 UI)
+    # 3. Fix Sonar #106 (IndexedDB Error objects — high priority)
+    # 4. ADR-011 page/layout ownership (post Sally UX session)
+
+    # Committed Stories (MUST HAVE — ~3.75 days):
+    committed:
+      # Epic 2 carry-overs (3 days):
+      - 2-5-create-getgames-use-case-and-display-game-list               # GitHub #13 | P0 | S (0.5d)
+      - 2-6-create-getgamebyid-use-case-and-display-game-detail-view     # GitHub #14 | P0 | M (1d)
+      - 2-7-implement-editgame-use-case-and-edit-ui                      # GitHub #15 | P0 | M (1d)
+      - 2-8-implement-deletegame-use-case-and-delete-confirmation        # GitHub #16 | P0 | S (0.5d)
+      # Tech debt — Sonar quick wins (can run in parallel via GitHub agent):
+      - sonar-106-indexeddb-error-objects  # GitHub #106 | P1 | High | XS (0.25d)
+      - sonar-65-top-level-await           # GitHub #65  | P1 | Critical | XS (0.25d)
+      - sonar-62-globalthis                # GitHub #62  | P3 | Low | XS (0.25d)
+
+    # Ceremonies:
+    ceremonies:
+      - ux-session-sally  # UX wireframe + accessibility — prerequisite for ADR-011 and Epic 3
+
+    # Stretch Goals (NICE TO HAVE — ~3 days):
+    stretch:
+      - adr-011-page-layout-ownership          # After Sally UX session | S (0.5d)
+      - pages-folder-pattern-fix               # Home + AddGame → <Name>/<Name>.tsx | S (0.5d)
+      - shelter-ui-migrate-selectfield         # GitHub #116 | shared/ui → shelter-ui | M (1d) | priority:low — issue created
+      - shelter-ui-migrate-textareafield       # GitHub #115 | shared/ui → shelter-ui | S (0.5d) | priority:high — issue created
+
+    # Deferred (P3 — post-Epic 2):
+    deferred:
+      - pwa-di-symbol-refactoring              # Align PWA DI with Symbol pattern | M (1d) | A10
+      - architecture-diagram-mermaid           # Deferred from Epic 1 | S (0.5d) | A11
+
+    committed_size: "4.25 days"  # 3d Epic 2 + 0.75d Sonar x3 + 0.5d UX ceremony
+    stretch_size: "2 days"
+    total_potential_size: "6.75 days"
+    priority: P0
+    velocity_target: "4 days"  # Conservative — Epic 2 stories should flow quickly
+    completed_stories: 0
+    total_stories: 7  # Committed stories (2.5 → 2.8 + sonar-106, 65, 62)
     retrospective: pending
 
 # ================================================================
@@ -175,15 +231,20 @@ development_status:
   # Priority: P0 | Stories: 8 | Total Size: 8.5 days
   # ================================================================
   epic-2: in-progress  # GitHub #8 | Sprint 2 | Started 2026-02-10
-  2-1-create-game-domain-entity-and-value-objects: ready-for-dev  # GitHub #9 | P0 | M (1d) | Sprint 2 (committed)
-  2-2-implement-indexeddb-repository-for-game-persistence: ready-for-dev  # GitHub #10 | P0 | L (2.5d) | Sprint 2 (committed)
-  2-3-create-addgame-use-case: ready-for-dev  # GitHub #11 | P0 | S (0.5d) | Sprint 2 (committed)
-  2-4-build-add-game-ui-form-with-validation: ready-for-dev  # GitHub #12 | P0 | M (1d) | Sprint 2 (committed)
-  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 2 (committed)
+  2-1-create-game-domain-entity-and-value-objects: done  # GitHub #9 | P0 | M (1d) | Sprint 2 | closed 2026-02-23
+  2-2-implement-indexeddb-repository-for-game-persistence: done  # GitHub #10 | P0 | L (2.5d) | Sprint 2 | closed 2026-02-23
+  2-3-create-addgame-use-case: done  # GitHub #11 | P0 | S (0.5d) | Sprint 2 | closed 2026-02-23
+  2-4-build-add-game-ui-form-with-validation: done  # GitHub #12 | P0 | M (1d) | Sprint 2 | closed 2026-02-23
+  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 2 (committed) | NOT done
   2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 2 (stretch)
   2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 2 (stretch)
   2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 2 (stretch)
-  epic-2-retrospective: optional
+  epic-2-retrospective: done  # Partial retro 2026-02-23 | epic-2-retro-2026-02-23.md
+
+  # Sonar / Tech debt (outside epic stories)
+  sonar-106-indexeddb-error-objects: backlog  # GitHub #106 | P1 | High | XS (0.25d) | Sprint 3
+  sonar-65-top-level-await: backlog           # GitHub #65 | Critical | S (0.5d) | Sprint 3 stretch
+  sonar-62-globalthis: backlog                # GitHub #62 | Low | XS (0.25d) | deferred
 
   # ================================================================
   # Epic 3: Search, Filter & Sort Collection (GitHub #17)
@@ -245,7 +306,10 @@ development_status:
   6-2-build-export-ui-with-privacy-warning: backlog  # GitHub #42 | P2 | L (2.5d)
   6-3-create-importcollection-use-case-with-validation: backlog  # GitHub #44 | P2 | M (1d)
   6-4-build-import-ui-with-conflict-resolution: backlog  # GitHub #45 | P2 | S (0.5d)
-  epic-6-retrospective: optional
+  epic-7: backlog  # GitHub #114 | Toolkit contributions (non-product)
+  7-1-migrate-selectfield-to-shelter-ui: backlog   # GitHub #116 | toolkit-contrib | M (1d) | priority:low | Sprint 3 stretch
+  7-2-migrate-textareafield-to-shelter-ui: backlog # GitHub #115 | toolkit-contrib | S (0.5d) | priority:high | Sprint 3 stretch
+  epic-7-retrospective: optional
 
 # ================================================================
 # SUMMARY (from GitHub Issues)
