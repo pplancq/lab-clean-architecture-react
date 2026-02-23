@@ -307,17 +307,27 @@ development_status:
   6-3-create-importcollection-use-case-with-validation: backlog  # GitHub #44 | P2 | M (1d)
   6-4-build-import-ui-with-conflict-resolution: backlog  # GitHub #45 | P2 | S (0.5d)
   epic-7: backlog  # GitHub #114 | Toolkit contributions (non-product)
-  7-1-migrate-selectfield-to-shelter-ui: backlog   # GitHub #116 | toolkit-contrib | M (1d) | priority:low | Sprint 3 stretch
-  7-2-migrate-textareafield-to-shelter-ui: backlog # GitHub #115 | toolkit-contrib | S (0.5d) | priority:high | Sprint 3 stretch
+  7-1-migrate-textareafield-to-shelter-ui: backlog  # GitHub #115 | toolkit-contrib | S (0.5d) | priority:critical | Sprint 3 stretch
+  7-2-migrate-selectfield-to-shelter-ui: backlog    # GitHub #116 | toolkit-contrib | M (1d) | priority:low | Sprint 3 stretch
   epic-7-retrospective: optional
+
+  # ================================================================
+  # Epic 8: Toast Notification System (GitHub #117)
+  # Priority: P1/P2 Mixed | Stories: 3 | Total Size: ~1.5 days
+  # ================================================================
+  epic-8: backlog  # GitHub #117 | Fully parallel — can start any sprint from Sprint 4
+  8-1-toast-system-core-module: backlog          # GitHub #118 | P1 | S (0.5d)
+  8-2-shared-integration-ports-adapters-di-bridge: backlog  # GitHub #119 | P1 | S (0.5d)
+  8-3-migrate-existing-notifications-to-toast: backlog      # GitHub #120 | P2 | XS (0.25d)
+  epic-8-retrospective: optional
 
 # ================================================================
 # SUMMARY (from GitHub Issues)
 # ================================================================
 summary:
-  total_epics: 6
-  total_stories: 47  # 39 base stories + 1 CI story + 1 TS aliases story + 6 sub-stories (5.9.1-5.9.6)
-  total_items: 53  # 6 epics + 47 stories
+  total_epics: 8
+  total_stories: 52  # 47 base + 2 Epic 7 stories + 3 Epic 8 stories
+  total_items: 60  # 8 epics + 52 stories
 
   breakdown_by_epic:
     epic_1_foundation: 8  # stories 1.1, 1.2, 1.2.1, 1.3-1.7
@@ -326,6 +336,8 @@ summary:
     epic_4_api_enrichment: 6  # stories 4.1-4.6
     epic_5_wishlist: 15  # stories 5.1-5.8 + 5.9 parent + 5.9.1-5.9.6 sub-stories
     epic_6_backup: 4  # stories 6.1-6.4
+    epic_7_toolkit_contrib: 2  # stories 7.1-7.2 (shelter-ui migrations)
+    epic_8_toast_system: 3  # stories 8.1-8.3
 
   breakdown_by_priority:
     critical: 18  # epic 1 (7) + epic 2 (8) + story 2.5 (1) + story 1.7 (1) + story 5.9.x (1)

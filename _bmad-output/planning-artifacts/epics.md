@@ -4,10 +4,10 @@ inputDocuments:
   - '_bmad-output/planning-artifacts/prd.md'
   - '_bmad-output/planning-artifacts/architecture.md'
   - '_bmad-output/planning-artifacts/ux-design-specification.md'
-epicCount: 6
+epicCount: 8
 epicApproved: true
 storiesComplete: true
-totalStories: 39
+totalStories: 42
 ---
 
 # lab-clean-architecture-react - Epic Breakdown
@@ -456,6 +456,42 @@ This document provides the complete epic and story breakdown for lab-clean-archi
 - Focus management in modals
 
 **Rationale:** Standalone epic for data portability. Uses data from Epic 2+5 (collection + wishlist) but provides distinct functionality. Security for Paul against data loss.
+
+### Epic 7: Shelter-UI Contributions
+
+**User Outcome:** Reusable UI components developed in this project are contributed to `@pplancq/shelter-ui-react` and consumed back as a package dependency, reducing local code.
+
+**FRs covered:** N/A (tooling/infrastructure)
+
+**GitHub Epic:** [#114](https://github.com/pplancq/lab-clean-architecture-react/issues/114)
+
+- Story 7.1: Migrate TextAreaField to shelter-ui (#115) - Size: S, Priority: critical
+- Story 7.2: Migrate SelectField to shelter-ui (#116) - Size: M, Priority: low
+
+**Rationale:** Standalone infrastructure epic. Demonstrates component extraction and open-source contribution workflow.
+
+---
+
+### Epic 8: Toast Notification System
+
+**User Outcome:** The user receives clear, non-intrusive feedback for every significant action (add, edit, delete, error) across the entire application, without disrupting navigation or interface layout.
+
+**FRs covered:** Transversal — supports all FRs requiring user feedback (FR1, FR4, FR5, FR13, FR16, FR17 and all future interaction FRs)
+
+**Architecture Requirements:**
+- Standalone toast module: `ToastService`, `AbstractObserver`, `ToastProvider`, `ToastContainer`, hooks — zero app dependencies
+- `NotificationServiceInterface` in `shared/domain` (port)
+- `ToastNotificationService` in `shared/infrastructure` (adapter)
+- `ToastServiceBridge` null-rendering component in `shared/ui`
+- `ToastProvider` mounted above `ServiceProvider` in `Providers.tsx`
+
+**Rationale:** Independent epic, fully parallel with Epics 2–7. Eliminates technical debt from naive per-page message systems (Story 2.4). Demonstrates Clean Architecture Ports & Adapters applied to a cross-cutting UI concern.
+
+**GitHub Epic:** [#117](https://github.com/pplancq/lab-clean-architecture-react/issues/117)
+
+- Story 8.1: Toast System Core Module (#118) - Size: S, Priority: P1
+- Story 8.2: Shared Integration — Ports & Adapters + DI Bridge (#119) - Size: S, Priority: P1
+- Story 8.3: Migrate Existing Notifications to Toast System (#120) - Size: XS, Priority: P2
 
 ---
 
@@ -1437,3 +1473,82 @@ So that I can restore my collection data safely with full visibility.
 **And** large imports don't freeze the UI (chunked processing)
 **And** file size limit is enforced (e.g., max 10MB)
 
+
+
+## Epic 8: Toast Notification System
+
+**Epic Goal:** Set up a global, decoupled toast notification system following Clean Architecture Ports & Adapters pattern. The toast module is a standalone library bridged into the app via a shared adapter and a DI bridge component — allowing any bounded context to trigger user feedback without coupling to the UI implementation.
+
+**GitHub Epic:** [#117](https://github.com/pplancq/lab-clean-architecture-react/issues/117)
+
+### Story 8.1: Toast System Core Module
+
+As a **developer (Alex)**,
+I want a standalone toast notification module with no application or DI dependencies,
+So that it can be used independently or integrated via the Clean Architecture adapter pattern in any project.
+
+**Acceptance Criteria:**
+
+**Given** I need a toast notification system
+**When** I implement the toast core module
+**Then** an `AbstractObserver` abstract class exists with `subscribe(observer)` and `notifyObservers()` methods
+**And** `ToastService` extends `AbstractObserver` and manages toast state (add, remove, getAll, getById)
+**And** each toast has: `id`, `message`, `type` (success | error | info | warning), `duration` (default 3000ms)
+**And** `ToastProvider` accepts an optional `service` prop — creates its own instance if not provided
+**And** `useToastSelector` uses `useSyncExternalStore` to subscribe to `ToastService` state changes
+**And** `ToastContainer` is wrapped in `<section aria-live="polite" aria-label="Notifications">`
+**And** each `Toast` auto-dismisses after its `duration`
+**And** the entire module has zero dependencies on app code or DI container
+
+---
+
+**Given** the toast module is implemented
+**When** I run unit tests
+**Then** `ToastService` and `AbstractObserver` have full unit test coverage
+
+**GitHub Story:** [#118](https://github.com/pplancq/lab-clean-architecture-react/issues/118)
+
+---
+
+### Story 8.2: Shared Integration — Ports & Adapters + DI Bridge
+
+As a **developer (Alex)**,
+I want the toast system integrated into the app via Ports & Adapters with a DI bridge component,
+So that any bounded context can trigger toast notifications through a clean interface without knowing about the React UI implementation.
+
+**Acceptance Criteria:**
+
+**Given** Story 8.1 is complete
+**When** I implement the shared integration
+**Then** `NotificationServiceInterface` exists in `src/shared/domain/notifications/NotificationServiceInterface.d.ts`
+**And** the interface exposes: `success()`, `error()`, `info()`, `warning()` methods
+**And** `ToastNotificationService` implements the interface and delegates to `ToastService`
+**And** `ToastServiceBridge` (null-rendering) reads `ToastService` from context and registers `ToastNotificationService` in the DI container on mount
+**And** `ToastProvider` is mounted **above** `ServiceProvider` in `Providers.tsx`
+**And** `ToastServiceBridge` is mounted inside both providers
+**And** calling `notificationService.success("msg")` via DI displays a toast in the UI
+**And** bounded contexts have zero import dependency on the toast module
+
+**GitHub Story:** [#119](https://github.com/pplancq/lab-clean-architecture-react/issues/119)
+
+---
+
+### Story 8.3: Migrate Existing Notifications to Toast System
+
+As a **Paul (user)**,
+I want all application feedback messages to be displayed as consistent toast notifications,
+So that I get clear, uniform feedback for every action without disrupting my current view.
+
+**Acceptance Criteria:**
+
+**Given** Stories 8.1 and 8.2 are complete
+**When** I migrate existing notifications
+**Then** all inline message states (`successMessage`, `errorMessage`) are removed from components
+**And** affected components inject `NotificationServiceInterface` via DI
+**And** no component directly imports or references `ToastService`
+**And** adding a game displays a success toast
+**And** use case errors display an error toast
+**And** no page contains its own inline success/error message system
+**And** existing tests are updated to mock `NotificationServiceInterface`
+
+**GitHub Story:** [#120](https://github.com/pplancq/lab-clean-architecture-react/issues/120)
