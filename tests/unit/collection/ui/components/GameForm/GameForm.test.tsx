@@ -4,6 +4,9 @@ import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
 import { renderSuspense } from '@pplancq/svg-react/tests';
+import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
+import { DateFormatter } from '@Shared/infrastructure/utils/DateFormatter';
+import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
 import { Result } from '@Shared/domain/result/Result';
 import { screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -19,6 +22,7 @@ const createWrapper =
 const createContainer = (useCaseMock: AddGameUseCaseInterface) => {
   const container = new Container();
   container.bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase).toConstantValue(useCaseMock);
+  container.bind<DateFormatterInterface>(SHARED_SERVICES.DateFormatter).toConstantValue(new DateFormatter());
   return container;
 };
 
@@ -64,7 +68,8 @@ describe('GameForm', () => {
       const useCaseMock = { execute: vi.fn() };
       await renderGameForm(useCaseMock);
 
-      const today = new Date().toISOString().split('T')[0];
+      const d = new Date();
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const dateInput = screen.getByLabelText(/purchase date/i);
       expect(dateInput).toHaveValue(today);
     });

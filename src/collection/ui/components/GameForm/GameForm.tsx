@@ -11,6 +11,8 @@ import { FormInputField } from '@Shared/ui/components/formField/FormInputField/F
 import { FormRadioGroup } from '@Shared/ui/components/formField/FormRadioGroup/FormRadioGroup';
 import { FormSelectField } from '@Shared/ui/components/formField/FormSelectField/FormSelectField';
 import { FormTextAreaField } from '@Shared/ui/components/formField/FormTextAreaField/FormTextAreaField';
+import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
+import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
 import { useService } from '@Shared/ui/hooks/useService/useService';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -18,6 +20,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'PC'];
 
 const FORMATS = ['Physical', 'Digital'] as const;
+
+const ERROR_MESSAGES: Record<string, string> = {
+  Repository: 'An error occurred while saving the game. Please try again.',
+  Validation: 'Please check your input and try again.',
+};
 
 type GameFormData = {
   title: string;
@@ -29,13 +36,16 @@ type GameFormData = {
 
 export const GameForm = () => {
   const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
+  const dateFormatter = useService<DateFormatterInterface>(SHARED_SERVICES.DateFormatter);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
   const methods = useForm<GameFormData>({
     defaultValues: {
+      title: '',
+      platform: '',
       format: 'Physical',
-      purchaseDate: new Date().toISOString().split('T')[0],
+      purchaseDate: dateFormatter.toLocalDateString(new Date()),
       description: '',
     },
   });
@@ -56,7 +66,7 @@ export const GameForm = () => {
       data.description,
       data.platform,
       data.format,
-      data.purchaseDate ? new Date(data.purchaseDate) : null,
+      data.purchaseDate ? dateFormatter.fromLocalDateString(data.purchaseDate) : null,
       'Owned',
     );
 
@@ -66,7 +76,7 @@ export const GameForm = () => {
       setSuccessMessage('Game added successfully');
       reset();
     } else {
-      setGlobalError(result.getError().message);
+      setGlobalError(ERROR_MESSAGES[result.getError().type] ?? 'An unexpected error occurred. Please try again.');
     }
   };
 
