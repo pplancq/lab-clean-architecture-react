@@ -33,14 +33,15 @@ Each ADR follows this structure:
 | [ADR-006](./ADR-006-pwa-from-day-one.md)                 | PWA from Day One                                  | ✅ Accepted | 2026-02-05 | Epic 1       |
 | [ADR-007](./ADR-007-no-typescript-decorators.md)         | No TypeScript Decorators for Dependency Injection | ✅ Accepted | 2026-02-09 | Epic 1 Retro |
 | [ADR-008](./ADR-008-result-pattern-usage-convention.md)  | Result Pattern Usage Convention                   | ✅ Accepted | 2026-02-09 | Epic 1 Retro |
+| [ADR-009](./ADR-009-symbol-based-service-identifiers.md) | Symbol-based Service Identifiers for DI           | ✅ Accepted | 2026-02-23 | Epic 2 Retro |
+| [ADR-010](./ADR-010-dto-date-type-conventions.md)        | Date Type Conventions in Application DTOs         | ✅ Accepted | 2026-02-23 | Epic 2 Retro |
 
 ## Pending ADRs
 
-| Topic                               | Priority | Target Epic |
-| ----------------------------------- | -------- | ----------- |
-| PWA Architecture Pattern (detailed) | P2       | Epic 2+     |
-| IndexedDB Schema Migration Strategy | P1       | Epic 2      |
-| Component Architecture Pattern      | P1       | Epic 2      |
+| Topic                                 | Priority | Target Epic             |
+| ------------------------------------- | -------- | ----------------------- |
+| Page/Layout Ownership (multi-context) | P1       | Epic 2 Retro / Sprint 3 |
+| PWA Architecture Pattern (detailed)   | P2       | Epic 2+                 |
 
 ## References
 
