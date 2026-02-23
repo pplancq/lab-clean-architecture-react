@@ -1,0 +1,161 @@
+name: Toolkit Contribution
+description: Technical story to track a component contribution to shelter-ui and its migration in this project
+title: '[Toolkit] Migrate <ComponentName> to shelter-ui'
+labels: ['toolkit-contrib']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🧰 Toolkit Contribution Story
+
+        ⚠️ **Maintainers Only** - This template is reserved for project maintainers to track shelter-ui contributions.
+
+        If you want to propose a new UI component or improvement, please use the [Enhancement](?template=2-enhancement.yml) template instead.
+
+        ---
+
+        Use this template when a component implemented locally in `shared/ui` is a candidate for contribution to `@pplancq/shelter-ui-react`.
+
+        **Workflow:** `shared/ui` (local) → issue in shelter-ui repo → PR → release → migrate project → remove local copy.
+
+  - type: input
+    id: component-name
+    attributes:
+      label: Component Name
+      description: Name of the component to contribute (PascalCase)
+      placeholder: 'SelectField'
+    validations:
+      required: true
+
+  - type: input
+    id: current-location
+    attributes:
+      label: Current Location
+      description: Path of the component in this project
+      placeholder: 'src/shared/ui/components/SelectField/SelectField.tsx'
+    validations:
+      required: true
+
+  - type: textarea
+    id: component-description
+    attributes:
+      label: Component Description
+      description: What the component does and why it belongs in shelter-ui
+      placeholder: |
+        SelectField wraps a native <select> element with label, error message, and accessibility support (aria-invalid, aria-describedby). It follows the same API as shelter-ui's InputField and should be part of the form field family.
+    validations:
+      required: true
+
+  - type: textarea
+    id: adaptation-notes
+    attributes:
+      label: Adaptation Notes
+      description: Changes needed to make the component "shelter-ui ready" (more generic, different API, etc.)
+      placeholder: |
+        - Remove project-specific field name coupling
+        - Make label and error props more generic
+        - Align prop names with shelter-ui InputField conventions
+        - Add Storybook story
+    validations:
+      required: false
+
+  - type: input
+    id: shelterui-issue
+    attributes:
+      label: shelter-ui Issue
+      description: Link to the issue opened in the shelter-ui repository
+      placeholder: 'https://github.com/pplancq/shelter-ui/issues/XXX'
+    validations:
+      required: false
+
+  - type: input
+    id: shelterui-pr
+    attributes:
+      label: shelter-ui PR
+      description: Link to the PR opened in the shelter-ui repository
+      placeholder: 'https://github.com/pplancq/shelter-ui/pull/XXX'
+    validations:
+      required: false
+
+  - type: input
+    id: shelterui-release
+    attributes:
+      label: shelter-ui Release
+      description: Release version that includes this component (fill when available)
+      placeholder: 'v1.2.0-alpha.1'
+    validations:
+      required: false
+
+  - type: input
+    id: parent-epic
+    attributes:
+      label: Parent Epic
+      description: Parent epic issue number (shelter-ui contributions epic)
+      placeholder: '#XXX'
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contribution-workflow
+    attributes:
+      label: Contribution Workflow
+      description: Steps to complete this toolkit contribution
+      options:
+        - label: Component exists and is working in `shared/ui`
+          required: false
+        - label: Adaptation work identified (prop API, generics, Storybook)
+          required: false
+        - label: Issue opened in shelter-ui repository
+          required: false
+        - label: Component adapted and PR opened in shelter-ui
+          required: false
+        - label: shelter-ui PR reviewed and merged
+          required: false
+        - label: New shelter-ui release cut (alpha or stable)
+          required: false
+        - label: '`@pplancq/shelter-ui-react` version updated in this project'
+          required: false
+        - label: Project imports updated to use shelter-ui version
+          required: false
+        - label: Local `shared/ui` copy removed
+          required: false
+        - label: All tests pass after migration
+          required: false
+
+  - type: checkboxes
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: Story is done when all of these are met
+      options:
+        - label: Component published in a shelter-ui release
+          required: false
+        - label: This project consumes the shelter-ui version (not the local copy)
+          required: false
+        - label: Local `shared/ui` component deleted
+          required: false
+        - label: CI green (build + tests + Sonar)
+          required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Dependencies or blockers (internal and external)
+      placeholder: |
+        **Depends on:** Component must be stable in shared/ui before contributing
+        **External dependency:** shelter-ui release timeline (not fully controlled)
+        **Blocks:** none
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Additional context, open questions, or considerations
+      placeholder: |
+        - This story may stay "waiting" for an extended period after the shelter-ui PR is merged, until a release is cut.
+        - Do not remove the local copy until the shelter-ui version is confirmed working in this project.
+    validations:
+      required: false
