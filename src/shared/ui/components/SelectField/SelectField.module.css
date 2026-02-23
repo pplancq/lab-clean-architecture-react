@@ -1,0 +1,111 @@
+.selectField {
+  all: unset;
+  display: grid;
+  grid-template-areas:
+    'label'
+    'input'
+    'helper-text';
+  align-items: center;
+  gap: 6px;
+
+  & :global(.label) {
+    grid-area: label;
+  }
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  & :global(.helper-text) {
+    grid-area: helper-text;
+  }
+}
+
+.selectFieldInline {
+  grid-template-areas:
+    'label input'
+    'null helper-text';
+
+  & :global(.label) {
+    min-width: 100px;
+  }
+}
+
+.select {
+  --select-padding-vertical: var(--padding-1);
+  --select-padding-horizontal: var(--padding-2);
+  --select-border-radius: var(--border-radius-small);
+  --select-border-color: var(--color-primary-main-light);
+  --select-border-width: 1px;
+  --select-color: var(--color-text-primary);
+  --select-background-color: var(--color-neutral-light);
+
+  all: unset;
+  position: relative;
+  padding: var(--select-padding-vertical) var(--select-padding-horizontal);
+  padding-right: calc(var(--select-padding-horizontal) + 1rem);
+  border: var(--select-border-width) solid var(--select-border-color);
+  border-radius: var(--select-border-radius);
+  grid-area: input;
+  flex-grow: 1;
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-default);
+  line-height: var(--line-height-24);
+  color: var(--select-color);
+  background-color: var(--select-background-color);
+  cursor: pointer;
+
+  &:hover {
+    --select-border-color: var(--color-primary-main-light);
+
+    box-shadow: 0 0 0 1px var(--select-border-color) inset;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-main-light);
+    outline-offset: 2px;
+  }
+
+  &:is(&:disabled) {
+    --select-border-color: var(--color-disabled-foreground);
+    --select-color: var(--color-text-disabled);
+    --select-background-color: var(--color-disabled-background);
+
+    box-shadow: unset;
+    cursor: not-allowed;
+  }
+}
+
+.selectWrapper {
+  all: unset;
+  position: relative;
+  display: inline-flex;
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    width: 0;
+    height: 0;
+    border-top: 6px solid currentcolor;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    color: var(--color-text-primary);
+    pointer-events: none;
+    content: '';
+  }
+}
+
+.selectPlaceholder {
+  --select-color: var(--color-text-hint);
+  --select-border-color: var(--color-background-alt);
+}
+
+.selectError {
+  --select-color: var(--color-tertiary-main-light);
+
+  &:hover,
+  &:focus,
+  &:not(&:disabled) {
+    --select-border-color: var(--color-tertiary-main-light);
+  }
+}

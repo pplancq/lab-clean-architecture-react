@@ -336,15 +336,17 @@ npm run test:unit
 
 ## Structure Evolution
 
-### Phase 1: Structuring (Current)
+### Phase 1: Structuring
 
 ✅ Directories created with `.gitkeep`
 
-### Phase 2: Collection Context (Next)
+### Phase 2: Collection Context
 
-- Implement Domain entities
-- Implement Use Cases
-- Implement IndexedDB Repositories
+✅ Domain entities (`Game`, Value Objects)
+✅ Use Cases (`AddGameUseCase`)
+✅ IndexedDB Repositories (`IndexedDBGameRepository`)
+✅ UI Components (`GameForm`, `TextAreaField`, `SelectField`, `formField` wrappers)
+✅ Page & Route (`/add-game`)
 
 ### Phase 3: Wishlist Context
 
