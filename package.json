@@ -37,7 +37,12 @@
     "postinstall": "msw init"
   },
   "dependencies": {
+    "@hookform/devtools": "^4.4.0",
     "@hookform/resolvers": "^5.2.2",
+    "@pplancq/shelter-ui-css": "^1.0.0-alpha.4",
+    "@pplancq/shelter-ui-icon": "^1.0.0-alpha.4",
+    "@pplancq/shelter-ui-react": "^1.0.0-alpha.4",
+    "@pplancq/svg-react": "^2.2.2",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
     "inversify": "^7.11.0",
@@ -84,7 +89,6 @@
     "stylelint-prettier": "^5.0.3",
     "tsc-files": "^1.1.4",
     "typescript": "^5.9.3",
-    "vite-plugin-svgr": "^4.5.0",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18",
     "vitest-axe": "^1.0.0-pre.5",

@@ -28,7 +28,7 @@ Deep dive into each architectural layer:
 - **[Domain Layer](./layers/domain-layer.md)** - Business logic and domain purity rules
 - **Application Layer** _(Coming soon)_ - Use cases and application services
 - **Infrastructure Layer** _(Coming soon)_ - Adapters and external integrations
-- **UI Layer** _(Coming soon)_ - React components and presentation logic
+- **[UI Layer](./layers/ui-layer.md)** - React components, formField wrappers, RHF + Value Objects pattern
 
 ## 🎯 Use Cases
 
@@ -70,7 +70,8 @@ Recommended reading order for newcomers:
 3. **Learn constraints:** [Dependency Rules](./architecture/dependency-rules.md)
 4. **Setup DI:** [Dependency Injection](./architecture/dependency-injection.md)
 5. **Master domain:** [Domain Layer](./layers/domain-layer.md)
-6. **Explore code:** Check `src/` and `project-context.md`
+6. **See it in action:** [UI Layer](./layers/ui-layer.md) — components, forms, RHF + Value Objects
+7. **Explore code:** Check `src/` and `project-context.md`
 
 ## 📝 Contributing to Documentation
 
