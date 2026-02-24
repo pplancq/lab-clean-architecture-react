@@ -1,5 +1,6 @@
 import { Game } from '@Collection/domain/entities/Game';
 import { IndexedDBGameRepository } from '@Collection/infrastructure/persistence/IndexedDBGameRepository';
+import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
 import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
@@ -458,7 +459,7 @@ describe('IndexedDBGameRepository', () => {
       expect(result.getError()).toBeInstanceOf(QuotaExceededError);
     });
 
-    it('should return UnknownError with fallback message when save request.error is null', async () => {
+    it('should return IndexedDBRequestError with fallback message when save request.error is null', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
       const game = Game.create({
         id: 'game-1',
@@ -474,7 +475,8 @@ describe('IndexedDBGameRepository', () => {
 
       expect(result.isErr()).toBeTruthy();
       expect(result.getError()).toBeInstanceOf(Error);
-      expect(result.getError()).toBeInstanceOf(UnknownError);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect((result.getError() as IndexedDBRequestError).originalError).toBeNull();
       expect(result.getError().message).toBe('IndexedDB save request failed');
     });
   });

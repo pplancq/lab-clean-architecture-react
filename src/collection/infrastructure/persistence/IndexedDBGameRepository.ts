@@ -2,6 +2,7 @@
 import type { Game } from '@Collection/domain/entities/Game';
 import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
 import type { GameDTO } from '@Collection/infrastructure/persistence/dtos/GameDTO';
+import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
 import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
 import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
@@ -52,11 +53,11 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error ?? new Error('IndexedDB save request failed'));
+          reject(new IndexedDBRequestError('IndexedDB save request failed', request.error));
         };
 
         transaction.onerror = () => {
-          reject(transaction.error ?? new Error('IndexedDB save transaction failed'));
+          reject(new IndexedDBRequestError('IndexedDB save transaction failed', transaction.error));
         };
       });
     } catch (error) {
@@ -101,7 +102,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error ?? new Error('IndexedDB findById request failed'));
+          reject(new IndexedDBRequestError('IndexedDB findById request failed', request.error));
         };
       });
     } catch (error) {
@@ -144,7 +145,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error ?? new Error('IndexedDB findAll request failed'));
+          reject(new IndexedDBRequestError('IndexedDB findAll request failed', request.error));
         };
       });
     } catch (error) {
@@ -173,11 +174,11 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error ?? new Error('IndexedDB delete request failed'));
+          reject(new IndexedDBRequestError('IndexedDB delete request failed', request.error));
         };
 
         transaction.onerror = () => {
-          reject(transaction.error ?? new Error('IndexedDB delete transaction failed'));
+          reject(new IndexedDBRequestError('IndexedDB delete transaction failed', transaction.error));
         };
       });
     } catch (error) {
@@ -192,6 +193,11 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
    * @returns Result with appropriate RepositoryError
    */
   private handleError<T>(error: unknown): Result<T, RepositoryErrorInterface> {
+    // Return IndexedDB request errors directly
+    if (error instanceof IndexedDBRequestError) {
+      return Result.err(error);
+    }
+
     // Check for quota exceeded error
     if (error instanceof DOMException && error.name === 'QuotaExceededError') {
       return Result.err(new QuotaExceededError());
