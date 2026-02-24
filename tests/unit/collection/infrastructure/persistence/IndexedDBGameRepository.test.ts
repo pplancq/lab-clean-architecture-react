@@ -1,12 +1,86 @@
 import { Game } from '@Collection/domain/entities/Game';
 import { IndexedDBGameRepository } from '@Collection/infrastructure/persistence/IndexedDBGameRepository';
+import { DeleteError } from '@Shared/domain/repositories/error/DeleteError';
+import { FindAllError } from '@Shared/domain/repositories/error/FindAllError';
+import { FindByIdError } from '@Shared/domain/repositories/error/FindByIdError';
+import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
 import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
+import { SaveError } from '@Shared/domain/repositories/error/SaveError';
 import { UnknownError } from '@Shared/domain/repositories/error/UnknownError';
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { deleteDatabase } from './utils/indexedDBTestUtils';
+
+const createMockFailingDbService = (error: Error | DOMException): IndexedDBInterface => ({
+  getDatabase: vi.fn().mockRejectedValue(error),
+  getStoreName: vi.fn().mockReturnValue('games'),
+  close: vi.fn().mockResolvedValue(undefined),
+});
+
+/**
+ * Creates a mock IndexedDBInterface whose IDB requests fire onerror with a null error,
+ * simulating the fallback path `request.error ?? new Error('...')`.
+ */
+const createMockDbServiceWithNullRequestError = (): IndexedDBInterface => {
+  const createNullErrorRequest = <T>(): IDBRequest<T> => {
+    let onErrorHandler: EventListener | null = null;
+    const request = {
+      result: undefined as unknown as T,
+      get error() {
+        return null;
+      },
+      get onsuccess() {
+        return null;
+      },
+      set onsuccess(_: EventListener | null) {
+        // noop: onsuccess is not exercised in this mock
+      },
+      get onerror() {
+        return onErrorHandler;
+      },
+      set onerror(handler: EventListener | null) {
+        onErrorHandler = handler;
+        if (handler) {
+          queueMicrotask(() => handler.call(request, new Event('error')));
+        }
+      },
+    } as unknown as IDBRequest<T>;
+    return request;
+  };
+
+  const mockObjectStore = {
+    put: vi.fn().mockReturnValue(createNullErrorRequest()),
+    get: vi.fn().mockReturnValue(createNullErrorRequest()),
+    getAll: vi.fn().mockReturnValue(createNullErrorRequest()),
+    delete: vi.fn().mockReturnValue(createNullErrorRequest()),
+  };
+
+  const mockTransaction = {
+    objectStore: vi.fn().mockReturnValue(mockObjectStore),
+    get error() {
+      return null;
+    },
+    get onerror() {
+      return null;
+    },
+    set onerror(_: EventListener | null) {
+      // noop: transaction.onerror is not exercised in this mock
+    },
+  } as unknown as IDBTransaction;
+
+  const mockDatabase = {
+    transaction: vi.fn().mockReturnValue(mockTransaction),
+  } as unknown as IDBDatabase;
+
+  return {
+    getDatabase: vi.fn().mockResolvedValue(mockDatabase),
+    getStoreName: vi.fn().mockReturnValue('games'),
+    close: vi.fn().mockResolvedValue(undefined),
+  };
+};
 
 describe('IndexedDBGameRepository', () => {
   let repository: IndexedDBGameRepository;
@@ -318,6 +392,136 @@ describe('IndexedDBGameRepository', () => {
       expect(error).toBeInstanceOf(UnknownError);
       expect(error.message).toBe('Unexpected database error');
       expect(error.originalError).toBe(originalError);
+    });
+
+    it('should return UnknownError when save fails due to a database connection error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when findById fails due to a database connection error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.findById('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when findAll fails due to a database connection error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.findAll();
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when delete fails due to a database connection error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.delete('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return QuotaExceededError when a QuotaExceededError DOMException is thrown', async () => {
+      const quotaError = new DOMException('QuotaExceededError', 'QuotaExceededError');
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(quotaError));
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(QuotaExceededError);
+    });
+
+    it('should return SaveError with null originalError when save request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(SaveError);
+      expect((result.getError() as SaveError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB save request failed');
+    });
+
+    it('should return FindByIdError with null originalError when findById request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.findById('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(FindByIdError);
+      expect((result.getError() as FindByIdError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB findById request failed');
+    });
+
+    it('should return FindAllError with null originalError when findAll request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.findAll();
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(FindAllError);
+      expect((result.getError() as FindAllError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB findAll request failed');
+    });
+
+    it('should return DeleteError with null originalError when delete request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.delete('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(DeleteError);
+      expect((result.getError() as DeleteError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB delete request failed');
     });
   });
 
