@@ -14,9 +14,13 @@ import type { IndexedDBRequestErrorInterface } from '@Shared/domain/repositories
  * ```
  */
 export class IndexedDBRequestError extends Error implements IndexedDBRequestErrorInterface {
-  public readonly originalError?: DOMException | null;
+  public readonly originalError: DOMException | null;
 
-  constructor(message: string, originalError?: DOMException | null) {
+  /**
+   * @param message - Fallback message used when originalError is null
+   * @param originalError - The DOMException from the IDB request, or null when unavailable
+   */
+  constructor(message: string, originalError: DOMException | null) {
     super(originalError?.message ?? message);
     this.name = 'IndexedDBRequestError';
     this.originalError = originalError;
