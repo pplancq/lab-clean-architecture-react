@@ -4,8 +4,8 @@ import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
 import { UnknownError } from '@Shared/domain/repositories/error/UnknownError';
-import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
+import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { deleteDatabase } from './utils/indexedDBTestUtils';
 
@@ -14,6 +14,68 @@ const createMockFailingDbService = (error: Error | DOMException): IndexedDBInter
   getStoreName: vi.fn().mockReturnValue('games'),
   close: vi.fn().mockResolvedValue(undefined),
 });
+
+/**
+ * Creates a mock IndexedDBInterface whose IDB requests fire onerror with a null error,
+ * simulating the fallback path `request.error ?? new Error('...')`.
+ */
+const createMockDbServiceWithNullRequestError = (): IndexedDBInterface => {
+  const createNullErrorRequest = <T>(): IDBRequest<T> => {
+    let onErrorHandler: EventListener | null = null;
+    const request = {
+      result: undefined as unknown as T,
+      get error() {
+        return null;
+      },
+      get onsuccess() {
+        return null;
+      },
+      set onsuccess(_: EventListener | null) {
+        // noop: onsuccess is not exercised in this mock
+      },
+      get onerror() {
+        return onErrorHandler;
+      },
+      set onerror(handler: EventListener | null) {
+        onErrorHandler = handler;
+        if (handler) {
+          queueMicrotask(() => handler.call(request, new Event('error')));
+        }
+      },
+    } as unknown as IDBRequest<T>;
+    return request;
+  };
+
+  const mockObjectStore = {
+    put: vi.fn().mockReturnValue(createNullErrorRequest()),
+    get: vi.fn().mockReturnValue(createNullErrorRequest()),
+    getAll: vi.fn().mockReturnValue(createNullErrorRequest()),
+    delete: vi.fn().mockReturnValue(createNullErrorRequest()),
+  };
+
+  const mockTransaction = {
+    objectStore: vi.fn().mockReturnValue(mockObjectStore),
+    get error() {
+      return null;
+    },
+    get onerror() {
+      return null;
+    },
+    set onerror(_: EventListener | null) {
+      // noop: transaction.onerror is not exercised in this mock
+    },
+  } as unknown as IDBTransaction;
+
+  const mockDatabase = {
+    transaction: vi.fn().mockReturnValue(mockTransaction),
+  } as unknown as IDBDatabase;
+
+  return {
+    getDatabase: vi.fn().mockResolvedValue(mockDatabase),
+    getStoreName: vi.fn().mockReturnValue('games'),
+    close: vi.fn().mockResolvedValue(undefined),
+  };
+};
 
 describe('IndexedDBGameRepository', () => {
   let repository: IndexedDBGameRepository;
@@ -394,6 +456,26 @@ describe('IndexedDBGameRepository', () => {
       expect(result.isErr()).toBeTruthy();
       expect(result.getError()).toBeInstanceOf(Error);
       expect(result.getError()).toBeInstanceOf(QuotaExceededError);
+    });
+
+    it('should return UnknownError with fallback message when save request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+      expect(result.getError().message).toBe('IndexedDB save request failed');
     });
   });
 
