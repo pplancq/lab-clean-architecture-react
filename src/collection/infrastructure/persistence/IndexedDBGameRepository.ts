@@ -52,11 +52,11 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject(request.error ?? new Error('IndexedDB save request failed'));
         };
 
         transaction.onerror = () => {
-          reject(transaction.error);
+          reject(transaction.error ?? new Error('IndexedDB save transaction failed'));
         };
       });
     } catch (error) {
@@ -101,7 +101,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject(request.error ?? new Error('IndexedDB findById request failed'));
         };
       });
     } catch (error) {
@@ -144,7 +144,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject(request.error ?? new Error('IndexedDB findAll request failed'));
         };
       });
     } catch (error) {
@@ -173,11 +173,11 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         };
 
         request.onerror = () => {
-          reject(request.error);
+          reject(request.error ?? new Error('IndexedDB delete request failed'));
         };
 
         transaction.onerror = () => {
-          reject(transaction.error);
+          reject(transaction.error ?? new Error('IndexedDB delete transaction failed'));
         };
       });
     } catch (error) {

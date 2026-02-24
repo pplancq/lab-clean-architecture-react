@@ -4,9 +4,16 @@ import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
 import { UnknownError } from '@Shared/domain/repositories/error/UnknownError';
+import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { deleteDatabase } from './utils/indexedDBTestUtils';
+
+const createMockFailingDbService = (error: Error | DOMException): IndexedDBInterface => ({
+  getDatabase: vi.fn().mockRejectedValue(error),
+  getStoreName: vi.fn().mockReturnValue('games'),
+  close: vi.fn().mockResolvedValue(undefined),
+});
 
 describe('IndexedDBGameRepository', () => {
   let repository: IndexedDBGameRepository;
@@ -318,6 +325,75 @@ describe('IndexedDBGameRepository', () => {
       expect(error).toBeInstanceOf(UnknownError);
       expect(error.message).toBe('Unexpected database error');
       expect(error.originalError).toBe(originalError);
+    });
+
+    it('should return UnknownError when save fails due to a database error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when findById fails due to a database error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.findById('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when findAll fails due to a database error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.findAll();
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return UnknownError when delete fails due to a database error', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
+
+      const result = await failingRepo.delete('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(UnknownError);
+    });
+
+    it('should return QuotaExceededError when a QuotaExceededError DOMException is thrown', async () => {
+      const quotaError = new DOMException('QuotaExceededError', 'QuotaExceededError');
+      const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(quotaError));
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Test Game',
+        description: 'desc',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      const result = await failingRepo.save(game);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(QuotaExceededError);
     });
   });
 
