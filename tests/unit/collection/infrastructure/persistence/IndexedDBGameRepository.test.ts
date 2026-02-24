@@ -1,9 +1,13 @@
 import { Game } from '@Collection/domain/entities/Game';
 import { IndexedDBGameRepository } from '@Collection/infrastructure/persistence/IndexedDBGameRepository';
+import { DeleteError } from '@Shared/domain/repositories/error/DeleteError';
+import { FindAllError } from '@Shared/domain/repositories/error/FindAllError';
+import { FindByIdError } from '@Shared/domain/repositories/error/FindByIdError';
 import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
 import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
 import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
 import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
+import { SaveError } from '@Shared/domain/repositories/error/SaveError';
 import { UnknownError } from '@Shared/domain/repositories/error/UnknownError';
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
 import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
@@ -390,7 +394,7 @@ describe('IndexedDBGameRepository', () => {
       expect(error.originalError).toBe(originalError);
     });
 
-    it('should return UnknownError when save fails due to a database error', async () => {
+    it('should return UnknownError when save fails due to a database connection error', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
       const game = Game.create({
         id: 'game-1',
@@ -409,7 +413,7 @@ describe('IndexedDBGameRepository', () => {
       expect(result.getError()).toBeInstanceOf(UnknownError);
     });
 
-    it('should return UnknownError when findById fails due to a database error', async () => {
+    it('should return UnknownError when findById fails due to a database connection error', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
 
       const result = await failingRepo.findById('game-1');
@@ -419,7 +423,7 @@ describe('IndexedDBGameRepository', () => {
       expect(result.getError()).toBeInstanceOf(UnknownError);
     });
 
-    it('should return UnknownError when findAll fails due to a database error', async () => {
+    it('should return UnknownError when findAll fails due to a database connection error', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
 
       const result = await failingRepo.findAll();
@@ -429,7 +433,7 @@ describe('IndexedDBGameRepository', () => {
       expect(result.getError()).toBeInstanceOf(UnknownError);
     });
 
-    it('should return UnknownError when delete fails due to a database error', async () => {
+    it('should return UnknownError when delete fails due to a database connection error', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockFailingDbService(new Error('Database unavailable')));
 
       const result = await failingRepo.delete('game-1');
@@ -459,7 +463,7 @@ describe('IndexedDBGameRepository', () => {
       expect(result.getError()).toBeInstanceOf(QuotaExceededError);
     });
 
-    it('should return IndexedDBRequestError with fallback message when save request.error is null', async () => {
+    it('should return SaveError with null originalError when save request.error is null', async () => {
       const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
       const game = Game.create({
         id: 'game-1',
@@ -476,8 +480,48 @@ describe('IndexedDBGameRepository', () => {
       expect(result.isErr()).toBeTruthy();
       expect(result.getError()).toBeInstanceOf(Error);
       expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
-      expect((result.getError() as IndexedDBRequestError).originalError).toBeNull();
+      expect(result.getError()).toBeInstanceOf(SaveError);
+      expect((result.getError() as SaveError).originalError).toBeNull();
       expect(result.getError().message).toBe('IndexedDB save request failed');
+    });
+
+    it('should return FindByIdError with null originalError when findById request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.findById('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(FindByIdError);
+      expect((result.getError() as FindByIdError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB findById request failed');
+    });
+
+    it('should return FindAllError with null originalError when findAll request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.findAll();
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(FindAllError);
+      expect((result.getError() as FindAllError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB findAll request failed');
+    });
+
+    it('should return DeleteError with null originalError when delete request.error is null', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const result = await failingRepo.delete('game-1');
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(Error);
+      expect(result.getError()).toBeInstanceOf(IndexedDBRequestError);
+      expect(result.getError()).toBeInstanceOf(DeleteError);
+      expect((result.getError() as DeleteError).originalError).toBeNull();
+      expect(result.getError().message).toBe('IndexedDB delete request failed');
     });
   });
 

@@ -1,5 +1,3 @@
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-
-export interface IndexedDBRequestErrorInterface extends RepositoryErrorInterface {
+export interface IndexedDBRequestErrorInterface {
   originalError: DOMException | null;
 }
