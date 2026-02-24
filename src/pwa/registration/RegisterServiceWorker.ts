@@ -13,7 +13,7 @@ export class RegisterServiceWorker {
       return;
     }
 
-    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+    if (globalThis.location?.protocol !== 'https:' && globalThis.location?.hostname !== 'localhost') {
       console.warn('[GCM] Service Worker requires HTTPS');
       return;
     }
