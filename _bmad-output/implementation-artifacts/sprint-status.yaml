@@ -1,14 +1,14 @@
-# generated: 2026-01-27
+# generated: 2026-02-25
 # project: lab-clean-architecture-react
 # project_key: lab-clean-architecture-react
 # tracking_system: github
 # github_repo: pplancq/lab-clean-architecture-react
 # github_project: https://github.com/users/pplancq/projects/7
 # github_milestone: MVP
-# total_issues: 52 (6 epics + 46 stories)
-# total_size: 44.25 days (177 story points)
-# priority_breakdown: P0 (15 stories, 12 days) | P1 (27 stories, 26.75 days) | P2 (4 stories, 5.5 days)
-# size_breakdown: XS (2), S (11), M (20), L (6), XL (1)
+# total_issues: 78 (9 epics + 69 stories)
+# total_size: 52.5 days
+# priority_breakdown: P0 (22 stories, 16 days) | P1 (34 stories, 29 days) | P2 (7 stories, 7.5 days)
+# size_breakdown: XS (9), S (17), M (23), L (6), XL (1)
 
 # STATUS DEFINITIONS:
 # ==================
@@ -321,13 +321,38 @@ development_status:
   8-3-migrate-existing-notifications-to-toast: backlog      # GitHub #120 | P2 | XS (0.25d)
   epic-8-retrospective: optional
 
+  # ================================================================
+  # Epic 9: UI Components (GitHub #128)
+  # Priority: P0/P1/P2 Mixed | Stories: 17 | Total Size: 8.25 days
+  # Sprint assignment: TBD (SM handles planning)
+  # ================================================================
+  epic-9: backlog  # GitHub #128 | UI Components — Atomic Design library (wireframe v4)
+  9-0-formattoggle: backlog   # GitHub #130 | P0 | XS (0.25d) | GameForm button-styled radio group | src/collection/ui/components/
+  9-1-appshell: backlog       # GitHub #129 | P0 | S (0.5d) | Page layout wrapper | src/shared/ui/components/
+  9-2-topbar: backlog         # GitHub #131 | P0 | M (1d) | Responsive application header | src/shared/ui/components/
+  9-3-burgermenu-drawer: backlog  # GitHub #132 | P0 | S (0.5d) | Mobile/tablet navigation overlay | src/shared/ui/components/
+  9-4-gamecover: backlog      # GitHub #133 | P0 | XS (0.25d) | Cover image with placeholder | src/collection/ui/components/
+  9-5-badge-badgerow: backlog # GitHub #134 | P0 | M (1d) | Adaptive tag chips (platform/status) — shelter-ui candidate | src/shared/ui/components/
+  9-6-gamecard: backlog       # GitHub #135 | P0 | S (0.5d) | Collection card variant | src/collection/ui/components/
+  9-7-breadcrumb: backlog     # GitHub #136 | P1 | XS (0.25d) | Navigation breadcrumb trail | src/shared/ui/components/
+  9-8-searchinput: backlog    # GitHub #137 | P1 | XS (0.25d) | TopBar search field | src/shared/ui/components/
+  9-9-filterchip: backlog     # GitHub #138 | P1 | XS (0.25d) | Active/inactive filter toggle — shelter-ui candidate | src/shared/ui/components/
+  9-10-sortselect: backlog    # GitHub #139 | P1 | XS (0.25d) | Sort dropdown control | src/shared/ui/components/
+  9-11-filterbar: backlog     # GitHub #140 | P1 | S (0.5d) | Filter + sort toolbar | src/collection/ui/components/
+  9-12-wishlistcard: backlog  # GitHub #141 | P1 | S (0.5d) | Wishlist card variant | src/wishlist/ui/components/
+  9-13-fab: backlog           # GitHub #142 | P1 | XS (0.25d) | Floating Action Button (mobile fixed) — shelter-ui candidate | src/shared/ui/components/
+  9-14-statrow-statssidebar: backlog  # GitHub #143 | P2 | S (0.5d) | Stats display components | src/collection/ui/components/
+  9-15-widgetcard: backlog    # GitHub #144 | P2 | S (0.5d) | Dashboard stat widget | src/shared/ui/components/
+  9-16-dashboardpage: backlog # GitHub #145 | P2 | M (1d) | Dashboard layout + widgets | src/shared/ui/components/
+  epic-9-retrospective: optional
+
 # ================================================================
 # SUMMARY (from GitHub Issues)
 # ================================================================
 summary:
-  total_epics: 8
-  total_stories: 52  # 47 base + 2 Epic 7 stories + 3 Epic 8 stories
-  total_items: 60  # 8 epics + 52 stories
+  total_epics: 9
+  total_stories: 69  # 52 base + 17 Epic 9 stories
+  total_items: 78  # 9 epics + 69 stories
 
   breakdown_by_epic:
     epic_1_foundation: 8  # stories 1.1, 1.2, 1.2.1, 1.3-1.7
@@ -338,15 +363,16 @@ summary:
     epic_6_backup: 4  # stories 6.1-6.4
     epic_7_toolkit_contrib: 2  # stories 7.1-7.2 (shelter-ui migrations)
     epic_8_toast_system: 3  # stories 8.1-8.3
+    epic_9_ui_components: 17  # stories 9.0-9.16 (Atomic Design library)
 
   breakdown_by_priority:
-    critical: 18  # epic 1 (7) + epic 2 (8) + story 2.5 (1) + story 1.7 (1) + story 5.9.x (1)
-    high: 14  # epic 3 (6) + high priority stories from epic 2 (8)
-    medium: 14  # epic 4 (6) + epic 5 (8 base)
+    critical: 25  # epic 1 (7) + epic 2 (8) + story 2.5 (1) + story 1.7 (1) + story 5.9.x (1) + epic 9 P0 (7)
+    high: 21  # epic 3 (6) + high priority stories from epic 2 (8) + epic 9 P1 (7)
+    medium: 17  # epic 4 (6) + epic 5 (8 base) + epic 9 P2 (3)
     low: 6  # epic 6 (4) + low priority stories (2)
 
   breakdown_by_status:
-    backlog: 52  # all items currently in backlog
+    backlog: 69  # all items currently in backlog (epic 9 stories + prior backlog)
     ready_for_dev: 0
     in_progress: 0
     review: 0

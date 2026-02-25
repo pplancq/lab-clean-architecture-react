@@ -1,0 +1,185 @@
+name: UI Component Story
+description: Technical story to implement a UI component defined in the wireframe specification
+title: 'Story 9.M: [ComponentName] — short description'
+labels: ['story']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎨 UI Component Story
+
+        ⚠️ **Maintainers Only** - This template is reserved for project maintainers to build out Epic 9 UI components.
+
+        If you want to propose a new UI component or improvement, please use the [Enhancement](?template=2-enhancement.yml) template instead.
+
+        ---
+
+        Use this template to implement a **design-spec-driven UI component** from the wireframe.
+        Each story targets one or more closely related components implementable in ~1 week.
+
+  - type: input
+    id: story-number
+    attributes:
+      label: Story Number
+      description: Story number (e.g., 9.1, 9.5...)
+      placeholder: '9.1'
+    validations:
+      required: true
+
+  - type: input
+    id: parent-epic
+    attributes:
+      label: Parent Epic
+      description: Parent epic issue number
+      placeholder: '#XXX'
+    validations:
+      required: true
+
+  - type: input
+    id: component-name
+    attributes:
+      label: Component Name(s)
+      description: PascalCase name(s) of the component(s) to build
+      placeholder: 'Badge, BadgeRow'
+    validations:
+      required: true
+
+  - type: input
+    id: placement
+    attributes:
+      label: Placement
+      description: Where the component lives in the codebase
+      placeholder: 'src/shared/ui/components/Badge/'
+    validations:
+      required: true
+
+  - type: textarea
+    id: component-description
+    attributes:
+      label: Component Description
+      description: What is this component, what role does it play in the UI, which screens/organisms use it?
+      placeholder: |
+        Badge is a small tag chip used to display Platform, Status, or Priority information on game cards and detail pages.
+        BadgeRow is a flex wrapper that renders 2–3 Badge components side by side.
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual-spec
+    attributes:
+      label: Visual Spec & Variants
+      description: Props API, variants table, adaptive behavior (breakpoints / container queries), icons...
+      placeholder: |
+        **Variants:**
+        | Variant | Examples | Icon | Colour |
+        |---------|---------|------|--------|
+        | `platform` | PS5, Xbox | platform logo | blue |
+        | `status` | Physical, Digital | disc / cloud | green / purple |
+
+        **Adaptive sizing (container queries):**
+        - Container ≥ 80px: icon + label
+        - Container < 80px: icon only
+
+        **Breakpoint behaviour:**
+        - Mobile: ...
+        - Tablet: ...
+        - Desktop: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Concrete, verifiable outcomes — use a checklist
+      placeholder: |
+        - [ ] Component renders all variants correctly
+        - [ ] Adaptive sizing works via CSS container queries
+        - [ ] Color is not the sole means of conveying information (WCAG 1.4.1)
+        - [ ] Each badge has `aria-label` (e.g., "Platform: PS5")
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: accessibility-requirements
+    attributes:
+      label: Accessibility Requirements (WCAG AA + RGAA 4)
+      description: A11y requirements to validate
+      options:
+        - label: Appropriate ARIA roles and labels present
+          required: false
+        - label: Color is not the sole conveyor of meaning (WCAG 1.4.1)
+          required: false
+        - label: WCAG AA contrast met (4.5:1 text, 3:1 UI elements)
+          required: false
+        - label: Keyboard accessible (if interactive)
+          required: false
+        - label: Touch targets ≥ 44×44px on mobile (if interactive)
+          required: false
+        - label: Screen reader tested (VoiceOver / NVDA)
+          required: false
+
+  - type: checkboxes
+    id: testing-requirements
+    attributes:
+      label: Testing Requirements
+      description: Tests required for this story
+      options:
+        - label: React component tests (Testing Library)
+          required: false
+        - label: Accessibility tests (a11y assertions with jest-axe or Testing Library queries)
+          required: false
+        - label: Snapshot / visual regression test
+          required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Other stories this depends on or blocks
+      placeholder: |
+        **Depends on:** #XX (Story 9.4 — GameCover must exist)
+        **Blocks:** #YY (Story 9.7 — GameCard needs Badge)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: shelter-ui
+    attributes:
+      label: Shelter-UI
+      description: Epic 7 migration track
+      options:
+        - label: 🚀 This component is a shelter-ui candidate — open an Epic 7 TS after implementation
+          required: false
+
+  - type: checkboxes
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+      description: Story completion criteria
+      options:
+        - label: All acceptance criteria validated
+          required: false
+        - label: Component tests written and passing
+          required: false
+        - label: Accessibility requirements verified
+          required: false
+        - label: Code reviewed and approved
+          required: false
+        - label: Merged into main branch
+          required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      placeholder: |
+        - Wireframe reference: screen X, breakpoint Y
+        - Design decision: ...
+        - Open question: ...
+    validations:
+      required: false
