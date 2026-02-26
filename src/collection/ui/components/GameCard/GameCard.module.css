@@ -1,0 +1,43 @@
+.card {
+  display: grid;
+  padding: var(--padding-2);
+  border: 1px solid var(--color-background-alt);
+  border-radius: var(--border-radius-medium);
+  grid-template-columns: 100px 1fr;
+  flex-direction: column;
+  gap: var(--gap-1);
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--color-neutral-light);
+  transition: box-shadow 0.2s;
+
+  > a {
+    display: contents;
+  }
+}
+
+.card:hover,
+.card:focus-visible {
+  box-shadow: var(--shadow-medium);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-primary-main-light);
+  outline-offset: 2px;
+}
+
+.coverPlaceholder {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--border-radius-small);
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background-overlay);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-0-5);
+}

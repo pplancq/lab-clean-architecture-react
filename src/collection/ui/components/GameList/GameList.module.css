@@ -1,0 +1,16 @@
+.loading {
+  padding: var(--padding-4) var(--padding-1);
+  text-align: center;
+}
+
+.error {
+  padding: var(--padding-2);
+  border-radius: var(--border-radius-small);
+  color: var(--color-tertiary-alt-onbase);
+  background-color: var(--color-tertiary-alt-base);
+}
+
+.emptyState {
+  padding: var(--padding-4) var(--padding-1);
+  text-align: center;
+}

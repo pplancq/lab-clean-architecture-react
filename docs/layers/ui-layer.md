@@ -13,10 +13,15 @@ The **UI Layer** is the outermost layer in Clean Architecture. It is responsible
 ```
 src/collection/ui/
 ├── components/
-│   └── GameForm/
-│       └── GameForm.tsx        # Form component (uses formField wrappers)
+│   ├── GameForm/
+│   │   └── GameForm.tsx        # Form component (uses formField wrappers)
+│   ├── GameList/
+│   │   └── GameList.tsx        # Game list with loading/empty/error states (aria-live)
+│   └── GameCard/
+│       └── GameCard.tsx        # Single game card with link to detail page
 └── pages/
-    └── AddGame.tsx             # Page component (thin wrapper around GameForm)
+    ├── AddGame.tsx             # Page component (thin wrapper around GameForm)
+    └── Home.tsx                # Home page displaying the game collection via GameList
 
 src/shared/ui/
 ├── components/
@@ -45,6 +50,9 @@ The project uses `@pplancq/shelter-ui-react` (currently in alpha) as its design 
 - `RadioGroup` / `RadioOption` — radio group with accessible label injection
 - `Button` — primary/secondary actions
 - `Alert` — success/error/info notifications
+- `Grid` — responsive grid layout (container + items with `colSpan` breakpoints)
+- `Typography` — text rendering with `variant`, `size`, `color` props
+- `Title` — page/section heading component
 
 ### Components Created in `shared/ui/`
 
@@ -213,6 +221,7 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 | ----------- | ----------------------------------------------- | ------------------------ |
 | Unit (base) | `tests/unit/shared/ui/components/`              | Vitest + Testing Library |
 | Integration | `tests/unit/collection/ui/components/GameForm/` | Vitest + Testing Library |
+| Component   | `tests/unit/collection/ui/components/GameList/` | Vitest + Testing Library |
 | E2E         | `tests/e2e/add-game.test.ts`                    | Playwright               |
 
 **Key testing notes:**
