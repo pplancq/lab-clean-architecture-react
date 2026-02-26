@@ -3,6 +3,8 @@ import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/Inde
 import { ContainerModule } from 'inversify';
 import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
 import type { AddGameUseCaseInterface } from './application/use-cases/AddGameUseCaseInterface';
+import { GetGamesUseCase } from './application/use-cases/GetGamesUseCase';
+import type { GetGamesUseCaseInterface } from './application/use-cases/GetGamesUseCaseInterface';
 import type { GameRepositoryInterface } from './domain/repositories/GameRepositoryInterface';
 import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
 import { COLLECTION_SERVICES } from './serviceIdentifiers';
@@ -27,6 +29,14 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
     .bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase)
     .toDynamicValue(
       services => new AddGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+    )
+    .inSingletonScope();
+
+  // Bind GetGamesUseCase implementation to interface
+  options
+    .bind<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)
+    .toDynamicValue(
+      services => new GetGamesUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 });
