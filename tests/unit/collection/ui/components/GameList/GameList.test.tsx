@@ -1,10 +1,9 @@
 import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
-import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
+import type { GamesListState, GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
 import { Game } from '@Collection/domain/entities/Game';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { GameList } from '@Collection/ui/components/GameList/GameList';
 import { renderSuspense } from '@pplancq/svg-react/tests';
-import { Result } from '@Shared/domain/result/Result';
 import { screen, waitFor } from '@testing-library/react';
 import { Container } from 'inversify';
 import type { ReactNode } from 'react';
@@ -22,6 +21,12 @@ const createGame = (id: string, title: string, platform = 'Nintendo Switch', for
     status: 'Owned',
   }).unwrap();
 
+const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
+  subscribe: vi.fn().mockReturnValue(() => {}),
+  getGamesList: vi.fn().mockReturnValue(state),
+  fetchGames: vi.fn(),
+});
+
 const createWrapper =
   (container: Container) =>
   // eslint-disable-next-line react/display-name
@@ -31,22 +36,31 @@ const createWrapper =
     </MemoryRouter>
   );
 
-const createContainer = (useCaseMock: GetGamesUseCaseInterface) => {
+const createContainer = (storeMock: GamesStoreInterface) => {
   const container = new Container();
-  container.bind<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase).toConstantValue(useCaseMock);
+  container.bind<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore).toConstantValue(storeMock);
   return container;
 };
 
-const renderGameList = (useCaseMock: GetGamesUseCaseInterface) => {
-  const container = createContainer(useCaseMock);
-  return renderSuspense(<GameList />, { wrapper: createWrapper(container) });
+const renderGameList = async (state: GamesListState) => {
+  const storeMock = createStoreMock(state);
+  const container = createContainer(storeMock);
+  await renderSuspense(<GameList />, { wrapper: createWrapper(container) });
+  return { storeMock };
 };
 
 describe('GameList', () => {
+  describe('store interaction', () => {
+    it('should call fetchGames on mount', async () => {
+      const { storeMock } = await renderGameList({ games: [], isLoading: false, error: null });
+
+      expect(storeMock.fetchGames).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('loading state', () => {
     it('should show a loading status while fetching', async () => {
-      const useCaseMock = { execute: vi.fn().mockReturnValue(new Promise(() => {})) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games: [], isLoading: true, error: null });
 
       const status = screen.getByRole('status');
       expect(status).toBeInTheDocument();
@@ -56,34 +70,25 @@ describe('GameList', () => {
 
   describe('empty state', () => {
     it('should show empty state message when no games exist', async () => {
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok([])) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games: [], isLoading: false, error: null });
 
-      await waitFor(() => {
-        expect(screen.getByText('Add your first game!')).toBeInTheDocument();
-      });
+      expect(screen.getByText('Add your first game!')).toBeInTheDocument();
     });
   });
 
   describe('error state', () => {
-    it('should show an error alert when use case fails', async () => {
-      const useCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
-      };
-      await renderGameList(useCaseMock);
+    it('should show an error alert when store has an error', async () => {
+      await renderGameList({ games: [], isLoading: false, error: 'Unable to load games. Please try again.' });
 
-      await waitFor(() => {
-        expect(screen.getByRole('alert')).toBeInTheDocument();
-      });
-      expect(screen.getByRole('alert')).toHaveTextContent(/unable to load games/i);
+      const alert = screen.getByRole('alert');
+      expect(alert).toHaveTextContent(/unable to load games/i);
     });
   });
 
   describe('games list rendering', () => {
     it('should render a list with game cards when games exist', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toBeInTheDocument();
@@ -93,8 +98,7 @@ describe('GameList', () => {
 
     it('should display game title, platform and format for each card', async () => {
       const games = [createGame('1', 'Zelda: Breath of the Wild', 'Nintendo Switch', 'Physical')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText('Zelda: Breath of the Wild')).toBeInTheDocument();
@@ -105,8 +109,7 @@ describe('GameList', () => {
 
     it('should announce the game count for screen readers', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText(/2 games in collection/i)).toBeInTheDocument();
@@ -115,8 +118,7 @@ describe('GameList', () => {
 
     it('should use singular "game" when collection has one item', async () => {
       const games = [createGame('1', 'Zelda')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText(/1 game in collection/i)).toBeInTheDocument();
@@ -127,8 +129,7 @@ describe('GameList', () => {
   describe('accessibility', () => {
     it('should have an accessible label on each game card link', async () => {
       const games = [createGame('1', 'Zelda', 'Nintendo Switch', 'Physical')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('link', { name: /zelda/i })).toHaveAccessibleName();
@@ -137,8 +138,7 @@ describe('GameList', () => {
 
     it('should have an accessible list label', async () => {
       const games = [createGame('1', 'Zelda')];
-      const useCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(games)) };
-      await renderGameList(useCaseMock);
+      await renderGameList({ games, isLoading: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toHaveAccessibleName('Game collection');

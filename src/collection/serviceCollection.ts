@@ -1,6 +1,8 @@
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
 import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
 import { ContainerModule } from 'inversify';
+import { GamesStore } from './application/stores/GamesStore';
+import type { GamesStoreInterface } from './application/stores/GamesStoreInterface';
 import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
 import type { AddGameUseCaseInterface } from './application/use-cases/AddGameUseCaseInterface';
 import { GetGamesUseCase } from './application/use-cases/GetGamesUseCase';
@@ -37,6 +39,14 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
     .bind<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)
     .toDynamicValue(
       services => new GetGamesUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+    )
+    .inSingletonScope();
+
+  // Bind GamesStore as singleton — shared state across all components
+  options
+    .bind<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore)
+    .toDynamicValue(
+      services => new GamesStore(services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)),
     )
     .inSingletonScope();
 });
