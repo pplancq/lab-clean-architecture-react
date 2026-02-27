@@ -19,4 +19,14 @@ export const COLLECTION_SERVICES = Object.freeze({
    * Use case for adding a game to the collection
    */
   AddGameUseCase: Symbol.for('Collection.AddGameUseCase'),
+
+  /**
+   * Use case for retrieving all games from the collection
+   */
+  GetGamesUseCase: Symbol.for('Collection.GetGamesUseCase'),
+
+  /**
+   * Observable store for the games collection
+   */
+  GamesStore: Symbol.for('Collection.GamesStore'),
 } as const);
