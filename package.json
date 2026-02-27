@@ -58,7 +58,7 @@
     "@msw/playwright": "^0.6.4",
     "@playwright/test": "^1.58.2",
     "@pplancq/commitlint-config": "^3.0.3",
-    "@pplancq/eslint-config": "^6.0.3",
+    "@pplancq/eslint-config": "^6.0.4",
     "@pplancq/postcss-config": "^3.0.3",
     "@pplancq/prettier-config": "^2.0.0",
     "@pplancq/stylelint-config": "^5.0.0",
