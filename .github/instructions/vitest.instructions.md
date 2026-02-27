@@ -43,10 +43,15 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
 
 ### Choosing the Right Assertion
 
-- **`toBe()`** for primitive values (string, number, boolean, null, undefined):
+- **`toBe()`** for primitive values (string, number, null, undefined) and strict boolean equality:
   - Uses `Object.is()` equality to strictly check **both value AND type**
   - Example: `expect(3).toBe(3)` ✅ | `expect(3).toBe("3")` ❌ (fails)
   - Behaves similarly to `===`, but uses `Object.is()` (for example, `NaN` equals `NaN` and `+0` is different from `-0`)
+- **`toBeTruthy()` / `toBeFalsy()`** for boolean flags used in conditional contexts:
+  - Use when the assertion tests the **semantic truthiness** of a boolean, i.e. when the value is consumed as `if (value)` in production code
+  - Typical cases: result flags (`isOk()`, `isErr()`), state flags (`isLoading`, `isVisible`), predicate method returns
+  - Example: `expect(result.isOk()).toBeTruthy()` ✅ — mirrors how it is used: `if (result.isOk())`
+  - Reserve `toBe(true)` / `toBe(false)` only when you need to assert the **exact boolean type+value** (e.g. discriminating `true` from `1` or `"yes"`)
 - **`toStrictEqual()`** for objects and arrays:
   - Deep equality comparison
   - Checks all properties and nested values
