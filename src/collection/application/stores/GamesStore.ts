@@ -35,7 +35,6 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     }
 
     this.isLoading = true;
-    this.gamesMap.clear();
     this.error = null;
     this.commit(false); // games array reference unchanged — only isLoading changed
 
