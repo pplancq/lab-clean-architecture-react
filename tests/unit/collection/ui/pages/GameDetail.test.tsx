@@ -6,7 +6,7 @@ import { gameDetailRoutes } from '@Collection/ui/pages/GameDetail';
 import { renderSuspense } from '@pplancq/svg-react/tests';
 import { screen, waitFor } from '@testing-library/react';
 import { Container } from 'inversify';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -58,7 +58,7 @@ const createContainer = (storeMock: GamesStoreInterface) => {
 const renderGameDetail = async (entry: GameMapEntryState, path = '/games/game-1') => {
   const storeMock = createStoreMock(entry);
   const container = createContainer(storeMock);
-  await renderSuspense(gameDetailRoutes.element as React.ReactElement, { wrapper: createWrapper(container, path) });
+  await renderSuspense(gameDetailRoutes.element as ReactElement, { wrapper: createWrapper(container, path) });
   return { storeMock };
 };
 
