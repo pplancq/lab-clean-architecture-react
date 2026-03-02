@@ -131,7 +131,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
       this.commit(false);
     } else {
       const appError = result.getError();
-      const errorMessage = appError.type !== 'NotFound' ? 'Unable to load game. Please try again.' : null;
+      const errorMessage = appError.type === 'NotFound' ? null : 'Unable to load game. Please try again.';
       const existing = this.gamesMap.get(id);
       this.gamesMap.set(id, {
         data: existing?.data ?? null,
