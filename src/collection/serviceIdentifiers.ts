@@ -26,6 +26,11 @@ export const COLLECTION_SERVICES = Object.freeze({
   GetGamesUseCase: Symbol.for('Collection.GetGamesUseCase'),
 
   /**
+   * Use case for retrieving a single game by its identifier
+   */
+  GetGameByIdUseCase: Symbol.for('Collection.GetGameByIdUseCase'),
+
+  /**
    * Observable store for the games collection
    */
   GamesStore: Symbol.for('Collection.GamesStore'),

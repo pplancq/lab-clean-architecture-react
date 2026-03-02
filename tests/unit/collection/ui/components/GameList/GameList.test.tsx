@@ -24,7 +24,13 @@ const createGame = (id: string, title: string, platform = 'Nintendo Switch', for
 const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
   subscribe: vi.fn().mockReturnValue(() => {}),
   getGamesList: vi.fn().mockReturnValue(state),
-  fetchGames: vi.fn(),
+  getGame: vi.fn().mockReturnValue({
+    data: null,
+    isLazy: false,
+    isLoading: false,
+    hasError: false,
+    error: null,
+  }),
 });
 
 const createWrapper =
@@ -50,17 +56,9 @@ const renderGameList = async (state: GamesListState) => {
 };
 
 describe('GameList', () => {
-  describe('store interaction', () => {
-    it('should call fetchGames on mount', async () => {
-      const { storeMock } = await renderGameList({ games: [], isLoading: false, error: null });
-
-      expect(storeMock.fetchGames).toHaveBeenCalledTimes(1);
-    });
-  });
-
   describe('loading state', () => {
     it('should show a loading status while fetching', async () => {
-      await renderGameList({ games: [], isLoading: true, error: null });
+      await renderGameList({ games: [], isLoading: true, hasError: false, error: null });
 
       const status = screen.getByRole('status');
       expect(status).toBeInTheDocument();
@@ -70,7 +68,7 @@ describe('GameList', () => {
 
   describe('empty state', () => {
     it('should show empty state message when no games exist', async () => {
-      await renderGameList({ games: [], isLoading: false, error: null });
+      await renderGameList({ games: [], isLoading: false, hasError: false, error: null });
 
       expect(screen.getByText('Add your first game!')).toBeInTheDocument();
     });
@@ -78,7 +76,12 @@ describe('GameList', () => {
 
   describe('error state', () => {
     it('should show an error alert when store has an error', async () => {
-      await renderGameList({ games: [], isLoading: false, error: 'Unable to load games. Please try again.' });
+      await renderGameList({
+        games: [],
+        isLoading: false,
+        hasError: true,
+        error: 'Unable to load games. Please try again.',
+      });
 
       const alert = screen.getByRole('alert');
       expect(alert).toHaveTextContent(/unable to load games/i);
@@ -88,7 +91,7 @@ describe('GameList', () => {
   describe('games list rendering', () => {
     it('should render a list with game cards when games exist', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toBeInTheDocument();
@@ -98,7 +101,7 @@ describe('GameList', () => {
 
     it('should display game title, platform and format for each card', async () => {
       const games = [createGame('1', 'Zelda: Breath of the Wild', 'Nintendo Switch', 'Physical')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText('Zelda: Breath of the Wild')).toBeInTheDocument();
@@ -109,7 +112,7 @@ describe('GameList', () => {
 
     it('should announce the game count for screen readers', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText(/2 games in collection/i)).toBeInTheDocument();
@@ -118,7 +121,7 @@ describe('GameList', () => {
 
     it('should use singular "game" when collection has one item', async () => {
       const games = [createGame('1', 'Zelda')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByText(/1 game in collection/i)).toBeInTheDocument();
@@ -129,7 +132,7 @@ describe('GameList', () => {
   describe('accessibility', () => {
     it('should have an accessible label on each game card link', async () => {
       const games = [createGame('1', 'Zelda', 'Nintendo Switch', 'Physical')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('link', { name: /zelda/i })).toHaveAccessibleName();
@@ -138,7 +141,7 @@ describe('GameList', () => {
 
     it('should have an accessible list label', async () => {
       const games = [createGame('1', 'Zelda')];
-      await renderGameList({ games, isLoading: false, error: null });
+      await renderGameList({ games, isLoading: false, hasError: false, error: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toHaveAccessibleName('Game collection');
