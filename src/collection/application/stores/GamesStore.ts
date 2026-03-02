@@ -70,21 +70,19 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     const entry = this.gamesMap.get(id);
 
     if (!entry) {
-      const loadingEntry: GameMapEntryState = { ...this.DEFAULT_LOADING_ENTRY };
       this.gamesMap.set(id, { ...this.DEFAULT_LOADING_ENTRY });
       queueMicrotask(() => {
         this.fetchGameById(id);
       });
-      return loadingEntry;
+      return this.gamesMap.get(id) as GameMapEntryState;
     }
 
     if (entry.isLazy && !entry.isLoading) {
-      const upgradingEntry: GameMapEntryState = { ...entry, isLoading: true };
-      this.gamesMap.set(id, upgradingEntry);
+      this.gamesMap.set(id, { ...entry, isLoading: true });
       queueMicrotask(() => {
         this.fetchGameById(id);
       });
-      return upgradingEntry;
+      return this.gamesMap.get(id) as GameMapEntryState;
     }
 
     return entry;
