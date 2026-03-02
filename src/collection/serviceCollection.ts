@@ -56,7 +56,11 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore)
     .toDynamicValue(
-      services => new GamesStore(services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)),
+      services =>
+        new GamesStore(
+          services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),
+          services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
+        ),
     )
     .inSingletonScope();
 });

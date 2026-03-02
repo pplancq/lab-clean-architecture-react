@@ -1,19 +1,12 @@
 import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
 import { Grid, Typography } from '@pplancq/shelter-ui-react';
-import { type CSSProperties, useLayoutEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { GameCard } from '../GameCard/GameCard';
 
 import defaultClasses from './GameList.module.css';
 
 export const GameList = () => {
-  const store = useGamesStore();
-  const { games, error, isLoading } = useGamesSelector(s => s.getGamesList());
-
-  useLayoutEffect(() => {
-    store.fetchGames();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { games, hasError, error, isLoading } = useGamesSelector(s => s.getGamesList());
 
   if (isLoading) {
     return (
@@ -34,7 +27,7 @@ export const GameList = () => {
     );
   }
 
-  if (error) {
+  if (hasError) {
     return (
       <Grid
         as={Typography}
