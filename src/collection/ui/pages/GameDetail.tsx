@@ -155,10 +155,8 @@ const GameDetail = () => {
         }}
         className={defaultClasses.actions}
       >
-        <Button aria-disabled="true">Edit</Button>
-        <Button aria-disabled="true" color="danger">
-          Delete
-        </Button>
+        <Button>Edit</Button>
+        <Button color="danger">Delete</Button>
       </Grid>
     </Grid>
   );
