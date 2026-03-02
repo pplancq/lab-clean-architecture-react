@@ -23,9 +23,10 @@ src/collection/ui/
 │   ├── useGamesSelector/
 │   │   └── useGamesSelector.ts # Granular state subscription via useSyncExternalStore
 │   └── useGamesStore/
-│       └── useGamesStore.ts    # Thin DI accessor — returns GamesStore for actions
+│       └── useGamesStore.ts    # Thin DI accessor — returns GamesStore instance (for future actions)
 └── pages/
     ├── AddGame.tsx             # Page component (thin wrapper around GameForm)
+    ├── GameDetail.tsx          # Game detail page — reads from getGame(id) via useGamesSelector
     └── Home.tsx                # Home page displaying the game collection via GameList
 
 src/shared/ui/
@@ -195,23 +196,30 @@ For reading state from an **Observable Store** (e.g., `GamesStore`), use `useGam
 
 | Hook                       | Role                               | When to use                                                     |
 | -------------------------- | ---------------------------------- | --------------------------------------------------------------- |
-| `useGamesStore()`          | Returns the store instance         | Calling **actions** (`fetchGames`, future `addGame`, …)         |
+| `useGamesStore()`          | Returns the store instance         | Calling **future actions** (e.g. `invalidate`, delete, update)  |
 | `useGamesSelector(s => …)` | Subscribes to a **slice** of state | Reading state — only re-renders when the selected slice changes |
 
 ### Usage in a component
 
-```typescript
-export const GameList = () => {
-  const store = useGamesStore();  // store instance for actions
-  const { games, error, isLoading } = useGamesSelector(s => s.getGamesList());
+Fetches are **auto-triggered** by the store internals via `queueMicrotask`. Components only read state — no `useLayoutEffect` or `fetchGames()` calls needed:
 
-  useLayoutEffect(() => {
-    store.fetchGames();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);  // store instance is stable (DI singleton) — empty deps is intentional
+```typescript
+// GameList — fetches are auto-triggered on first getGamesList() call
+export const GameList = () => {
+  const { games, isLoading, hasError, error } = useGamesSelector(s => s.getGamesList());
+  // ...
+};
+
+// GameDetail — fetchGameById is auto-triggered if entry is absent or lazy
+export const GameDetail = () => {
+  const { id = '' } = useParams<{ id: string }>();
+  const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
+  // hasError && error   → generic error
+  // ...
+};
 ```
 
-`useLayoutEffect` with an empty dependency array is intentional: the store is a stable DI singleton, and the fetch must start before the first paint to avoid a flash of empty state.
+> **How auto-trigger works:** `getGamesList()` and `getGame(id)` schedule the fetch via `queueMicrotask` when data is missing or lazy. The snapshot is returned synchronously (with `isLoading: true`) before the async fetch starts.
 
 ### Granular subscriptions
 
@@ -268,7 +276,7 @@ Routes are registered in `src/app/routing/routes.tsx`:
 export const routeObject: RouteObject[] = [
   {
     path: '/',
-    children: [homeRoutes, addGameRoutes],
+    children: [homeRoutes, addGameRoutes, gameDetailRoutes],
   },
 ];
 ```
@@ -296,6 +304,7 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 | Unit (base) | `tests/unit/shared/ui/components/`                 | Vitest + Testing Library |
 | Integration | `tests/unit/collection/ui/components/GameForm/`    | Vitest + Testing Library |
 | Component   | `tests/unit/collection/ui/components/GameList/`    | Vitest + Testing Library |
+| Page        | `tests/unit/collection/ui/pages/GameDetail/`       | Vitest + Testing Library |
 | Hook        | `tests/unit/collection/ui/hooks/useGamesSelector/` | Vitest + `renderHook`    |
 | E2E         | `tests/e2e/add-game.test.ts`                       | Playwright               |
 
@@ -312,6 +321,7 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 ## References
 
 - [Domain Layer](./domain-layer.md) — Value Objects and business rules
-- [AddGame Use Case](../use-cases/add-game.md) — Use case orchestration
+- [AddGame Use Case](../use-cases/add-game.md) — AddGame use case
+- [GetGameById Use Case](../use-cases/get-game-by-id.md) — GetGameById use case
 - [Dependency Injection](../architecture/dependency-injection.md) — InversifyJS setup
 - [Result Pattern](../result-pattern.md) — Error handling in use cases
