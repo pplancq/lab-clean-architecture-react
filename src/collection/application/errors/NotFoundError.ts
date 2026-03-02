@@ -12,6 +12,6 @@ export class NotFoundError extends Error implements NotFoundErrorInterface {
     readonly metadata?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'NotFoundApplicationError';
+    this.name = 'NotFoundError';
   }
 }
