@@ -31,6 +31,7 @@ const STATUS_OPTIONS = Object.values(StatusType);
 const ERROR_MESSAGES: Record<string, string> = {
   Repository: 'An error occurred while saving the game. Please try again.',
   Validation: 'Please check your input and try again.',
+  NotFound: 'Game not found. It may have been deleted.',
 };
 
 type GameFormData = {
@@ -51,23 +52,36 @@ export type GameFormInitialData = {
   status: string;
 };
 
-type GameFormProps = {
+type GameFormAddProps = {
+  edit?: false;
+  gameId?: never;
+  initialData?: never;
+  onSubmit?: never;
+  /** Called after a successful add submission */
+  onSuccess?: () => void;
+  /** Called when the cancel button is clicked */
+  onCancel?: () => void;
+};
+
+type GameFormEditProps = {
   /** When true, switches to edit mode (pre-populated form, cancel button) */
-  edit?: boolean;
-  /** The ID of the game being edited (required when edit=true) */
-  gameId?: string;
+  edit: true;
+  /** The ID of the game being edited */
+  gameId: string;
   /** Pre-populated values for edit mode */
-  initialData?: GameFormInitialData;
+  initialData: GameFormInitialData;
+  /**
+   * Called with the built EditGameDTO when the form is submitted in edit mode.
+   * Typically bound to `store.editGame`.
+   */
+  onSubmit: (dto: EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>;
   /** Called after a successful edit submission */
   onSuccess?: () => void;
   /** Called when the cancel button is clicked */
   onCancel?: () => void;
-  /**
-   * Called with the built EditGameDTO when the form is submitted in edit mode.
-   * Typically bound to `store.editGame`. Required when edit=true.
-   */
-  onSubmit?: (dto: EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>;
 };
+
+type GameFormProps = GameFormAddProps | GameFormEditProps;
 
 export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCancel, onSubmit }: GameFormProps) => {
   const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);

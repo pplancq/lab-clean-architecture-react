@@ -157,10 +157,9 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     this.commit(false);
   }
 
-  /** Commits a successful edit: updates the map entry and invalidates the list cache. */
+  /** Commits a successful edit: updates the map entry and keeps the list cache warm. */
   private applyEditSuccess(game: Game): void {
     this.setEntry(game.getId(), game);
-    this.hasFetchedList = false;
     this.commit(true);
   }
 
