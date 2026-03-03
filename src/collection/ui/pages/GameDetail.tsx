@@ -1,14 +1,16 @@
 import { appRoutes } from '@App/routing/appRoutes';
 import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
+import { Alert, Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
 import type { CSSProperties } from 'react';
 import type { RouteObject } from 'react-router';
-import { Link, useParams } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 
 import defaultClasses from './GameDetail.module.css';
 
 const GameDetail = () => {
   const { id = '' } = useParams<{ id: string }>();
+  const { state } = useLocation();
+  const successMessage = (state as { successMessage?: string } | null)?.successMessage;
   const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
 
   if (isLoading) {
@@ -106,6 +108,18 @@ const GameDetail = () => {
         <Link to={appRoutes.home}>Back to collection</Link>
       </Grid>
 
+      {successMessage ? (
+        <Grid
+          colSpan={{
+            mobile: 4,
+            tablet: 8,
+            'desktop-small': 12,
+          }}
+        >
+          <Alert variant="success" title={successMessage} role="status" />
+        </Grid>
+      ) : null}
+
       <Grid
         as={Title}
         title={game.getTitle()}
@@ -155,7 +169,9 @@ const GameDetail = () => {
         }}
         className={defaultClasses.actions}
       >
-        <Button>Edit</Button>
+        <Button as={Link} to={appRoutes.editGame(id)}>
+          Edit
+        </Button>
         <Button color="danger">Delete</Button>
       </Grid>
     </Grid>

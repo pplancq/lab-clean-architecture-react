@@ -28,13 +28,15 @@ Deep dive into each architectural layer:
 - **[Domain Layer](./layers/domain-layer.md)** - Business logic and domain purity rules
 - **Application Layer** _(Coming soon)_ - Use cases and application services
 - **Infrastructure Layer** _(Coming soon)_ - Adapters and external integrations
-- **[UI Layer](./layers/ui-layer.md)** - React components, formField wrappers, RHF + Value Objects pattern
+- **[UI Layer](./layers/ui-layer.md)** - React components, formField wrappers, RHF + Value Objects pattern, Observable Store pattern
 
 ## 🎯 Use Cases
 
 Application-layer orchestration:
 
 - **[AddGame Use Case](./use-cases/add-game.md)** - Adding games to the collection with domain validation
+- **[GetGameById Use Case](./use-cases/get-game-by-id.md)** - Retrieving a single game by ID with error mapping
+- **[EditGame Use Case](./use-cases/edit-game.md)** - Partial update of an existing game via entity update methods
 
 ## ⚙️ Infrastructure
 
@@ -75,15 +77,18 @@ Recommended reading order for newcomers:
 
 ## 📝 Contributing to Documentation
 
-When adding new documentation:
+> **Important:** Always update this `README.md` when adding or modifying a doc file.
+> See [`.github/instructions/documentation.instructions.md`](../.github/instructions/documentation.instructions.md) for the full maintenance rules (naming conventions, mandatory sections per doc type, sync checklist).
 
-- Place architecture docs in `architecture/`
+Quick rules:
+
+- Place architecture docs in `architecture/`, ADRs in `architecture/adr/`
 - Place layer-specific docs in `layers/`
-- Place context-specific docs in `contexts/`
+- Place use case docs in `use-cases/`
 - Place infrastructure docs in `infrastructure/`
-- Place how-to guides in `guides/`
-- Update this README.md with the new file
+- Update **this README.md** with the new file link immediately
 - Keep documentation in English
+- Use Mermaid for diagrams, specify language on all code blocks
 
 ## 🔗 External Resources
 

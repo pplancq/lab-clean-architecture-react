@@ -31,6 +31,11 @@ export const COLLECTION_SERVICES = Object.freeze({
   GetGameByIdUseCase: Symbol.for('Collection.GetGameByIdUseCase'),
 
   /**
+   * Use case for editing an existing game in the collection
+   */
+  EditGameUseCase: Symbol.for('Collection.EditGameUseCase'),
+
+  /**
    * Observable store for the games collection
    */
   GamesStore: Symbol.for('Collection.GamesStore'),

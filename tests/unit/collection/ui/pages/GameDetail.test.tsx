@@ -140,7 +140,7 @@ describe('GameDetail', () => {
       await renderGameDetail(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /edit/i })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /edit/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument();
       });
     });
