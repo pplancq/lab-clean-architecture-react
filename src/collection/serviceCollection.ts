@@ -5,6 +5,8 @@ import { GamesStore } from './application/stores/GamesStore';
 import type { GamesStoreInterface } from './application/stores/GamesStoreInterface';
 import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
 import type { AddGameUseCaseInterface } from './application/use-cases/AddGameUseCaseInterface';
+import { EditGameUseCase } from './application/use-cases/EditGameUseCase';
+import type { EditGameUseCaseInterface } from './application/use-cases/EditGameUseCaseInterface';
 import { GetGameByIdUseCase } from './application/use-cases/GetGameByIdUseCase';
 import type { GetGameByIdUseCaseInterface } from './application/use-cases/GetGameByIdUseCaseInterface';
 import { GetGamesUseCase } from './application/use-cases/GetGamesUseCase';
@@ -33,6 +35,14 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
     .bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase)
     .toDynamicValue(
       services => new AddGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+    )
+    .inSingletonScope();
+
+  // Bind EditGameUseCase implementation to interface
+  options
+    .bind<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase)
+    .toDynamicValue(
+      services => new EditGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
