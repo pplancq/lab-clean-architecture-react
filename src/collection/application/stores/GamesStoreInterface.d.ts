@@ -1,5 +1,8 @@
 import type { Game } from '@Collection/domain/entities/Game';
 import type { AbstractObserverInterface } from '@Shared/application/stores/AbstractObserverInterface';
+import type { Result } from '@Shared/domain/result/Result';
+import type { EditGameDTO } from '../dtos/EditGameDTO';
+import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
 
 /**
  * Snapshot returned by getGamesList() — stable reference for useSyncExternalStore.
@@ -53,4 +56,18 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * @param id - The unique identifier of the game to retrieve
    */
   getGame(id: string): GameMapEntryState;
+
+  /**
+   * Applies a partial update to an existing game.
+   * Only fields present in the DTO are updated; omitted fields are left unchanged.
+   *
+   * Synchronously marks the entry as loading and notifies observers, then
+   * delegates to EditGameUseCase. On success, updates the map entry with the
+   * returned Game and rebuilds the list snapshot. On failure, restores the
+   * previous entry and returns the error so callers can handle it imperatively.
+   *
+   * @param dto - Partial update DTO containing the game id and the fields to update
+   * @returns Promise resolving to Result with the updated Game on success
+   */
+  editGame(dto: EditGameDTO): Promise<Result<Game, ApplicationErrorInterface>>;
 }

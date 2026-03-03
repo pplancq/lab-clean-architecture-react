@@ -70,6 +70,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
         new GamesStore(
           services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),
           services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
+          services.get<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase),
         ),
     )
     .inSingletonScope();

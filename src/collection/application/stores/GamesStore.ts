@@ -1,7 +1,11 @@
+import type { EditGameUseCaseInterface } from '@Collection/application/use-cases/EditGameUseCaseInterface';
 import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
 import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
 import type { Game } from '@Collection/domain/entities/Game';
 import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
+import type { Result } from '@Shared/domain/result/Result';
+import type { EditGameDTO } from '../dtos/EditGameDTO';
+import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
 import type { GameMapEntryState, GamesListState, GamesStoreInterface } from './GamesStoreInterface';
 
 /**
@@ -40,6 +44,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
   constructor(
     private readonly getGamesUseCase: GetGamesUseCaseInterface,
     private readonly getGameByIdUseCase: GetGameByIdUseCaseInterface,
+    private readonly editGameUseCase: EditGameUseCaseInterface,
   ) {
     super();
   }
@@ -88,6 +93,26 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     return entry;
   }
 
+  /**
+   * Applies a partial update to an existing game.
+   * Workflow: mark loading → execute use case → update map on success / rollback on error.
+   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   */
+  async editGame(dto: EditGameDTO): Promise<Result<Game, ApplicationErrorInterface>> {
+    const previous = this.gamesMap.get(dto.id);
+    this.setEntry(dto.id, previous?.data ?? null, { isLoading: true, commit: false });
+
+    const result = await this.editGameUseCase.execute(dto);
+
+    if (result.isOk()) {
+      this.applyEditSuccess(result.unwrap());
+    } else {
+      this.rollbackEdit(dto.id, previous);
+    }
+
+    return result;
+  }
+
   private async fetchGames(): Promise<void> {
     const result = await this.getGamesUseCase.execute();
 
@@ -97,48 +122,66 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
       result.unwrap().forEach(game => {
         const existing = this.gamesMap.get(game.getId());
         if (!existing || existing.isLazy) {
-          this.gamesMap.set(game.getId(), {
-            data: game,
-            isLazy: true,
-            isLoading: false,
-            hasError: false,
-            error: null,
-          });
+          this.setEntry(game.getId(), game, { isLazy: true });
         }
       });
       this.commit(true);
-    } else {
-      this.listHasError = true;
-      this.listError = 'Unable to load games. Please try again.';
-      this.commit(false);
+
+      return;
     }
+
+    this.listHasError = true;
+    this.listError = 'Unable to load games. Please try again.';
+    this.commit(false);
   }
 
   private async fetchGameById(id: string): Promise<void> {
     const result = await this.getGameByIdUseCase.execute(id);
 
     if (result.isOk()) {
-      const game = result.unwrap();
-      this.gamesMap.set(game.getId(), {
-        data: game,
-        isLazy: false,
-        isLoading: false,
-        hasError: false,
-        error: null,
-      });
-      this.commit(false);
-    } else {
-      const appError = result.getError();
-      const errorMessage = appError.type === 'NotFound' ? null : 'Unable to load game. Please try again.';
-      const existing = this.gamesMap.get(id);
-      this.gamesMap.set(id, {
-        data: existing?.data ?? null,
-        isLazy: false,
-        isLoading: false,
-        hasError: true,
-        error: errorMessage,
-      });
-      this.notifyObservers();
+      this.setEntry(id, result.unwrap(), { commit: false });
+
+      return;
+    }
+
+    const appError = result.getError();
+    const errorMessage = appError.type === 'NotFound' ? null : 'Unable to load game. Please try again.';
+    const existing = this.gamesMap.get(id);
+    this.gamesMap.set(id, {
+      data: existing?.data ?? null,
+      isLazy: false,
+      isLoading: false,
+      hasError: true,
+      error: errorMessage,
+    });
+    this.commit(false);
+  }
+
+  /** Commits a successful edit: updates the map entry and invalidates the list cache. */
+  private applyEditSuccess(game: Game): void {
+    this.setEntry(game.getId(), game);
+    this.hasFetchedList = false;
+    this.commit(true);
+  }
+
+  /** Restores the previous map entry when an edit fails. */
+  private rollbackEdit(id: string, previous: GameMapEntryState | undefined): void {
+    this.gamesMap.set(id, previous ?? { data: null, isLazy: false, isLoading: false, hasError: false, error: null });
+    this.commit(false);
+  }
+
+  /**
+   * Writes a clean (no-error) entry to the map.
+   * Pass commit=true/false to also notify observers; omit to batch multiple writes before a manual commit.
+   */
+  private setEntry(
+    id: string,
+    data: Game | null,
+    { isLoading = false, isLazy = false, commit }: { isLoading?: boolean; isLazy?: boolean; commit?: boolean } = {},
+  ): void {
+    this.gamesMap.set(id, { data, isLazy, isLoading, hasError: false, error: null });
+    if (commit !== undefined) {
+      this.commit(commit);
     }
   }
 
