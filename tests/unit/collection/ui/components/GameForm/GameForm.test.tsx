@@ -1,13 +1,14 @@
 import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
 import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
+import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
 import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
 import { renderSuspense } from '@pplancq/svg-react/tests';
+import { Result } from '@Shared/domain/result/Result';
 import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
 import { DateFormatter } from '@Shared/infrastructure/utils/DateFormatter';
 import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { Result } from '@Shared/domain/result/Result';
 import { screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { Container } from 'inversify';
@@ -19,16 +20,46 @@ const createWrapper =
   // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => <ServiceProvider container={container}>{children}</ServiceProvider>;
 
-const createContainer = (useCaseMock: AddGameUseCaseInterface) => {
+const createContainer = (addUseCaseMock: AddGameUseCaseInterface) => {
   const container = new Container();
-  container.bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase).toConstantValue(useCaseMock);
+  container.bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase).toConstantValue(addUseCaseMock);
   container.bind<DateFormatterInterface>(SHARED_SERVICES.DateFormatter).toConstantValue(new DateFormatter());
   return container;
 };
 
-const renderGameForm = (useCaseMock: AddGameUseCaseInterface) => {
-  const container = createContainer(useCaseMock);
+const renderGameForm = (addUseCaseMock: AddGameUseCaseInterface) => {
+  const container = createContainer(addUseCaseMock);
   return renderSuspense(<GameForm />, { wrapper: createWrapper(container) });
+};
+
+const renderEditGameForm = (
+  onSubmitMock: (dto: EditGameDTO) => Promise<Result<unknown, unknown>>,
+  options?: {
+    onSuccess?: () => void;
+    onCancel?: () => void;
+    initialData?: Parameters<typeof GameForm>[0]['initialData'];
+  },
+) => {
+  const container = createContainer({ execute: vi.fn() });
+  const initialData = options?.initialData ?? {
+    title: 'The Legend of Zelda',
+    platform: 'Nintendo Switch',
+    format: 'Physical',
+    purchaseDate: '2023-05-12',
+    description: 'Classic adventure game',
+    status: 'Owned',
+  };
+  return renderSuspense(
+    <GameForm
+      edit
+      gameId="game-123"
+      initialData={initialData}
+      onSubmit={onSubmitMock as Parameters<typeof GameForm>[0]['onSubmit']}
+      onSuccess={options?.onSuccess}
+      onCancel={options?.onCancel}
+    />,
+    { wrapper: createWrapper(container) },
+  );
 };
 
 const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
@@ -227,6 +258,114 @@ describe('GameForm', () => {
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeInTheDocument();
         expect(screen.getByText('Unable to add game')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('edit mode', () => {
+    describe('rendering', () => {
+      it('should render the form with an accessible edit label', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('form', { name: /edit game form/i })).toBeInTheDocument();
+      });
+
+      it('should pre-populate all fields from initialData', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('textbox', { name: /game title/i })).toHaveValue('The Legend of Zelda');
+        expect(screen.getByRole('combobox', { name: /status/i })).toHaveValue('Owned');
+      });
+
+      it('should not render platform and format fields in edit mode', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.queryByRole('combobox', { name: /platform/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radiogroup', { name: /format/i })).not.toBeInTheDocument();
+      });
+
+      it('should render Save changes button instead of Add game', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /add game/i })).not.toBeInTheDocument();
+      });
+
+      it('should render the Cancel button', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+      });
+
+      it('should render the status field', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('combobox', { name: /status/i })).toBeInTheDocument();
+      });
+    });
+
+    describe('accessibility', () => {
+      it('should have accessible labels on all edit mode fields including status', async () => {
+        await renderEditGameForm(vi.fn());
+
+        expect(screen.getByRole('combobox', { name: /status/i })).toHaveAccessibleName();
+        expect(screen.getByRole('button', { name: /cancel/i })).toHaveAccessibleName();
+      });
+    });
+
+    describe('cancel interaction', () => {
+      it('should call onCancel when cancel button is clicked', async () => {
+        const user = userEvent.setup();
+        const onCancelMock = vi.fn();
+        await renderEditGameForm(vi.fn(), { onCancel: onCancelMock });
+
+        await user.click(screen.getByRole('button', { name: /cancel/i }));
+
+        expect(onCancelMock).toHaveBeenCalledOnce();
+      });
+    });
+
+    describe('submission', () => {
+      it('should call onSubmit with an EditGameDTO on valid submit', async () => {
+        const user = userEvent.setup();
+        const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+        const onSuccessMock = vi.fn();
+        await renderEditGameForm(onSubmitMock, { onSuccess: onSuccessMock });
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }));
+
+        await waitFor(() => {
+          expect(onSubmitMock).toHaveBeenCalledOnce();
+        });
+        expect(onSubmitMock).toHaveBeenCalledWith(expect.any(EditGameDTO));
+      });
+
+      it('should call onSuccess after a successful edit', async () => {
+        const user = userEvent.setup();
+        const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+        const onSuccessMock = vi.fn();
+        await renderEditGameForm(onSubmitMock, { onSuccess: onSuccessMock });
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }));
+
+        await waitFor(() => {
+          expect(onSuccessMock).toHaveBeenCalledOnce();
+        });
+      });
+
+      it('should show "Unable to update game" error title on failure', async () => {
+        const user = userEvent.setup();
+        const onSubmitMock = vi
+          .fn()
+          .mockResolvedValue(Result.err({ type: 'Repository', message: 'Storage error', name: 'RepositoryError' }));
+        await renderEditGameForm(onSubmitMock);
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }));
+
+        await waitFor(() => {
+          expect(screen.getByRole('alert')).toBeInTheDocument();
+          expect(screen.getByText('Unable to update game')).toBeInTheDocument();
+        });
       });
     });
   });
