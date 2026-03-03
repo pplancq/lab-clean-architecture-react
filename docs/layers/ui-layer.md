@@ -23,9 +23,10 @@ src/collection/ui/
 │   ├── useGamesSelector/
 │   │   └── useGamesSelector.ts # Granular state subscription via useSyncExternalStore
 │   └── useGamesStore/
-│       └── useGamesStore.ts    # Thin DI accessor — returns GamesStore instance (for future actions)
+│       └── useGamesStore.ts    # Thin DI accessor — returns GamesStore instance (for actions like editGame)
 └── pages/
-    ├── AddGame.tsx             # Page component (thin wrapper around GameForm)
+    ├── AddGame.tsx             # Page component (thin wrapper around GameForm in add mode)
+    ├── EditGame.tsx            # Page component (thin wrapper around GameForm in edit mode)
     ├── GameDetail.tsx          # Game detail page — reads from getGame(id) via useGamesSelector
     └── Home.tsx                # Home page displaying the game collection via GameList
 
@@ -196,7 +197,7 @@ For reading state from an **Observable Store** (e.g., `GamesStore`), use `useGam
 
 | Hook                       | Role                               | When to use                                                     |
 | -------------------------- | ---------------------------------- | --------------------------------------------------------------- |
-| `useGamesStore()`          | Returns the store instance         | Calling **future actions** (e.g. `invalidate`, delete, update)  |
+| `useGamesStore()`          | Returns the store instance         | Calling **actions** (e.g. `editGame`, future `deleteGame`)      |
 | `useGamesSelector(s => …)` | Subscribes to a **slice** of state | Reading state — only re-renders when the selected slice changes |
 
 ### Usage in a component
