@@ -1,3 +1,4 @@
+import type { DeleteGameUseCaseInterface } from '@Collection/application/use-cases/DeleteGameUseCaseInterface';
 import type { EditGameUseCaseInterface } from '@Collection/application/use-cases/EditGameUseCaseInterface';
 import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
 import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
@@ -45,6 +46,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     private readonly getGamesUseCase: GetGamesUseCaseInterface,
     private readonly getGameByIdUseCase: GetGameByIdUseCaseInterface,
     private readonly editGameUseCase: EditGameUseCaseInterface,
+    private readonly deleteGameUseCase: DeleteGameUseCaseInterface,
   ) {
     super();
   }
@@ -108,6 +110,22 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
       this.applyEditSuccess(result.unwrap());
     } else {
       this.rollbackEdit(dto.id, previous);
+    }
+
+    return result;
+  }
+
+  /**
+   * Removes a game from the collection.
+   * Workflow: execute use case → remove from map on success / rollback on error.
+   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   */
+  async deleteGame(id: string): Promise<Result<void, ApplicationErrorInterface>> {
+    const result = await this.deleteGameUseCase.execute(id);
+
+    if (result.isOk()) {
+      this.gamesMap.delete(id);
+      this.commit(true);
     }
 
     return result;

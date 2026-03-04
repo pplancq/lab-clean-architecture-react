@@ -81,6 +81,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
           services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),
           services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
           services.get<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase),
+          services.get<DeleteGameUseCaseInterface>(COLLECTION_SERVICES.DeleteGameUseCase),
         ),
     )
     .inSingletonScope();
