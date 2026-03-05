@@ -33,9 +33,9 @@ export class AddGameUseCase implements AddGameUseCaseInterface {
    * Executes the add game use case
    *
    * @param dto - Data transfer object containing game information
-   * @returns Promise resolving to Result with void on success, or ApplicationError on failure
+   * @returns Promise resolving to Result with the created Game on success, or ApplicationError on failure
    */
-  async execute(dto: AddGameDTO): Promise<Result<void, ApplicationErrorInterface>> {
+  async execute(dto: AddGameDTO): Promise<Result<Game, ApplicationErrorInterface>> {
     // Create Game entity (domain-level validation)
     const gameResult = Game.create({
       id: dto.id,
@@ -69,6 +69,6 @@ export class AddGameUseCase implements AddGameUseCaseInterface {
       );
     }
 
-    return Result.ok(undefined);
+    return Result.ok(game);
   }
 }

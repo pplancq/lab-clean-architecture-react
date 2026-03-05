@@ -78,6 +78,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
     .toDynamicValue(
       services =>
         new GamesStore(
+          services.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase),
           services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),
           services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
           services.get<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase),
