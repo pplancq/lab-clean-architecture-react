@@ -58,7 +58,7 @@ type GameFormAddProps = {
    * Called with the built AddGameDTO when the form is submitted in add mode.
    * Typically bound to `store.addGame`.
    */
-  onSubmit: (dto: AddGameDTO | EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>;
+  onSubmit: (dto: AddGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>;
   /** Called after a successful add submission */
   onSuccess?: () => void;
   /** Called when the cancel button is clicked */

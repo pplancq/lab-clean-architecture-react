@@ -1,5 +1,4 @@
 import { appRoutes } from '@App/routing/appRoutes';
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
 import type { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
 import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
@@ -30,10 +29,12 @@ const EditGame = () => {
     navigate(appRoutes.gameDetail(id));
   }, [navigate, id]);
 
-  const handleSubmit = useCallback((dto: AddGameDTO | EditGameDTO) => {
-    return store.editGame(dto as EditGameDTO);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleSubmit = useCallback(
+    (dto: EditGameDTO) => {
+      return store.editGame(dto);
+    },
+    [store],
+  );
 
   if (isLoading) {
     return (

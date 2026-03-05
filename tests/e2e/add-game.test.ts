@@ -50,6 +50,7 @@ describe('Add Game page', () => {
     await page.getByRole('button', { name: /add game/i }).click();
 
     await expect(page).toHaveURL('/');
+    await expect(page.getByRole('list', { name: 'Game collection' })).toContainText('The Last of Us Part I');
   });
 
   it('should redirect to home page after successful submission with all fields filled', async ({ page }) => {

@@ -1,6 +1,8 @@
 import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
 import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
 import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
+import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
+import type { Game } from '@Collection/domain/entities/Game';
 import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
 import { renderSuspense } from '@pplancq/svg-react/tests';
 import { Result } from '@Shared/domain/result/Result';
@@ -24,15 +26,15 @@ const createContainer = () => {
   return container;
 };
 
-const renderGameForm = (onSubmitMock: (dto: AddGameDTO) => Promise<Result<unknown, unknown>>) => {
+const renderGameForm = (onSubmitMock: (dto: AddGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>) => {
   const container = createContainer();
-  return renderSuspense(<GameForm onSubmit={onSubmitMock as Parameters<typeof GameForm>[0]['onSubmit']} />, {
+  return renderSuspense(<GameForm onSubmit={onSubmitMock} />, {
     wrapper: createWrapper(container),
   });
 };
 
 const renderEditGameForm = (
-  onSubmitMock: (dto: EditGameDTO) => Promise<Result<unknown, unknown>>,
+  onSubmitMock: (dto: EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>,
   options?: {
     onSuccess?: () => void;
     onCancel?: () => void;
@@ -53,7 +55,7 @@ const renderEditGameForm = (
       edit
       gameId="game-123"
       initialData={initialData}
-      onSubmit={onSubmitMock as Parameters<typeof GameForm>[0]['onSubmit']}
+      onSubmit={onSubmitMock}
       onSuccess={options?.onSuccess}
       onCancel={options?.onCancel}
     />,
