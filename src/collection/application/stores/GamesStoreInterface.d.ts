@@ -70,4 +70,16 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * @returns Promise resolving to Result with the updated Game on success
    */
   editGame(dto: EditGameDTO): Promise<Result<Game, ApplicationErrorInterface>>;
+
+  /**
+   * Removes a game from the collection.
+   *
+   * Delegates to DeleteGameUseCase. On success, removes the entry from the map
+   * and rebuilds the list snapshot. On failure, restores the previous entry and
+   * returns the error so callers can handle it imperatively.
+   *
+   * @param id - The unique identifier of the game to delete
+   * @returns Promise resolving to Result with void on success
+   */
+  deleteGame(id: string): Promise<Result<void, ApplicationErrorInterface>>;
 }
