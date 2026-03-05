@@ -51,6 +51,12 @@ describe('AddGameUseCase', () => {
       expect(savedGame).toBeInstanceOf(Game);
       expect(savedGame?.getId()).toBe('game-123');
       expect(savedGame?.getTitle()).toBe('The Legend of Zelda');
+
+      // Verify the returned Game matches the DTO data
+      const returnedGame = result.unwrap();
+      expect(returnedGame).toBeInstanceOf(Game);
+      expect(returnedGame.getId()).toBe('game-123');
+      expect(returnedGame.getTitle()).toBe('The Legend of Zelda');
     });
 
     it('should return validation error when domain validation fails (title too long)', async () => {

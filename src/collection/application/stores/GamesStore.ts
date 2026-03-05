@@ -1,3 +1,4 @@
+import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
 import type { DeleteGameUseCaseInterface } from '@Collection/application/use-cases/DeleteGameUseCaseInterface';
 import type { EditGameUseCaseInterface } from '@Collection/application/use-cases/EditGameUseCaseInterface';
 import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
@@ -5,6 +6,7 @@ import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases
 import type { Game } from '@Collection/domain/entities/Game';
 import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
 import type { Result } from '@Shared/domain/result/Result';
+import type { AddGameDTO } from '../dtos/AddGameDTO';
 import type { EditGameDTO } from '../dtos/EditGameDTO';
 import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
 import type { GameMapEntryState, GamesListState, GamesStoreInterface } from './GamesStoreInterface';
@@ -43,6 +45,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
   private listSnapshot: GamesListState = { games: [], isLoading: false, hasError: false, error: null };
 
   constructor(
+    private readonly addGameUseCase: AddGameUseCaseInterface,
     private readonly getGamesUseCase: GetGamesUseCaseInterface,
     private readonly getGameByIdUseCase: GetGameByIdUseCaseInterface,
     private readonly editGameUseCase: EditGameUseCaseInterface,
@@ -107,7 +110,8 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     const result = await this.editGameUseCase.execute(dto);
 
     if (result.isOk()) {
-      this.applyEditSuccess(result.unwrap());
+      const game = result.unwrap();
+      this.setEntry(game.getId(), game, { commit: true });
     } else {
       this.rollbackEdit(dto.id, previous);
     }
@@ -116,7 +120,20 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
   }
 
   /**
-   * Removes a game from the collection.
+   * Adds a new game to the collection.
+   * Workflow: execute use case → add to map on success; no state change on error.
+   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   */
+  async addGame(dto: AddGameDTO): Promise<Result<Game, ApplicationErrorInterface>> {
+    const result = await this.addGameUseCase.execute(dto);
+    if (result.isOk()) {
+      const game = result.unwrap();
+      this.setEntry(game.getId(), game, { commit: true });
+    }
+    return result;
+  }
+
+  /**
    * Workflow: execute use case → remove from map on success; no state change on error.
    * The Result is returned for imperative handling by the caller (e.g. show an error banner).
    */
@@ -173,12 +190,6 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
       error: errorMessage,
     });
     this.commit(false);
-  }
-
-  /** Commits a successful edit: updates the map entry and keeps the list cache warm. */
-  private applyEditSuccess(game: Game): void {
-    this.setEntry(game.getId(), game);
-    this.commit(true);
   }
 
   /** Restores the previous map entry when an edit fails. */

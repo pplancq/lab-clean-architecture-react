@@ -43,6 +43,10 @@ const createNoopDeleteGameUseCaseMock = () => ({
   execute: vi.fn().mockResolvedValue(Result.ok(undefined)),
 });
 
+const createNoopAddGameUseCaseMock = () => ({
+  execute: vi.fn().mockResolvedValue(Result.ok(createGame('noop', 'noop'))),
+});
+
 const FULL_ENTRY = (game: Game): GameMapEntryState => ({
   data: game,
   isLazy: false,
@@ -56,6 +60,7 @@ describe('GamesStore', () => {
     it('should return isLoading true on first call and auto-trigger fetch', async () => {
       const useCaseMock = createGetGamesUseCaseMock(Result.ok([]));
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         useCaseMock,
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -71,6 +76,7 @@ describe('GamesStore', () => {
     it('should set games on success', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok(games)),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -85,6 +91,7 @@ describe('GamesStore', () => {
 
     it('should set error on use case failure', async () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -105,6 +112,7 @@ describe('GamesStore', () => {
     it('should not trigger fetch again after first call', async () => {
       const useCaseMock = createGetGamesUseCaseMock(Result.ok([]));
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         useCaseMock,
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -121,6 +129,7 @@ describe('GamesStore', () => {
 
     it('should preserve games array reference while loading', () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -135,6 +144,7 @@ describe('GamesStore', () => {
 
     it('should return a stable snapshot reference when state has not changed', () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -150,6 +160,7 @@ describe('GamesStore', () => {
     it('should notify observers when fetch completes', async () => {
       const games = [createGame('1', 'Zelda')];
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok(games)),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -168,6 +179,7 @@ describe('GamesStore', () => {
   describe('getGame', () => {
     it('should return a loading entry on first call for an unknown id', () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -186,6 +198,7 @@ describe('GamesStore', () => {
     it('should auto-trigger fetchGameById and return full entry on success', async () => {
       const game = createGame('game-1', 'Zelda');
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
@@ -200,6 +213,7 @@ describe('GamesStore', () => {
 
     it('should set hasError with null error on NotFound', async () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(
           Result.err({ type: 'NotFound', message: 'Not found', entityId: 'game-99', metadata: {} }),
@@ -222,6 +236,7 @@ describe('GamesStore', () => {
 
     it('should set hasError with error message on generic failure', async () => {
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
         createNoopEditGameUseCaseMock(),
@@ -244,6 +259,7 @@ describe('GamesStore', () => {
       const game = createGame('game-1', 'Zelda');
       const getGameByIdMock = createGetGameByIdUseCaseMock(Result.ok(game));
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
@@ -267,6 +283,7 @@ describe('GamesStore', () => {
       const game = createGame('game-1', 'Zelda');
       const getGameByIdMock = createGetGameByIdUseCaseMock(Result.ok(game));
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
@@ -293,6 +310,7 @@ describe('GamesStore', () => {
         ),
       };
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
@@ -315,6 +333,7 @@ describe('GamesStore', () => {
     it('should return a stable entry reference when state has not changed', async () => {
       const game = createGame('game-1', 'Zelda');
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
@@ -330,6 +349,7 @@ describe('GamesStore', () => {
     it('should notify observers when game is loaded', async () => {
       const game = createGame('game-1', 'Zelda');
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
@@ -350,6 +370,7 @@ describe('GamesStore', () => {
       const game = createGame('game-1', 'Zelda');
       const deleteUseCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(undefined)) };
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -374,6 +395,7 @@ describe('GamesStore', () => {
         execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
       };
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -395,6 +417,7 @@ describe('GamesStore', () => {
         execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
       };
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -411,6 +434,7 @@ describe('GamesStore', () => {
     it('should notify observers on success', async () => {
       const game = createGame('game-1', 'Zelda');
       const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
@@ -420,6 +444,119 @@ describe('GamesStore', () => {
       store.subscribe(observer);
 
       await store.deleteGame('game-1');
+
+      expect(observer).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('addGame', () => {
+    it('should add the game to the map and rebuild the list on success', async () => {
+      const addedGame = createGame('game-1', 'Zelda');
+      const addUseCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) };
+      const store = new GamesStore(
+        addUseCaseMock,
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+      );
+
+      store.getGamesList();
+      await flushPromises();
+
+      expect(store.getGamesList().games).toHaveLength(0);
+
+      const result = await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
+
+      expect(result.isOk()).toBeTruthy();
+      expect(store.getGamesList().games).toHaveLength(1);
+    });
+
+    it('should not modify the map and return the error on failure', async () => {
+      const addUseCaseMock = {
+        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+      };
+      const store = new GamesStore(
+        addUseCaseMock,
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+      );
+
+      store.getGamesList();
+      await flushPromises();
+
+      const result = await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
+
+      expect(result.isErr()).toBeTruthy();
+      expect(store.getGamesList().games).toHaveLength(0);
+    });
+
+    it('should not notify observers on failure', async () => {
+      const addUseCaseMock = {
+        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+      };
+      const store = new GamesStore(
+        addUseCaseMock,
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+      );
+      const observer = vi.fn();
+      store.subscribe(observer);
+
+      await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
+
+      expect(observer).not.toHaveBeenCalled();
+    });
+
+    it('should notify observers on success', async () => {
+      const addedGame = createGame('game-1', 'Zelda');
+      const store = new GamesStore(
+        { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) },
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+      );
+      const observer = vi.fn();
+      store.subscribe(observer);
+
+      await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
 
       expect(observer).toHaveBeenCalledWith();
     });

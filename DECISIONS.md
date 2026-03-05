@@ -8,16 +8,19 @@ This document serves as the **main index** for all architectural decisions made 
 
 ## Quick Reference - All ADRs
 
-| ADR                                                                            | Title                      | Status      | Date       | Description                                                                  |
-| ------------------------------------------------------------------------------ | -------------------------- | ----------- | ---------- | ---------------------------------------------------------------------------- |
-| [ADR-001](./docs/architecture/adr/ADR-001-starter-template-selection.md)       | Starter Template Selection | ✅ Accepted | 2026-01-14 | Use @pplancq/react-app for Rsbuild foundation and architectural freedom      |
-| [ADR-002](./docs/architecture/adr/ADR-002-clean-architecture-ddd.md)           | Clean Architecture + DDD   | ✅ Accepted | 2026-01-22 | Hybrid architecture with bounded contexts for scalability                    |
-| [ADR-003](./docs/architecture/adr/ADR-003-indexeddb-storage-strategy.md)       | IndexedDB Storage          | ✅ Accepted | 2026-01-22 | Offline-first storage with structured data and fast queries                  |
-| [ADR-004](./docs/architecture/adr/ADR-004-result-either-pattern.md)            | Result/Either Pattern      | ✅ Accepted | 2026-02-03 | Type-safe error handling for domain operations                               |
-| [ADR-005](./docs/architecture/adr/ADR-005-inversifyjs-dependency-injection.md) | InversifyJS DI             | ✅ Accepted | 2026-02-02 | Dependency injection for loose coupling between layers                       |
-| [ADR-006](./docs/architecture/adr/ADR-006-pwa-from-day-one.md)                 | PWA from Day One           | ✅ Accepted | 2026-02-05 | Offline capabilities, installable app, performance optimization              |
-| [ADR-007](./docs/architecture/adr/ADR-007-no-typescript-decorators.md)         | No TypeScript Decorators   | ✅ Accepted | 2026-02-09 | Manual DI binding to maintain domain purity and avoid decorator side effects |
-| [ADR-008](./docs/architecture/adr/ADR-008-result-pattern-usage-convention.md)  | Result Pattern Convention  | ✅ Accepted | 2026-02-09 | When to use Result vs throw: business errors vs programming errors           |
+| ADR                                                                            | Title                      | Status      | Date       | Description                                                                         |
+| ------------------------------------------------------------------------------ | -------------------------- | ----------- | ---------- | ----------------------------------------------------------------------------------- |
+| [ADR-001](./docs/architecture/adr/ADR-001-starter-template-selection.md)       | Starter Template Selection | ✅ Accepted | 2026-01-14 | Use @pplancq/react-app for Rsbuild foundation and architectural freedom             |
+| [ADR-002](./docs/architecture/adr/ADR-002-clean-architecture-ddd.md)           | Clean Architecture + DDD   | ✅ Accepted | 2026-01-22 | Hybrid architecture with bounded contexts for scalability                           |
+| [ADR-003](./docs/architecture/adr/ADR-003-indexeddb-storage-strategy.md)       | IndexedDB Storage          | ✅ Accepted | 2026-01-22 | Offline-first storage with structured data and fast queries                         |
+| [ADR-004](./docs/architecture/adr/ADR-004-result-either-pattern.md)            | Result/Either Pattern      | ✅ Accepted | 2026-02-03 | Type-safe error handling for domain operations                                      |
+| [ADR-005](./docs/architecture/adr/ADR-005-inversifyjs-dependency-injection.md) | InversifyJS DI             | ✅ Accepted | 2026-02-02 | Dependency injection for loose coupling between layers                              |
+| [ADR-006](./docs/architecture/adr/ADR-006-pwa-from-day-one.md)                 | PWA from Day One           | ✅ Accepted | 2026-02-05 | Offline capabilities, installable app, performance optimization                     |
+| [ADR-007](./docs/architecture/adr/ADR-007-no-typescript-decorators.md)         | No TypeScript Decorators   | ✅ Accepted | 2026-02-09 | Manual DI binding to maintain domain purity and avoid decorator side effects        |
+| [ADR-008](./docs/architecture/adr/ADR-008-result-pattern-usage-convention.md)  | Result Pattern Convention  | ✅ Accepted | 2026-02-09 | When to use Result vs throw: business errors vs programming errors                  |
+| [ADR-009](./docs/architecture/adr/ADR-009-symbol-based-service-identifiers.md) | Symbol-based Service IDs   | ✅ Accepted | 2026-02-23 | Symbols as DI identifiers to avoid coupling and circular imports                    |
+| [ADR-010](./docs/architecture/adr/ADR-010-dto-date-type-conventions.md)        | DTO Date Type Conventions  | ✅ Accepted | 2026-02-23 | `Date` in application DTOs, `string \| null` in infrastructure DTOs                 |
+| [ADR-011](./docs/architecture/adr/ADR-011-map-centric-store-auto-trigger.md)   | Map-Centric Store          | ✅ Accepted | 2026-03-02 | Observable store with Map-based state and auto-triggered fetches via queueMicrotask |
 
 ---
 
@@ -38,10 +41,15 @@ This document serves as the **main index** for all architectural decisions made 
 - **ADR-004:** Result/Either pattern implementation
 - **ADR-008:** Convention for when to use Result vs throw
 
-### Dependency Management (ADR-005, ADR-007)
+### Dependency Management (ADR-005, ADR-007, ADR-009)
 
 - **ADR-005:** InversifyJS for dependency injection
 - **ADR-007:** No decorators - manual binding only
+- **ADR-009:** Symbol-based service identifiers to avoid coupling
+
+### State Management (ADR-011)
+
+- **ADR-011:** Map-centric observable store with auto-triggered fetches
 
 ---
 
@@ -63,6 +71,15 @@ This document serves as the **main index** for all architectural decisions made 
 
 - ADR-007: No TypeScript Decorators (extends ADR-005)
 - ADR-008: Result Pattern Convention (extends ADR-004)
+
+### Epic 2 Retrospective
+
+- ADR-009: Symbol-based Service Identifiers (extends ADR-005)
+- ADR-010: DTO Date Type Conventions (extends ADR-002)
+
+### Epic 2 — Story 2.6
+
+- ADR-011: Map-Centric Store with Auto-Triggered Fetches
 
 ---
 
@@ -94,7 +111,7 @@ This document serves as the **main index** for all architectural decisions made 
 
 ---
 
-**Last Updated:** 2026-02-09  
-**Total ADRs:** 8 (All Accepted)  
+**Last Updated:** 2026-03-05  
+**Total ADRs:** 11 (All Accepted)  
 **Author:** Paul (with AI assistance)  
 **Project:** lab-clean-architecture-react

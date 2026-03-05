@@ -69,13 +69,18 @@ This project has a **dual purpose**:
   - [Dependency Rules](./docs/architecture/dependency-rules.md) - Critical dependency constraints
   - [Dependency Injection](./docs/architecture/dependency-injection.md) - InversifyJS configuration and patterns
   - [Domain Layer](./docs/layers/domain-layer.md) - Domain purity and business logic rules
-- **[Architecture Decision Records (ADRs)](./DECISIONS.md)** - 6 foundational architectural decisions with honest trade-offs
+- **[Architecture Decision Records (ADRs)](./DECISIONS.md)** - 11 architectural decisions with honest trade-offs
   - ADR-001: Starter Template Selection (@pplancq/react-app)
   - ADR-002: Clean Architecture + DDD Bounded Contexts
   - ADR-003: IndexedDB Storage Strategy
   - ADR-004: Result/Either Pattern for Error Handling
   - ADR-005: InversifyJS for Dependency Injection
   - ADR-006: PWA from Day One
+  - ADR-007: No TypeScript Decorators
+  - ADR-008: Result Pattern Usage Convention
+  - ADR-009: Symbol-based Service Identifiers
+  - ADR-010: DTO Date Type Conventions
+  - ADR-011: Map-Centric Store with Auto-Triggered Fetches
 - **[Architecture Decision Document](_bmad-output/planning-artifacts/architecture.md)** - Planning-phase architecture decisions and patterns
 - **[Project Context](./project-context.md)** - Critical rules and patterns for AI agents (naming conventions, code patterns, anti-patterns)
 - **[PWA Infrastructure](./docs/infrastructure/pwa.md)** - Progressive Web App implementation (Service Worker, caching, offline support)
