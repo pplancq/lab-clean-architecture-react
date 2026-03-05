@@ -79,7 +79,7 @@ Errors are returned via `Promise<Result>` to the calling component (`GameDetail`
 const result = await store.deleteGame(id);
 
 if (result.isErr()) {
-  setDeleteError(true); // Display inline error banner
+  setDeleteError('Unable to delete game. Please try again.'); // Display inline error banner
   return;
 }
 

@@ -8,13 +8,22 @@ import 'fake-indexeddb/auto';
 
 expect.extend(matchers);
 
-// jsdom does not implement HTMLDialogElement methods; mock them to simulate open/close behavior
-HTMLDialogElement.prototype.showModal = vi.fn(function showModal(this: HTMLDialogElement) {
-  this.setAttribute('open', '');
-});
-HTMLDialogElement.prototype.close = vi.fn(function close(this: HTMLDialogElement) {
-  this.removeAttribute('open');
-});
+// jsdom may not implement HTMLDialogElement methods; mock them to simulate open/close behavior when missing
+if (typeof HTMLDialogElement !== 'undefined') {
+  const dialogPrototype = HTMLDialogElement.prototype;
+
+  if (typeof dialogPrototype.showModal !== 'function') {
+    dialogPrototype.showModal = vi.fn(function showModal(this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    });
+  }
+
+  if (typeof dialogPrototype.close !== 'function') {
+    dialogPrototype.close = vi.fn(function close(this: HTMLDialogElement) {
+      this.removeAttribute('open');
+    });
+  }
+}
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: 'error' });

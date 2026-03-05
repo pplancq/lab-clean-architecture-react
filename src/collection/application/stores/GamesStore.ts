@@ -117,7 +117,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   /**
    * Removes a game from the collection.
-   * Workflow: execute use case → remove from map on success / rollback on error.
+   * Workflow: execute use case → remove from map on success; no state change on error.
    * The Result is returned for imperative handling by the caller (e.g. show an error banner).
    */
   async deleteGame(id: string): Promise<Result<void, ApplicationErrorInterface>> {

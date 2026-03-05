@@ -32,7 +32,6 @@ const GameDetail = () => {
 
   const handleDeleteCancel = useCallback(() => {
     setShowDeleteModal(false);
-    deleteTriggerRef.current?.focus();
   }, []);
 
   const handleDeleteConfirm = useCallback(async () => {
@@ -42,9 +41,12 @@ const GameDetail = () => {
     } else {
       setDeleteError('Unable to delete game. Please try again.');
       setShowDeleteModal(false);
-      deleteTriggerRef.current?.focus();
     }
   }, [store, id, navigate]);
+
+  const handleDialogClose = useCallback(() => {
+    deleteTriggerRef.current?.focus();
+  }, []);
 
   if (isLoading) {
     return (
@@ -230,6 +232,7 @@ const GameDetail = () => {
         cancelLabel="Cancel"
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
+        onClose={handleDialogClose}
       />
     </Grid>
   );

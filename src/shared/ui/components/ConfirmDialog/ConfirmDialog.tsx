@@ -11,14 +11,16 @@ type ConfirmDialogProps = {
   cancelLabel?: string;
   onConfirm: () => void;
   onCancel: () => void;
+  onClose?: () => void;
 };
 
 /**
  * Accessible confirmation dialog built on the native <dialog> element.
  *
  * - Focus trap is handled natively by showModal().
- * - ESC key fires the 'cancel' event; we intercept it to keep React in control.
- * - Focus returns to the trigger element on close (managed by the parent via onCancel).
+ * - ESC key fires the 'cancel' event; we call event.preventDefault() to prevent the native
+ *   close and then delegate to onCancel, keeping React in full control of the open state.
+ * - Focus returns to the trigger element on close (managed by the parent via onClose).
  */
 export const ConfirmDialog = ({
   open,
@@ -28,6 +30,7 @@ export const ConfirmDialog = ({
   cancelLabel = 'Cancel',
   onConfirm,
   onCancel,
+  onClose,
 }: ConfirmDialogProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -46,7 +49,8 @@ export const ConfirmDialog = ({
       return;
     }
     dialog.close();
-  }, [open]);
+    onClose?.();
+  }, [open, onClose]);
 
   return (
     <dialog
@@ -54,7 +58,10 @@ export const ConfirmDialog = ({
       className={defaultClasses.dialog}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      onCancel={onCancel}
+      onCancel={e => {
+        e.preventDefault();
+        onCancel();
+      }}
     >
       <h2 id={titleId} className={defaultClasses.title}>
         {title}

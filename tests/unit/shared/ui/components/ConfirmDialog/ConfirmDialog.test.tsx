@@ -1,5 +1,5 @@
 import { ConfirmDialog } from '@Shared/ui/components/ConfirmDialog/ConfirmDialog';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -70,6 +70,14 @@ describe('ConfirmDialog', () => {
       await user.click(screen.getByRole('button', { name: 'Delete' }));
 
       expect(onConfirm).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onCancel when ESC key triggers the cancel event', () => {
+      const { onCancel } = renderConfirmDialog();
+
+      fireEvent(screen.getByRole('dialog'), new Event('cancel', { bubbles: false, cancelable: true }));
+
+      expect(onCancel).toHaveBeenCalledTimes(1);
     });
   });
 
