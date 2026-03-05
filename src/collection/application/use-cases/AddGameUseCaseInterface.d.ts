@@ -1,3 +1,4 @@
+import type { Game } from '@Collection/domain/entities/Game';
 import type { Result } from '@Shared/domain/result/Result';
 import type { AddGameDTO } from '../dtos/AddGameDTO';
 import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
@@ -36,7 +37,7 @@ export interface AddGameUseCaseInterface {
    * Executes the add game use case
    *
    * @param dto - Data transfer object containing game information
-   * @returns Promise resolving to Result with void on success, or ApplicationError on failure
+   * @returns Promise resolving to Result with the created Game on success, or ApplicationError on failure
    */
-  execute(dto: AddGameDTO): Promise<Result<void, ApplicationErrorInterface>>;
+  execute(dto: AddGameDTO): Promise<Result<Game, ApplicationErrorInterface>>;
 }

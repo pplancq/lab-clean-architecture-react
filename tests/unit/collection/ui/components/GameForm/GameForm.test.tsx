@@ -1,8 +1,8 @@
 import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
 import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
 import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
+import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
+import type { Game } from '@Collection/domain/entities/Game';
 import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
 import { renderSuspense } from '@pplancq/svg-react/tests';
 import { Result } from '@Shared/domain/result/Result';
@@ -20,27 +20,28 @@ const createWrapper =
   // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => <ServiceProvider container={container}>{children}</ServiceProvider>;
 
-const createContainer = (addUseCaseMock: AddGameUseCaseInterface) => {
+const createContainer = () => {
   const container = new Container();
-  container.bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase).toConstantValue(addUseCaseMock);
   container.bind<DateFormatterInterface>(SHARED_SERVICES.DateFormatter).toConstantValue(new DateFormatter());
   return container;
 };
 
-const renderGameForm = (addUseCaseMock: AddGameUseCaseInterface) => {
-  const container = createContainer(addUseCaseMock);
-  return renderSuspense(<GameForm />, { wrapper: createWrapper(container) });
+const renderGameForm = (onSubmitMock: (dto: AddGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>) => {
+  const container = createContainer();
+  return renderSuspense(<GameForm onSubmit={onSubmitMock} />, {
+    wrapper: createWrapper(container),
+  });
 };
 
 const renderEditGameForm = (
-  onSubmitMock: (dto: EditGameDTO) => Promise<Result<unknown, unknown>>,
+  onSubmitMock: (dto: EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>,
   options?: {
     onSuccess?: () => void;
     onCancel?: () => void;
     initialData?: Parameters<typeof GameForm>[0]['initialData'];
   },
 ) => {
-  const container = createContainer({ execute: vi.fn() });
+  const container = createContainer();
   const initialData = options?.initialData ?? {
     title: 'The Legend of Zelda',
     platform: 'Nintendo Switch',
@@ -54,7 +55,7 @@ const renderEditGameForm = (
       edit
       gameId="game-123"
       initialData={initialData}
-      onSubmit={onSubmitMock as Parameters<typeof GameForm>[0]['onSubmit']}
+      onSubmit={onSubmitMock}
       onSuccess={options?.onSuccess}
       onCancel={options?.onCancel}
     />,
@@ -70,15 +71,13 @@ const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
 describe('GameForm', () => {
   describe('rendering', () => {
     it('should render the form with an accessible label', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('form', { name: /add game form/i })).toBeInTheDocument();
     });
 
     it('should render all form fields', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('textbox', { name: /game title/i })).toBeInTheDocument();
       expect(screen.getByRole('combobox', { name: /platform/i })).toBeInTheDocument();
@@ -88,16 +87,14 @@ describe('GameForm', () => {
     });
 
     it('should pre-select Physical format by default', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('radio', { name: 'Physical' })).toBeChecked();
       expect(screen.getByRole('radio', { name: 'Digital' })).not.toBeChecked();
     });
 
     it('should have today as default purchase date', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       const d = new Date();
       const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -108,8 +105,7 @@ describe('GameForm', () => {
 
   describe('accessibility', () => {
     it('should have ARIA labels on all form fields', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('textbox', { name: /game title/i })).toHaveAccessibleName();
       expect(screen.getByRole('combobox', { name: /platform/i })).toHaveAccessibleName();
@@ -118,15 +114,13 @@ describe('GameForm', () => {
     });
 
     it('should mark title as required', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('textbox', { name: /game title/i })).toBeRequired();
     });
 
     it('should mark platform as required', async () => {
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       expect(screen.getByRole('combobox', { name: /platform/i })).toBeRequired();
     });
@@ -135,8 +129,7 @@ describe('GameForm', () => {
   describe('validation', () => {
     it('should display an error when title is submitted empty', async () => {
       const user = userEvent.setup();
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
@@ -147,8 +140,7 @@ describe('GameForm', () => {
 
     it('should display an error when platform is not selected', async () => {
       const user = userEvent.setup();
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       await user.type(screen.getByRole('textbox', { name: /game title/i }), 'Some Game');
       await user.click(screen.getByRole('button', { name: /add game/i }));
@@ -160,8 +152,7 @@ describe('GameForm', () => {
 
     it('should associate validation errors with their fields via aria-errormessage', async () => {
       const user = userEvent.setup();
-      const useCaseMock = { execute: vi.fn() };
-      await renderGameForm(useCaseMock);
+      await renderGameForm(vi.fn());
 
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
@@ -171,36 +162,36 @@ describe('GameForm', () => {
       });
     });
 
-    it('should not call the use case when the form is invalid', async () => {
+    it('should not call onSubmit when the form is invalid', async () => {
       const user = userEvent.setup();
-      const executeMock = vi.fn();
-      await renderGameForm({ execute: executeMock });
+      const onSubmitMock = vi.fn();
+      await renderGameForm(onSubmitMock);
 
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
-      expect(executeMock).not.toHaveBeenCalled();
+      expect(onSubmitMock).not.toHaveBeenCalled();
     });
   });
 
   describe('submission', () => {
-    it('should call the use case with an AddGameDTO on valid submit', async () => {
+    it('should call onSubmit with an AddGameDTO on valid submit', async () => {
       const user = userEvent.setup();
-      const executeMock = vi.fn().mockResolvedValue(Result.ok(undefined));
-      await renderGameForm({ execute: executeMock });
+      const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+      await renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
       await waitFor(() => {
-        expect(executeMock).toHaveBeenCalledOnce();
+        expect(onSubmitMock).toHaveBeenCalledOnce();
       });
-      expect(executeMock).toHaveBeenCalledWith(expect.any(AddGameDTO));
+      expect(onSubmitMock).toHaveBeenCalledWith(expect.any(AddGameDTO));
     });
 
-    it('should pass the correct values to the use case', async () => {
+    it('should pass the correct values to onSubmit', async () => {
       const user = userEvent.setup();
-      const executeMock = vi.fn().mockResolvedValue(Result.ok(undefined));
-      await renderGameForm({ execute: executeMock });
+      const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+      await renderGameForm(onSubmitMock);
 
       await user.type(screen.getByRole('textbox', { name: /game title/i }), 'Zelda');
       await user.selectOptions(screen.getByRole('combobox', { name: /platform/i }), 'Nintendo Switch');
@@ -209,7 +200,7 @@ describe('GameForm', () => {
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
       await waitFor(() => {
-        const dto: AddGameDTO = executeMock.mock.calls[0][0];
+        const dto: AddGameDTO = onSubmitMock.mock.calls[0][0];
         expect(dto.title).toBe('Zelda');
         expect(dto.platform).toBe('Nintendo Switch');
         expect(dto.format).toBe('Digital');
@@ -219,8 +210,8 @@ describe('GameForm', () => {
 
     it('should display a success message after successful submission', async () => {
       const user = userEvent.setup();
-      const executeMock = vi.fn().mockResolvedValue(Result.ok(undefined));
-      await renderGameForm({ execute: executeMock });
+      const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+      await renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
       await user.click(screen.getByRole('button', { name: /add game/i }));
@@ -232,8 +223,8 @@ describe('GameForm', () => {
 
     it('should reset the form after successful submission', async () => {
       const user = userEvent.setup();
-      const executeMock = vi.fn().mockResolvedValue(Result.ok(undefined));
-      await renderGameForm({ execute: executeMock });
+      const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
+      await renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
       await user.click(screen.getByRole('button', { name: /add game/i }));
@@ -243,14 +234,14 @@ describe('GameForm', () => {
       });
     });
 
-    it('should display an error message when the use case fails', async () => {
+    it('should display an error message when onSubmit fails', async () => {
       const user = userEvent.setup();
-      const executeMock = vi
+      const onSubmitMock = vi
         .fn()
         .mockResolvedValue(
           Result.err({ type: 'Repository', message: 'Storage quota exceeded', name: 'RepositoryError' }),
         );
-      await renderGameForm({ execute: executeMock });
+      await renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
       await user.click(screen.getByRole('button', { name: /add game/i }));

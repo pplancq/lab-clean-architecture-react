@@ -41,7 +41,7 @@ describe('Add Game page', () => {
     await expect(page.getByText('Game title cannot be empty')).toBeHidden();
   });
 
-  it('should add a game successfully and show success message', async ({ page }) => {
+  it('should redirect to home page after successful submission', async ({ page }) => {
     await page.goto('/add-game');
 
     await page.getByRole('textbox', { name: /game title/i }).fill('The Last of Us Part I');
@@ -49,10 +49,11 @@ describe('Add Game page', () => {
 
     await page.getByRole('button', { name: /add game/i }).click();
 
-    await expect(page.getByText('Game added successfully')).toBeVisible();
+    await expect(page).toHaveURL('/');
+    await expect(page.getByRole('list', { name: 'Game collection' })).toContainText('The Last of Us Part I');
   });
 
-  it('should reset the form after successful submission', async ({ page }) => {
+  it('should redirect to home page after successful submission with all fields filled', async ({ page }) => {
     await page.goto('/add-game');
 
     await page.getByRole('textbox', { name: /game title/i }).fill('God of War Ragnarök');
@@ -62,21 +63,6 @@ describe('Add Game page', () => {
 
     await page.getByRole('button', { name: /add game/i }).click();
 
-    await expect(page.getByText('Game added successfully')).toBeVisible();
-    await expect(page.getByRole('textbox', { name: /game title/i })).toHaveValue('');
-    await expect(page.getByRole('textbox', { name: /description/i })).toHaveValue('');
-    await expect(page.getByRole('radio', { name: 'Physical' })).toBeChecked();
-  });
-
-  it('should allow closing the success message', async ({ page }) => {
-    await page.goto('/add-game');
-
-    await page.getByRole('textbox', { name: /game title/i }).fill('Horizon Forbidden West');
-    await page.getByRole('combobox', { name: /platform/i }).selectOption('PlayStation 5');
-    await page.getByRole('button', { name: /add game/i }).click();
-
-    await expect(page.getByText('Game added successfully')).toBeVisible();
-    await page.getByRole('button', { name: 'Close' }).click();
-    await expect(page.getByText('Game added successfully')).toBeHidden();
+    await expect(page).toHaveURL('/');
   });
 });

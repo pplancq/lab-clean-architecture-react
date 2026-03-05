@@ -36,7 +36,7 @@ flowchart TD
     C -->|Game entity| B
     B -->|2. Persist| E[GameRepository.save]
     E -->|Result| B
-    B -->|Result void or Error| A
+    B -->|Result<Game> or Error| A
 
     style A fill:#e1f5ff
     style B fill:#fff4e1
@@ -97,7 +97,8 @@ const dto = new AddGameDTO(
 const result = await addGameUseCase.execute(dto);
 
 if (result.isOk()) {
-  console.log('Game added successfully!');
+  const game = result.getValue();
+  console.log(`Game added successfully: ${game.getId()}`);
 } else {
   const error = result.getError();
   console.error(`Failed to add game: ${error.message}`);
@@ -106,78 +107,39 @@ if (result.isOk()) {
 
 ### React Integration
 
-The actual integration pattern in this project uses `useService` to resolve the use case from the DI container, combined with **React Hook Form** for form state management and **Value Objects** for validation:
+The actual integration pattern routes `addGame` through the **`GamesStore`** observable store. The page component (`AddGame.tsx`) orchestrates the submission and navigation; `GameForm` is a pure UI component that receives `onSubmit` as a required prop:
 
 ```typescript
+// src/collection/ui/pages/AddGame.tsx
+import { appRoutes } from '@App/routing/appRoutes';
 import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
-import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
-import { Platform } from '@Collection/domain/value-objects/Platform';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { FormInputField } from '@Shared/ui/components/formField/FormInputField/FormInputField';
-import { FormSelectField } from '@Shared/ui/components/formField/FormSelectField/FormSelectField';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import { FormProvider, useForm } from 'react-hook-form';
+import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
+import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
 
-export const GameForm = () => {
-  const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
-  const methods = useForm({ defaultValues: { title: '', platform: '' } });
-  const { handleSubmit } = methods;
+const AddGame = () => {
+  const store = useGamesStore();
+  const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
-    const dto = new AddGameDTO(
-      crypto.randomUUID(),
-      data.title,
-      '',
-      data.platform,
-      'Physical',
-      null,
-      'Owned',
-    );
+  const handleSuccess = useCallback(() => {
+    navigate(appRoutes.home);
+  }, [navigate]);
 
-    const result = await addGameUseCase.execute(dto);
+  const handleSubmit = useCallback((dto: AddGameDTO) => {
+    return store.addGame(dto);
+  }, []);
 
-    if (result.isOk()) {
-      // handle success
-    } else {
-      // handle error: result.getError().message
-    }
-  };
-
-  return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate aria-label="Add game form">
-        <FormInputField
-          name="title"
-          label="Game title"
-          required
-          rules={{
-            validate: value => {
-              const result = GameTitle.create(value);
-              return result.isOk() || result.getError().message;
-            },
-          }}
-        />
-        <FormSelectField
-          name="platform"
-          label="Platform"
-          required
-          rules={{
-            validate: value => {
-              const result = Platform.create(value);
-              return result.isOk() || result.getError().message;
-            },
-          }}
-        >
-          <option value="">Select a platform</option>
-          <option value="PlayStation 5">PlayStation 5</option>
-        </FormSelectField>
-        <button type="submit">Add game</button>
-      </form>
-    </FormProvider>
-  );
+  return <GameForm onSubmit={handleSubmit} onSuccess={handleSuccess} />;
 };
 ```
+
+**Key design points:**
+
+- `GameForm` no longer resolves `AddGameUseCaseInterface` from DI — it is a pure form component
+- The submission is delegated to `GamesStore.addGame()`, which internally calls the use case and updates the store's Map-based state
+- On success, `onSuccess` is called (triggers navigation to `/`); on error, `GameForm` displays the error message inline
+- This aligns `addGame` with the existing `editGame` and `deleteGame` patterns (all mutations flow through the store)
 
 See the full implementation in [`src/collection/ui/components/GameForm/GameForm.tsx`](../../src/collection/ui/components/GameForm/GameForm.tsx) and [`docs/layers/ui-layer.md`](../layers/ui-layer.md) for the complete UI layer documentation.
 
