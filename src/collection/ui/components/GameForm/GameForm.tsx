@@ -1,14 +1,12 @@
 import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
 import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
 import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
 import type { Game } from '@Collection/domain/entities/Game';
 import { Format } from '@Collection/domain/value-objects/Format';
 import { GameDescription } from '@Collection/domain/value-objects/GameDescription';
 import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
 import { Platform } from '@Collection/domain/value-objects/Platform';
 import { Status, StatusType } from '@Collection/domain/value-objects/Status';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { Alert, Button, RadioOption } from '@pplancq/shelter-ui-react';
 import type { Result } from '@Shared/domain/result/Result';
 import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
@@ -56,7 +54,11 @@ type GameFormAddProps = {
   edit?: false;
   gameId?: never;
   initialData?: never;
-  onSubmit?: never;
+  /**
+   * Called with the built AddGameDTO when the form is submitted in add mode.
+   * Typically bound to `store.addGame`.
+   */
+  onSubmit: (dto: AddGameDTO | EditGameDTO) => Promise<Result<Game, ApplicationErrorInterface>>;
   /** Called after a successful add submission */
   onSuccess?: () => void;
   /** Called when the cancel button is clicked */
@@ -84,7 +86,6 @@ type GameFormEditProps = {
 type GameFormProps = GameFormAddProps | GameFormEditProps;
 
 export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCancel, onSubmit }: GameFormProps) => {
-  const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
   const dateFormatter = useService<DateFormatterInterface>(SHARED_SERVICES.DateFormatter);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -147,11 +148,12 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
         'Owned',
       );
 
-      const result = await addGameUseCase.execute(dto);
+      const result = await onSubmit(dto);
 
       if (result.isOk()) {
         setSuccessMessage('Game added successfully');
         reset();
+        onSuccess?.();
       } else {
         setGlobalError(ERROR_MESSAGES[result.getError().type] ?? 'An unexpected error occurred. Please try again.');
       }
