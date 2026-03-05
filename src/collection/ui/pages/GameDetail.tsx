@@ -1,17 +1,50 @@
 import { appRoutes } from '@App/routing/appRoutes';
+import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
+import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
 import { Alert, Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
-import type { CSSProperties } from 'react';
+import { ConfirmDialog } from '@Shared/ui/components/ConfirmDialog/ConfirmDialog';
+import { useService } from '@Shared/ui/hooks/useService/useService';
+import type { CSSProperties, MouseEvent } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { RouteObject } from 'react-router';
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
 import defaultClasses from './GameDetail.module.css';
 
 const GameDetail = () => {
   const { id = '' } = useParams<{ id: string }>();
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const store = useService<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore);
   const successMessage = (state as { successMessage?: string } | null)?.successMessage;
   const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const deleteTriggerRef = useRef<HTMLElement | null>(null);
+
+  const handleDeleteClick = useCallback((e: MouseEvent<HTMLElement>) => {
+    deleteTriggerRef.current = e.currentTarget;
+    setDeleteError(null);
+    setShowDeleteModal(true);
+  }, []);
+
+  const handleDeleteCancel = useCallback(() => {
+    setShowDeleteModal(false);
+    deleteTriggerRef.current?.focus();
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    const result = await store.deleteGame(id);
+    if (result.isOk()) {
+      navigate(appRoutes.home, { state: { successMessage: 'Game deleted successfully' } });
+    } else {
+      setDeleteError('Unable to delete game. Please try again.');
+      setShowDeleteModal(false);
+      deleteTriggerRef.current?.focus();
+    }
+  }, [store, id, navigate]);
 
   if (isLoading) {
     return (
@@ -120,6 +153,18 @@ const GameDetail = () => {
         </Grid>
       ) : null}
 
+      {deleteError ? (
+        <Grid
+          colSpan={{
+            mobile: 4,
+            tablet: 8,
+            'desktop-small': 12,
+          }}
+        >
+          <Alert variant="error" title={deleteError} role="alert" />
+        </Grid>
+      ) : null}
+
       <Grid
         as={Title}
         title={game.getTitle()}
@@ -172,8 +217,20 @@ const GameDetail = () => {
         <Button as={Link} to={appRoutes.editGame(id)}>
           Edit
         </Button>
-        <Button color="danger">Delete</Button>
+        <Button color="danger" onClick={handleDeleteClick}>
+          Delete
+        </Button>
       </Grid>
+
+      <ConfirmDialog
+        open={showDeleteModal}
+        title="Delete game"
+        description={`Are you sure you want to delete ${game.getTitle()}? This action cannot be undone.`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
     </Grid>
   );
 };
