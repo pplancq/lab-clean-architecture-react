@@ -4,7 +4,9 @@ import { Game } from '@Collection/domain/entities/Game';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { gameDetailRoutes } from '@Collection/ui/pages/GameDetail';
 import { renderSuspense } from '@pplancq/svg-react/tests';
-import { screen, waitFor } from '@testing-library/react';
+import { Result } from '@Shared/domain/result/Result';
+import { screen, waitFor, within } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { Container } from 'inversify';
 import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
@@ -34,6 +36,8 @@ const createStoreMock = (entry: GameMapEntryState): GamesStoreInterface => ({
   subscribe: vi.fn().mockReturnValue(() => {}),
   getGamesList: vi.fn().mockReturnValue({ games: [], isLoading: false, hasError: false, error: null }),
   getGame: vi.fn().mockReturnValue(entry),
+  editGame: vi.fn(),
+  deleteGame: vi.fn().mockResolvedValue(Result.ok(undefined)),
 });
 
 const createWrapper =
@@ -55,11 +59,11 @@ const createContainer = (storeMock: GamesStoreInterface) => {
   return container;
 };
 
-const renderGameDetail = async (entry: GameMapEntryState, path = '/games/game-1') => {
-  const storeMock = createStoreMock(entry);
-  const container = createContainer(storeMock);
+const renderGameDetail = async (entry: GameMapEntryState, storeMock?: GamesStoreInterface, path = '/games/game-1') => {
+  const resolvedStoreMock = storeMock ?? createStoreMock(entry);
+  const container = createContainer(resolvedStoreMock);
   await renderSuspense(gameDetailRoutes.element as ReactElement, { wrapper: createWrapper(container, path) });
-  return { storeMock };
+  return { storeMock: resolvedStoreMock };
 };
 
 describe('GameDetail', () => {
@@ -182,6 +186,63 @@ describe('GameDetail', () => {
       await waitFor(() => {
         expect(screen.getByRole('main')).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('delete confirmation', () => {
+    it('should open the confirmation dialog when Delete button is clicked', async () => {
+      const user = userEvent.setup();
+      await renderGameDetail(createEntry());
+
+      expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: /delete/i }));
+
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+    });
+
+    it('should close the dialog without calling deleteGame when Cancel is clicked', async () => {
+      const user = userEvent.setup();
+      const storeMock = createStoreMock(createEntry());
+      await renderGameDetail(createEntry(), storeMock);
+
+      expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: /delete/i }));
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: /cancel/i }));
+
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+      expect(storeMock.deleteGame).not.toHaveBeenCalled();
+    });
+
+    it('should call deleteGame when confirm button is clicked', async () => {
+      const user = userEvent.setup();
+      const storeMock = createStoreMock(createEntry());
+      await renderGameDetail(createEntry(), storeMock);
+
+      expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: /delete/i }));
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+
+      await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: /delete/i }));
+
+      await waitFor(() => expect(storeMock.deleteGame).toHaveBeenCalledWith('game-1'));
+    });
+
+    it('should show an error alert when deleteGame returns an error', async () => {
+      const user = userEvent.setup();
+      const storeMock = createStoreMock(createEntry());
+      vi.mocked(storeMock.deleteGame).mockResolvedValueOnce(
+        Result.err({ type: 'Repository', message: 'Delete failed', metadata: {} }),
+      );
+      await renderGameDetail(createEntry(), storeMock);
+
+      expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: /delete/i }));
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+      await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: /delete/i }));
+
+      expect(await screen.findByRole('alert')).toBeInTheDocument();
     });
   });
 });

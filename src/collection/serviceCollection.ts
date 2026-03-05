@@ -5,6 +5,8 @@ import { GamesStore } from './application/stores/GamesStore';
 import type { GamesStoreInterface } from './application/stores/GamesStoreInterface';
 import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
 import type { AddGameUseCaseInterface } from './application/use-cases/AddGameUseCaseInterface';
+import { DeleteGameUseCase } from './application/use-cases/DeleteGameUseCase';
+import type { DeleteGameUseCaseInterface } from './application/use-cases/DeleteGameUseCaseInterface';
 import { EditGameUseCase } from './application/use-cases/EditGameUseCase';
 import type { EditGameUseCaseInterface } from './application/use-cases/EditGameUseCaseInterface';
 import { GetGameByIdUseCase } from './application/use-cases/GetGameByIdUseCase';
@@ -46,6 +48,14 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
     )
     .inSingletonScope();
 
+  // Bind DeleteGameUseCase implementation to interface
+  options
+    .bind<DeleteGameUseCaseInterface>(COLLECTION_SERVICES.DeleteGameUseCase)
+    .toDynamicValue(
+      services => new DeleteGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+    )
+    .inSingletonScope();
+
   // Bind GetGamesUseCase implementation to interface
   options
     .bind<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)
@@ -71,6 +81,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
           services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),
           services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
           services.get<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase),
+          services.get<DeleteGameUseCaseInterface>(COLLECTION_SERVICES.DeleteGameUseCase),
         ),
     )
     .inSingletonScope();
