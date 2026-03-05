@@ -168,14 +168,13 @@ Domain Value Objects are used as the **single source of truth** for validation r
 Use cases and stores are resolved from the InversifyJS container via the `useService` hook:
 
 ```typescript
-// Resolving a use case
-const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
-
-// Resolving a store for actions
+// Resolving a store for actions (preferred pattern for mutations)
 const store = useService<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore);
 ```
 
 The hook reads from `ServiceContext`, which is provided by `<ServiceProvider>`. This must wrap the component tree (done at app level).
+
+In practice, use the typed wrappers (`useGamesStore()`, `useGamesSelector()`) rather than calling `useService` directly.
 
 **Rules:**
 
@@ -197,7 +196,7 @@ For reading state from an **Observable Store** (e.g., `GamesStore`), use `useGam
 
 | Hook                       | Role                               | When to use                                                     |
 | -------------------------- | ---------------------------------- | --------------------------------------------------------------- |
-| `useGamesStore()`          | Returns the store instance         | Calling **actions** (e.g. `editGame`, future `deleteGame`)      |
+| `useGamesStore()`          | Returns the store instance         | Calling **actions** (`addGame`, `editGame`, `deleteGame`)       |
 | `useGamesSelector(s => …)` | Subscribes to a **slice** of state | Reading state — only re-renders when the selected slice changes |
 
 ### Usage in a component
@@ -263,7 +262,15 @@ Pages are thin wrappers that compose UI components and expose them on a route.
 
 ```typescript
 // src/collection/ui/pages/AddGame.tsx
-const AddGame = () => <GameForm />;
+const AddGame = () => {
+  const store = useGamesStore();
+  const navigate = useNavigate();
+
+  const handleSuccess = useCallback(() => navigate(appRoutes.home), [navigate]);
+  const handleSubmit = useCallback((dto: AddGameDTO) => store.addGame(dto), []);
+
+  return <GameForm onSubmit={handleSubmit} onSuccess={handleSuccess} />;
+};
 
 export const addGameRoutes: RouteObject = {
   path: 'add-game',
