@@ -37,6 +37,7 @@ Application-layer orchestration:
 - **[AddGame Use Case](./use-cases/add-game.md)** - Adding games to the collection with domain validation
 - **[GetGameById Use Case](./use-cases/get-game-by-id.md)** - Retrieving a single game by ID with error mapping
 - **[EditGame Use Case](./use-cases/edit-game.md)** - Partial update of an existing game via entity update methods
+- **[DeleteGame Use Case](./use-cases/delete-game.md)** - Permanent removal of a game with confirmation flow
 
 ## ⚙️ Infrastructure
 

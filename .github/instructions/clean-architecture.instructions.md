@@ -104,6 +104,59 @@ export class IndexedDBGameRepository {
 - Simple utility classes with no dependencies
 - Framework-specific classes (e.g., React components)
 
+### Static Method Convention
+
+`static` methods are **strictly reserved** for two cases:
+
+1. **Named constructors / factory methods** — `public static create(...)` on domain entities and value objects, where the constructor must remain `private` to enforce invariants.
+2. **Utility classes** — classes where **all** methods are static by design (e.g., `GameMapper`). These classes have no instance state.
+
+**Rules**:
+
+- `static` methods MUST always be `public`. A `private static` method is a code smell: extract it as a `private` instance method instead (enforced by the ESLint rule `class-methods-use-this`).
+- `private static readonly` **constants** are allowed (they are data, not behaviour).
+- When the ESLint rule `class-methods-use-this` triggers on a legitimate instance method, add `/* eslint-disable class-methods-use-this */` at the top of the file rather than making the method `static`.
+
+```typescript
+// ✅ GOOD — public static factory method
+export class GameTitle implements GameTitleInterface {
+  private static readonly MAX_LENGTH = 200; // constant: allowed
+
+  private constructor(private readonly value: string) {}
+
+  static create(value: string): Result<GameTitle, ValidationError> {
+    // public factory
+    // ...
+  }
+}
+
+// ✅ GOOD — utility class with all-public static methods
+export class GameMapper {
+  static toDTO(game: Game): GameDTO {
+    /* ... */
+  }
+  static toDomain(dto: GameDTO): Result<Game, ValidationError> {
+    /* ... */
+  }
+}
+
+// ❌ BAD — private static helper method
+export class DeleteGameUseCase implements DeleteGameUseCaseInterface {
+  private static mapError(error: RepositoryErrorInterface) {
+    // use private instance method instead
+    // ...
+  }
+}
+
+// ✅ GOOD — instance method with eslint-disable if needed
+/* eslint-disable class-methods-use-this */
+export class DeleteGameUseCase implements DeleteGameUseCaseInterface {
+  private mapError(error: RepositoryErrorInterface) {
+    // ...
+  }
+}
+```
+
 ---
 
 ## Layer-Specific Guidelines
@@ -588,6 +641,8 @@ Before committing code, verify:
 - [ ] Dependency injection is used properly
 - [ ] SOLID principles are respected
 - [ ] Code is DRY, KISS, and YAGNI compliant
+- [ ] `static` methods are only `public` (named constructors or utility classes)
+- [ ] No `private static` methods (use `private` instance methods instead)
 - [ ] Tests are written and passing
 
 ---
@@ -647,6 +702,25 @@ import { IndexedDB } from '@Infrastructure/persistence/IndexedDB';
 
 export class Game {
   constructor(private db: IndexedDB) {} // WRONG!
+}
+```
+
+### ❌ Private Static Method
+
+```typescript
+// BAD — private static method bypasses class-methods-use-this
+export class DeleteGameUseCase implements DeleteGameUseCaseInterface {
+  private static mapError(error: RepositoryErrorInterface) {
+    // ...
+  }
+}
+
+// GOOD — private instance method (add eslint-disable if the linter triggers)
+/* eslint-disable class-methods-use-this */
+export class DeleteGameUseCase implements DeleteGameUseCaseInterface {
+  private mapError(error: RepositoryErrorInterface) {
+    // ...
+  }
 }
 ```
 
