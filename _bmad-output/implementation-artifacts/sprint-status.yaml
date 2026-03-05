@@ -181,6 +181,7 @@ sprints:
       - sonar-106-indexeddb-error-objects  # GitHub #106 | P1 | High | XS (0.25d)
       - sonar-65-top-level-await           # GitHub #65  | P1 | Critical | XS (0.25d)
       - sonar-62-globalthis                # GitHub #62  | P3 | Low | XS (0.25d)
+      - ts-addgame-store-integration        # GitHub #164 | P0 | M (1d) | TS: debt cleanup #11 & #12
 
     # Ceremonies:
     ceremonies:
@@ -198,13 +199,13 @@ sprints:
       - pwa-di-symbol-refactoring              # Align PWA DI with Symbol pattern | M (1d) | A10
       - architecture-diagram-mermaid           # Deferred from Epic 1 | S (0.5d) | A11
 
-    committed_size: "4.25 days"  # 3d Epic 2 + 0.75d Sonar x3 + 0.5d UX ceremony
+    committed_size: "5.25 days"  # 3d Epic 2 + 0.75d Sonar x3 + 0.5d UX ceremony + 1d TS #164
     stretch_size: "2 days"
-    total_potential_size: "6.75 days"
+    total_potential_size: "7.75 days"
     priority: P0
     velocity_target: "4 days"  # Conservative — Epic 2 stories should flow quickly
     completed_stories: 0
-    total_stories: 7  # Committed stories (2.5 → 2.8 + sonar-106, 65, 62)
+    total_stories: 8  # Committed stories (2.5 → 2.8 + sonar-106, 65, 62 + TS #164)
     retrospective: pending
 
 # ================================================================
@@ -239,6 +240,7 @@ development_status:
   2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 2 (stretch)
   2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 2 (stretch)
   2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 2 (stretch)
+  ts-addgame-store-integration: ready-for-dev  # GitHub #164 | P0 | M (1d) | Sprint 3 | TS: debt cleanup from #11 & #12
   epic-2-retrospective: done  # Partial retro 2026-02-23 | epic-2-retro-2026-02-23.md
 
   # Sonar / Tech debt (outside epic stories)
