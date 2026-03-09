@@ -23,26 +23,26 @@ Each ADR follows this structure:
 
 ## All ADRs
 
-| ADR                                                      | Title                                             | Status      | Date       | Epic             |
-| -------------------------------------------------------- | ------------------------------------------------- | ----------- | ---------- | ---------------- |
-| [ADR-001](./ADR-001-starter-template-selection.md)       | Starter Template Selection (@pplancq/react-app)   | ✅ Accepted | 2026-01-14 | Pre-Epic 1       |
-| [ADR-002](./ADR-002-clean-architecture-ddd.md)           | Clean Architecture + DDD Bounded Contexts         | ✅ Accepted | 2026-01-22 | Pre-Epic 1       |
-| [ADR-003](./ADR-003-indexeddb-storage-strategy.md)       | IndexedDB Storage Strategy                        | ✅ Accepted | 2026-01-22 | Pre-Epic 1       |
-| [ADR-004](./ADR-004-result-either-pattern.md)            | Result/Either Pattern for Error Handling          | ✅ Accepted | 2026-02-03 | Epic 1           |
-| [ADR-005](./ADR-005-inversifyjs-dependency-injection.md) | InversifyJS for Dependency Injection              | ✅ Accepted | 2026-02-02 | Epic 1           |
-| [ADR-006](./ADR-006-pwa-from-day-one.md)                 | PWA from Day One                                  | ✅ Accepted | 2026-02-05 | Epic 1           |
-| [ADR-007](./ADR-007-no-typescript-decorators.md)         | No TypeScript Decorators for Dependency Injection | ✅ Accepted | 2026-02-09 | Epic 1 Retro     |
-| [ADR-008](./ADR-008-result-pattern-usage-convention.md)  | Result Pattern Usage Convention                   | ✅ Accepted | 2026-02-09 | Epic 1 Retro     |
-| [ADR-009](./ADR-009-symbol-based-service-identifiers.md) | Symbol-based Service Identifiers for DI           | ✅ Accepted | 2026-02-23 | Epic 2 Retro     |
-| [ADR-010](./ADR-010-dto-date-type-conventions.md)        | Date Type Conventions in Application DTOs         | ✅ Accepted | 2026-02-23 | Epic 2 Retro     |
-| [ADR-011](./ADR-011-map-centric-store-auto-trigger.md)   | Map-Centric Store with Auto-Triggered Fetches     | ✅ Accepted | 2026-03-02 | Epic 2 Story 2.6 |
+| ADR                                                              | Title                                             | Status      | Date       | Epic                    |
+| ---------------------------------------------------------------- | ------------------------------------------------- | ----------- | ---------- | ----------------------- |
+| [ADR-001](./ADR-001-starter-template-selection.md)               | Starter Template Selection (@pplancq/react-app)   | ✅ Accepted | 2026-01-14 | Pre-Epic 1              |
+| [ADR-002](./ADR-002-clean-architecture-ddd.md)                   | Clean Architecture + DDD Bounded Contexts         | ✅ Accepted | 2026-01-22 | Pre-Epic 1              |
+| [ADR-003](./ADR-003-indexeddb-storage-strategy.md)               | IndexedDB Storage Strategy                        | ✅ Accepted | 2026-01-22 | Pre-Epic 1              |
+| [ADR-004](./ADR-004-result-either-pattern.md)                    | Result/Either Pattern for Error Handling          | ✅ Accepted | 2026-02-03 | Epic 1                  |
+| [ADR-005](./ADR-005-inversifyjs-dependency-injection.md)         | InversifyJS for Dependency Injection              | ✅ Accepted | 2026-02-02 | Epic 1                  |
+| [ADR-006](./ADR-006-pwa-from-day-one.md)                         | PWA from Day One                                  | ✅ Accepted | 2026-02-05 | Epic 1                  |
+| [ADR-007](./ADR-007-no-typescript-decorators.md)                 | No TypeScript Decorators for Dependency Injection | ✅ Accepted | 2026-02-09 | Epic 1 Retro            |
+| [ADR-008](./ADR-008-result-pattern-usage-convention.md)          | Result Pattern Usage Convention                   | ✅ Accepted | 2026-02-09 | Epic 1 Retro            |
+| [ADR-009](./ADR-009-symbol-based-service-identifiers.md)         | Symbol-based Service Identifiers for DI           | ✅ Accepted | 2026-02-23 | Epic 2 Retro            |
+| [ADR-010](./ADR-010-dto-date-type-conventions.md)                | Date Type Conventions in Application DTOs         | ✅ Accepted | 2026-02-23 | Epic 2 Retro            |
+| [ADR-011](./ADR-011-map-centric-store-auto-trigger.md)           | Map-Centric Store with Auto-Triggered Fetches     | ✅ Accepted | 2026-03-02 | Epic 2 Story 2.6        |
+| [ADR-012](./ADR-012-page-layout-ownership-and-folder-pattern.md) | Page Layout Ownership and Folder Pattern          | ✅ Accepted | 2026-03-09 | Epic 2 Retro / Sprint 4 |
 
 ## Pending ADRs
 
-| Topic                                 | Priority | Target Epic             |
-| ------------------------------------- | -------- | ----------------------- |
-| Page/Layout Ownership (multi-context) | P1       | Epic 2 Retro / Sprint 3 |
-| PWA Architecture Pattern (detailed)   | P2       | Epic 2+                 |
+| Topic                               | Priority | Target Epic |
+| ----------------------------------- | -------- | ----------- |
+| PWA Architecture Pattern (detailed) | P2       | Epic 2+     |
 
 ## References
 
