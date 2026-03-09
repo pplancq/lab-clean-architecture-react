@@ -157,11 +157,12 @@ sprints:
   # Sprint 3: Complete Epic 2 CRUD + UX Foundation
   # ================================================================
   sprint-3:
+    retrospective: done  # 2026-03-09 | sprint-3-retro-2026-03-09.md
     name: "Complete Collection CRUD & UX Foundation"
     goal: "Complete Epic 2 (2.5–2.8), establish UX direction for Epic 3, fix Sonar #106"
     start_date: "2026-02-24"
     end_date: "2026-03-09"  # 2 weeks (~10 working days)
-    status: planned
+    status: completed
     capacity: 10 days
 
     # Sprint 3 Objectives:
@@ -204,9 +205,19 @@ sprints:
     total_potential_size: "7.75 days"
     priority: P0
     velocity_target: "4 days"  # Conservative — Epic 2 stories should flow quickly
-    completed_stories: 0
+    completed_stories: 8  # All committed stories delivered — 100% velocity
     total_stories: 8  # Committed stories (2.5 → 2.8 + sonar-106, 65, 62 + TS #164)
-    retrospective: pending
+    retrospective: done  # 2026-03-09 | sprint-3-retro-2026-03-09.md
+    unplanned_completed:
+      - ux-session-sally      # Wireframe v4 + Epic 9 (17 stories #129–#145)
+      - theme-configuration   # chore(ui): add theme configuration and UI component templates
+      - epic-9-creation       # 17 stories created on GitHub, sprint-status updated
+    stretch_completed: 0
+    stretch_not_started:
+      - adr-011-page-layout-ownership    # Deferred → Sprint 4
+      - pages-folder-pattern-fix         # Deferred → Sprint 4
+      - shelter-ui-migrate-selectfield   # GitHub #116 | Deferred
+      - shelter-ui-migrate-textareafield # GitHub #115 | Deferred
 
 # ================================================================
 # BACKLOG - All Epics & Stories
@@ -231,22 +242,22 @@ development_status:
   # Epic 2: Core Game Collection Management with IndexedDB (GitHub #8)
   # Priority: P0 | Stories: 8 | Total Size: 8.5 days
   # ================================================================
-  epic-2: in-progress  # GitHub #8 | Sprint 2 | Started 2026-02-10
+  epic-2: done  # GitHub #8 | Sprints 2–3 | Completed 2026-03-05
   2-1-create-game-domain-entity-and-value-objects: done  # GitHub #9 | P0 | M (1d) | Sprint 2 | closed 2026-02-23
   2-2-implement-indexeddb-repository-for-game-persistence: done  # GitHub #10 | P0 | L (2.5d) | Sprint 2 | closed 2026-02-23
   2-3-create-addgame-use-case: done  # GitHub #11 | P0 | S (0.5d) | Sprint 2 | closed 2026-02-23
   2-4-build-add-game-ui-form-with-validation: done  # GitHub #12 | P0 | M (1d) | Sprint 2 | closed 2026-02-23
-  2-5-create-getgames-use-case-and-display-game-list: ready-for-dev  # GitHub #13 | P0 | S (0.5d) | Sprint 2 (committed) | NOT done
-  2-6-create-getgamebyid-use-case-and-display-game-detail-view: ready-for-dev  # GitHub #14 | P0 | M (1d) | Sprint 2 (stretch)
-  2-7-implement-editgame-use-case-and-edit-ui: ready-for-dev  # GitHub #15 | P0 | M (1d) | Sprint 2 (stretch)
-  2-8-implement-deletegame-use-case-and-delete-confirmation: ready-for-dev  # GitHub #16 | P0 | S (0.5d) | Sprint 2 (stretch)
-  ts-addgame-store-integration: ready-for-dev  # GitHub #164 | P0 | M (1d) | Sprint 3 | TS: debt cleanup from #11 & #12
-  epic-2-retrospective: done  # Partial retro 2026-02-23 | epic-2-retro-2026-02-23.md
+  2-5-create-getgames-use-case-and-display-game-list: done  # GitHub #13 | P0 | S (0.5d) | Sprint 3 | PR #152 | 2026-02-27
+  2-6-create-getgamebyid-use-case-and-display-game-detail-view: done  # GitHub #14 | P0 | M (1d) | Sprint 3 | PR #157 | 2026-03-02
+  2-7-implement-editgame-use-case-and-edit-ui: done  # GitHub #15 | P0 | M (1d) | Sprint 3 | PR #159 | 2026-03-03
+  2-8-implement-deletegame-use-case-and-delete-confirmation: done  # GitHub #16 | P0 | S (0.5d) | Sprint 3 | PR #163 | 2026-03-05
+  ts-addgame-store-integration: done  # GitHub #164 | P0 | M (1d) | Sprint 3 | PR #165 | 2026-03-05
+  epic-2-retrospective: done  # Sprint 3 full retro 2026-03-09 | sprint-3-retro-2026-03-09.md (Sprint 2 partial: epic-2-retro-2026-02-23.md)
 
   # Sonar / Tech debt (outside epic stories)
-  sonar-106-indexeddb-error-objects: backlog  # GitHub #106 | P1 | High | XS (0.25d) | Sprint 3
-  sonar-65-top-level-await: backlog           # GitHub #65 | Critical | S (0.5d) | Sprint 3 stretch
-  sonar-62-globalthis: backlog                # GitHub #62 | Low | XS (0.25d) | deferred
+  sonar-106-indexeddb-error-objects: done  # GitHub #106 | P1 | High | XS | Sprint 3 | PR #125 | 2026-02-24
+  sonar-65-top-level-await: done           # GitHub #65 | Critical | Sprint 3 | PR #126 | 2026-02-24
+  sonar-62-globalthis: done                # GitHub #62 | Low | Sprint 3 | PR #124 | 2026-02-24
 
   # ================================================================
   # Epic 3: Search, Filter & Sort Collection (GitHub #17)
