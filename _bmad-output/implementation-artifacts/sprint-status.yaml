@@ -214,10 +214,62 @@ sprints:
       - epic-9-creation       # 17 stories created on GitHub, sprint-status updated
     stretch_completed: 0
     stretch_not_started:
-      - adr-011-page-layout-ownership    # Deferred → Sprint 4
+      - adr-011-page-layout-ownership    # Deferred → Sprint 4 (superseded by pages-folder-fix + ADR-012)
       - pages-folder-pattern-fix         # Deferred → Sprint 4
       - shelter-ui-migrate-selectfield   # GitHub #116 | Deferred
       - shelter-ui-migrate-textareafield # GitHub #115 | Deferred
+
+  # ================================================================
+  # Sprint 4: UI Catch-up — Epic 9 P0 + Epic 8 Toast System
+  # ================================================================
+  sprint-4:
+    name: "UI Catch-up & Toast System"
+    goal: "Implement Epic 9 P0 components required for Epic 2 pages, deliver Epic 8 Toast System, apply pages-folder pattern"
+    start_date: "2026-03-10"
+    end_date: "2026-03-23"  # 2 weeks (~10 working days)
+    status: active
+    capacity: 10 days
+    retrospective: pending
+
+    # Sprint 4 Objectives:
+    # 1. Epic 9 P0 — 5 UI components that finalize Epic 2 presentation (AppShell, FormatToggle, GameCover, Badge+BadgeRow, GameCard)
+    # 2. pages-folder-pattern-fix — restructure Home + AddGame pages to <Name>/<Name>.tsx + ADR-012
+    # 3. Epic 8 — Full Toast Notification System (3 stories: core, adapter bridge, migration)
+    # 4. Stretch: TopBar, BurgerMenuDrawer + 3 P1 Epic 9 stories (Epic 3 prep)
+
+    # Committed Stories (MUST HAVE — ~4.25 days):
+    committed:
+      # Epic 9 P0 — components critical for Epic 2 (2 days):
+      - 9-1-appshell                                       # GitHub #129 | P0 | S (0.5d) | Page layout wrapper — all pages
+      - 9-0-formattoggle                                   # GitHub #131 | P0 | XS (0.25d) | GameForm button-styled radio group
+      - 9-4-gamecover                                      # GitHub #134 | P0 | XS (0.25d) | Cover image with placeholder
+      - 9-5-badge-badgerow                                 # GitHub #132 | P0 | M (1d) | Adaptive tag chips (platform/status)
+      - 9-6-gamecard                                       # GitHub #136 | P0 | S (0.5d) | Collection list card
+      # Architecture — pages folder pattern (0.5d):
+      - pages-folder-pattern-fix                           # Home + AddGame → <Name>/<Name>.tsx | S (0.5d) | + creates ADR-012
+      # Epic 8 — Toast Notification System (1.25d):
+      - 8-1-toast-system-core-module                       # GitHub #118 | P1 | S (0.5d) | Standalone toast module
+      - 8-2-shared-integration-ports-adapters-di-bridge    # GitHub #119 | P1 | S (0.5d) | Ports & Adapters + DI bridge
+      - 8-3-migrate-existing-notifications-to-toast        # GitHub #120 | P2 | XS (0.25d) | Replace AddGame naive notifications
+
+    # Stretch Goals (NICE TO HAVE — ~2.25 days):
+    stretch:
+      - 9-2-topbar              # GitHub #130 | P0 | M (1d) | Responsive application header
+      - 9-3-burgermenu-drawer   # GitHub #133 | P0 | S (0.5d) | Mobile/tablet navigation overlay
+      - 9-8-searchinput         # GitHub #137 | P1 | XS (0.25d) | TopBar search field — prépare Epic 3
+      - 9-9-filterchip          # GitHub #139 | P1 | XS (0.25d) | Filter toggle chip — prépare Epic 3
+      - 9-10-sortselect         # GitHub #140 | P1 | XS (0.25d) | Sort dropdown — prépare Epic 3
+
+    # Deferred:
+    deferred:
+      - adr-011-page-layout-ownership   # Superseded by pages-folder-pattern-fix + ADR-012
+      - 9-7-breadcrumb                  # GitHub #135 | P1 | deprioritized — not needed for Epic 2 integration
+
+    committed_size: "4.25 days"  # 2d Epic 9 P0 + 0.5d pages-folder + 1.25d Epic 8
+    stretch_size: "2.25 days"
+    total_potential_size: "6.5 days"
+    priority: P0
+    velocity_target: "4.25 days"
 
 # ================================================================
 # BACKLOG - All Epics & Stories
@@ -340,21 +392,21 @@ development_status:
   # Sprint assignment: TBD (SM handles planning)
   # ================================================================
   epic-9: backlog  # GitHub #128 | UI Components — Atomic Design library (wireframe v4)
-  9-0-formattoggle: backlog   # GitHub #130 | P0 | XS (0.25d) | GameForm button-styled radio group | src/collection/ui/components/
+  9-0-formattoggle: backlog   # GitHub #131 | P0 | XS (0.25d) | GameForm button-styled radio group | src/collection/ui/components/
   9-1-appshell: backlog       # GitHub #129 | P0 | S (0.5d) | Page layout wrapper | src/shared/ui/components/
-  9-2-topbar: backlog         # GitHub #131 | P0 | M (1d) | Responsive application header | src/shared/ui/components/
-  9-3-burgermenu-drawer: backlog  # GitHub #132 | P0 | S (0.5d) | Mobile/tablet navigation overlay | src/shared/ui/components/
-  9-4-gamecover: backlog      # GitHub #133 | P0 | XS (0.25d) | Cover image with placeholder | src/collection/ui/components/
-  9-5-badge-badgerow: backlog # GitHub #134 | P0 | M (1d) | Adaptive tag chips (platform/status) — shelter-ui candidate | src/shared/ui/components/
-  9-6-gamecard: backlog       # GitHub #135 | P0 | S (0.5d) | Collection card variant | src/collection/ui/components/
-  9-7-breadcrumb: backlog     # GitHub #136 | P1 | XS (0.25d) | Navigation breadcrumb trail | src/shared/ui/components/
+  9-2-topbar: backlog         # GitHub #130 | P0 | M (1d) | Responsive application header | src/shared/ui/components/
+  9-3-burgermenu-drawer: backlog  # GitHub #133 | P0 | S (0.5d) | Mobile/tablet navigation overlay | src/shared/ui/components/
+  9-4-gamecover: backlog      # GitHub #134 | P0 | XS (0.25d) | Cover image with placeholder | src/collection/ui/components/
+  9-5-badge-badgerow: backlog # GitHub #132 | P0 | M (1d) | Adaptive tag chips (platform/status) — shelter-ui candidate | src/shared/ui/components/
+  9-6-gamecard: backlog       # GitHub #136 | P0 | S (0.5d) | Collection card variant | src/collection/ui/components/
+  9-7-breadcrumb: backlog     # GitHub #135 | P1 | XS (0.25d) | Navigation breadcrumb trail | src/shared/ui/components/
   9-8-searchinput: backlog    # GitHub #137 | P1 | XS (0.25d) | TopBar search field | src/shared/ui/components/
-  9-9-filterchip: backlog     # GitHub #138 | P1 | XS (0.25d) | Active/inactive filter toggle — shelter-ui candidate | src/shared/ui/components/
-  9-10-sortselect: backlog    # GitHub #139 | P1 | XS (0.25d) | Sort dropdown control | src/shared/ui/components/
-  9-11-filterbar: backlog     # GitHub #140 | P1 | S (0.5d) | Filter + sort toolbar | src/collection/ui/components/
+  9-9-filterchip: backlog     # GitHub #139 | P1 | XS (0.25d) | Active/inactive filter toggle — shelter-ui candidate | src/shared/ui/components/
+  9-10-sortselect: backlog    # GitHub #140 | P1 | XS (0.25d) | Sort dropdown control | src/shared/ui/components/
+  9-11-filterbar: backlog     # GitHub #138 | P1 | S (0.5d) | Filter + sort toolbar | src/collection/ui/components/
   9-12-wishlistcard: backlog  # GitHub #141 | P1 | S (0.5d) | Wishlist card variant | src/wishlist/ui/components/
-  9-13-fab: backlog           # GitHub #142 | P1 | XS (0.25d) | Floating Action Button (mobile fixed) — shelter-ui candidate | src/shared/ui/components/
-  9-14-statrow-statssidebar: backlog  # GitHub #143 | P2 | S (0.5d) | Stats display components | src/collection/ui/components/
+  9-13-fab: backlog           # GitHub #143 | P1 | XS (0.25d) | Floating Action Button (mobile fixed) — shelter-ui candidate | src/shared/ui/components/
+  9-14-statrow-statssidebar: backlog  # GitHub #142 | P2 | S (0.5d) | Stats display components | src/collection/ui/components/
   9-15-widgetcard: backlog    # GitHub #144 | P2 | S (0.5d) | Dashboard stat widget | src/shared/ui/components/
   9-16-dashboardpage: backlog # GitHub #145 | P2 | M (1d) | Dashboard layout + widgets | src/shared/ui/components/
   epic-9-retrospective: optional
