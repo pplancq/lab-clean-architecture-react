@@ -246,7 +246,7 @@ sprints:
       - 9-5-badge-badgerow                                 # GitHub #132 | P0 | M (1d) | Adaptive tag chips (platform/status)
       - 9-6-gamecard                                       # GitHub #136 | P0 | S (0.5d) | Collection list card
       # Architecture — pages layout ownership + folder pattern (0.5d):
-      - pages-folder-pattern-fix                           # All 4 pages → <Name>/<Name>.tsx | S (0.5d) | ADR-012: 1) page-layout-ownership decision 2) folder pattern as consequence
+      - pages-folder-pattern-fix                           # All 4 pages → <Name>/<Name>.tsx | S (0.5d) | ADR-012 created 2026-03-09 — refact applied incrementally during sprint
       # Epic 8 — Toast Notification System (1.25d):
       - 8-1-toast-system-core-module                       # GitHub #118 | P1 | S (0.5d) | Standalone toast module
       - 8-2-shared-integration-ports-adapters-di-bridge    # GitHub #119 | P1 | S (0.5d) | Ports & Adapters + DI bridge

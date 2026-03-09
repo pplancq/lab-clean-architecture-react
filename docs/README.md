@@ -20,6 +20,7 @@ Core architectural concepts and principles:
 - **[Folder Structure](./architecture/folder-structure.md)** - Detailed explanation of directory organization
 - **[Dependency Rules](./architecture/dependency-rules.md)** - Critical rules for maintaining clean dependencies
 - **[Dependency Injection](./architecture/dependency-injection.md)** - InversifyJS configuration and usage patterns
+- **[ADR-012: Page Layout Ownership and Folder Pattern](./architecture/adr/ADR-012-page-layout-ownership-and-folder-pattern.md)** - Pages as autonomous layout-owning components + `<Name>/<Name>.tsx` convention
 
 ## 📚 Layers
 
