@@ -1,6 +1,5 @@
-import { renderSuspense } from '@pplancq/svg-react/tests';
 import { SelectField } from '@Shared/ui/components/SelectField/SelectField';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
@@ -42,57 +41,67 @@ describe('SelectField', () => {
 
   describe('helper text', () => {
     it('should render helper text when provided', async () => {
-      await renderSuspense(
+      render(
         <SelectField id="platform" label="Platform" textHelper="Choose your gaming platform">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      expect(screen.getByText('Choose your gaming platform')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Choose your gaming platform')).toBeInTheDocument();
+      });
     });
 
     it('should associate helper text with the select via aria-describedby', async () => {
-      await renderSuspense(
+      render(
         <SelectField id="platform" label="Platform" textHelper="Choose your gaming platform">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      const select = screen.getByRole('combobox', { name: 'Platform' });
-      expect(select).toHaveAccessibleDescription('Choose your gaming platform');
+      await waitFor(() => {
+        const select = screen.getByRole('combobox', { name: 'Platform' });
+        expect(select).toHaveAccessibleDescription('Choose your gaming platform');
+      });
     });
   });
 
   describe('error state', () => {
     it('should render an error message when provided', async () => {
-      await renderSuspense(
+      render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      expect(screen.getByText('Platform is required')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Platform is required')).toBeInTheDocument();
+      });
     });
 
     it('should mark the select as invalid when errorMessage is provided', async () => {
-      await renderSuspense(
+      render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      expect(screen.getByRole('combobox', { name: 'Platform' })).toHaveAttribute('aria-invalid', 'true');
+      await waitFor(() => {
+        expect(screen.getByRole('combobox', { name: 'Platform' })).toHaveAttribute('aria-invalid', 'true');
+      });
     });
 
     it('should have an accessible error message via aria-errormessage', async () => {
-      await renderSuspense(
+      render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      const select = screen.getByRole('combobox', { name: 'Platform' });
-      expect(select).toHaveAccessibleErrorMessage('Platform is required');
+      await waitFor(() => {
+        const select = screen.getByRole('combobox', { name: 'Platform' });
+        expect(select).toHaveAccessibleErrorMessage('Platform is required');
+      });
     });
 
     it('should not mark the select as invalid when no errorMessage is provided', () => {
