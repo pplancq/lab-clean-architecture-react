@@ -14,4 +14,9 @@ export const SHARED_SERVICES = Object.freeze({
    * Unique identifier generator (crypto.randomUUID by default)
    */
   IdGenerator: Symbol.for('Shared.IdGenerator'),
+
+  /**
+   * Notification service for displaying user-facing messages (toast, etc.)
+   */
+  NotificationService: Symbol.for('Shared.NotificationService'),
 } as const);
