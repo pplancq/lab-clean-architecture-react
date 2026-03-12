@@ -65,7 +65,7 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * Synchronously marks the entry as loading and notifies observers, then
    * delegates to EditGameUseCase. On success, updates the map entry with the
    * returned Game and rebuilds the list snapshot. On failure, restores the
-   * previous entry and returns the error so callers can handle it imperatively.
+   * previous entry. Sends a success or error notification in both cases.
    *
    * @param dto - Partial update DTO containing the game id and the fields to update
    * @returns Promise resolving to Result with the updated Game on success
@@ -76,8 +76,8 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * Adds a new game to the collection.
    *
    * Delegates to AddGameUseCase. On success, adds the entry to the map
-   * and rebuilds the list snapshot. On failure, does not alter the map and
-   * returns the error so callers can handle it imperatively.
+   * and rebuilds the list snapshot. On failure, does not alter the map.
+   * Sends a success or error notification in both cases.
    *
    * @param dto - DTO containing the new game data
    * @returns Promise resolving to Result with the created Game on success
@@ -88,8 +88,8 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * Removes a game from the collection.
    *
    * Delegates to DeleteGameUseCase. On success, removes the entry from the map
-   * and rebuilds the list snapshot. On failure, restores the previous entry and
-   * returns the error so callers can handle it imperatively.
+   * and rebuilds the list snapshot. On failure, does not alter the map.
+   * Sends a success or error notification in both cases.
    *
    * @param id - The unique identifier of the game to delete
    * @returns Promise resolving to Result with void on success

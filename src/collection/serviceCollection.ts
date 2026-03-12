@@ -1,5 +1,7 @@
+import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
 import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
 import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
+import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
 import { ContainerModule } from 'inversify';
 import { GamesStore } from './application/stores/GamesStore';
 import type { GamesStoreInterface } from './application/stores/GamesStoreInterface';
@@ -83,6 +85,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
           services.get<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase),
           services.get<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase),
           services.get<DeleteGameUseCaseInterface>(COLLECTION_SERVICES.DeleteGameUseCase),
+          services.get<NotificationServiceInterface>(SHARED_SERVICES.NotificationService),
         ),
     )
     .inSingletonScope();

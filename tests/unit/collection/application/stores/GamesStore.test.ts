@@ -47,6 +47,13 @@ const createNoopAddGameUseCaseMock = () => ({
   execute: vi.fn().mockResolvedValue(Result.ok(createGame('noop', 'noop'))),
 });
 
+const createNoopNotificationServiceMock = () => ({
+  success: vi.fn(),
+  error: vi.fn(),
+  info: vi.fn(),
+  warning: vi.fn(),
+});
+
 const FULL_ENTRY = (game: Game): GameMapEntryState => ({
   data: game,
   isLazy: false,
@@ -65,6 +72,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       expect(store.getGamesList()).toStrictEqual({ games: [], isLoading: true, hasError: false, error: null });
@@ -81,6 +89,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -96,6 +105,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -117,6 +127,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -134,6 +145,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       const first = store.getGamesList();
@@ -149,6 +161,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       const snapshot1 = store.getGamesList();
@@ -165,6 +178,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -184,6 +198,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       expect(store.getGame('unknown')).toStrictEqual({
@@ -203,6 +218,7 @@ describe('GamesStore', () => {
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-1');
@@ -220,6 +236,7 @@ describe('GamesStore', () => {
         ),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-99');
@@ -241,6 +258,7 @@ describe('GamesStore', () => {
         createGetGameByIdUseCaseMock(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-1');
@@ -264,6 +282,7 @@ describe('GamesStore', () => {
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -288,6 +307,7 @@ describe('GamesStore', () => {
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-1');
@@ -315,6 +335,7 @@ describe('GamesStore', () => {
         getGameByIdMock,
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-1'); // schedules microtask, isLoading: true
@@ -338,6 +359,7 @@ describe('GamesStore', () => {
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGame('game-1');
@@ -354,6 +376,7 @@ describe('GamesStore', () => {
         createGetGameByIdUseCaseMock(Result.ok(game)),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -375,6 +398,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         deleteUseCaseMock,
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -400,6 +424,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         deleteUseCaseMock,
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -422,6 +447,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         deleteUseCaseMock,
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -439,6 +465,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         { execute: vi.fn().mockResolvedValue(Result.ok(undefined)) },
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -446,6 +473,43 @@ describe('GamesStore', () => {
       await store.deleteGame('game-1');
 
       expect(observer).toHaveBeenCalledWith();
+    });
+
+    it('should call notificationService.success on successful delete', async () => {
+      const notificationService = createNoopNotificationServiceMock();
+      const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        { execute: vi.fn().mockResolvedValue(Result.ok(undefined)) },
+        notificationService,
+      );
+
+      await store.deleteGame('game-1');
+
+      expect(notificationService.success).toHaveBeenCalledWith('Game deleted successfully');
+      expect(notificationService.error).not.toHaveBeenCalled();
+    });
+
+    it('should call notificationService.error on failed delete', async () => {
+      const notificationService = createNoopNotificationServiceMock();
+      const deleteUseCaseMock = {
+        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+      };
+      const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        deleteUseCaseMock,
+        notificationService,
+      );
+
+      await store.deleteGame('game-1');
+
+      expect(notificationService.error).toHaveBeenCalledWith('Unable to delete game. Please try again.');
+      expect(notificationService.success).not.toHaveBeenCalled();
     });
   });
 
@@ -459,6 +523,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -490,6 +555,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
 
       store.getGamesList();
@@ -519,6 +585,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -544,6 +611,7 @@ describe('GamesStore', () => {
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
+        createNoopNotificationServiceMock(),
       );
       const observer = vi.fn();
       store.subscribe(observer);
@@ -559,6 +627,110 @@ describe('GamesStore', () => {
       });
 
       expect(observer).toHaveBeenCalledWith();
+    });
+
+    it('should call notificationService.success on successful add', async () => {
+      const addedGame = createGame('game-1', 'Zelda');
+      const notificationService = createNoopNotificationServiceMock();
+      const store = new GamesStore(
+        { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) },
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+        notificationService,
+      );
+
+      await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
+
+      expect(notificationService.success).toHaveBeenCalledWith('Game added successfully');
+      expect(notificationService.error).not.toHaveBeenCalled();
+    });
+
+    it('should call notificationService.error on failed add', async () => {
+      const notificationService = createNoopNotificationServiceMock();
+      const addUseCaseMock = {
+        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+      };
+      const store = new GamesStore(
+        addUseCaseMock,
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        createNoopEditGameUseCaseMock(),
+        createNoopDeleteGameUseCaseMock(),
+        notificationService,
+      );
+
+      await store.addGame({
+        id: 'game-1',
+        title: 'Zelda',
+        description: '',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'owned',
+      });
+
+      expect(notificationService.error).toHaveBeenCalledWith(
+        'An error occurred while saving the game. Please try again.',
+      );
+      expect(notificationService.success).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('editGame', () => {
+    it('should call notificationService.success on successful edit', async () => {
+      const editedGame = createGame('game-1', 'Zelda Updated');
+      const notificationService = createNoopNotificationServiceMock();
+      const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        { execute: vi.fn().mockResolvedValue(Result.ok(editedGame)) },
+        createNoopDeleteGameUseCaseMock(),
+        notificationService,
+      );
+
+      await store.editGame({
+        id: 'game-1',
+        title: 'Zelda Updated',
+        description: '',
+        purchaseDate: null,
+        status: 'Owned',
+      });
+
+      expect(notificationService.success).toHaveBeenCalledWith('Game updated successfully');
+      expect(notificationService.error).not.toHaveBeenCalled();
+    });
+
+    it('should call notificationService.error on failed edit', async () => {
+      const notificationService = createNoopNotificationServiceMock();
+      const editUseCaseMock = {
+        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+      };
+      const store = new GamesStore(
+        createNoopAddGameUseCaseMock(),
+        createGetGamesUseCaseMock(Result.ok([])),
+        createNoopGetGameByIdUseCaseMock(),
+        editUseCaseMock,
+        createNoopDeleteGameUseCaseMock(),
+        notificationService,
+      );
+
+      await store.editGame({ id: 'game-1', title: 'Zelda', description: '', purchaseDate: null, status: 'Owned' });
+
+      expect(notificationService.error).toHaveBeenCalledWith(
+        'An error occurred while saving the game. Please try again.',
+      );
+      expect(notificationService.success).not.toHaveBeenCalled();
     });
   });
 });
