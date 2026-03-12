@@ -18,28 +18,36 @@ graph TB
     subgraph APP[Application Layer]
         SC[serviceContainer.ts<br/>Main Container]
         SP[ServiceProvider<br/>React Context]
+        TBP[ToastBridgeProvider<br/>DI → React Bridge]
     end
 
-    subgraph COLLECTION[Collection Context]
-        CC[serviceCollection.ts<br/>Collection Services]
+    subgraph TOAST[Toast Context]
+        TS[serviceToast<br/>ToastStore]
+        TP[ToastProvider<br/>React Context]
     end
 
     subgraph SHARED[Shared Context]
         SH[useService Hook<br/>Service Retrieval]
+        NS[NotificationService<br/>sharedServiceCollection]
     end
 
     subgraph UI[UI Components]
         COMP[React Components<br/>Use useService]
     end
 
-    CC -->|loaded into| SC
+    TS -->|loaded into| SC
+    NS -->|loaded into| SC
     SC -->|provided via| SP
     SP -->|consumed by| SH
+    SP -->|consumed by| TBP
+    TBP -->|mounts| TP
     SH -->|used in| COMP
 
     style SC fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
-    style CC fill:#e1f5e1,stroke:#4caf50,stroke-width:2px
+    style TS fill:#fce4ec,stroke:#e91e63,stroke-width:2px
+    style NS fill:#e1f5e1,stroke:#4caf50,stroke-width:2px
     style SH fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    style TBP fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
 ```
 
 ## File Organization
@@ -49,11 +57,17 @@ graph TB
 **Location:** `src/app/config/serviceContainer.ts`
 
 ```typescript
-import { serviceCollection } from '@Front/collection/serviceCollection';
+import { serviceCollection } from '@Collection/serviceCollection';
+import { sharedServiceCollection } from '@Shared/serviceCollection';
+import { serviceToast } from '@Toast/serviceCollection';
 import { Container } from 'inversify';
 
 export const serviceContainer = new Container();
 
+// Load order matters: serviceToast must come first because sharedServiceCollection
+// resolves ToastStore (bound by serviceToast) via toDynamicValue for NotificationService.
+serviceContainer.loadSync(serviceToast);
+serviceContainer.loadSync(sharedServiceCollection);
 serviceContainer.loadSync(serviceCollection);
 ```
 
@@ -514,6 +528,30 @@ describe('useService', () => {
 - Import container directly in components
 - Mix service registration logic in multiple files
 - Put DI logic in domain or application layers
+
+## ToastBridgeProvider — DI to React Context Bridge
+
+`ToastBridgeProvider` (`src/shared/ui/ToastBridgeProvider/`) bridges the DI container and the React-based `ToastProvider`. It sits between `ServiceProvider` and `QueryClientProvider` in the provider tree:
+
+```tsx
+// src/app/providers/Providers/Providers.tsx
+<ServiceProvider container={container}>
+  <ToastBridgeProvider>
+    <QueryClientProvider queryClient={queryClient}>{children}</QueryClientProvider>
+  </ToastBridgeProvider>
+</ServiceProvider>
+```
+
+Internally it uses `useService` to retrieve the `ToastStore` singleton from the container, then mounts `ToastProvider`:
+
+```tsx
+export const ToastBridgeProvider = ({ children }: PropsWithChildren) => {
+  const toastStore = useService<ToastStoreInterface>(TOAST_SERVICES.ToastStore);
+  return <ToastProvider service={toastStore}>{children}</ToastProvider>;
+};
+```
+
+**Why this matters:** `Providers.tsx` has no knowledge of `@Toast/*`. The bridge encapsulates the wiring between the DI world and the React context world. See [ADR-016](./adr/ADR-016-ports-adapters-notification.md) for the full rationale.
 
 ## Related Documentation
 
