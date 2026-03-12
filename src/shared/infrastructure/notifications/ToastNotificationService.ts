@@ -5,8 +5,8 @@ import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreIn
  * Adapter that implements NotificationServiceInterface by delegating to the toast store.
  *
  * This is the coupling point between the shared notification port and the
- * toast bounded context. Instantiated by ToastServiceBridge with the live
- * ToastStore from React context.
+ * toast bounded context. It is registered in the shared Inversify service
+ * collection and receives a ToastStoreInterface instance from the DI container.
  */
 export class ToastNotificationService implements NotificationServiceInterface {
   constructor(private readonly toastStore: ToastStoreInterface) {}
