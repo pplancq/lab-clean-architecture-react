@@ -15,6 +15,7 @@ src/
 ├── shared/                        # Shared Kernel (cross-context)
 │   ├── domain/                    # Shared business primitives
 │   │   ├── errors/                # DomainValidationError hierarchy
+│   │   ├── notifications/         # NotificationServiceInterface port
 │   │   ├── repositories/          # Generic repository interfaces + errors
 │   │   ├── result/                # Result<T,E> type
 │   │   └── utils/                 # IdGeneratorInterface, DateFormatterInterface
@@ -22,6 +23,7 @@ src/
 │   │   └── stores/                # AbstractObserver (useSyncExternalStore base)
 │   ├── infrastructure/            # Shared infrastructure
 │   │   ├── fetchApi/              # Shared HTTP client
+│   │   ├── notifications/         # ToastNotificationService adapter
 │   │   ├── persistence/           # IndexedDB helpers
 │   │   └── utils/                 # CryptoIdGenerator, DateFormatter
 │   └── ui/                        # Shared UI components
@@ -92,6 +94,7 @@ src/
 **Examples:**
 
 - `fetchApi/` - Generic HTTP client
+- `notifications/` - `ToastNotificationService` (implements `NotificationServiceInterface`)
 - `persistence/` - IndexedDB helpers
 - `utils/` - `CryptoIdGenerator` (implements `IdGeneratorInterface`), `DateFormatter`
 

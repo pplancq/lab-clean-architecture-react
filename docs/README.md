@@ -20,7 +20,7 @@ Core architectural concepts and principles:
 - **[Folder Structure](./architecture/folder-structure.md)** - Detailed explanation of directory organization
 - **[Dependency Rules](./architecture/dependency-rules.md)** - Critical rules for maintaining clean dependencies
 - **[Dependency Injection](./architecture/dependency-injection.md)** - InversifyJS configuration and usage patterns
-- **[All ADRs →](./architecture/adr/README.md)** - 15 architectural decisions recorded
+- **[All ADRs →](./architecture/adr/README.md)** - 16 architectural decisions recorded
 
 ## 📚 Layers
 
