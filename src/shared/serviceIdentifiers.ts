@@ -9,4 +9,9 @@ export const SHARED_SERVICES = Object.freeze({
    * Date formatting utility for local-timezone-safe date conversions
    */
   DateFormatter: Symbol.for('Shared.DateFormatter'),
+
+  /**
+   * Unique identifier generator (crypto.randomUUID by default)
+   */
+  IdGenerator: Symbol.for('Shared.IdGenerator'),
 } as const);

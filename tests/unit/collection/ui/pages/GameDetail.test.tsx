@@ -3,9 +3,8 @@ import type { GameMapEntryState, GamesStoreInterface } from '@Collection/applica
 import { Game } from '@Collection/domain/entities/Game';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { gameDetailRoutes } from '@Collection/ui/pages/GameDetail';
-import { renderSuspense } from '@pplancq/svg-react/tests';
 import { Result } from '@Shared/domain/result/Result';
-import { screen, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { Container } from 'inversify';
 import type { ReactElement, ReactNode } from 'react';
@@ -38,6 +37,7 @@ const createStoreMock = (entry: GameMapEntryState): GamesStoreInterface => ({
   getGame: vi.fn().mockReturnValue(entry),
   editGame: vi.fn(),
   deleteGame: vi.fn().mockResolvedValue(Result.ok(undefined)),
+  addGame: vi.fn(),
 });
 
 const createWrapper =
@@ -48,6 +48,7 @@ const createWrapper =
       <ServiceProvider container={container}>
         <Routes>
           <Route path={gameDetailRoutes.path as string} element={children} />
+          <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </ServiceProvider>
     </MemoryRouter>
@@ -59,25 +60,25 @@ const createContainer = (storeMock: GamesStoreInterface) => {
   return container;
 };
 
-const renderGameDetail = async (entry: GameMapEntryState, storeMock?: GamesStoreInterface, path = '/games/game-1') => {
+const renderGameDetail = (entry: GameMapEntryState, storeMock?: GamesStoreInterface, path = '/games/game-1') => {
   const resolvedStoreMock = storeMock ?? createStoreMock(entry);
   const container = createContainer(resolvedStoreMock);
-  await renderSuspense(gameDetailRoutes.element as ReactElement, { wrapper: createWrapper(container, path) });
+  render(gameDetailRoutes.element as ReactElement, { wrapper: createWrapper(container, path) });
   return { storeMock: resolvedStoreMock };
 };
 
 describe('GameDetail', () => {
   describe('store interaction', () => {
-    it('should call getGame with the route id', async () => {
-      const { storeMock } = await renderGameDetail(createEntry());
+    it('should call getGame with the route id', () => {
+      const { storeMock } = renderGameDetail(createEntry());
 
       expect(storeMock.getGame).toHaveBeenCalledWith('game-1');
     });
   });
 
   describe('loading state', () => {
-    it('should show a loading status while fetching', async () => {
-      await renderGameDetail(createEntry({ data: null, isLoading: true }));
+    it('should show a loading status while fetching', () => {
+      renderGameDetail(createEntry({ data: null, isLoading: true }));
 
       const status = screen.getByRole('status');
       expect(status).toBeInTheDocument();
@@ -86,8 +87,8 @@ describe('GameDetail', () => {
   });
 
   describe('not found state', () => {
-    it('should show an accessible alert and back link when game is not found', async () => {
-      await renderGameDetail(createEntry({ data: null, hasError: true, error: null }));
+    it('should show an accessible alert and back link when game is not found', () => {
+      renderGameDetail(createEntry({ data: null, hasError: true, error: null }));
 
       const alert = screen.getByRole('alert');
       expect(alert).toBeInTheDocument();
@@ -100,10 +101,8 @@ describe('GameDetail', () => {
   });
 
   describe('error state', () => {
-    it('should show an accessible alert when there is a generic error', async () => {
-      await renderGameDetail(
-        createEntry({ data: null, hasError: true, error: 'Unable to load game. Please try again.' }),
-      );
+    it('should show an accessible alert when there is a generic error', () => {
+      renderGameDetail(createEntry({ data: null, hasError: true, error: 'Unable to load game. Please try again.' }));
 
       const alert = screen.getByRole('alert');
       expect(alert).toHaveTextContent(/unable to load game/i);
@@ -112,7 +111,7 @@ describe('GameDetail', () => {
 
   describe('game detail rendering', () => {
     it('should render a single h1 with the game title', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         const heading = screen.getByRole('heading', { level: 1 });
@@ -121,7 +120,7 @@ describe('GameDetail', () => {
     });
 
     it('should display platform, format, status, description and purchase date', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         expect(screen.getByText(/Nintendo Switch/)).toBeInTheDocument();
@@ -132,7 +131,7 @@ describe('GameDetail', () => {
     });
 
     it('should render a back to collection link with accessible name', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         const backLink = screen.getByRole('link', { name: /back to collection/i });
@@ -141,7 +140,7 @@ describe('GameDetail', () => {
     });
 
     it('should render Edit and Delete buttons', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         expect(screen.getByRole('link', { name: /edit/i })).toBeInTheDocument();
@@ -150,7 +149,7 @@ describe('GameDetail', () => {
     });
 
     it('should mark the cover placeholder as aria-hidden', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         // eslint-disable-next-line testing-library/no-node-access
@@ -170,7 +169,7 @@ describe('GameDetail', () => {
         status: 'Owned',
       }).unwrap();
 
-      await renderGameDetail(createEntry({ data: game }));
+      renderGameDetail(createEntry({ data: game }));
 
       await waitFor(() => {
         expect(screen.getByText(/Purchase date:/)).toBeInTheDocument();
@@ -181,7 +180,7 @@ describe('GameDetail', () => {
 
   describe('accessibility', () => {
     it('should have a main landmark', async () => {
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       await waitFor(() => {
         expect(screen.getByRole('main')).toBeInTheDocument();
@@ -192,7 +191,7 @@ describe('GameDetail', () => {
   describe('delete confirmation', () => {
     it('should open the confirmation dialog when Delete button is clicked', async () => {
       const user = userEvent.setup();
-      await renderGameDetail(createEntry());
+      renderGameDetail(createEntry());
 
       expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
       await user.click(screen.getByRole('button', { name: /delete/i }));
@@ -203,7 +202,7 @@ describe('GameDetail', () => {
     it('should close the dialog without calling deleteGame when Cancel is clicked', async () => {
       const user = userEvent.setup();
       const storeMock = createStoreMock(createEntry());
-      await renderGameDetail(createEntry(), storeMock);
+      renderGameDetail(createEntry(), storeMock);
 
       expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
       await user.click(screen.getByRole('button', { name: /delete/i }));
@@ -218,7 +217,7 @@ describe('GameDetail', () => {
     it('should call deleteGame when confirm button is clicked', async () => {
       const user = userEvent.setup();
       const storeMock = createStoreMock(createEntry());
-      await renderGameDetail(createEntry(), storeMock);
+      renderGameDetail(createEntry(), storeMock);
 
       expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
       await user.click(screen.getByRole('button', { name: /delete/i }));
@@ -235,7 +234,7 @@ describe('GameDetail', () => {
       vi.mocked(storeMock.deleteGame).mockResolvedValueOnce(
         Result.err({ type: 'Repository', message: 'Delete failed', metadata: {} }),
       );
-      await renderGameDetail(createEntry(), storeMock);
+      renderGameDetail(createEntry(), storeMock);
 
       expect(await screen.findByRole('button', { name: /delete/i })).toBeInTheDocument();
       await user.click(screen.getByRole('button', { name: /delete/i }));
