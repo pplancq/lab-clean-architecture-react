@@ -7,7 +7,7 @@ import { GameDescription } from '@Collection/domain/value-objects/GameDescriptio
 import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
 import { Platform } from '@Collection/domain/value-objects/Platform';
 import { Status, StatusType } from '@Collection/domain/value-objects/Status';
-import { Alert, Button, RadioOption } from '@pplancq/shelter-ui-react';
+import { Button, RadioOption } from '@pplancq/shelter-ui-react';
 import type { Result } from '@Shared/domain/result/Result';
 import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
 import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
@@ -17,7 +17,6 @@ import { FormRadioGroup } from '@Shared/ui/components/formField/FormRadioGroup/F
 import { FormSelectField } from '@Shared/ui/components/formField/FormSelectField/FormSelectField';
 import { FormTextAreaField } from '@Shared/ui/components/formField/FormTextAreaField/FormTextAreaField';
 import { useService } from '@Shared/ui/hooks/useService/useService';
-import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'PC'];
@@ -25,12 +24,6 @@ const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox On
 const FORMATS = ['Physical', 'Digital'] as const;
 
 const STATUS_OPTIONS = Object.values(StatusType);
-
-const ERROR_MESSAGES: Record<string, string> = {
-  Repository: 'An error occurred while saving the game. Please try again.',
-  Validation: 'Please check your input and try again.',
-  NotFound: 'Game not found. It may have been deleted.',
-};
 
 type GameFormData = {
   title: string;
@@ -87,8 +80,6 @@ type GameFormProps = GameFormAddProps | GameFormEditProps;
 
 export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCancel, onSubmit }: GameFormProps) => {
   const dateFormatter = useService<DateFormatterInterface>(SHARED_SERVICES.DateFormatter);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [globalError, setGlobalError] = useState<string | null>(null);
 
   const methods = useForm<GameFormData>({
     defaultValues:
@@ -118,9 +109,6 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
   } = methods;
 
   const onFormSubmit = async (data: GameFormData) => {
-    setSuccessMessage(null);
-    setGlobalError(null);
-
     if (edit && onSubmit && gameId) {
       const dto = new EditGameDTO(
         gameId,
@@ -134,8 +122,6 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
 
       if (result.isOk()) {
         onSuccess?.();
-      } else {
-        setGlobalError(ERROR_MESSAGES[result.getError().type] ?? 'An unexpected error occurred. Please try again.');
       }
     } else {
       const dto = new AddGameDTO(
@@ -151,11 +137,8 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
       const result = await onSubmit(dto);
 
       if (result.isOk()) {
-        setSuccessMessage('Game added successfully');
         reset();
         onSuccess?.();
-      } else {
-        setGlobalError(ERROR_MESSAGES[result.getError().type] ?? 'An unexpected error occurred. Please try again.');
       }
     }
   };
@@ -164,27 +147,6 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
     <FormProvider {...methods}>
       <FormDevTool />
       <form onSubmit={handleSubmit(onFormSubmit)} noValidate aria-label={edit ? 'Edit game form' : 'Add game form'}>
-        {successMessage ? (
-          <Alert
-            variant="success"
-            title={successMessage}
-            role="status"
-            onClose={() => setSuccessMessage(null)}
-            buttonLabel="Close"
-          />
-        ) : null}
-        {globalError ? (
-          <Alert
-            variant="error"
-            title={edit ? 'Unable to update game' : 'Unable to add game'}
-            role="alert"
-            onClose={() => setGlobalError(null)}
-            buttonLabel="Close"
-          >
-            {globalError}
-          </Alert>
-        ) : null}
-
         <FormInputField
           name="title"
           label="Game title"

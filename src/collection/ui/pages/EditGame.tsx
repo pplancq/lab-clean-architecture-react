@@ -20,9 +20,7 @@ const EditGame = () => {
   const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
 
   const handleSuccess = useCallback(() => {
-    navigate(appRoutes.gameDetail(id), {
-      state: { successMessage: 'Game updated successfully' },
-    });
+    navigate(appRoutes.gameDetail(id));
   }, [navigate, id]);
 
   const handleCancel = useCallback(() => {

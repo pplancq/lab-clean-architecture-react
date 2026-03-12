@@ -5,6 +5,7 @@ import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-ca
 import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
 import type { Game } from '@Collection/domain/entities/Game';
 import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
+import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
 import type { Result } from '@Shared/domain/result/Result';
 import type { AddGameDTO } from '../dtos/AddGameDTO';
 import type { EditGameDTO } from '../dtos/EditGameDTO';
@@ -24,6 +25,20 @@ import type { GameMapEntryState, GamesListState, GamesStoreInterface } from './G
  * Register as a singleton in the DI container so all components share state.
  */
 export class GamesStore extends AbstractObserver implements GamesStoreInterface {
+  private static readonly ADD_SUCCESS_MESSAGE = 'Game added successfully';
+
+  private static readonly EDIT_SUCCESS_MESSAGE = 'Game updated successfully';
+
+  private static readonly DELETE_SUCCESS_MESSAGE = 'Game deleted successfully';
+
+  private static readonly OPERATION_ERROR_MESSAGES: Record<string, string> = {
+    Repository: 'An error occurred while saving the game. Please try again.',
+    Validation: 'Please check your input and try again.',
+    NotFound: 'Game not found. It may have been deleted.',
+  };
+
+  private static readonly DEFAULT_OPERATION_ERROR_MESSAGE = 'An unexpected error occurred. Please try again.';
+
   private readonly DEFAULT_LOADING_ENTRY: GameMapEntryState = {
     data: null,
     isLazy: false,
@@ -44,12 +59,20 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   private listSnapshot: GamesListState = { games: [], isLoading: false, hasError: false, error: null };
 
+  /**
+   * Object Calisthenics allows a maximum of 2 instance variables, but this
+   * constructor intentionally exceeds that limit. Grouping the 5 use cases
+   * behind a facade would add an indirection layer without real benefit at
+   * this scale. Should the number of dependencies grow further, introducing
+   * a GameUseCasesFacade would then be the right refactoring step.
+   */
   constructor(
     private readonly addGameUseCase: AddGameUseCaseInterface,
     private readonly getGamesUseCase: GetGamesUseCaseInterface,
     private readonly getGameByIdUseCase: GetGameByIdUseCaseInterface,
     private readonly editGameUseCase: EditGameUseCaseInterface,
     private readonly deleteGameUseCase: DeleteGameUseCaseInterface,
+    private readonly notificationService: NotificationServiceInterface,
   ) {
     super();
   }
@@ -101,7 +124,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
   /**
    * Applies a partial update to an existing game.
    * Workflow: mark loading → execute use case → update map on success / rollback on error.
-   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   * Sends a success or error notification via NotificationService.
    */
   async editGame(dto: EditGameDTO): Promise<Result<Game, ApplicationErrorInterface>> {
     const previous = this.gamesMap.get(dto.id);
@@ -112,8 +135,12 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     if (result.isOk()) {
       const game = result.unwrap();
       this.setEntry(game.getId(), game, { commit: true });
+      this.notificationService.success(GamesStore.EDIT_SUCCESS_MESSAGE);
     } else {
       this.rollbackEdit(dto.id, previous);
+      const errorMessage =
+        GamesStore.OPERATION_ERROR_MESSAGES[result.getError().type] ?? GamesStore.DEFAULT_OPERATION_ERROR_MESSAGE;
+      this.notificationService.error(errorMessage);
     }
 
     return result;
@@ -122,20 +149,25 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
   /**
    * Adds a new game to the collection.
    * Workflow: execute use case → add to map on success; no state change on error.
-   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   * Sends a success or error notification via NotificationService.
    */
   async addGame(dto: AddGameDTO): Promise<Result<Game, ApplicationErrorInterface>> {
     const result = await this.addGameUseCase.execute(dto);
     if (result.isOk()) {
       const game = result.unwrap();
       this.setEntry(game.getId(), game, { commit: true });
+      this.notificationService.success(GamesStore.ADD_SUCCESS_MESSAGE);
+    } else {
+      const errorMessage =
+        GamesStore.OPERATION_ERROR_MESSAGES[result.getError().type] ?? GamesStore.DEFAULT_OPERATION_ERROR_MESSAGE;
+      this.notificationService.error(errorMessage);
     }
     return result;
   }
 
   /**
    * Workflow: execute use case → remove from map on success; no state change on error.
-   * The Result is returned for imperative handling by the caller (e.g. show an error banner).
+   * Sends a success or error notification via NotificationService.
    */
   async deleteGame(id: string): Promise<Result<void, ApplicationErrorInterface>> {
     const result = await this.deleteGameUseCase.execute(id);
@@ -143,6 +175,11 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     if (result.isOk()) {
       this.gamesMap.delete(id);
       this.commit(true);
+      this.notificationService.success(GamesStore.DELETE_SUCCESS_MESSAGE);
+    } else {
+      const errorMessage =
+        GamesStore.OPERATION_ERROR_MESSAGES[result.getError().type] ?? GamesStore.DEFAULT_OPERATION_ERROR_MESSAGE;
+      this.notificationService.error(errorMessage);
     }
 
     return result;

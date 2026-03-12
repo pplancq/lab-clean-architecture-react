@@ -195,23 +195,6 @@ describe('EditGame', () => {
         expect(editGameMock).toHaveBeenCalledOnce();
       });
     });
-
-    it('should display an error alert when store.editGame fails', async () => {
-      const user = userEvent.setup();
-      const editGameMock = vi
-        .fn()
-        .mockResolvedValue(
-          Result.err({ type: 'Repository', message: 'Storage quota exceeded', name: 'RepositoryError' }),
-        );
-      renderEditGame(createEntry(), editGameMock);
-
-      await user.click(screen.getByRole('button', { name: /save changes/i }));
-
-      await waitFor(() => {
-        expect(screen.getByRole('alert')).toBeInTheDocument();
-        expect(screen.getByText('Unable to update game')).toBeInTheDocument();
-      });
-    });
   });
 
   describe('cancel navigation', () => {

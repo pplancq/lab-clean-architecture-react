@@ -41,6 +41,7 @@ Each ADR follows this structure:
 | [ADR-014](./ADR-014-infrastructure-id-generator.md)              | Infrastructure ID Generator Abstraction           | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
 | [ADR-015](./ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Error Hierarchy                 | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
 | [ADR-016](./ADR-016-ports-adapters-notification.md)              | Ports & Adapters for Cross-Cutting Notification   | ✅ Accepted | 2026-03-12 | Issue #119 Toast Bridge |
+| [ADR-017](./ADR-017-application-layer-notification-ownership.md) | Application Layer Owns Operation Notifications    | ✅ Accepted | 2026-03-12 | Issue #120 Toast Usage  |
 
 ## Pending ADRs
 
