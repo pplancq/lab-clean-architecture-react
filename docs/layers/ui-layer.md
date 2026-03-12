@@ -76,7 +76,7 @@ These components will be contributed to `@pplancq/shelter-ui-react` once stable.
 
 - All error messages use `aria-errormessage` (not `aria-describedby`) — tests must use `toHaveAccessibleErrorMessage()`
 - `RadioGroup` auto-injects `name`, `required`, `isInvalid` into children via `cloneElement` — do not pass `name` twice
-- Components using `HelperText` or `Alert` load SVG icons asynchronously — use `renderSuspense` in tests
+- Components using `HelperText` load SVG icons asynchronously — add `server.deps.inline: ['@pplancq/shelter-ui-react']` in `vitest.config.mts` for SVG support
 
 ---
 
@@ -260,6 +260,8 @@ export const useGamesSelector = <T>(selector: (store: GamesStoreInterface) => T)
 
 Pages are thin wrappers that compose UI components and expose them on a route.
 
+> **Notification responsibility:** Pages (and `GameForm`) do **not** call `NotificationServiceInterface` directly. User-facing success/error toasts for CRUD operations (`addGame`, `editGame`, `deleteGame`) are fired internally by `GamesStore`. The `Result` returned to page components is used **only** for navigation and form-reset side-effects. See [ADR-017](../architecture/adr/ADR-017-application-layer-notification-ownership.md) for the rationale.
+
 ```typescript
 // src/collection/ui/pages/AddGame.tsx
 const AddGame = () => {
@@ -318,9 +320,8 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 
 **Key testing notes:**
 
-- Use `renderSuspense` (not `render`) for any component that uses `HelperText` or `Alert` from shelter-ui
 - `getByRole('radiogroup', { name: … })` for RadioGroup (not `group`)
-- Add `server.deps.inline: ['@pplancq/shelter-ui-react']` in `vitest.config.mts` for SVG support
+- Add `server.deps.inline: ['@pplancq/shelter-ui-react']` in `vitest.config.mts` for SVG support (needed by components using `HelperText`)
 - Hook tests with `useSyncExternalStore`: use `renderHook` to avoid the `react/no-multi-comp` ESLint rule (no second component in test files)
 - `useGamesSelector.test.tsx`: use `<T,>` trailing comma in TSX generics to disambiguate from JSX tags
 
@@ -333,3 +334,4 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 - [GetGameById Use Case](../use-cases/get-game-by-id.md) — GetGameById use case
 - [Dependency Injection](../architecture/dependency-injection.md) — InversifyJS setup
 - [Result Pattern](../result-pattern.md) — Error handling in use cases
+- [ADR-017: Application Layer Owns Operation Notifications](../architecture/adr/ADR-017-application-layer-notification-ownership.md) — Why `GamesStore` fires notifications, not components
