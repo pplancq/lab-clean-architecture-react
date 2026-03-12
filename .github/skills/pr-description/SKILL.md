@@ -172,7 +172,11 @@ Create the complete PR description in English, with:
 - Checkboxes marked where applicable (`- [x]` for completed, `- [ ]` for pending)
 - Clear, concise language
 - Actionable items for reviewers
-- **PR Title**: Derived from GitHub issue title or commit summary
+- **PR Title**: Must follow the Conventional Commits format defined in `.github/git-commit-instructions.md`:
+  `<type>[optional scope]: <description>` (e.g., `feat(auth): add user authentication`, `fix(api): correct token refresh logic`)
+  - Derive `type` from the nature of changes (feat, fix, refactor, docs, test, etc.)
+  - Derive `scope` from the affected feature or architecture layer (optional but recommended)
+  - Derive `description` from the GitHub issue title or commit summary (imperative mood, no capital, no period, max 72 chars total)
 
 **Present the generated description to the user for review.**
 
@@ -190,7 +194,7 @@ Prepare the PR parameters:
 2. Get current branch name
 3. Determine target branch (main branch from Step 3)
 4. Prepare PR content:
-   - **title**: From GitHub issue title or generated summary
+   - **title**: Must follow the Conventional Commits format: `<type>[optional scope]: <description>` (see `.github/git-commit-instructions.md`)
    - **body**: The complete PR description generated in Step 8
    - **head**: Current feature branch
    - **base**: Main branch (e.g., "main", "master", "develop")
@@ -377,7 +381,7 @@ Before presenting the PR description, verify:
 - [ ] No placeholder text remains (except for screenshots/videos)
 - [ ] Issue number correctly referenced (Closes #123)
 - [ ] Breaking changes clearly documented if applicable
-- [ ] PR title derived from issue or commits
+- [ ] PR title follows Conventional Commits format (`<type>[optional scope]: <description>`) as per `.github/git-commit-instructions.md`
 
 ## Example Output
 
@@ -555,5 +559,6 @@ The skill attempts to create the PR using these methods in order:
 
 - Project PR Template: `.github/PULL_REQUEST_TEMPLATE.md`
 - Project Instructions: `.github/copilot-instructions.md`
+- Commit Convention: `.github/git-commit-instructions.md`
 - Clean Architecture Layers: See project-context.md
 - Accessibility Standards: WCAG 2.2 AA guidelines
