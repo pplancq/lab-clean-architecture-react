@@ -11,7 +11,7 @@ import { RemoveToastUseCase } from './application/use-cases/RemoveToastUseCase';
 import type { RemoveToastUseCaseInterface } from './application/use-cases/RemoveToastUseCaseInterface';
 import type { ToastRepositoryInterface } from './domain/repositories/ToastRepositoryInterface';
 import { ImmutableInMemoryToastRepository } from './infrastructure/persistence/ImmutableInMemoryToastRepository';
-import { TOAST_SERVICES } from './serviceIdentifier';
+import { TOAST_SERVICES } from './serviceIdentifiers';
 
 export const serviceToast: ContainerModule = new ContainerModule(options => {
   // Bind repository — single source of truth for active toasts

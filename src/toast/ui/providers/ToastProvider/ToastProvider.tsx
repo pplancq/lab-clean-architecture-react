@@ -5,10 +5,9 @@ import { type PropsWithChildren, useRef } from 'react';
 
 type ToastProviderProps = PropsWithChildren<{
   /**
-   * Optional pre-configured store instance.
+   * Pre-configured store instance to inject into the context.
    *
-   * When provided (e.g. via DI container or tests), the provider uses it as-is.
-   * When omitted, the provider instantiates a default ToastStore internally.
+   * Must be provided by the caller (typically via DI container or tests).
    */
   service: ToastStoreInterface;
 }>;

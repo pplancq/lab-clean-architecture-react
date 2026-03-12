@@ -12,7 +12,7 @@ import type { DomainValidationErrorInterface } from './DomainValidationErrorInte
 export class DomainValidationError extends Error implements DomainValidationErrorInterface {
   constructor(
     readonly field: string,
-    readonly message: string,
+    message: string,
   ) {
     super(message);
     this.name = 'DomainValidationError';
