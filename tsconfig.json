@@ -28,9 +28,10 @@
       "@Pwa/*": ["src/pwa/*"],
       "@Collection/*": ["src/collection/*"],
       "@Shared/*": ["src/shared/*"],
+      "@Toast/*": ["src/toast/*"],
       "@Mocks/*": ["mocks/*"]
     }
   },
   "include": ["src", "rsbuild.config.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/**/poc"]
 }

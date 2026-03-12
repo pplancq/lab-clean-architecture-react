@@ -37,6 +37,9 @@ Each ADR follows this structure:
 | [ADR-010](./ADR-010-dto-date-type-conventions.md)                | Date Type Conventions in Application DTOs         | ✅ Accepted | 2026-02-23 | Epic 2 Retro            |
 | [ADR-011](./ADR-011-map-centric-store-auto-trigger.md)           | Map-Centric Store with Auto-Triggered Fetches     | ✅ Accepted | 2026-03-02 | Epic 2 Story 2.6        |
 | [ADR-012](./ADR-012-page-layout-ownership-and-folder-pattern.md) | Page Layout Ownership and Folder Pattern          | ✅ Accepted | 2026-03-09 | Epic 2 Retro / Sprint 4 |
+| [ADR-013](./ADR-013-in-memory-repository-for-transient-data.md)  | In-Memory Repository for Transient Data           | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
+| [ADR-014](./ADR-014-infrastructure-id-generator.md)              | Infrastructure ID Generator Abstraction           | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
+| [ADR-015](./ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Error Hierarchy                 | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
 
 ## Pending ADRs
 

@@ -20,7 +20,7 @@ Core architectural concepts and principles:
 - **[Folder Structure](./architecture/folder-structure.md)** - Detailed explanation of directory organization
 - **[Dependency Rules](./architecture/dependency-rules.md)** - Critical rules for maintaining clean dependencies
 - **[Dependency Injection](./architecture/dependency-injection.md)** - InversifyJS configuration and usage patterns
-- **[ADR-012: Page Layout Ownership and Folder Pattern](./architecture/adr/ADR-012-page-layout-ownership-and-folder-pattern.md)** - Pages as autonomous layout-owning components + `<Name>/<Name>.tsx` convention
+- **[All ADRs →](./architecture/adr/README.md)** - 15 architectural decisions recorded
 
 ## 📚 Layers
 
@@ -39,6 +39,9 @@ Application-layer orchestration:
 - **[GetGameById Use Case](./use-cases/get-game-by-id.md)** - Retrieving a single game by ID with error mapping
 - **[EditGame Use Case](./use-cases/edit-game.md)** - Partial update of an existing game via entity update methods
 - **[DeleteGame Use Case](./use-cases/delete-game.md)** - Permanent removal of a game with confirmation flow
+- **[AddToast Use Case](./use-cases/add-toast.md)** - Generating an ID, validating, and persisting a toast notification
+- **[RemoveToast Use Case](./use-cases/remove-toast.md)** - Looking up and removing a toast by ID
+- **[GetToasts Use Case](./use-cases/get-toasts.md)** - Delegating to the repository for referentially stable snapshots
 
 ## ⚙️ Infrastructure
 
@@ -51,6 +54,7 @@ Cross-cutting technical concerns:
 
 Domain-Driven Design contexts:
 
+- **[Toast Context](./architecture/folder-structure.md#-srctoast---toast-bounded-context)** - Cross-cutting transient notification system
 - **Collection Context** _(Coming soon)_ - Game collection management
 - **Wishlist Context** _(Coming soon)_ - Wishlist tracking
 - **Maintenance Context** _(Coming soon)_ - Console maintenance
@@ -60,7 +64,7 @@ Domain-Driven Design contexts:
 Practical how-to guides and patterns:
 
 - **[Result Pattern](./result-pattern.md)** - Type-safe error handling without exceptions
-- **[Value Objects](./value-objects.md)** - Immutable value objects with self-validation
+- **[Value Objects](./value-objects.md)** - Immutable value objects with `DomainValidationError`-based validation
 - **Adding a New Feature** _(Coming soon)_ - Step-by-step guide for implementing features
 - **Testing Strategy** _(Coming soon)_ - Testing approach for each layer
 - **Common Patterns** _(Coming soon)_ - Recurring patterns and solutions

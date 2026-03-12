@@ -14,17 +14,30 @@ src/
 │
 ├── shared/                        # Shared Kernel (cross-context)
 │   ├── domain/                    # Shared business primitives
+│   │   ├── errors/                # DomainValidationError hierarchy
+│   │   ├── repositories/          # Generic repository interfaces + errors
+│   │   ├── result/                # Result<T,E> type
+│   │   └── utils/                 # IdGeneratorInterface, DateFormatterInterface
 │   ├── application/               # Shared application logic
+│   │   └── stores/                # AbstractObserver (useSyncExternalStore base)
 │   ├── infrastructure/            # Shared infrastructure
-│   │   └── fetchApi/              # Shared HTTP client
+│   │   ├── fetchApi/              # Shared HTTP client
+│   │   ├── persistence/           # IndexedDB helpers
+│   │   └── utils/                 # CryptoIdGenerator, DateFormatter
 │   └── ui/                        # Shared UI components
 │
-└── collection/                    # Collection Bounded Context
-    ├── domain/                    # Entities and business rules
-    ├── application/               # Use cases and DTOs
-    ├── infrastructure/            # Adapters (IndexedDB, API)
-    └── ui/                        # React components
-        └── pages/                 # Context-specific pages
+├── collection/                    # Collection Bounded Context
+│   ├── domain/                    # Entities and business rules
+│   ├── application/               # Use cases and DTOs
+│   ├── infrastructure/            # Adapters (IndexedDB, API)
+│   └── ui/                        # React components
+│       └── pages/                 # Context-specific pages
+│
+└── toast/                         # Toast Bounded Context
+    ├── domain/                    # Toast entity, value objects, repository interface
+    ├── application/               # Use cases (Add/Remove/GetToasts), ToastStore
+    ├── infrastructure/            # ImmutableInMemoryToastRepository
+    └── ui/                        # Toast, ToastContainer, useToastService, ToastProvider
 ```
 
 ## Layer-by-Layer Explanation
@@ -56,9 +69,10 @@ src/
 
 **Examples:**
 
-- Generic Value Objects (Email, Money, DateRange)
-- Business primitive types (GameId, ConsoleId)
-- Shared repository interfaces
+- `errors/` — `DomainValidationError` hierarchy (`NotEmptyError`, `PositiveNumberError`, `AllowedValuesError`)
+- `repositories/` — generic `RepositoryInterface` and typed repository errors
+- `result/` — `Result<T, E>` type
+- `utils/` — `IdGeneratorInterface`, `DateFormatterInterface`
 
 **Rules:**
 
@@ -78,8 +92,8 @@ src/
 **Examples:**
 
 - `fetchApi/` - Generic HTTP client
-- IndexedDB helpers
-- Logging utilities
+- `persistence/` - IndexedDB helpers
+- `utils/` - `CryptoIdGenerator` (implements `IdGeneratorInterface`), `DateFormatter`
 
 **Rules:**
 
@@ -157,6 +171,42 @@ src/
 
 ---
 
+### 🍞 `src/toast/` - Toast Bounded Context
+
+**Role:** Cross-cutting transient notification system. Provides toasts visible across the entire app.
+
+#### `toast/domain/` - Toast Business Rules
+
+- Entity: `Toast` (id, message, type, duration — all value objects)
+- Value objects: `ToastId`, `ToastMessage`, `ToastType`, `ToastDuration`
+- Repository interface: `ToastRepositoryInterface` (synchronous, `Result<T, never>`)
+
+#### `toast/application/` - Toast Use Cases
+
+- `AddToastUseCase` — generates ID via `IdGeneratorInterface`, validates and persists
+- `RemoveToastUseCase` — validates ID, checks existence, removes
+- `GetToastsUseCase` — delegates to repository with referential stability
+- `ToastStore` — observable store orchestrating use cases + auto-dismiss timers
+
+#### `toast/infrastructure/` - Toast Adapters
+
+- `ImmutableInMemoryToastRepository` — synchronous in-memory repository, referentially stable snapshots
+
+#### `toast/ui/` - Toast React Components
+
+- `Toast` — individual notification component (memoised)
+- `ToastContainer` — renders the full toast list
+- `ToastProvider` — exposes store via React context
+- `useToastService` — hook to call `addToast`/`removeToast`
+
+**Rules:**
+
+- ✅ Cross-cutting: can be consumed from `app/`, `collection/`, any context's UI
+- ✅ Infrastructure uses `@Shared/infrastructure/utils/CryptoIdGenerator`
+- ❌ Toast domain must NOT import from `collection/` or other bounded contexts
+
+---
+
 ## Future Bounded Contexts
 
 ### `src/wishlist/` - Wishlist Context
@@ -216,6 +266,7 @@ Each bounded context and major layer has a dedicated alias:
   "@App/*":        ["src/app/*"],
   "@Shared/*":     ["src/shared/*"],
   "@Collection/*": ["src/collection/*"],
+  "@Toast/*":      ["src/toast/*"],
   "@Mocks/*":      ["mocks/*"]
 }
 ```

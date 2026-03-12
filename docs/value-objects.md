@@ -17,33 +17,19 @@ Value Objects are immutable objects that represent domain concepts through their
 
 ```typescript
 import { Result } from '@Shared/domain/result/Result';
-
-type MyValueError = {
-  field: string;
-  message: string;
-};
+import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 
 export class MyValue {
-  private readonly value: string; // Immutable
+  private readonly value: string;
 
   private constructor(value: string) {
     this.value = value;
   }
 
-  static create(value: string): Result<MyValue, MyValueError> {
-    // Validation
+  static create(value: string): Result<MyValue, DomainValidationErrorInterface> {
     if (!value || value.trim().length === 0) {
-      return Result.err({
-        field: 'myValue',
-        message: 'Value is required',
-      });
-    }
-
-    if (value.length > 100) {
-      return Result.err({
-        field: 'myValue',
-        message: 'Value cannot exceed 100 characters',
-      });
+      return Result.err(new NotEmptyError('myValue'));
     }
 
     return Result.ok(new MyValue(value.trim()));
@@ -58,9 +44,10 @@ export class MyValue {
 ### Key Points
 
 - **Private constructor**: Prevents invalid instantiation
-- **Static factory method**: Returns `Result<T, E>` for validation
+- **Static factory method**: Returns `Result<T, DomainValidationErrorInterface>` for validation
 - **Immutable properties**: All fields are `readonly`
 - **Single getter**: Returns the primitive value
+- **Typed errors**: Use `DomainValidationError` subclasses — never plain objects
 
 ## Naming Conventions
 
@@ -111,100 +98,76 @@ src/collection/domain/value-objects/
 
 ## Validation Strategies
 
+Use `DomainValidationError` subclasses from `@Shared/domain/errors/` — never plain objects.
+
 ### Required String Values
 
 ```typescript
-static create(value: string): Result<GameTitle, GameTitleError> {
+import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
+
+static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
   if (!value || value.trim().length === 0) {
-    return Result.err({
-      field: 'title',
-      message: 'Title is required',
-    });
+    return Result.err(new NotEmptyError('title'));
+    // → message: "title cannot be empty"
   }
-
-  if (value.length > 200) {
-    return Result.err({
-      field: 'title',
-      message: 'Title cannot exceed 200 characters',
-    });
-  }
-
   return Result.ok(new GameTitle(value.trim()));
+}
+```
+
+### Numeric Values (must be positive)
+
+```typescript
+import { PositiveNumberError } from '@Shared/domain/errors/PositiveNumberError';
+
+static create(value: number): Result<ToastDuration, DomainValidationErrorInterface> {
+  if (value <= 0) {
+    return Result.err(new PositiveNumberError('duration'));
+    // → message: "duration must be a positive number"
+  }
+  return Result.ok(new ToastDuration(value));
+}
+```
+
+### Enum / Allowed Values
+
+```typescript
+import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+
+const ALLOWED = ['success', 'info', 'warning', 'error'] as const;
+
+static create(value: string): Result<ToastType, DomainValidationErrorInterface> {
+  if (!ALLOWED.includes(value as ToastTypeValue)) {
+    return Result.err(new AllowedValuesError('type', ALLOWED));
+    // → message: "type must be one of: success, info, warning, error"
+  }
+  return Result.ok(new ToastType(value as ToastTypeValue));
 }
 ```
 
 ### Optional String Values
 
 ```typescript
-static create(value: string): Result<GameDescription, GameDescriptionError> {
+static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
   // Empty is valid (optional)
   if (value.length > 1000) {
-    return Result.err({
-      field: 'description',
-      message: 'Description cannot exceed 1000 characters',
-    });
+    return Result.err(new DomainValidationError('description', 'Description cannot exceed 1000 characters'));
   }
-
   return Result.ok(new GameDescription(value));
 }
 ```
 
-### Enum Values
+### Available Error Classes
 
-```typescript
-export enum StatusType {
-  OWNED = 'Owned',
-  WISHLIST = 'Wishlist',
-  SOLD = 'Sold',
-  LOANED = 'Loaned',
-}
+| Class                   | Location                 | Default message pattern                | Use case              |
+| ----------------------- | ------------------------ | -------------------------------------- | --------------------- |
+| `NotEmptyError`         | `@Shared/domain/errors/` | `"${field} cannot be empty"`           | Required strings      |
+| `PositiveNumberError`   | `@Shared/domain/errors/` | `"${field} must be a positive number"` | Numeric constraints   |
+| `AllowedValuesError`    | `@Shared/domain/errors/` | `"${field} must be one of: …"`         | Enum/fixed-set values |
+| `DomainValidationError` | `@Shared/domain/errors/` | Custom message required                | Other constraints     |
 
-static create(value: string): Result<Status, StatusError> {
-  const trimmedValue = value?.trim() ?? '';
-  const statusValue = Object.values(StatusType).find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+All classes extend `DomainValidationError extends Error implements DomainValidationErrorInterface`. They accept an optional last argument to override the default message.
 
-  if (!statusValue) {
-    return Result.err({
-      field: 'status',
-      message: `Invalid status: ${value}. Valid statuses are: ${Object.values(StatusType).join(', ')}`,
-    });
-  }
-
-  return Result.ok(new Status(statusValue as StatusType));
-}
-```
-
-### Flexible Strings (Anticipating Database)
-
-For values that will be database-driven in the future:
-
-```typescript
-static create(value: string): Result<Platform, PlatformError> {
-  if (!value || value.trim().length === 0) {
-    return Result.err({
-      field: 'platform',
-      message: 'Platform name is required',
-    });
-  }
-
-  if (value.length > 100) {
-    return Result.err({
-      field: 'platform',
-      message: 'Platform name cannot exceed 100 characters',
-    });
-  }
-
-  // Flexible - accepts any platform name
-  // Examples: 'PlayStation 5', 'Xbox Series X', 'Steam Deck'
-  return Result.ok(new Platform(value.trim()));
-}
-```
-
-**Why flexible strings?**
-
-- ✅ Prepares for database-driven lists
-- ✅ Avoids code changes when adding new platforms
-- ✅ Supports variations (PS1, PS2, PS3, PS4, PS5, etc.)
+See [ADR-015](./architecture/adr/ADR-015-domain-validation-error-hierarchy.md) for rationale.
 
 ## Usage in Entities
 

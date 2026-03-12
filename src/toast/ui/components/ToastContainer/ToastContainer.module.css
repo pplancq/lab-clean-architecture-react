@@ -1,0 +1,11 @@
+.toastContainer {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: min(31.25rem, 100%); /* 500px on desktop, 100% on mobile */
+  padding: var(--padding-2);
+  flex-direction: column;
+  gap: var(--gap-2);
+}

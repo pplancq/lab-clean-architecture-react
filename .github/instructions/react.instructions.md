@@ -90,7 +90,7 @@ Instructions for building high-quality React applications with modern patterns, 
 
 - Use `useState` for simple, local component state.
 - Use `useReducer` for complex state logic.
-- Leverage `useContext` for sharing state across component trees.
+- Leverage `useContext` for sharing state across component trees (React 19+ supports `<Context>` directly in JSX instead of `<Context.Provider>`).
 - Consider external state management (Redux Toolkit, Zustand) for complex applications.
 - Implement proper state normalization and data structures.
 - Use React Query or SWR for server state management.

@@ -1,6 +1,5 @@
-import { renderSuspense } from '@pplancq/svg-react/tests';
 import { TextAreaField } from '@Shared/ui/components/TextAreaField/TextAreaField';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 describe('TextAreaField', () => {
@@ -36,47 +35,51 @@ describe('TextAreaField', () => {
 
   describe('helper text', () => {
     it('should render helper text when provided', async () => {
-      await renderSuspense(<TextAreaField id="description" label="Description" textHelper="Optional field" />);
+      render(<TextAreaField id="description" label="Description" textHelper="Optional field" />);
 
-      expect(screen.getByText('Optional field')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('Optional field')).toBeInTheDocument();
+      });
     });
 
     it('should associate helper text with the textarea via aria-describedby', async () => {
-      await renderSuspense(<TextAreaField id="description" label="Description" textHelper="Optional field" />);
+      render(<TextAreaField id="description" label="Description" textHelper="Optional field" />);
 
-      const textarea = screen.getByRole('textbox', { name: 'Description' });
-      expect(textarea).toHaveAttribute('aria-describedby', 'description-helper');
+      await waitFor(() => {
+        const textarea = screen.getByRole('textbox', { name: 'Description' });
+        expect(textarea).toHaveAttribute('aria-describedby', 'description-helper');
+      });
     });
   });
 
   describe('error state', () => {
     it('should render an error message when provided', async () => {
-      await renderSuspense(
-        <TextAreaField id="description" label="Description" errorMessage="This field is required" />,
-      );
+      render(<TextAreaField id="description" label="Description" errorMessage="This field is required" />);
 
-      expect(screen.getByText('This field is required')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('This field is required')).toBeInTheDocument();
+      });
     });
 
     it('should mark the textarea as invalid when errorMessage is provided', async () => {
-      await renderSuspense(
-        <TextAreaField id="description" label="Description" errorMessage="This field is required" />,
-      );
+      render(<TextAreaField id="description" label="Description" errorMessage="This field is required" />);
 
-      expect(screen.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true');
+      await waitFor(() => {
+        expect(screen.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true');
+      });
     });
 
     it('should have an accessible error message via aria-errormessage', async () => {
-      await renderSuspense(
-        <TextAreaField id="description" label="Description" errorMessage="This field is required" />,
-      );
+      render(<TextAreaField id="description" label="Description" errorMessage="This field is required" />);
 
-      const textarea = screen.getByRole('textbox', { name: 'Description' });
-      expect(textarea).toHaveAccessibleErrorMessage('This field is required');
+      await waitFor(() => {
+        const textarea = screen.getByRole('textbox', { name: 'Description' });
+        expect(textarea).toHaveAccessibleErrorMessage('This field is required');
+      });
     });
 
     it('should prioritise errorMessage over textHelper', async () => {
-      await renderSuspense(
+      render(
         <TextAreaField
           id="description"
           label="Description"
@@ -85,14 +88,18 @@ describe('TextAreaField', () => {
         />,
       );
 
-      expect(screen.getByText('This field is required')).toBeInTheDocument();
-      expect(screen.queryByText('Optional field')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText('This field is required')).toBeInTheDocument();
+        expect(screen.queryByText('Optional field')).not.toBeInTheDocument();
+      });
     });
 
-    it('should not mark the textarea as invalid when no errorMessage is provided', () => {
+    it('should not mark the textarea as invalid when no errorMessage is provided', async () => {
       render(<TextAreaField id="description" label="Description" />);
 
-      expect(screen.getByRole('textbox', { name: 'Description' })).not.toHaveAttribute('aria-invalid');
+      await waitFor(() => {
+        expect(screen.getByRole('textbox', { name: 'Description' })).not.toHaveAttribute('aria-invalid');
+      });
     });
   });
 
