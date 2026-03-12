@@ -31,8 +31,6 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   private static readonly DELETE_SUCCESS_MESSAGE = 'Game deleted successfully';
 
-  private static readonly DELETE_ERROR_MESSAGE = 'Unable to delete game. Please try again.';
-
   private static readonly OPERATION_ERROR_MESSAGES: Record<string, string> = {
     Repository: 'An error occurred while saving the game. Please try again.',
     Validation: 'Please check your input and try again.',
@@ -61,6 +59,13 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   private listSnapshot: GamesListState = { games: [], isLoading: false, hasError: false, error: null };
 
+  /**
+   * Object Calisthenics allows a maximum of 2 instance variables, but this
+   * constructor intentionally exceeds that limit. Grouping the 5 use cases
+   * behind a facade would add an indirection layer without real benefit at
+   * this scale. Should the number of dependencies grow further, introducing
+   * a GameUseCasesFacade would then be the right refactoring step.
+   */
   constructor(
     private readonly addGameUseCase: AddGameUseCaseInterface,
     private readonly getGamesUseCase: GetGamesUseCaseInterface,
@@ -172,7 +177,9 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
       this.commit(true);
       this.notificationService.success(GamesStore.DELETE_SUCCESS_MESSAGE);
     } else {
-      this.notificationService.error(GamesStore.DELETE_ERROR_MESSAGE);
+      const errorMessage =
+        GamesStore.OPERATION_ERROR_MESSAGES[result.getError().type] ?? GamesStore.DEFAULT_OPERATION_ERROR_MESSAGE;
+      this.notificationService.error(errorMessage);
     }
 
     return result;

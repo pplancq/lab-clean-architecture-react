@@ -508,7 +508,9 @@ describe('GamesStore', () => {
 
       await store.deleteGame('game-1');
 
-      expect(notificationService.error).toHaveBeenCalledWith('Unable to delete game. Please try again.');
+      expect(notificationService.error).toHaveBeenCalledWith(
+        'An error occurred while saving the game. Please try again.',
+      );
       expect(notificationService.success).not.toHaveBeenCalled();
     });
   });
