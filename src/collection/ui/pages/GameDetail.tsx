@@ -2,31 +2,27 @@ import { appRoutes } from '@App/routing/appRoutes';
 import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { Alert, Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
+import { Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
 import { ConfirmDialog } from '@Shared/ui/components/ConfirmDialog/ConfirmDialog';
 import { useService } from '@Shared/ui/hooks/useService/useService';
 import type { CSSProperties, MouseEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import type { RouteObject } from 'react-router';
-import { Link, useLocation, useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import defaultClasses from './GameDetail.module.css';
 
 const GameDetail = () => {
   const { id = '' } = useParams<{ id: string }>();
-  const { state } = useLocation();
   const navigate = useNavigate();
   const store = useService<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore);
-  const successMessage = (state as { successMessage?: string } | null)?.successMessage;
   const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
   const deleteTriggerRef = useRef<HTMLElement | null>(null);
 
   const handleDeleteClick = useCallback((e: MouseEvent<HTMLElement>) => {
     deleteTriggerRef.current = e.currentTarget;
-    setDeleteError(null);
     setShowDeleteModal(true);
   }, []);
 
@@ -37,9 +33,8 @@ const GameDetail = () => {
   const handleDeleteConfirm = useCallback(async () => {
     const result = await store.deleteGame(id);
     if (result.isOk()) {
-      navigate(appRoutes.home, { state: { successMessage: 'Game deleted successfully' } });
+      navigate(appRoutes.home);
     } else {
-      setDeleteError('Unable to delete game. Please try again.');
       setShowDeleteModal(false);
     }
   }, [store, id, navigate]);
@@ -142,30 +137,6 @@ const GameDetail = () => {
       >
         <Link to={appRoutes.home}>Back to collection</Link>
       </Grid>
-
-      {successMessage ? (
-        <Grid
-          colSpan={{
-            mobile: 4,
-            tablet: 8,
-            'desktop-small': 12,
-          }}
-        >
-          <Alert variant="success" title={successMessage} role="status" />
-        </Grid>
-      ) : null}
-
-      {deleteError ? (
-        <Grid
-          colSpan={{
-            mobile: 4,
-            tablet: 8,
-            'desktop-small': 12,
-          }}
-        >
-          <Alert variant="error" title={deleteError} role="alert" />
-        </Grid>
-      ) : null}
 
       <Grid
         as={Title}

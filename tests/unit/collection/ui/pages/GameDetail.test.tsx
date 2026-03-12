@@ -228,7 +228,7 @@ describe('GameDetail', () => {
       await waitFor(() => expect(storeMock.deleteGame).toHaveBeenCalledWith('game-1'));
     });
 
-    it('should show an error alert when deleteGame returns an error', async () => {
+    it('should close the dialog when deleteGame returns an error', async () => {
       const user = userEvent.setup();
       const storeMock = createStoreMock(createEntry());
       vi.mocked(storeMock.deleteGame).mockResolvedValueOnce(
@@ -241,7 +241,9 @@ describe('GameDetail', () => {
       expect(await screen.findByRole('dialog')).toBeInTheDocument();
       await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: /delete/i }));
 
-      expect(await screen.findByRole('alert')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      });
     });
   });
 });

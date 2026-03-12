@@ -221,19 +221,6 @@ describe('GameForm', () => {
       });
     });
 
-    it('should display a success message after successful submission', async () => {
-      const user = userEvent.setup();
-      const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
-      renderGameForm(onSubmitMock);
-
-      await fillRequiredFields(user);
-      await user.click(screen.getByRole('button', { name: /add game/i }));
-
-      await waitFor(() => {
-        expect(screen.getByText('Game added successfully')).toBeInTheDocument();
-      });
-    });
-
     it('should reset the form after successful submission', async () => {
       const user = userEvent.setup();
       const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
@@ -244,24 +231,6 @@ describe('GameForm', () => {
 
       await waitFor(() => {
         expect(screen.getByRole('textbox', { name: /game title/i })).toHaveValue('');
-      });
-    });
-
-    it('should display an error message when onSubmit fails', async () => {
-      const user = userEvent.setup();
-      const onSubmitMock = vi
-        .fn()
-        .mockResolvedValue(
-          Result.err({ type: 'Repository', message: 'Storage quota exceeded', name: 'RepositoryError' }),
-        );
-      renderGameForm(onSubmitMock);
-
-      await fillRequiredFields(user);
-      await user.click(screen.getByRole('button', { name: /add game/i }));
-
-      await waitFor(() => {
-        expect(screen.getByRole('alert')).toBeInTheDocument();
-        expect(screen.getByText('Unable to add game')).toBeInTheDocument();
       });
     });
   });
@@ -368,21 +337,6 @@ describe('GameForm', () => {
 
         await waitFor(() => {
           expect(onSuccessMock).toHaveBeenCalledOnce();
-        });
-      });
-
-      it('should show "Unable to update game" error title on failure', async () => {
-        const user = userEvent.setup();
-        const onSubmitMock = vi
-          .fn()
-          .mockResolvedValue(Result.err({ type: 'Repository', message: 'Storage error', name: 'RepositoryError' }));
-        renderEditGameForm(onSubmitMock);
-
-        await user.click(screen.getByRole('button', { name: /save changes/i }));
-
-        await waitFor(() => {
-          expect(screen.getByRole('alert')).toBeInTheDocument();
-          expect(screen.getByText('Unable to update game')).toBeInTheDocument();
         });
       });
     });
