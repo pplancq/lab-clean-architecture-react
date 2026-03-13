@@ -118,6 +118,7 @@ Instructions for building high-quality React applications with modern patterns, 
 - Create custom hooks for reusable stateful logic.
 - Follow the rules of hooks (only call at the top level).
 - Use `useRef` for accessing DOM elements and storing mutable values.
+- **React 19+: `ref` is a regular prop** — do NOT use `forwardRef`. Pass `ref` directly in the props type (`ComponentProps<'input'>` already includes it) and forward it to the underlying element. `forwardRef` is deprecated in React 19 and should not be used in new components.
 - Use `useMemo` and `useCallback` for performance optimization when needed.
 
 ---
