@@ -7,10 +7,13 @@ import { GameDescription } from '@Collection/domain/value-objects/GameDescriptio
 import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
 import { Platform } from '@Collection/domain/value-objects/Platform';
 import { Status, StatusType } from '@Collection/domain/value-objects/Status';
-import { Button, RadioOption } from '@pplancq/shelter-ui-react';
+import cloudIcon from '@pplancq/shelter-ui-icon/icon/cloud.svg';
+import compactDiscIcon from '@pplancq/shelter-ui-icon/icon/compact-disc.svg';
+import { Button } from '@pplancq/shelter-ui-react';
 import type { Result } from '@Shared/domain/result/Result';
 import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
 import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
+import { FormatToggleOption } from '@Shared/ui/components/FormatToggleOption/FormatToggleOption';
 import { FormDevTool } from '@Shared/ui/components/FormDevTool/FormDevTool';
 import { FormInputField } from '@Shared/ui/components/formField/FormInputField/FormInputField';
 import { FormRadioGroup } from '@Shared/ui/components/formField/FormRadioGroup/FormRadioGroup';
@@ -21,7 +24,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'PC'];
 
-const FORMATS = ['Physical', 'Digital'] as const;
+const FORMATS = [
+  { value: 'Physical', label: 'Physical', icon: compactDiscIcon as string },
+  { value: 'Digital', label: 'Digital', icon: cloudIcon as string },
+] as const;
 
 const STATUS_OPTIONS = Object.values(StatusType);
 
@@ -196,8 +202,8 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
                 },
               }}
             >
-              {FORMATS.map(format => (
-                <RadioOption key={format} label={format} value={format} />
+              {FORMATS.map(({ value, label, icon }) => (
+                <FormatToggleOption key={value} label={label} value={value} icon={icon} />
               ))}
             </FormRadioGroup>
           </>
