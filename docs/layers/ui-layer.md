@@ -34,6 +34,7 @@ src/shared/ui/
 ├── components/
 │   ├── TextAreaField/          # Base textarea (mirrors shelter-ui API)
 │   ├── SelectField/            # Base select (mirrors shelter-ui API)
+│   ├── FormatToggleOption/     # Button-styled radio option with icon (shelter-ui candidate)
 │   └── formField/              # RHF wrapper layer
 │       ├── FormInputField/
 │       ├── FormSelectField/
@@ -65,10 +66,11 @@ The project uses `@pplancq/shelter-ui-react` (currently in alpha) as its design 
 
 Some components are not yet available in the library and were created locally:
 
-| Component       | Location                                  | Notes                                        |
-| --------------- | ----------------------------------------- | -------------------------------------------- |
-| `TextAreaField` | `src/shared/ui/components/TextAreaField/` | Mirrors `InputField` API, floating label CSS |
-| `SelectField`   | `src/shared/ui/components/SelectField/`   | Mirrors `InputField` API, `hasValue` state   |
+| Component            | Location                                       | Notes                                                                                                                         |
+| -------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `TextAreaField`      | `src/shared/ui/components/TextAreaField/`      | Mirrors `InputField` API, floating label CSS                                                                                  |
+| `SelectField`        | `src/shared/ui/components/SelectField/`        | Mirrors `InputField` API, `hasValue` state                                                                                    |
+| `FormatToggleOption` | `src/shared/ui/components/FormatToggleOption/` | Button-styled radio option (`Button as="label"`) with SVG icon; drop-in replacement for `RadioOption` inside `FormRadioGroup` |
 
 These components will be contributed to `@pplancq/shelter-ui-react` once stable.
 
@@ -121,7 +123,12 @@ export const FormInputField = ({ name, rules, id, ...props }: FormInputFieldProp
 
 ### `FormRadioGroup` — Special Case
 
-`FormRadioGroup` uses `Children.map` + `cloneElement` to inject `register` props into each `RadioOption` child, because `RadioGroup` manages its children itself.
+`FormRadioGroup` uses `Children.map` + `cloneElement` to inject `register` props into each child, because `RadioGroup` manages its children itself.
+
+Children can be either:
+
+- `RadioOption` — standard radio input from `@pplancq/shelter-ui-react`
+- `FormatToggleOption` — button-styled variant with an SVG icon (same prop signature as `RadioOption`, adds `icon: string`). Icons are sourced from `@pplancq/shelter-ui-icon/icon/<name>.svg`. Used for the Format field (Physical / Digital) in `GameForm`.
 
 ### Unit Tests for Wrappers
 
