@@ -32,11 +32,11 @@
   --button-color-background: var(--color-primary-main-light);
   --button-color-on: var(--color-primary-main-on);
 
-  &:has(input:checked):hover {
+  &:hover {
     --button-color-background: var(--color-primary-main-medium);
   }
 
-  &:has(input:checked):active {
+  &:active {
     --button-color-background: var(--color-primary-main-strong);
   }
 }
@@ -64,7 +64,7 @@
     --button-color-background: var(--color-tertiary-main-medium);
   }
 
-  &has(input:checked):active {
+  &:active {
     --button-color-background: var(--color-tertiary-main-strong);
   }
 }
