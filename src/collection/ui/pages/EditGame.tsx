@@ -36,42 +36,36 @@ const EditGame = () => {
 
   if (isLoading) {
     return (
-      <main>
-        <Grid
-          as={Typography}
-          colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}
-          color="secondary"
-          role="status"
-          aria-live="polite"
-        >
-          Loading game…
-        </Grid>
-      </main>
+      <Grid
+        as={Typography}
+        colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}
+        color="secondary"
+        role="status"
+        aria-live="polite"
+      >
+        Loading game…
+      </Grid>
     );
   }
 
   if (hasError && !error) {
     return (
-      <main>
-        <Grid container colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}>
-          <Grid as={Typography} colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }} role="alert">
-            Game not found.
-          </Grid>
-          <Grid colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}>
-            <Link to={appRoutes.home}>Back to collection</Link>
-          </Grid>
+      <Grid container colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}>
+        <Grid as={Typography} colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }} role="alert">
+          Game not found.
         </Grid>
-      </main>
+        <Grid colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }}>
+          <Link to={appRoutes.home}>Back to collection</Link>
+        </Grid>
+      </Grid>
     );
   }
 
   if (hasError && error) {
     return (
-      <main>
-        <Grid as={Typography} colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }} role="alert">
-          {error}
-        </Grid>
-      </main>
+      <Grid as={Typography} colSpan={{ mobile: 4, tablet: 8, 'desktop-small': 12 }} role="alert">
+        {error}
+      </Grid>
     );
   }
 
@@ -89,16 +83,14 @@ const EditGame = () => {
   };
 
   return (
-    <main>
-      <GameForm
-        edit
-        gameId={id}
-        initialData={initialData}
-        onSubmit={handleSubmit}
-        onSuccess={handleSuccess}
-        onCancel={handleCancel}
-      />
-    </main>
+    <GameForm
+      edit
+      gameId={id}
+      initialData={initialData}
+      onSubmit={handleSubmit}
+      onSuccess={handleSuccess}
+      onCancel={handleCancel}
+    />
   );
 };
 

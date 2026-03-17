@@ -32,6 +32,7 @@ src/collection/ui/
 
 src/shared/ui/
 ├── components/
+│   ├── AppShell/               # Root layout component (skip link, header slot, main slot + Outlet)
 │   ├── TextAreaField/          # Base textarea (mirrors shelter-ui API)
 │   ├── SelectField/            # Base select (mirrors shelter-ui API)
 │   ├── FormatToggleOption/     # Button-styled radio option with icon (shelter-ui candidate)
@@ -293,12 +294,13 @@ Routes are registered in `src/app/routing/routes.tsx`:
 export const routeObject: RouteObject[] = [
   {
     path: '/',
-    children: [homeRoutes, addGameRoutes, gameDetailRoutes],
+    element: <AppShell />,
+    children: [homeRoutes, addGameRoutes, gameDetailRoutes, editGameRoutes],
   },
 ];
 ```
 
-> **Open question:** As the application grows, a shared layout (header, navigation, page container) will be needed. This belongs to either `src/app/` (as a root `<Outlet>` layout) or `src/shared/ui/layouts/`. See [Architecture Overview](../architecture/README.md) for context.
+`AppShell` is the root layout route. It renders the skip link, the `<header>` slot (TopBar, Story 9.2), and the `<main>` content area via `<Outlet />`. Pages receive their slot from `AppShell` and fill it with their own content.
 
 ---
 
