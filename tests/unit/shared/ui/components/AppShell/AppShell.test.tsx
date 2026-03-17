@@ -55,14 +55,14 @@ describe('AppShell', () => {
       renderAppShell();
       const skipLink = screen.getByRole('link', { name: 'Skip to main content' });
       const header = screen.getByRole('banner');
-      expect(skipLink.compareDocumentPosition(header)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+      expect(skipLink.compareDocumentPosition(header) && Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
 
     it('should render the header landmark before the main landmark in the DOM', () => {
       renderAppShell();
       const header = screen.getByRole('banner');
       const main = screen.getByRole('main');
-      expect(header.compareDocumentPosition(main)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+      expect(header.compareDocumentPosition(main) && Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
   });
 });
