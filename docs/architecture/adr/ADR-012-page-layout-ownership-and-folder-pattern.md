@@ -41,14 +41,14 @@ A page component is responsible for structuring its own content: the main contai
 ```tsx
 // ✅ Page owns its layout — it decides the grid, the title, and the composition
 const Home = () => (
-  <Grid as="main" container style={{ '--gap': 'var(--gap-1)' } as CSSProperties}>
+  <>
     <Grid as={Title} title="My Game Collection" colSpan={{ ... }} />
     <GameList />
-  </Grid>
+  </>
 );
 ```
 
-The parent (AppShell, router outlet) provides the **structural chrome** (top bar, navigation, safe area insets) but does **not** dictate the inner layout of a page. Pages receive their slot from the shell and fill it autonomously.
+The parent (`AppShell`) provides the **structural chrome**: the skip link, the `<header>` slot, and the `<main>` content area (via `<Grid as="main" container>`). Pages receive their slot from `AppShell` via `<Outlet />` and fill it autonomously — they do not re-declare the `<main>` landmark.
 
 This aligns with the Clean Architecture principle of clear boundaries: the UI shell knows _where_ to render a page, but the page knows _how_ to render itself.
 
