@@ -157,14 +157,6 @@ describe('EditGame', () => {
   });
 
   describe('accessibility', () => {
-    it('should have a main landmark', async () => {
-      renderEditGame(createEntry());
-
-      await waitFor(() => {
-        expect(screen.getByRole('main')).toBeInTheDocument();
-      });
-    });
-
     it('should have accessible labels on all form fields', async () => {
       renderEditGame(createEntry());
 

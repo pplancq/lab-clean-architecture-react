@@ -5,7 +5,7 @@ import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGames
 import { Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
 import { ConfirmDialog } from '@Shared/ui/components/ConfirmDialog/ConfirmDialog';
 import { useService } from '@Shared/ui/hooks/useService/useService';
-import type { CSSProperties, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import type { RouteObject } from 'react-router';
 import { Link, useNavigate, useParams } from 'react-router';
@@ -45,66 +45,33 @@ const GameDetail = () => {
 
   if (isLoading) {
     return (
-      <main>
-        <Grid
-          as={Typography}
-          colSpan={{
-            mobile: 4,
-            tablet: 8,
-            'desktop-small': 12,
-          }}
-          color="secondary"
-          className={defaultClasses.loading}
-          role="status"
-          aria-live="polite"
-        >
-          Loading game details…
-        </Grid>
-      </main>
+      <Grid
+        as={Typography}
+        colSpan={{
+          mobile: 4,
+          tablet: 8,
+          'desktop-small': 12,
+        }}
+        color="secondary"
+        className={defaultClasses.loading}
+        role="status"
+        aria-live="polite"
+      >
+        Loading game details…
+      </Grid>
     );
   }
 
   if (hasError && !error) {
     return (
-      <main>
-        <Grid
-          container
-          colSpan={{
-            mobile: 4,
-            tablet: 8,
-            'desktop-small': 12,
-          }}
-        >
-          <Grid
-            as={Typography}
-            colSpan={{
-              mobile: 4,
-              tablet: 8,
-              'desktop-small': 12,
-            }}
-            className={defaultClasses.notFound}
-            role="alert"
-          >
-            Game not found.
-          </Grid>
-          <Grid
-            colSpan={{
-              mobile: 4,
-              tablet: 8,
-              'desktop-small': 12,
-            }}
-            className={defaultClasses.nav}
-          >
-            <Link to={appRoutes.home}>Back to collection</Link>
-          </Grid>
-        </Grid>
-      </main>
-    );
-  }
-
-  if (hasError && error) {
-    return (
-      <main>
+      <Grid
+        container
+        colSpan={{
+          mobile: 4,
+          tablet: 8,
+          'desktop-small': 12,
+        }}
+      >
         <Grid
           as={Typography}
           colSpan={{
@@ -112,12 +79,39 @@ const GameDetail = () => {
             tablet: 8,
             'desktop-small': 12,
           }}
-          className={defaultClasses.error}
+          className={defaultClasses.notFound}
           role="alert"
         >
-          {error}
+          Game not found.
         </Grid>
-      </main>
+        <Grid
+          colSpan={{
+            mobile: 4,
+            tablet: 8,
+            'desktop-small': 12,
+          }}
+          className={defaultClasses.nav}
+        >
+          <Link to={appRoutes.home}>Back to collection</Link>
+        </Grid>
+      </Grid>
+    );
+  }
+
+  if (hasError && error) {
+    return (
+      <Grid
+        as={Typography}
+        colSpan={{
+          mobile: 4,
+          tablet: 8,
+          'desktop-small': 12,
+        }}
+        className={defaultClasses.error}
+        role="alert"
+      >
+        {error}
+      </Grid>
     );
   }
 
@@ -126,7 +120,7 @@ const GameDetail = () => {
   }
 
   return (
-    <Grid as="main" container style={{ '--gap': 'var(--gap-1)' } as CSSProperties}>
+    <>
       <Grid
         colSpan={{
           mobile: 4,
@@ -205,7 +199,7 @@ const GameDetail = () => {
         onCancel={handleDeleteCancel}
         onClose={handleDialogClose}
       />
-    </Grid>
+    </>
   );
 };
 

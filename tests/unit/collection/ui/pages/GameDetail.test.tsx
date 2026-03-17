@@ -178,16 +178,6 @@ describe('GameDetail', () => {
     });
   });
 
-  describe('accessibility', () => {
-    it('should have a main landmark', async () => {
-      renderGameDetail(createEntry());
-
-      await waitFor(() => {
-        expect(screen.getByRole('main')).toBeInTheDocument();
-      });
-    });
-  });
-
   describe('delete confirmation', () => {
     it('should open the confirmation dialog when Delete button is clicked', async () => {
       const user = userEvent.setup();
