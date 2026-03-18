@@ -78,7 +78,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "fake-indexeddb": "^6.2.5",
     "husky": "^9.1.7",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.0.0",
     "lint-staged": "^16.4.0",
     "monocart-coverage-reports": "^2.12.9",
     "msw": "^2.12.10",
