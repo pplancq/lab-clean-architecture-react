@@ -5,6 +5,6 @@ import { Container } from 'inversify';
 
 export const serviceContainer = new Container();
 
-serviceContainer.loadSync(serviceToast);
-serviceContainer.loadSync(sharedServiceCollection);
-serviceContainer.loadSync(serviceCollection);
+serviceContainer.load(serviceToast);
+serviceContainer.load(sharedServiceCollection);
+serviceContainer.load(serviceCollection);

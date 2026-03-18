@@ -65,9 +65,9 @@ export class ToastNotificationService implements NotificationServiceInterface {
 `ToastNotificationService` is registered in `src/shared/serviceCollection.ts` via `toDynamicValue`, resolving the `ToastStore` singleton already bound by `serviceToast`. Load order in `serviceContainer.ts` is critical:
 
 ```typescript
-serviceContainer.loadSync(serviceToast); // 1. Toast singleton registered
-serviceContainer.loadSync(sharedServiceCollection); // 2. NotificationService resolved via ToastStore
-serviceContainer.loadSync(serviceCollection); // 3. Collection services
+serviceContainer.load(serviceToast); // 1. Toast singleton registered
+serviceContainer.load(sharedServiceCollection); // 2. NotificationService resolved via ToastStore
+serviceContainer.load(serviceCollection); // 3. Collection services
 ```
 
 ### 4. Bridge — `ToastBridgeProvider` (Shared UI)
