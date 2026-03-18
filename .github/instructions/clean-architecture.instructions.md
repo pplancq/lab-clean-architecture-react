@@ -552,7 +552,7 @@ export const configureServices = (container: Container): void => {
   // Repositories
   container
     .bind<GameRepositoryInterface>(TYPES.GameRepository)
-    .toDynamicValue(ctx => new IndexedDBGameRepository(ctx.container.get<IndexedDBInterface>(TYPES.IndexedDB)))
+    .toDynamicValue(ctx => new IndexedDBGameRepository(ctx.get<IndexedDBInterface>(TYPES.IndexedDB)))
     .inSingletonScope();
 };
 ```

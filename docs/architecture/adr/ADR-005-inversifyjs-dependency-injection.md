@@ -75,7 +75,7 @@ collectionContainer.bind<IGameRepository>('IGameRepository').to(IndexedDBGameRep
 collectionContainer
   .bind<AddGameUseCase>('AddGameUseCase')
   .toDynamicValue(context => {
-    return new AddGameUseCase(context.container.get<IGameRepository>('IGameRepository'));
+    return new AddGameUseCase(context.get<IGameRepository>('IGameRepository'));
   })
   .inSingletonScope();
 ```

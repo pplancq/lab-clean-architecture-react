@@ -66,9 +66,9 @@ export const serviceContainer = new Container();
 
 // Load order matters: serviceToast must come first because sharedServiceCollection
 // resolves ToastStore (bound by serviceToast) via toDynamicValue for NotificationService.
-serviceContainer.loadSync(serviceToast);
-serviceContainer.loadSync(sharedServiceCollection);
-serviceContainer.loadSync(serviceCollection);
+serviceContainer.load(serviceToast);
+serviceContainer.load(sharedServiceCollection);
+serviceContainer.load(serviceCollection);
 ```
 
 This is the **composition root** where all context-specific containers are aggregated.
@@ -251,7 +251,7 @@ options
 // With dependency injection
 options
   .bind(GameRepository)
-  .toDynamicValue(ctx => new GameRepository(ctx.container.get(IndexedDB), ctx.container.get(Logger)))
+  .toDynamicValue(ctx => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
   .inSingletonScope();
 
 // With configuration
@@ -324,7 +324,7 @@ options
 ```typescript
 options
   .bind(GameService)
-  .toDynamicValue(ctx => new GameService(ctx.container.get(GameRepository)))
+  .toDynamicValue(ctx => new GameService(ctx.get(GameRepository)))
   .inTransientScope(); // New instance every time
 ```
 
@@ -361,18 +361,18 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   // Repository - Game Repository
   options
     .bind(GameRepository)
-    .toDynamicValue(ctx => new GameRepository(ctx.container.get(IndexedDB), ctx.container.get(Logger)))
+    .toDynamicValue(ctx => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
     .inSingletonScope();
 
   // Application - Use Cases
   options
     .bind(AddGameUseCase)
-    .toDynamicValue(ctx => new AddGameUseCase(ctx.container.get(GameRepository), ctx.container.get(Logger)))
+    .toDynamicValue(ctx => new AddGameUseCase(ctx.get(GameRepository), ctx.get(Logger)))
     .inTransientScope(); // New instance per call
 
   options
     .bind(GetGameUseCase)
-    .toDynamicValue(ctx => new GetGameUseCase(ctx.container.get(GameRepository)))
+    .toDynamicValue(ctx => new GetGameUseCase(ctx.get(GameRepository)))
     .inTransientScope();
 });
 ```
@@ -384,7 +384,7 @@ When adding a new service:
 - [ ] Import the service class and its dependencies
 - [ ] Choose the appropriate binding strategy (`toDynamicValue`, `toConstantValue`, etc.)
 - [ ] Decide on lifecycle scope (singleton vs transient)
-- [ ] Resolve dependencies via `ctx.container.get()` or pass configuration
+- [ ] Resolve dependencies via `ctx.get()` or pass configuration
 - [ ] Keep services in logical groups (infrastructure, repositories, use cases)
 - [ ] Test service resolution in integration tests
 
