@@ -28,7 +28,7 @@ export default defineConfig(({ env }) => {
     plugins: [pluginReact(), pluginSass()],
     source: {
       entry: {
-        index: 'src/main.ts',
+        index: './src/main.ts',
       },
       define: publicVars,
     },
@@ -88,7 +88,7 @@ export default defineConfig(({ env }) => {
     source: {
       entry: {
         [process.env.FRONT_SERVICE_WORKER_FILE_NAME ?? 'serviceWorker']: {
-          import: 'src/serviceWorker.ts',
+          import: './src/serviceWorker.ts',
           html: false,
         },
       },
