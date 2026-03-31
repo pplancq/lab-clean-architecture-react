@@ -20,6 +20,9 @@ const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
     hasError: false,
     error: null,
   }),
+  editGame: vi.fn(),
+  addGame: vi.fn(),
+  deleteGame: vi.fn(),
 });
 
 const createWrapper = (state: GamesListState) => {

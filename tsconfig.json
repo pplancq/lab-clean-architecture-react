@@ -22,16 +22,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "paths": {
-      "@App/*": ["src/app/*"],
-      "@Pwa/*": ["src/pwa/*"],
-      "@Collection/*": ["src/collection/*"],
-      "@Shared/*": ["src/shared/*"],
-      "@Toast/*": ["src/toast/*"],
-      "@Mocks/*": ["mocks/*"]
+      "@App/*": ["./src/app/*"],
+      "@Pwa/*": ["./src/pwa/*"],
+      "@Collection/*": ["./src/collection/*"],
+      "@Shared/*": ["./src/shared/*"],
+      "@Toast/*": ["./src/toast/*"],
+      "@Mocks/*": ["./mocks/*"]
     }
   },
-  "include": ["src", "rsbuild.config.ts"],
+  "include": ["src", "rsbuild.config.ts", "mocks", "vitest.setup.ts", "tests/unit"],
   "exclude": ["node_modules", "src/**/poc"]
 }
