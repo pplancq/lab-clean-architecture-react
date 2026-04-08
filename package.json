@@ -56,7 +56,7 @@
     "@bdellegrazie/playwright-sonar-reporter": "^0.4.0",
     "@commitlint/cli": "^20.5.0",
     "@msw/playwright": "^0.6.6",
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.59.1",
     "@pplancq/commitlint-config": "^3.0.6",
     "@pplancq/eslint-config": "^6.0.9",
     "@pplancq/postcss-config": "^3.0.4",
