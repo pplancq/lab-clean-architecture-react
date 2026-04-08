@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  container-name: badge-container;
+  container-type: inline-size;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+@container badge-container (max-width: 200px) {
+  :global(.badge) {
+    --badge-label-display: none;
+  }
+}
