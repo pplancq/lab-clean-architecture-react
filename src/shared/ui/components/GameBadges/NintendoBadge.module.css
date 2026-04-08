@@ -1,0 +1,9 @@
+.nintendoBadge {
+  --badge-color: #fff;
+  --bage-background: #e60012;
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  > :global(.icon--small) {
+    --icon-size: var(--margin-2);
+  }
+}
