@@ -2,6 +2,7 @@
   --badge-color: var(--color-primary-alt-onbase);
   --bage-background: var(--color-primary-alt-base);
 
+  position: relative;
   display: inline-flex;
   padding: 0.125rem 0.5rem;
   border-radius: 1rem;
@@ -20,8 +21,6 @@
 
   > :global(.typography) {
     --typography-color: var(--badge-color) !important;
-
-    display: var(--badge-label-display, inline);
   }
 }
 
