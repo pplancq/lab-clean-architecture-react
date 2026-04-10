@@ -119,5 +119,22 @@ describe('Badge', () => {
         expect(label.id).toBe(describedById);
       });
     });
+
+    it('should put id on the wrapper and use id-label for aria-describedby', async () => {
+      render(
+        <Badge data-testid="badge" id="my-badge" icon={anyIcon}>
+          Title
+        </Badge>,
+      );
+      await waitFor(() => {
+        expect(screen.getByTestId('badge')).toHaveAttribute('id', 'my-badge');
+      });
+      await waitFor(() => {
+        expect(screen.getByTestId('badge')).toHaveAttribute('aria-describedby', 'my-badge-label');
+      });
+      await waitFor(() => {
+        expect(screen.getByText('Title')).toHaveAttribute('id', 'my-badge-label');
+      });
+    });
   });
 });

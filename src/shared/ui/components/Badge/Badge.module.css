@@ -1,6 +1,6 @@
 :global(.badge) {
   --badge-color: var(--color-primary-alt-onbase);
-  --bage-background: var(--color-primary-alt-base);
+  --badge-background: var(--color-primary-alt-base);
 
   position: relative;
   display: inline-flex;
@@ -13,7 +13,7 @@
   line-height: 1.5;
   white-space: nowrap;
   color: var(--badge-color);
-  background: var(--bage-background);
+  background: var(--badge-background);
 
   > svg {
     fill: var(--badge-color);
@@ -27,35 +27,35 @@
 /* Semantic color variants */
 .primary {
   --badge-color: var(--color-primary-alt-onbase);
-  --bage-background: var(--color-primary-alt-base);
+  --badge-background: var(--color-primary-alt-base);
 }
 
 .secondary {
   --badge-color: var(--color-secondary-alt-onbase);
-  --bage-background: var(--color-secondary-alt-base);
+  --badge-background: var(--color-secondary-alt-base);
 }
 
 .tertiary {
   --badge-color: var(--color-tertiary-alt-onbase);
-  --bage-background: var(--color-tertiary-alt-base);
+  --badge-background: var(--color-tertiary-alt-base);
 }
 
 .info {
   --badge-color: var(--color-signal-info-foreground);
-  --bage-background: var(--color-signal-info-background);
+  --badge-background: var(--color-signal-info-background);
 }
 
 .success {
   --badge-color: var(--color-signal-success-foreground);
-  --bage-background: var(--color-signal-success-background);
+  --badge-background: var(--color-signal-success-background);
 }
 
 .critical {
   --badge-color: var(--color-signal-critical-foreground);
-  --bage-background: var(--color-signal-critical-background);
+  --badge-background: var(--color-signal-critical-background);
 }
 
 .warning {
   --badge-color: var(--color-signal-warning-foreground);
-  --bage-background: var(--color-signal-warning-background);
+  --badge-background: var(--color-signal-warning-background);
 }

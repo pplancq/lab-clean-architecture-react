@@ -92,18 +92,18 @@ Three components make up the badge system (`Badge`, `BadgeContainer`, `GameBadge
 A single `<span>` that renders an icon + a text label. It is self-contained and accessibility-ready out of the box.
 
 ```tsx
-<Badge icon={playstationLogo} color="playstation" className={styles.badge}>
+<Badge icon={playstationLogo} color="primary" className={styles.badge}>
   PlayStation
 </Badge>
 ```
 
-| Prop        | Type            | Required | Description                                                                                   |
-| ----------- | --------------- | -------- | --------------------------------------------------------------------------------------------- |
-| `icon`      | `string`        | ✅       | SVG path (imported via bundler)                                                               |
-| `color`     | `BadgeColor`    | ✅       | Design-system variant **or** any custom value for which you supply a CSS class / CSS variable |
-| `children`  | `ReactNode`     | ✅       | Visible label (also kept in the accessibility tree when hidden visually)                      |
-| `className` | `string`        | –        | Extra CSS module class to apply brand/custom colours                                          |
-| `style`     | `CSSProperties` | –        | Inline style override for one-off colour customisation                                        |
+| Prop        | Type            | Required | Description                                                                                               |
+| ----------- | --------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `icon`      | `string`        | –        | SVG path (imported via bundler). Omit to render a text-only badge.                                        |
+| `color`     | `BadgeColor`    | –        | Design-system semantic colour variant. Defaults to `primary`. See `BadgeColor` union for accepted values. |
+| `children`  | `ReactNode`     | ✅       | Visible label (also kept in the accessibility tree when hidden visually)                                  |
+| `className` | `string`        | –        | Extra CSS module class to apply brand/custom colours                                                      |
+| `style`     | `CSSProperties` | –        | Inline style override for one-off colour customisation                                                    |
 
 **Accessibility:** the icon has `role="presentation"` (decorative); the label `<span>` gets a generated `id` and the badge wrapper links to it via `aria-describedby`. This ensures screen readers announce the label whether the badge is in icon-only mode or not.
 

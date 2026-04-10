@@ -1,6 +1,6 @@
 .xboxBadge {
   --badge-color: #fff;
-  --bage-background: #107c10;
+  --badge-background: #107c10;
 
   /* stylelint-disable-next-line selector-class-pattern */
   > :global(.icon--small) {

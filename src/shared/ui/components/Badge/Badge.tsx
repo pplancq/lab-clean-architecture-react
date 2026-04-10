@@ -13,13 +13,13 @@ export type BadgeProps = Omit<ComponentProps<'span'>, 'children'> & {
 
 export const Badge = ({ id, icon, color = 'primary', className, children, ...props }: BadgeProps) => {
   const generatedId = useId();
-  const badgeId = id || generatedId;
+  const labelId = id ? `${id}-label` : generatedId;
   const badgeClasses = ['badge', defaultClasses[color], className].filter(Boolean).join(' ');
 
   return (
-    <span className={badgeClasses} aria-describedby={badgeId} {...props}>
+    <span id={id} className={badgeClasses} {...props} aria-describedby={labelId}>
       {icon ? <Icon icon={icon} size="small" role="presentation" /> : null}
-      <Typography as="span" id={badgeId} variant="text" size="small" className={defaultClasses.label}>
+      <Typography as="span" id={labelId} variant="text" size="small">
         {children}
       </Typography>
     </span>

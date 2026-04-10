@@ -1,6 +1,6 @@
 .nintendoBadge {
   --badge-color: #fff;
-  --bage-background: #e60012;
+  --badge-background: #e60012;
 
   /* stylelint-disable-next-line selector-class-pattern */
   > :global(.icon--small) {
