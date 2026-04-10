@@ -33,6 +33,9 @@ src/collection/ui/
 src/shared/ui/
 ├── components/
 │   ├── AppShell/               # Root layout component (skip link, header slot, main slot + Outlet)
+│   ├── Badge/                  # Base badge — icon + label, colour variants, accessible by default
+│   ├── BadgeContainer/         # Responsive wrapper — hides badge labels (sr-only) when width ≤ 200px
+│   ├── GameBadges/             # Predefined application badges (DigitalBadge, PhysicalBadge, etc.)
 │   ├── TextAreaField/          # Base textarea (mirrors shelter-ui API)
 │   ├── SelectField/            # Base select (mirrors shelter-ui API)
 │   ├── FormatToggleOption/     # Button-styled radio option with icon (shelter-ui candidate)
@@ -67,13 +70,77 @@ The project uses `@pplancq/shelter-ui-react` (currently in alpha) as its design 
 
 Some components are not yet available in the library and were created locally:
 
-| Component            | Location                                       | Notes                                                                                                                         |
-| -------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `TextAreaField`      | `src/shared/ui/components/TextAreaField/`      | Mirrors `InputField` API, floating label CSS                                                                                  |
-| `SelectField`        | `src/shared/ui/components/SelectField/`        | Mirrors `InputField` API, `hasValue` state                                                                                    |
-| `FormatToggleOption` | `src/shared/ui/components/FormatToggleOption/` | Button-styled radio option (`Button as="label"`) with SVG icon; drop-in replacement for `RadioOption` inside `FormRadioGroup` |
+| Component            | Location                                       | Notes                                                                                                                                                                                                                                                        |
+| -------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `TextAreaField`      | `src/shared/ui/components/TextAreaField/`      | Mirrors `InputField` API, floating label CSS                                                                                                                                                                                                                 |
+| `SelectField`        | `src/shared/ui/components/SelectField/`        | Mirrors `InputField` API, `hasValue` state                                                                                                                                                                                                                   |
+| `FormatToggleOption` | `src/shared/ui/components/FormatToggleOption/` | Button-styled radio option (`Button as="label"`) with SVG icon; drop-in replacement for `RadioOption` inside `FormRadioGroup`                                                                                                                                |
+| `Badge`              | `src/shared/ui/components/Badge/`              | Icon + label badge with colour variants (`primary`, `secondary`, `tertiary`, `info`, `success`, `warning`, `critical`). Fully accessible: `aria-describedby`, `role="presentation"` on icon. Accepts inline `style` or extra `className` for custom colours. |
+| `BadgeContainer`     | `src/shared/ui/components/BadgeContainer/`     | Flex wrapper with CSS container query: when width ≤ 200px, badge labels are moved off-screen (sr-only) so icons stay visible while text remains in the accessibility tree.                                                                                   |
+| `GameBadges`         | `src/shared/ui/components/GameBadges/`         | Five zero-prop predefined badges: `DigitalBadge`, `PhysicalBadge`, `PlayStationBadge`, `NintendoBadge`, `XboxBadge`. Each encapsulates brand colour, SVG logo and label. No barrel file.                                                                     |
 
 These components will be contributed to `@pplancq/shelter-ui-react` once stable.
+
+---
+
+## Badge System
+
+Three components make up the badge system (`Badge`, `BadgeContainer`, `GameBadges`). They intentionally have separate responsibilities.
+
+### `Badge`
+
+A single `<span>` that renders an icon + a text label. It is self-contained and accessibility-ready out of the box.
+
+```tsx
+<Badge icon={playstationLogo} color="playstation" className={styles.badge}>
+  PlayStation
+</Badge>
+```
+
+| Prop        | Type            | Required | Description                                                                                   |
+| ----------- | --------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `icon`      | `string`        | ✅       | SVG path (imported via bundler)                                                               |
+| `color`     | `BadgeColor`    | ✅       | Design-system variant **or** any custom value for which you supply a CSS class / CSS variable |
+| `children`  | `ReactNode`     | ✅       | Visible label (also kept in the accessibility tree when hidden visually)                      |
+| `className` | `string`        | –        | Extra CSS module class to apply brand/custom colours                                          |
+| `style`     | `CSSProperties` | –        | Inline style override for one-off colour customisation                                        |
+
+**Accessibility:** the icon has `role="presentation"` (decorative); the label `<span>` gets a generated `id` and the badge wrapper links to it via `aria-describedby`. This ensures screen readers announce the label whether the badge is in icon-only mode or not.
+
+### `BadgeContainer`
+
+A responsive flex wrapper that uses a **CSS container query** to switch badges into icon-only mode.
+
+```tsx
+<BadgeContainer>
+  <PhysicalBadge />
+  <PlayStationBadge />
+</BadgeContainer>
+```
+
+When the container width ≤ 200px, labels inside every `Badge` child are hidden with a **sr-only** style (`position: absolute`, `clip-path: inset(50%)`, etc.) — the text leaves the visual layout but stays in the accessibility tree. This is intentionally a container-level concern, not a `Badge` concern.
+
+> The 200 px threshold is a starting point and will be adjusted as the application layout evolves.
+
+### `GameBadges`
+
+Five zero-prop wrapper components, each hardcoding the brand identity of a game platform/format:
+
+| Component          | Label       | Brand colour(s)       |
+| ------------------ | ----------- | --------------------- |
+| `DigitalBadge`     | Digital     | Design system token   |
+| `PhysicalBadge`    | Physical    | Design system token   |
+| `PlayStationBadge` | PlayStation | `#003087` / `#ffffff` |
+| `NintendoBadge`    | Nintendo    | `#e60012` / `#ffffff` |
+| `XboxBadge`        | Xbox        | `#107c10` / `#ffffff` |
+
+Files live in `src/shared/ui/components/GameBadges/` with no barrel file. Import each component individually:
+
+```tsx
+import { NintendoBadge } from '@Shared/ui/components/GameBadges/NintendoBadge';
+```
+
+---
 
 ### Key Quirks
 
@@ -318,14 +385,16 @@ All UI components follow **WCAG 2.2 Level AA** and **RGAA 4** guidelines:
 
 ## Testing
 
-| Test type   | Location                                           | Tool                     |
-| ----------- | -------------------------------------------------- | ------------------------ |
-| Unit (base) | `tests/unit/shared/ui/components/`                 | Vitest + Testing Library |
-| Integration | `tests/unit/collection/ui/components/GameForm/`    | Vitest + Testing Library |
-| Component   | `tests/unit/collection/ui/components/GameList/`    | Vitest + Testing Library |
-| Page        | `tests/unit/collection/ui/pages/GameDetail/`       | Vitest + Testing Library |
-| Hook        | `tests/unit/collection/ui/hooks/useGamesSelector/` | Vitest + `renderHook`    |
-| E2E         | `tests/e2e/add-game.test.ts`                       | Playwright               |
+| Test type          | Location                                           | Tool                     |
+| ------------------ | -------------------------------------------------- | ------------------------ |
+| Unit (base)        | `tests/unit/shared/ui/components/`                 | Vitest + Testing Library |
+| Unit (badge)       | `tests/unit/shared/ui/components/Badge/`           | Vitest + Testing Library |
+| Unit (game badges) | `tests/unit/shared/ui/components/GameBadges/`      | Vitest + Testing Library |
+| Integration        | `tests/unit/collection/ui/components/GameForm/`    | Vitest + Testing Library |
+| Component          | `tests/unit/collection/ui/components/GameList/`    | Vitest + Testing Library |
+| Page               | `tests/unit/collection/ui/pages/GameDetail/`       | Vitest + Testing Library |
+| Hook               | `tests/unit/collection/ui/hooks/useGamesSelector/` | Vitest + `renderHook`    |
+| E2E                | `tests/e2e/add-game.test.ts`                       | Playwright               |
 
 **Key testing notes:**
 
