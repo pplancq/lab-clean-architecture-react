@@ -1,0 +1,61 @@
+:global(.badge) {
+  --badge-color: var(--color-primary-alt-onbase);
+  --badge-background: var(--color-primary-alt-base);
+
+  position: relative;
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: 1rem;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--badge-color);
+  background: var(--badge-background);
+
+  > svg {
+    fill: var(--badge-color);
+  }
+
+  > :global(.typography) {
+    --typography-color: var(--badge-color) !important;
+  }
+}
+
+/* Semantic color variants */
+.primary {
+  --badge-color: var(--color-primary-alt-onbase);
+  --badge-background: var(--color-primary-alt-base);
+}
+
+.secondary {
+  --badge-color: var(--color-secondary-alt-onbase);
+  --badge-background: var(--color-secondary-alt-base);
+}
+
+.tertiary {
+  --badge-color: var(--color-tertiary-alt-onbase);
+  --badge-background: var(--color-tertiary-alt-base);
+}
+
+.info {
+  --badge-color: var(--color-signal-info-foreground);
+  --badge-background: var(--color-signal-info-background);
+}
+
+.success {
+  --badge-color: var(--color-signal-success-foreground);
+  --badge-background: var(--color-signal-success-background);
+}
+
+.critical {
+  --badge-color: var(--color-signal-critical-foreground);
+  --badge-background: var(--color-signal-critical-background);
+}
+
+.warning {
+  --badge-color: var(--color-signal-warning-foreground);
+  --badge-background: var(--color-signal-warning-background);
+}

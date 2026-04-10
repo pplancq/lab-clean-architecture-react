@@ -1,0 +1,4 @@
+.digitalBadge {
+  --badge-color: var(--color-neutral-light);
+  --badge-background: var(--color-signal-warning-foreground);
+}

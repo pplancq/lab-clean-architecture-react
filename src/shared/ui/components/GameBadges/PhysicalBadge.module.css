@@ -1,0 +1,4 @@
+.physicalBadge {
+  --badge-color: var(--color-neutral-light);
+  --badge-background: var(--color-secondary-main-light);
+}
