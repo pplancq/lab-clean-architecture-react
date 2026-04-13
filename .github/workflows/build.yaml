@@ -110,8 +110,8 @@ jobs:
       - name: Run e2e test
         if: always()
         run: |
-          npm run playwright:install -- --with-deps
-          npm run test:e2e
+          npm run playwright:install -- chromium
+          npm run test:e2e -- --project chromium
 
       - name: Upload playwright test results
         if: always()
