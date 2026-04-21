@@ -42,7 +42,7 @@
     "@pplancq/shelter-ui-css": "^1.0.0-alpha.7",
     "@pplancq/shelter-ui-icon": "^1.0.0-alpha.7",
     "@pplancq/shelter-ui-react": "^1.0.0-alpha.7",
-    "@pplancq/svg-react": "^3.0.1",
+    "@pplancq/svg-react": "^3.0.2",
     "@tanstack/react-query": "^5.99.0",
     "@tanstack/react-query-devtools": "^5.99.0",
     "inversify": "^8.1.0",
