@@ -42,6 +42,32 @@
 # L  → 2-3 days
 # XL → 1 week
 
+delivery_mode: kanban
+
+kanban_policy:
+  wip_limit: 2
+  ready_limit: 6
+  monthly_review: true
+  selection_order:
+    - architecture-learning
+    - unblocker
+    - thin-vertical-slice
+    - ui-polish
+  note: "Updated 2026-04-28: dual-track flow allowed (UX + functional feature work), with broader ready pool for solo pull-based planning."
+
+current_focus:
+  ready:
+    - 3-1-implement-text-search-use-case
+    - 3-3-implement-filter-by-platform-use-case
+    - 3-4-implement-filter-by-status-use-case
+    - 4-1-implement-igdb-api-adapter-with-oauth2
+    - 9-4-gamecover
+    - 9-6-gamecard
+  in_progress:
+    - 9-2-topbar
+  blocked: []
+  done: []
+
 generated: 2026-01-27
 project: lab-clean-architecture-react
 project_key: lab-clean-architecture-react
@@ -49,7 +75,7 @@ tracking_system: github
 story_location: https://github.com/pplancq/lab-clean-architecture-react/issues
 
 # ================================================================
-# SPRINTS PLANNING
+# DELIVERY HISTORY (SPRINTS ARCHIVED, KANBAN ACTIVE)
 # ================================================================
 sprints:
   # ================================================================
@@ -70,6 +96,7 @@ sprints:
     # 2. Installable PWA with offline-first capability
     # 3. Complete game collection (CRUD + IndexedDB persistence)
     # 4. CI/CD Pipeline with code quality (SonarCloud)
+    committed:
       # Epic 1: Foundation & PWA (8 stories P0, 3.75 jours)
       - 1-1-initialize-project-with-react-template-and-rsbuild  # GitHub #1 | S (0.5d)
       - 1-2-setup-clean-architecture-folder-structure-and-bounded-contexts  # GitHub #2 | XS (0.25d)
@@ -290,9 +317,9 @@ sprints:
     goal: "Clear all P0 carry-overs, complete Epic 9 P0 components (TopBar, BurgerMenuDrawer), lay Epic 3 P1 foundations (SearchInput, FilterChip, SortSelect, FilterBar)"
     start_date: "2026-04-14"
     end_date: "2026-04-27"  # 2 weeks (~10 working days)
-    status: planned
+    status: converted-to-kanban  # 2026-04-28 - historical sprint kept for traceability, no longer active
     capacity: 10 days
-    retrospective: pending
+    retrospective: replaced-by-monthly-review
 
     # Sprint 5 Objectives:
     # 1. Clear carry-overs — GameCard (NOW unblocked), GameCover, pages-folder-fix
@@ -322,6 +349,7 @@ sprints:
     total_potential_size: "4.25 days"
     priority: P0
     velocity_target: "2.75 days"
+    closure_note: "Sprint model retired for active planning on 2026-04-28. Remaining items moved to Kanban pull flow."
 
 # ================================================================
 # BACKLOG - All Epics & Stories
@@ -368,10 +396,10 @@ development_status:
   # Priority: P1 | Stories: 6 | Total Size: 6 days
   # ================================================================
   epic-3: backlog  # GitHub #17
-  3-1-implement-text-search-use-case: backlog  # GitHub #22 | P1 | S (0.5d)
+  3-1-implement-text-search-use-case: ready-for-dev  # GitHub #22 | P1 | S (0.5d) | Kanban ready 2026-04-28 - architecture-learning pull candidate
   3-2-build-search-ui-with-real-time-results: backlog  # GitHub #23 | P1 | L (2.5d)
-  3-3-implement-filter-by-platform-use-case: backlog  # GitHub #20 | P1 | S (0.5d)
-  3-4-implement-filter-by-status-use-case: backlog  # GitHub #21 | P1 | S (0.5d)
+  3-3-implement-filter-by-platform-use-case: ready-for-dev  # GitHub #20 | P1 | S (0.5d) | Kanban ready 2026-04-28 - functional filter candidate
+  3-4-implement-filter-by-status-use-case: ready-for-dev  # GitHub #21 | P1 | S (0.5d) | Kanban ready 2026-04-28 - functional filter candidate
   3-5-implement-sort-functionality-title-platform-date: backlog  # GitHub #18 | P1 | M (1d)
   3-6-build-combined-search-filter-sort-ui: backlog  # GitHub #19 | P1 | M (1d)
   epic-3-retrospective: optional
@@ -381,7 +409,7 @@ development_status:
   # Priority: P1 | Stories: 6 | Total Size: 8 days
   # ================================================================
   epic-4: backlog  # GitHub #24
-  4-1-implement-igdb-api-adapter-with-oauth2: backlog  # GitHub #30 | P1 | S (0.5d)
+  4-1-implement-igdb-api-adapter-with-oauth2: ready-for-dev  # GitHub #30 | P1 | S (0.5d) | Kanban ready 2026-04-28 - API exploration candidate
   4-2-create-searchexternalgames-use-case: backlog  # GitHub #26 | P1 | M (1d)
   4-3-build-game-search-ui-with-external-api-results: backlog  # GitHub #27 | P1 | M (1d)
   4-4-implement-cover-art-download-and-caching: backlog  # GitHub #28 | P1 | M (1d)
@@ -441,16 +469,16 @@ development_status:
   # ================================================================
   # Epic 9: UI Components (GitHub #128)
   # Priority: P0/P1/P2 Mixed | Stories: 17 | Total Size: 8.25 days
-  # Sprint assignment: TBD (SM handles planning)
+  # Active planning now follows current_focus + kanban_policy (legacy sprint assignment kept for history)
   # ================================================================
   epic-9: in-progress  # GitHub #128 | UI Components — Sprint 4+5
   9-0-formattoggle: done      # GitHub #131 | P0 | XS (0.25d) | Sprint 4 | PR #181 | 2026-03-13
   9-1-appshell: done          # GitHub #129 | P0 | S (0.5d) | Sprint 4 | PR #191 | 2026-03-17
-  9-2-topbar: backlog         # GitHub #130 | P0 | M (1d) | Responsive application header | src/shared/ui/components/
+  9-2-topbar: in-progress         # GitHub #130 | P0 | M (1d) | Responsive application header | src/shared/ui/components/ | In active dev per Paul update 2026-04-28
   9-3-burgermenu-drawer: backlog  # GitHub #133 | P0 | S (0.5d) | Mobile/tablet navigation overlay | src/shared/ui/components/
-  9-4-gamecover: backlog      # GitHub #134 | P0 | XS (0.25d) | Cover image with placeholder | src/collection/ui/components/
+  9-4-gamecover: ready-for-dev      # GitHub #134 | P0 | XS (0.25d) | Cover image with placeholder | src/collection/ui/components/ | Kanban ready 2026-04-28
   9-5-badge-badgerow: done    # GitHub #132 | P0 | M (1d) | Sprint 4 | PR #235 | 2026-04-10
-  9-6-gamecard: backlog       # GitHub #136 | P0 | S (0.5d) | Collection card variant | src/collection/ui/components/
+  9-6-gamecard: ready-for-dev       # GitHub #136 | P0 | S (0.5d) | Collection card variant | src/collection/ui/components/ | Kanban ready 2026-04-28
   9-7-breadcrumb: backlog     # GitHub #135 | P1 | XS (0.25d) | Navigation breadcrumb trail | src/shared/ui/components/
   9-8-searchinput: backlog    # GitHub #137 | P1 | XS (0.25d) | TopBar search field | src/shared/ui/components/
   9-9-filterchip: backlog     # GitHub #139 | P1 | XS (0.25d) | Active/inactive filter toggle — shelter-ui candidate | src/shared/ui/components/
@@ -489,11 +517,12 @@ summary:
     low: 6  # epic 6 (4) + low priority stories (2)
 
   breakdown_by_status:
-    backlog: 69  # all items currently in backlog (epic 9 stories + prior backlog)
-    ready_for_dev: 0
-    in_progress: 0
+    note: "Counts below reflect tracked entries in this file. Use current_focus as the source of truth for active pull work."
+    backlog: 45
+    ready_for_dev: 6
+    in_progress: 2
     review: 0
-    done: 0
+    done: 31
 
 # ================================================================
 # NOTES & CHANGELOG

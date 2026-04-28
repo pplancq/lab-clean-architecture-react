@@ -266,27 +266,33 @@ Features organized by dependency and abandonment criteria.
 
 ---
 
-### Weekly Shipping Discipline
+### Pull-Based Delivery Discipline
 
-**The Golden Rule: One Shippable Feature Per Week**
+**The Golden Rule: One Meaningful Story at a Time**
 
-**Week 1:** Add game manually + display in list ✅ WORKING
-**Week 2:** Search/filter working ✅ WORKING
-**Week 3:** Edit/delete working ✅ WORKING
-**Week 4:** Cover art upload ✅ WORKING
+Use a lightweight Kanban flow instead of sprint commitments:
 
-**Red Flag Protocol:**
-- If week ends without shippable feature → **Emergency retrospective**
-- Question: "Why didn't this ship? Architecture paralysis? Scope creep? Over-engineering?"
-- Action: Adjust scope or approach for next week
+- **WIP limit = 1:** only one story actively in progress
+- **Ready limit = 3:** keep a very small shortlist of pullable work
+- Pull work in this order:
+  1. architecture-learning story
+  2. unblocker story
+  3. thin vertical slice needed to demonstrate a feature
+  4. UI polish
+
+**Review Protocol:**
+- If a month passes without meaningful completion → run a monthly review
+- Question: "Was the issue scope, energy, timing, or project direction?"
+- Action: adjust backlog order, not self-worth
 
 **Code Quality Pragmatism:**
 - "Good enough" code that works > Perfect code that's incomplete
-- ✅ Ship functional but imperfect
-- ✅ Refactor next week based on learnings
-- ❌ Don't hold releases for architectural purity
+- ✅ Finish the current story before opening new fronts
+- ✅ Refactor after delivery if the learning value is clear
+- ❌ Don't use calendar pressure to force motivation
+- ❌ Don't hold progress hostage to architectural purity
 
-**Paul's Self-Acknowledgment:** "Je suis très critique sur mon code" → Counter with **pragmatic shipping discipline**
+**Paul's Self-Acknowledgment:** "Je suis très critique sur mon code" → Counter with **pragmatic completion over calendar compliance**
 
 ---
 
@@ -1790,14 +1796,15 @@ Il référence le lab de Paul dans sa proposition :
 **Resource Requirements:**
 - **Team Size**: Solo developer (Paul)
 - **Time Commitment**: Maximum 5 hours/week
-- **Development Pace**: 1 feature shipped per week
+- **Development Pace**: Pull-based Kanban with 1 active story maximum
 - **Architecture Time-Boxed**: Maximum 1 day per feature for architectural decisions
-- **MVP Timeline**: 8-10 weeks (assuming consistent weekly progress)
+- **Review Cadence**: Monthly retrospective and reprioritization
+- **MVP Timeline**: Flexible, dependent on availability and energy rather than sprint compliance
 
 **Success Definition for MVP:**
 - ✅ **Functional**: Can track personal game collection with real data
 - ✅ **Architectural**: Clean Architecture boundaries maintained, dependency inversion demonstrated
-- ✅ **Shipped**: Weekly releases, "good enough" code over perfection
+- ✅ **Shipped**: Continuous completion of meaningful increments, "good enough" code over perfection
 - ✅ **Documented**: ADRs capture genuine decision process, honest documentation of trade-offs
 
 ### MVP Feature Set (Phase 1)
@@ -2084,7 +2091,7 @@ Il référence le lab de Paul dans sa proposition :
 ### Development Workflow (Lab Constraints)
 
 - **NFR38**: Features are developed and shipped within 5 hours per week time constraint
-- **NFR39**: Weekly shipping discipline delivers one complete feature per week
+- **NFR39**: Pull-based delivery keeps at most one active story in progress and reviews progress monthly
 - **NFR40**: "Good enough" code quality threshold prevents perfectionism paralysis
 - **NFR41**: Architecture work is time-boxed to maximum 1 day per feature implementation
 - **NFR42**: Development remains sustainable without weekend work (unless genuinely motivated)

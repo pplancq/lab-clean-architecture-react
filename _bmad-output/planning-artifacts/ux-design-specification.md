@@ -4276,83 +4276,74 @@ export const dismissToast = (id: string) => {
 
 ### Implementation Roadmap
 
-**Sprint 1: Foundation (Weeks 1-2)**
+The project now uses a lightweight Kanban flow instead of fixed UI sprints. The roadmap remains useful, but as **execution tracks**, not calendar commitments.
 
-**Goal:** Build core reusable components that unblock feature development.
+**Track A: Core Unblockers**
 
-**Deliverables:**
-- ✅ Textarea Field component
-- ✅ Select/Dropdown Field component
-- ✅ Platform Badge component
-- ✅ Status Indicator component
-- ✅ Toast Notification system
-- ✅ Widget Card component
-- ✅ Cover Thumbnail component
+**Goal:** Keep the UI just complete enough to unblock feature work and demonstrate the architecture.
 
-**Acceptance Criteria:**
-- All components pass accessibility audit (aXe DevTools)
-- Responsive behavior tested 320px - 1440px
-- Storybook stories created for all variants
-- Unit tests (>80% coverage)
+**Typical deliverables:**
+- Game cover primitives
+- Game card/list presentation
+- Page structure fixes that reduce implementation friction
+- Minimal navigation shell when truly required
+
+**Success criteria:**
+- The next feature can be demonstrated end-to-end without UI friction
+- Accessibility and responsive behavior remain acceptable
+- No component is over-designed just to satisfy planning optics
 
 ---
 
-**Sprint 2: Collection UI (Weeks 3-4)**
+**Track B: Collection Usability Essentials**
 
-**Goal:** Complete collection browsing and game management interfaces.
+**Goal:** Support real collection flows only when tied to a pulled feature.
 
-**Deliverables:**
-- ✅ Game List Item component
-- ✅ Search Bar with Results component
-- ✅ Add Game Form (using shelter-ui + custom components)
-- ✅ Game Detail Card
-- ✅ Platform filter UI
+**Typical deliverables:**
+- Search UI
+- Filter controls
+- Sort controls
+- Feature-specific forms or detail views
 
-**Acceptance Criteria:**
-- Flux A (Verify Ownership) fully functional
-- Flux B (Add Game) fully functional
-- Flux C (Browse Collection) fully functional
-- Real data integration via IndexedDB adapters
-- Performance: <100ms filter/sort response
+**Success criteria:**
+- Flux A, B, and C stay demonstrable
+- Real data integration works with IndexedDB adapters
+- Performance and feedback remain good enough for day-to-day use
 
 ---
 
-**Sprint 3: Maintenance System (Weeks 5-6)**
+**Track C: Clean Architecture Leverage**
 
-**Goal:** Enable console maintenance tracking and documentation.
+**Goal:** Favor work that maximizes learning value in React Clean Architecture.
 
-**Deliverables:**
-- ✅ Console Card with Tabs component
-- ✅ Maintenance Timeline component
-- ✅ Photo Upload Widget component
-- ✅ Maintenance Task Form (create + complete)
-- ✅ Console list view
+**Typical deliverables:**
+- Bounded-context expansion (Wishlist, Maintenance)
+- Event-driven integration flows
+- API adapter experiments
+- Thin UI slices needed to expose domain/application behavior
 
-**Acceptance Criteria:**
-- Flux D (Maintenance) fully functional
-- Photo upload with validation (JPG/PNG, max 3MB)
-- Timeline displays chronologically with photos
-- Status indicator updates based on last maintenance date
+**Success criteria:**
+- Architectural lessons are visible and documentable
+- New use cases can be demonstrated without requiring a large UI batch first
+- The project remains aligned with its educational purpose
 
 ---
 
-**Sprint 4: Polish & Optimization (Weeks 7-8)**
+**Track D: Optional Polish & Optimization**
 
-**Goal:** Refine UX, optimize performance, enhance accessibility.
+**Goal:** Improve UX quality only when energy is available and the work still supports the learning objective.
 
-**Deliverables:**
-- ✅ Animation polish (transitions, micro-interactions)
-- ✅ Dark theme adaptation (all custom components)
-- ✅ Performance optimization (lazy loading, virtual scrolling)
-- ✅ Accessibility audit fixes
-- ✅ Responsive behavior refinements
-- ✅ Error state handling improvements
+**Typical deliverables:**
+- Animation polish
+- Dark theme refinements
+- Accessibility audits and fixes
+- Performance enhancements
+- Error-state improvements
 
-**Acceptance Criteria:**
-- Lighthouse score: >90 Performance, >95 Accessibility
-- No console errors or warnings
-- All WCAG 2.1 AA criteria met
-- Dark theme parity with light theme
+**Success criteria:**
+- Polish work never blocks meaningful feature delivery
+- Improvements are incremental and easy to pause
+- Monthly review can safely demote this track when motivation is low
 
 ---
 
