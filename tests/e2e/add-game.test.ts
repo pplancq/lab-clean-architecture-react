@@ -25,20 +25,20 @@ describe('Add Game page', () => {
 
     await page.getByRole('button', { name: /add game/i }).click();
 
-    await expect(page.getByText('Game title cannot be empty')).toBeVisible();
-    await expect(page.getByText('Platform name is required')).toBeVisible();
+    await expect(page.getByText('title cannot be empty')).toBeVisible();
+    await expect(page.getByText('platform cannot be empty')).toBeVisible();
   });
 
   it('should clear validation error when the field is filled', async ({ page }) => {
     await page.goto('/add-game');
 
     await page.getByRole('button', { name: /add game/i }).click();
-    await expect(page.getByText('Game title cannot be empty')).toBeVisible();
+    await expect(page.getByText('title cannot be empty')).toBeVisible();
 
     await page.getByRole('textbox', { name: /game title/i }).fill('The Last of Us Part I');
     await page.getByRole('button', { name: /add game/i }).click();
 
-    await expect(page.getByText('Game title cannot be empty')).toBeHidden();
+    await expect(page.getByText('title cannot be empty')).toBeHidden();
   });
 
   it('should redirect to home page after successful submission', async ({ page }) => {

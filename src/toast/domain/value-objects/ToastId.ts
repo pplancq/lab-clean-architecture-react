@@ -1,6 +1,6 @@
 import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
 import { Result } from '@Shared/domain/result/Result';
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * ToastId value object representing a unique toast identifier.
@@ -9,15 +9,20 @@ import { Result } from '@Shared/domain/result/Result';
  * - Cannot be empty or whitespace-only
  * - Automatically trims whitespace
  */
-export class ToastId {
-  private constructor(private readonly value: string) {}
+export class ToastId extends AbstractStringValueObject {
+  private constructor(value: string) {
+    super(value);
+  }
 
-  static create(value: string): Result<ToastId, DomainValidationErrorInterface> {
-    if (!value || value.trim().length === 0) {
-      return Result.err(new NotEmptyError('id'));
+  public static create(value: string): Result<ToastId, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('id', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
 
-    return Result.ok(new ToastId(value.trim()));
+    return Result.ok(new ToastId(trimmed));
   }
 
   getValue(): string {

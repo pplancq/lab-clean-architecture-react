@@ -69,7 +69,7 @@ describe('Game', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('title');
-      expect(error.message).toBe('Game title cannot be empty');
+      expect(error.message).toBe('title cannot be empty');
     });
 
     it('should return error for title exceeding 200 characters', () => {
@@ -87,7 +87,7 @@ describe('Game', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('title');
-      expect(error.message).toBe('Game title cannot exceed 200 characters');
+      expect(error.message).toBe('title cannot exceed 200 characters');
     });
 
     it('should return error for description exceeding 1000 characters', () => {
@@ -105,7 +105,7 @@ describe('Game', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('description');
-      expect(error.message).toBe('Game description cannot exceed 1000 characters');
+      expect(error.message).toBe('description cannot exceed 1000 characters');
     });
 
     it('should return error for empty platform', () => {
@@ -122,7 +122,7 @@ describe('Game', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('platform');
-      expect(error.message).toBe('Platform name is required');
+      expect(error.message).toBe('platform cannot be empty');
     });
 
     it('should return error for empty format', () => {
@@ -139,7 +139,7 @@ describe('Game', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('format');
-      expect(error.message).toBe('Format name is required');
+      expect(error.message).toBe('format cannot be empty');
     });
 
     it('should return error for invalid status', () => {

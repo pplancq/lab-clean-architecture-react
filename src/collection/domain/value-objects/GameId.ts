@@ -1,9 +1,6 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
-
-type GameIdError = {
-  field: 'gameId';
-  message: string;
-};
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * GameId value object representing a unique game identifier
@@ -21,11 +18,9 @@ type GameIdError = {
  * }
  * ```
  */
-export class GameId {
-  private readonly value: string;
-
+export class GameId extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
   /**
@@ -34,14 +29,15 @@ export class GameId {
    * @param value - The identifier value
    * @returns Result containing GameId or validation error
    */
-  static create(value: string): Result<GameId, GameIdError> {
-    if (!value || value.trim().length === 0) {
-      return Result.err({
-        field: 'gameId',
-        message: 'GameId cannot be empty',
-      });
+  public static create(value: string): Result<GameId, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('gameId', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
-    return Result.ok(new GameId(value.trim()));
+
+    return Result.ok(new GameId(trimmed));
   }
 
   /**

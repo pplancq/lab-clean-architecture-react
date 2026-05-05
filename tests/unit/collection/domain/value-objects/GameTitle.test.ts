@@ -25,7 +25,7 @@ describe('GameTitle', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('title');
-      expect(error.message).toBe('Game title cannot be empty');
+      expect(error.message).toBe('title cannot be empty');
     });
 
     it('should return error for whitespace-only string', () => {
@@ -34,7 +34,7 @@ describe('GameTitle', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('title');
-      expect(error.message).toBe('Game title cannot be empty');
+      expect(error.message).toBe('title cannot be empty');
     });
 
     it('should return error for title exceeding 200 characters', () => {
@@ -44,7 +44,7 @@ describe('GameTitle', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('title');
-      expect(error.message).toBe('Game title cannot exceed 200 characters');
+      expect(error.message).toBe('title cannot exceed 200 characters');
     });
 
     it('should accept title with exactly 200 characters', () => {

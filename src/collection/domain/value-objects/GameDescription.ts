@@ -1,9 +1,6 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
-
-type GameDescriptionError = {
-  field: 'description';
-  message: string;
-};
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * GameDescription value object representing a game description
@@ -11,6 +8,7 @@ type GameDescriptionError = {
  * Business rules:
  * - Can be empty (optional field)
  * - Cannot exceed 1000 characters
+ * - Automatically trims whitespace
  *
  * @example
  * ```typescript
@@ -21,11 +19,9 @@ type GameDescriptionError = {
  * }
  * ```
  */
-export class GameDescription {
-  private readonly value: string;
-
+export class GameDescription extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
   /**
@@ -34,15 +30,15 @@ export class GameDescription {
    * @param value - The description value
    * @returns Result containing GameDescription or validation error
    */
-  static create(value: string): Result<GameDescription, GameDescriptionError> {
-    if (value.length > 1000) {
-      return Result.err({
-        field: 'description',
-        message: 'Game description cannot exceed 1000 characters',
-      });
+  public static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+
+    const maxLengthCheck = AbstractStringValueObject.maxLength('description', trimmed, 1000);
+    if (maxLengthCheck.isErr()) {
+      return Result.err(maxLengthCheck.getError());
     }
 
-    return Result.ok(new GameDescription(value));
+    return Result.ok(new GameDescription(trimmed));
   }
 
   /**
