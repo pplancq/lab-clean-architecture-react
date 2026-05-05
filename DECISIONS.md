@@ -8,23 +8,26 @@ This document serves as the **main index** for all architectural decisions made 
 
 ## Quick Reference - All ADRs
 
-| ADR                                                                                    | Title                       | Status      | Date       | Description                                                                         |
-| -------------------------------------------------------------------------------------- | --------------------------- | ----------- | ---------- | ----------------------------------------------------------------------------------- |
-| [ADR-001](./docs/architecture/adr/ADR-001-starter-template-selection.md)               | Starter Template Selection  | ✅ Accepted | 2026-01-14 | Use @pplancq/react-app for Rsbuild foundation and architectural freedom             |
-| [ADR-002](./docs/architecture/adr/ADR-002-clean-architecture-ddd.md)                   | Clean Architecture + DDD    | ✅ Accepted | 2026-01-22 | Hybrid architecture with bounded contexts for scalability                           |
-| [ADR-003](./docs/architecture/adr/ADR-003-indexeddb-storage-strategy.md)               | IndexedDB Storage           | ✅ Accepted | 2026-01-22 | Offline-first storage with structured data and fast queries                         |
-| [ADR-004](./docs/architecture/adr/ADR-004-result-either-pattern.md)                    | Result/Either Pattern       | ✅ Accepted | 2026-02-03 | Type-safe error handling for domain operations                                      |
-| [ADR-005](./docs/architecture/adr/ADR-005-inversifyjs-dependency-injection.md)         | InversifyJS DI              | ✅ Accepted | 2026-02-02 | Dependency injection for loose coupling between layers                              |
-| [ADR-006](./docs/architecture/adr/ADR-006-pwa-from-day-one.md)                         | PWA from Day One            | ✅ Accepted | 2026-02-05 | Offline capabilities, installable app, performance optimization                     |
-| [ADR-007](./docs/architecture/adr/ADR-007-no-typescript-decorators.md)                 | No TypeScript Decorators    | ✅ Accepted | 2026-02-09 | Manual DI binding to maintain domain purity and avoid decorator side effects        |
-| [ADR-008](./docs/architecture/adr/ADR-008-result-pattern-usage-convention.md)          | Result Pattern Convention   | ✅ Accepted | 2026-02-09 | When to use Result vs throw: business errors vs programming errors                  |
-| [ADR-009](./docs/architecture/adr/ADR-009-symbol-based-service-identifiers.md)         | Symbol-based Service IDs    | ✅ Accepted | 2026-02-23 | Symbols as DI identifiers to avoid coupling and circular imports                    |
-| [ADR-010](./docs/architecture/adr/ADR-010-dto-date-type-conventions.md)                | DTO Date Type Conventions   | ✅ Accepted | 2026-02-23 | `Date` in application DTOs, `string \| null` in infrastructure DTOs                 |
-| [ADR-011](./docs/architecture/adr/ADR-011-map-centric-store-auto-trigger.md)           | Map-Centric Store           | ✅ Accepted | 2026-03-02 | Observable store with Map-based state and auto-triggered fetches via queueMicrotask |
-| [ADR-012](./docs/architecture/adr/ADR-012-page-layout-ownership-and-folder-pattern.md) | Page Layout Ownership       | ✅ Accepted | 2026-03-09 | Pages as autonomous layout-owning components + `<Name>/<Name>.tsx` convention       |
-| [ADR-013](./docs/architecture/adr/ADR-013-in-memory-repository-for-transient-data.md)  | In-Memory Repository        | ✅ Accepted | 2026-03-11 | Synchronous `Result<T, never>` + referential stability for transient data           |
-| [ADR-014](./docs/architecture/adr/ADR-014-infrastructure-id-generator.md)              | Infrastructure ID Generator | ✅ Accepted | 2026-03-11 | `IdGeneratorInterface` in domain, `CryptoIdGenerator` in infrastructure             |
-| [ADR-015](./docs/architecture/adr/ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Errors    | ✅ Accepted | 2026-03-11 | `DomainValidationError` subclasses instead of plain error objects                   |
+| ADR                                                                                    | Title                            | Status      | Date       | Description                                                                         |
+| -------------------------------------------------------------------------------------- | -------------------------------- | ----------- | ---------- | ----------------------------------------------------------------------------------- |
+| [ADR-001](./docs/architecture/adr/ADR-001-starter-template-selection.md)               | Starter Template Selection       | ✅ Accepted | 2026-01-14 | Use @pplancq/react-app for Rsbuild foundation and architectural freedom             |
+| [ADR-002](./docs/architecture/adr/ADR-002-clean-architecture-ddd.md)                   | Clean Architecture + DDD         | ✅ Accepted | 2026-01-22 | Hybrid architecture with bounded contexts for scalability                           |
+| [ADR-003](./docs/architecture/adr/ADR-003-indexeddb-storage-strategy.md)               | IndexedDB Storage                | ✅ Accepted | 2026-01-22 | Offline-first storage with structured data and fast queries                         |
+| [ADR-004](./docs/architecture/adr/ADR-004-result-either-pattern.md)                    | Result/Either Pattern            | ✅ Accepted | 2026-02-03 | Type-safe error handling for domain operations                                      |
+| [ADR-005](./docs/architecture/adr/ADR-005-inversifyjs-dependency-injection.md)         | InversifyJS DI                   | ✅ Accepted | 2026-02-02 | Dependency injection for loose coupling between layers                              |
+| [ADR-006](./docs/architecture/adr/ADR-006-pwa-from-day-one.md)                         | PWA from Day One                 | ✅ Accepted | 2026-02-05 | Offline capabilities, installable app, performance optimization                     |
+| [ADR-007](./docs/architecture/adr/ADR-007-no-typescript-decorators.md)                 | No TypeScript Decorators         | ✅ Accepted | 2026-02-09 | Manual DI binding to maintain domain purity and avoid decorator side effects        |
+| [ADR-008](./docs/architecture/adr/ADR-008-result-pattern-usage-convention.md)          | Result Pattern Convention        | ✅ Accepted | 2026-02-09 | When to use Result vs throw: business errors vs programming errors                  |
+| [ADR-009](./docs/architecture/adr/ADR-009-symbol-based-service-identifiers.md)         | Symbol-based Service IDs         | ✅ Accepted | 2026-02-23 | Symbols as DI identifiers to avoid coupling and circular imports                    |
+| [ADR-010](./docs/architecture/adr/ADR-010-dto-date-type-conventions.md)                | DTO Date Type Conventions        | ✅ Accepted | 2026-02-23 | `Date` in application DTOs, `string \| null` in infrastructure DTOs                 |
+| [ADR-011](./docs/architecture/adr/ADR-011-map-centric-store-auto-trigger.md)           | Map-Centric Store                | ✅ Accepted | 2026-03-02 | Observable store with Map-based state and auto-triggered fetches via queueMicrotask |
+| [ADR-012](./docs/architecture/adr/ADR-012-page-layout-ownership-and-folder-pattern.md) | Page Layout Ownership            | ✅ Accepted | 2026-03-09 | Pages as autonomous layout-owning components + `<Name>/<Name>.tsx` convention       |
+| [ADR-013](./docs/architecture/adr/ADR-013-in-memory-repository-for-transient-data.md)  | In-Memory Repository             | ✅ Accepted | 2026-03-11 | Synchronous `Result<T, never>` + referential stability for transient data           |
+| [ADR-014](./docs/architecture/adr/ADR-014-infrastructure-id-generator.md)              | Infrastructure ID Generator      | ✅ Accepted | 2026-03-11 | `IdGeneratorInterface` in domain, `CryptoIdGenerator` in infrastructure             |
+| [ADR-015](./docs/architecture/adr/ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Errors         | ✅ Accepted | 2026-03-11 | `DomainValidationError` subclasses instead of plain error objects                   |
+| [ADR-016](./docs/architecture/adr/ADR-016-ports-adapters-notification.md)              | Ports & Adapters Notification    | ✅ Accepted | 2026-03-12 | Ports & Adapters for cross-cutting notification between bounded contexts            |
+| [ADR-017](./docs/architecture/adr/ADR-017-application-layer-notification-ownership.md) | App Layer Notification Ownership | ✅ Accepted | 2026-03-12 | Application layer owns operation notifications triggered by CRUD actions            |
+| [ADR-018](./docs/architecture/adr/ADR-018-abstract-value-object-base-classes.md)       | Abstract VO Base Classes         | ✅ Accepted | 2026-05-05 | Abstract base classes with shared `public static` validation helpers for all VOs    |
 
 ---
 
@@ -64,6 +67,15 @@ This document serves as the **main index** for all architectural decisions made 
 - **ADR-013:** In-memory repository with `Result<T, never>` and referential stability
 - **ADR-014:** `IdGeneratorInterface` abstraction for infrastructure-agnostic ID generation
 - **ADR-015:** `DomainValidationError` hierarchy replacing plain error objects
+
+### Cross-Cutting Concerns (ADR-016, ADR-017)
+
+- **ADR-016:** Ports & Adapters for decoupled cross-cutting notification
+- **ADR-017:** Application layer owns operation notification responsibility
+
+### Domain Patterns (ADR-018)
+
+- **ADR-018:** Abstract base classes for Value Object validation helpers
 
 ---
 
@@ -105,6 +117,18 @@ This document serves as the **main index** for all architectural decisions made 
 - ADR-014: Infrastructure ID Generator Abstraction
 - ADR-015: Domain Validation Error Hierarchy
 
+### Issue #119 — Toast Bridge
+
+- ADR-016: Ports & Adapters for Cross-Cutting Notification
+
+### Issue #120 — Toast Usage
+
+- ADR-017: Application Layer Notification Ownership
+
+### Issue #285 — VO Refactoring
+
+- ADR-018: Abstract Base Classes for Value Object Validation
+
 ---
 
 ## ADR Status Legend
@@ -135,7 +159,7 @@ This document serves as the **main index** for all architectural decisions made 
 
 ---
 
-**Last Updated:** 2026-03-12  
-**Total ADRs:** 15 (All Accepted)  
+**Last Updated:** 2026-05-05  
+**Total ADRs:** 18 (All Accepted)  
 **Author:** Paul (with AI assistance)  
 **Project:** lab-clean-architecture-react

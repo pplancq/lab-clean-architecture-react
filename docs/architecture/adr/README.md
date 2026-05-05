@@ -42,6 +42,7 @@ Each ADR follows this structure:
 | [ADR-015](./ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Error Hierarchy                 | ✅ Accepted | 2026-03-11 | Issue #118 Toast        |
 | [ADR-016](./ADR-016-ports-adapters-notification.md)              | Ports & Adapters for Cross-Cutting Notification   | ✅ Accepted | 2026-03-12 | Issue #119 Toast Bridge |
 | [ADR-017](./ADR-017-application-layer-notification-ownership.md) | Application Layer Owns Operation Notifications    | ✅ Accepted | 2026-03-12 | Issue #120 Toast Usage  |
+| [ADR-018](./ADR-018-abstract-value-object-base-classes.md)       | Abstract Base Classes for Value Object Validation | ✅ Accepted | 2026-05-05 | Issue #285              |
 
 ## Pending ADRs
 
