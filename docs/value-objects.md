@@ -176,15 +176,24 @@ public static create(value: number): Result<ToastDuration, DomainValidationError
 
 ```typescript
 import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+import type { ToastTypeValue } from '../entities/ToastInterface';
 
-const ALLOWED = ['success', 'info', 'warning', 'error'] as const;
+export class ToastType {
+  private static readonly VALID_TYPES: ToastTypeValue[] = ['success', 'error', 'info', 'warning'];
 
-public static create(value: string): Result<ToastVariant, DomainValidationErrorInterface> {
-  if (!ALLOWED.includes(value as ToastVariantValue)) {
-    return Result.err(new AllowedValuesError('type', ALLOWED));
-    // → message: "type must be one of: success, info, warning, error"
+  private constructor(private readonly value: ToastTypeValue) {}
+
+  static create(value: string): Result<ToastType, DomainValidationErrorInterface> {
+    if (!this.VALID_TYPES.includes(value as ToastTypeValue)) {
+      return Result.err(new AllowedValuesError('type', this.VALID_TYPES));
+      // → message: "type must be one of: success, error, info, warning"
+    }
+    return Result.ok(new ToastType(value as ToastTypeValue));
   }
-  return Result.ok(new ToastVariant(value as ToastVariantValue));
+
+  getValue(): ToastTypeValue {
+    return this.value;
+  }
 }
 ```
 
@@ -407,21 +416,35 @@ export class GameDescription extends AbstractStringValueObject {
 Enum VOs do **not** extend `AbstractStringValueObject` — they use `AllowedValuesError` directly:
 
 ```typescript
-const ALLOWED_STATUSES = ['wishlist', 'owned', 'completed', 'abandoned'] as const;
-type StatusType = (typeof ALLOWED_STATUSES)[number];
+import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+
+export enum StatusType {
+  OWNED = 'Owned',
+  WISHLIST = 'Wishlist',
+  SOLD = 'Sold',
+  LOANED = 'Loaned',
+}
 
 export class Status {
-  private constructor(private readonly value: StatusType) {}
+  private readonly value: StatusType;
 
-  public static create(value: string): Result<Status, DomainValidationErrorInterface> {
-    if (!ALLOWED_STATUSES.includes(value as StatusType)) {
-      return Result.err(new AllowedValuesError('status', ALLOWED_STATUSES));
-      // → "status must be one of: wishlist, owned, completed, abandoned"
-    }
-    return Result.ok(new Status(value as StatusType));
+  private constructor(value: StatusType) {
+    this.value = value;
   }
 
-  public getStatus(): StatusType {
+  public static create(value: string): Result<Status, DomainValidationErrorInterface> {
+    const trimmedValue = value?.trim() ?? '';
+    const allowedValues = Object.values(StatusType);
+    const statusValue = allowedValues.find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+
+    if (!statusValue) {
+      return Result.err(new AllowedValuesError('status', allowedValues));
+      // → "status must be one of: Owned, Wishlist, Sold, Loaned"
+    }
+    return Result.ok(new Status(statusValue as StatusType));
+  }
+
+  getStatus(): StatusType {
     return this.value;
   }
 }

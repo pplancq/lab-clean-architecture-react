@@ -5,7 +5,7 @@ import { Result } from '@Shared/domain/result/Result';
 /**
  * Abstract base class for string-based value objects.
  *
- * Provides reusable validation helpers as public static methods.
+ * Provides reusable validation helpers as protected static methods.
  * Subclasses extend this class and call these helpers in their static `create` factory.
  *
  * @example

@@ -31,6 +31,22 @@ describe('ToastDuration', () => {
       expect(result.isErr()).toBeTruthy();
       expect(result.getError().field).toBe('duration');
     });
+
+    it('should return error for NaN', () => {
+      const result = ToastDuration.create(NaN);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError().field).toBe('duration');
+      expect(result.getError().message).toBe('duration must be a positive number');
+    });
+
+    it('should return error for Infinity', () => {
+      const result = ToastDuration.create(Infinity);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError().field).toBe('duration');
+      expect(result.getError().message).toBe('duration must be a positive number');
+    });
   });
 
   describe('getValue', () => {

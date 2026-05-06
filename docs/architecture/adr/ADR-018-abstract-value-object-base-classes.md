@@ -85,6 +85,8 @@ export class GameTitle extends AbstractStringValueObject {
 
 VOs with unique constraints add a `private static` method alongside the inherited helpers.
 
+> **Note on `private static` vs instance methods**: The general repository convention for helper methods that don't use `this` is to keep them as `private` instance methods and add `/* eslint-disable-next-line class-methods-use-this */` (see `DeleteGameUseCase`, `EditGameUseCase`). In VO subclasses this is an intentional exception: VOs are immutable value types with no mutable instance state, so `private static` is semantically correct and does not require disabling the ESLint rule.
+
 ### `Status` VO exception
 
 `Status` does **not** extend `AbstractStringValueObject` — its validation is enum-based (`AllowedValuesError`), not a string-length concern. It uses the shared error class directly without an abstract base.

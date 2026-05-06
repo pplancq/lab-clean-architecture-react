@@ -27,7 +27,7 @@ This document serves as the **main index** for all architectural decisions made 
 | [ADR-015](./docs/architecture/adr/ADR-015-domain-validation-error-hierarchy.md)        | Domain Validation Errors         | ✅ Accepted | 2026-03-11 | `DomainValidationError` subclasses instead of plain error objects                   |
 | [ADR-016](./docs/architecture/adr/ADR-016-ports-adapters-notification.md)              | Ports & Adapters Notification    | ✅ Accepted | 2026-03-12 | Ports & Adapters for cross-cutting notification between bounded contexts            |
 | [ADR-017](./docs/architecture/adr/ADR-017-application-layer-notification-ownership.md) | App Layer Notification Ownership | ✅ Accepted | 2026-03-12 | Application layer owns operation notifications triggered by CRUD actions            |
-| [ADR-018](./docs/architecture/adr/ADR-018-abstract-value-object-base-classes.md)       | Abstract VO Base Classes         | ✅ Accepted | 2026-05-05 | Abstract base classes with shared `public static` validation helpers for all VOs    |
+| [ADR-018](./docs/architecture/adr/ADR-018-abstract-value-object-base-classes.md)       | Abstract VO Base Classes         | ✅ Accepted | 2026-05-05 | Abstract base classes with shared `protected static` validation helpers for all VOs |
 
 ---
 
