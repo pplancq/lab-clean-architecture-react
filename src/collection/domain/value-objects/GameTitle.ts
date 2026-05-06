@@ -1,9 +1,6 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
-
-type GameTitleError = {
-  field: 'title';
-  message: string;
-};
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * GameTitle value object representing a game title
@@ -22,11 +19,9 @@ type GameTitleError = {
  * }
  * ```
  */
-export class GameTitle {
-  private readonly value: string;
-
+export class GameTitle extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
   /**
@@ -35,24 +30,20 @@ export class GameTitle {
    * @param value - The title value
    * @returns Result containing GameTitle or validation error
    */
-  static create(value: string): Result<GameTitle, GameTitleError> {
-    const trimmedValue = value.trim();
+  public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
 
-    if (trimmedValue.length === 0) {
-      return Result.err({
-        field: 'title',
-        message: 'Game title cannot be empty',
-      });
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
 
-    if (trimmedValue.length > 200) {
-      return Result.err({
-        field: 'title',
-        message: 'Game title cannot exceed 200 characters',
-      });
+    const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+    if (maxLengthCheck.isErr()) {
+      return Result.err(maxLengthCheck.getError());
     }
 
-    return Result.ok(new GameTitle(trimmedValue));
+    return Result.ok(new GameTitle(trimmed));
   }
 
   /**

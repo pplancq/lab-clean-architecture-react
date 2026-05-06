@@ -34,7 +34,7 @@ describe('Format', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('format');
-      expect(error.message).toBe('Format name is required');
+      expect(error.message).toBe('format cannot be empty');
     });
 
     it('should return error for whitespace-only format', () => {
@@ -43,7 +43,7 @@ describe('Format', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('format');
-      expect(error.message).toBe('Format name is required');
+      expect(error.message).toBe('format cannot be empty');
     });
 
     it('should return error for format name exceeding 50 characters', () => {
@@ -53,7 +53,7 @@ describe('Format', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('format');
-      expect(error.message).toBe('Format name cannot exceed 50 characters');
+      expect(error.message).toBe('format cannot exceed 50 characters');
     });
 
     it('should accept format name with exactly 50 characters', () => {

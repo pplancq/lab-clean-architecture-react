@@ -1,9 +1,6 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
-
-type PlatformError = {
-  field: 'platform';
-  message: string;
-};
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * Platform value object representing the gaming platform
@@ -25,11 +22,9 @@ type PlatformError = {
  * }
  * ```
  */
-export class Platform {
-  private readonly value: string;
-
+export class Platform extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
   /**
@@ -38,31 +33,20 @@ export class Platform {
    * @param value - The platform name
    * @returns Result containing Platform or validation error
    */
-  static create(value: string): Result<Platform, PlatformError> {
-    if (!value) {
-      return Result.err({
-        field: 'platform',
-        message: 'Platform name is required',
-      });
+  public static create(value: string): Result<Platform, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('platform', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
 
-    const trimmedValue = value.trim();
-
-    if (trimmedValue.length === 0) {
-      return Result.err({
-        field: 'platform',
-        message: 'Platform name is required',
-      });
+    const maxLengthCheck = AbstractStringValueObject.maxLength('platform', trimmed, 100);
+    if (maxLengthCheck.isErr()) {
+      return Result.err(maxLengthCheck.getError());
     }
 
-    if (trimmedValue.length > 100) {
-      return Result.err({
-        field: 'platform',
-        message: 'Platform name cannot exceed 100 characters',
-      });
-    }
-
-    return Result.ok(new Platform(trimmedValue));
+    return Result.ok(new Platform(trimmed));
   }
 
   /**

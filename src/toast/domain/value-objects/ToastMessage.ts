@@ -1,6 +1,6 @@
 import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
 import { Result } from '@Shared/domain/result/Result';
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * ToastMessage value object representing the notification text.
@@ -9,15 +9,20 @@ import { Result } from '@Shared/domain/result/Result';
  * - Cannot be empty or whitespace-only
  * - Automatically trims whitespace
  */
-export class ToastMessage {
-  private constructor(private readonly value: string) {}
+export class ToastMessage extends AbstractStringValueObject {
+  private constructor(value: string) {
+    super(value);
+  }
 
-  static create(value: string): Result<ToastMessage, DomainValidationErrorInterface> {
-    if (!value || value.trim().length === 0) {
-      return Result.err(new NotEmptyError('message'));
+  public static create(value: string): Result<ToastMessage, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('message', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
 
-    return Result.ok(new ToastMessage(value.trim()));
+    return Result.ok(new ToastMessage(trimmed));
   }
 
   getValue(): string {

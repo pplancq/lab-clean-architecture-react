@@ -1,11 +1,7 @@
 import { Game } from '@Collection/domain/entities/Game';
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
 import { GameDTO } from '../dtos/GameDTO';
-
-type GameError = {
-  field: string;
-  message: string;
-};
 
 /**
  * Mapper between Game entity and GameDTO
@@ -54,7 +50,7 @@ export class GameMapper {
    * }
    * ```
    */
-  static toDomain(dto: GameDTO): Result<Game, GameError> {
+  static toDomain(dto: GameDTO): Result<Game, DomainValidationErrorInterface> {
     return Game.create({
       id: dto.id,
       title: dto.title,

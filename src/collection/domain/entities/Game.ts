@@ -1,3 +1,4 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
 import { GameId } from '../value-objects/GameId';
 import { GameTitle } from '../value-objects/GameTitle';
@@ -5,11 +6,6 @@ import { GameDescription } from '../value-objects/GameDescription';
 import { Platform } from '../value-objects/Platform';
 import { Format } from '../value-objects/Format';
 import { Status, StatusType } from '../value-objects/Status';
-
-type GameError = {
-  field: string;
-  message: string;
-};
 
 /**
  * Props for creating a Game entity (using primitives)
@@ -95,7 +91,7 @@ export class Game {
    * @param props - Game properties (primitives that will be converted to value objects)
    * @returns Result containing Game or validation error from any value object
    */
-  static create(props: GameCreateProps): Result<Game, GameError> {
+  static create(props: GameCreateProps): Result<Game, DomainValidationErrorInterface> {
     // Create and validate GameId
     const gameIdResult = GameId.create(props.id);
     if (gameIdResult.isErr()) {
@@ -184,7 +180,7 @@ export class Game {
    * @param newTitle - New title string for the game
    * @returns Result with void on success or validation error
    */
-  updateTitle(newTitle: string): Result<void, GameError> {
+  updateTitle(newTitle: string): Result<void, DomainValidationErrorInterface> {
     const titleResult = GameTitle.create(newTitle);
     if (titleResult.isErr()) {
       return Result.err(titleResult.getError());
@@ -200,7 +196,7 @@ export class Game {
    * @param newDescription - New description string for the game
    * @returns Result with void on success or validation error
    */
-  updateDescription(newDescription: string): Result<void, GameError> {
+  updateDescription(newDescription: string): Result<void, DomainValidationErrorInterface> {
     const descriptionResult = GameDescription.create(newDescription);
     if (descriptionResult.isErr()) {
       return Result.err(descriptionResult.getError());
@@ -225,7 +221,7 @@ export class Game {
    * @param newStatus - New status string for the game
    * @returns Result with void on success or validation error
    */
-  updateStatus(newStatus: string): Result<void, GameError> {
+  updateStatus(newStatus: string): Result<void, DomainValidationErrorInterface> {
     const statusResult = Status.create(newStatus);
     if (statusResult.isErr()) {
       return Result.err(statusResult.getError());

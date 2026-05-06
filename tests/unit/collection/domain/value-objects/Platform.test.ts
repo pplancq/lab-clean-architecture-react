@@ -41,7 +41,7 @@ describe('Platform', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('platform');
-      expect(error.message).toBe('Platform name is required');
+      expect(error.message).toBe('platform cannot be empty');
     });
 
     it('should return error for whitespace-only platform', () => {
@@ -50,7 +50,7 @@ describe('Platform', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('platform');
-      expect(error.message).toBe('Platform name is required');
+      expect(error.message).toBe('platform cannot be empty');
     });
 
     it('should return error for platform name exceeding 100 characters', () => {
@@ -60,7 +60,7 @@ describe('Platform', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('platform');
-      expect(error.message).toBe('Platform name cannot exceed 100 characters');
+      expect(error.message).toBe('platform cannot exceed 100 characters');
     });
 
     it('should accept platform name with exactly 100 characters', () => {

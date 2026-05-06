@@ -34,7 +34,7 @@ describe('Status', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('status');
-      expect(error.message).toContain('Invalid status');
+      expect(error.message).toContain('status must be one of');
       expect(error.message).toContain('Owned');
     });
   });

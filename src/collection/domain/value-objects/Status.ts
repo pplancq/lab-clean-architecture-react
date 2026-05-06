@@ -1,3 +1,5 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
+import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
 import { Result } from '@Shared/domain/result/Result';
 
 export enum StatusType {
@@ -6,11 +8,6 @@ export enum StatusType {
   SOLD = 'Sold',
   LOANED = 'Loaned',
 }
-
-type StatusError = {
-  field: 'status';
-  message: string;
-};
 
 /**
  * Status value object representing the game ownership status
@@ -41,15 +38,13 @@ export class Status {
    * @param value - The status name (case-insensitive)
    * @returns Result containing Status or validation error
    */
-  static create(value: string): Result<Status, StatusError> {
+  public static create(value: string): Result<Status, DomainValidationErrorInterface> {
     const trimmedValue = value?.trim() ?? '';
-    const statusValue = Object.values(StatusType).find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+    const allowedValues = Object.values(StatusType);
+    const statusValue = allowedValues.find(s => s.toLowerCase() === trimmedValue.toLowerCase());
 
     if (!statusValue) {
-      return Result.err({
-        field: 'status',
-        message: `Invalid status: ${value}. Valid statuses are: ${Object.values(StatusType).join(', ')}`,
-      });
+      return Result.err(new AllowedValuesError('status', allowedValues));
     }
 
     return Result.ok(new Status(statusValue as StatusType));
@@ -61,7 +56,7 @@ export class Status {
    * @param value - The status type enum
    * @returns Status instance
    */
-  static createFromEnum(value: StatusType): Status {
+  public static createFromEnum(value: StatusType): Status {
     return new Status(value);
   }
 

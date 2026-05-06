@@ -147,7 +147,7 @@ describe('GameForm', () => {
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('Game title cannot be empty')).toBeInTheDocument();
+        expect(screen.getByText('title cannot be empty')).toBeInTheDocument();
       });
     });
 
@@ -159,7 +159,7 @@ describe('GameForm', () => {
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('Platform name is required')).toBeInTheDocument();
+        expect(screen.getByText('platform cannot be empty')).toBeInTheDocument();
       });
     });
 
@@ -171,7 +171,7 @@ describe('GameForm', () => {
 
       await waitFor(() => {
         const titleInput = screen.getByRole('textbox', { name: /game title/i });
-        expect(titleInput).toHaveAccessibleErrorMessage('Game title cannot be empty');
+        expect(titleInput).toHaveAccessibleErrorMessage('title cannot be empty');
       });
     });
 

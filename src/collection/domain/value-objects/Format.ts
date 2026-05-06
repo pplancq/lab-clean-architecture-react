@@ -1,9 +1,6 @@
+import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 import { Result } from '@Shared/domain/result/Result';
-
-type FormatError = {
-  field: 'format';
-  message: string;
-};
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 
 /**
  * Format value object representing the game format
@@ -25,11 +22,9 @@ type FormatError = {
  * }
  * ```
  */
-export class Format {
-  private readonly value: string;
-
+export class Format extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
   /**
@@ -38,24 +33,20 @@ export class Format {
    * @param value - The format name
    * @returns Result containing Format or validation error
    */
-  static create(value: string): Result<Format, FormatError> {
-    const trimmedValue = value?.trim() ?? '';
+  public static create(value: string): Result<Format, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
 
-    if (trimmedValue.length === 0) {
-      return Result.err({
-        field: 'format',
-        message: 'Format name is required',
-      });
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('format', trimmed);
+    if (notEmptyCheck.isErr()) {
+      return Result.err(notEmptyCheck.getError());
     }
 
-    if (trimmedValue.length > 50) {
-      return Result.err({
-        field: 'format',
-        message: 'Format name cannot exceed 50 characters',
-      });
+    const maxLengthCheck = AbstractStringValueObject.maxLength('format', trimmed, 50);
+    if (maxLengthCheck.isErr()) {
+      return Result.err(maxLengthCheck.getError());
     }
 
-    return Result.ok(new Format(trimmedValue));
+    return Result.ok(new Format(trimmed));
   }
 
   /**

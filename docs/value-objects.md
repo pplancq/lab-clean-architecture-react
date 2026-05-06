@@ -15,27 +15,28 @@ Value Objects are immutable objects that represent domain concepts through their
 
 ### Structure
 
+Value Objects extend the appropriate abstract base class from `@Shared/domain/value-objects/` and compose validation helpers in their static `create` factory.
+
 ```typescript
+import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
 import { Result } from '@Shared/domain/result/Result';
-import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
 import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
 
-export class MyValue {
-  private readonly value: string;
-
+export class GameTitle extends AbstractStringValueObject {
   private constructor(value: string) {
-    this.value = value;
+    super(value);
   }
 
-  static create(value: string): Result<MyValue, DomainValidationErrorInterface> {
-    if (!value || value.trim().length === 0) {
-      return Result.err(new NotEmptyError('myValue'));
-    }
-
-    return Result.ok(new MyValue(value.trim()));
+  public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+    if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
+    const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+    if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
+    return Result.ok(new GameTitle(trimmed));
   }
 
-  getMyValue(): string {
+  public getTitle(): string {
     return this.value;
   }
 }
@@ -43,11 +44,44 @@ export class MyValue {
 
 ### Key Points
 
+- **Extends abstract base**: `AbstractStringValueObject` or `AbstractNumberValueObject` from `@Shared/domain/value-objects/`
 - **Private constructor**: Prevents invalid instantiation
 - **Static factory method**: Returns `Result<T, DomainValidationErrorInterface>` for validation
-- **Immutable properties**: All fields are `readonly`
-- **Single getter**: Returns the primitive value
+- **Immutable properties**: All fields are `readonly` (via `protected readonly value` on the base)
+- **Single getter**: Returns the primitive value with a domain-specific name
 - **Typed errors**: Use `DomainValidationError` subclasses — never plain objects
+
+## Abstract Base Classes
+
+Two abstract base classes are provided in `src/shared/domain/value-objects/`:
+
+### `AbstractStringValueObject`
+
+For all string-based VOs. Provides `protected static` helpers — accessible only within subclasses, not from external code:
+
+| Helper      | Signature                                             | Description                                       |
+| ----------- | ----------------------------------------------------- | ------------------------------------------------- |
+| `trim`      | `(value: string): string`                             | Trims whitespace; returns `''` for null/undefined |
+| `notEmpty`  | `(field, value): Result<string, NotEmptyError>`       | Fails if the trimmed string is empty              |
+| `maxLength` | `(field, value, max): Result<string, MaxLengthError>` | Fails if string exceeds `max` characters          |
+
+### `AbstractNumberValueObject`
+
+For numeric VOs. Provides one `protected static` helper:
+
+| Helper           | Signature                                             | Description                                                      |
+| ---------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
+| `positiveNumber` | `(field, value): Result<number, PositiveNumberError>` | Fails if value is not finite or `< 1` (handles `NaN`/`Infinity`) |
+
+### Why `protected static`?
+
+Helpers are `protected` to enforce the VO public API contract: only `create()` and `getXXX()` are visible to callers. The validation helpers are implementation details of the class hierarchy and must not be called directly from outside a VO subclass.
+
+### When NOT to extend the abstract base
+
+`Status` does **not** extend `AbstractStringValueObject` because its validation is enum-based (allowed values), not a string-length concern. Use `AllowedValuesError` directly for enum VOs.
+
+See [ADR-018](./architecture/adr/ADR-018-abstract-value-object-base-classes.md) for rationale.
 
 ## Naming Conventions
 
@@ -103,28 +137,38 @@ Use `DomainValidationError` subclasses from `@Shared/domain/errors/` — never p
 ### Required String Values
 
 ```typescript
-import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
+public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
+  const trimmed = AbstractStringValueObject.trim(value);
+  const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+  if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
+  return Result.ok(new GameTitle(trimmed));
+  // NotEmptyError message: "title cannot be empty"
+}
+```
 
-static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
-  if (!value || value.trim().length === 0) {
-    return Result.err(new NotEmptyError('title'));
-    // → message: "title cannot be empty"
-  }
-  return Result.ok(new GameTitle(value.trim()));
+### Required String Values with Max Length
+
+```typescript
+public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
+  const trimmed = AbstractStringValueObject.trim(value);
+  const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+  if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
+  const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+  if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
+  return Result.ok(new GameTitle(trimmed));
+  // MaxLengthError message: "title cannot exceed 200 characters"
 }
 ```
 
 ### Numeric Values (must be positive)
 
 ```typescript
-import { PositiveNumberError } from '@Shared/domain/errors/PositiveNumberError';
-
-static create(value: number): Result<ToastDuration, DomainValidationErrorInterface> {
-  if (value <= 0) {
-    return Result.err(new PositiveNumberError('duration'));
-    // → message: "duration must be a positive number"
-  }
+public static create(value: number): Result<ToastDuration, DomainValidationErrorInterface> {
+  const check = AbstractNumberValueObject.positiveNumber('duration', value);
+  if (check.isErr()) return Result.err(check.getError());
   return Result.ok(new ToastDuration(value));
+  // PositiveNumberError message: "duration must be a positive number"
+  // Also handles NaN and Infinity correctly
 }
 ```
 
@@ -132,42 +176,54 @@ static create(value: number): Result<ToastDuration, DomainValidationErrorInterfa
 
 ```typescript
 import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+import type { ToastTypeValue } from '../entities/ToastInterface';
 
-const ALLOWED = ['success', 'info', 'warning', 'error'] as const;
+export class ToastType {
+  private static readonly VALID_TYPES: ToastTypeValue[] = ['success', 'error', 'info', 'warning'];
 
-static create(value: string): Result<ToastType, DomainValidationErrorInterface> {
-  if (!ALLOWED.includes(value as ToastTypeValue)) {
-    return Result.err(new AllowedValuesError('type', ALLOWED));
-    // → message: "type must be one of: success, info, warning, error"
+  private constructor(private readonly value: ToastTypeValue) {}
+
+  static create(value: string): Result<ToastType, DomainValidationErrorInterface> {
+    if (!this.VALID_TYPES.includes(value as ToastTypeValue)) {
+      return Result.err(new AllowedValuesError('type', this.VALID_TYPES));
+      // → message: "type must be one of: success, error, info, warning"
+    }
+    return Result.ok(new ToastType(value as ToastTypeValue));
   }
-  return Result.ok(new ToastType(value as ToastTypeValue));
+
+  getValue(): ToastTypeValue {
+    return this.value;
+  }
 }
 ```
 
 ### Optional String Values
 
 ```typescript
-static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
-  // Empty is valid (optional)
-  if (value.length > 1000) {
-    return Result.err(new DomainValidationError('description', 'Description cannot exceed 1000 characters'));
-  }
-  return Result.ok(new GameDescription(value));
+public static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
+  const trimmed = AbstractStringValueObject.trim(value);
+  // Empty is valid (optional field)
+  const maxLengthCheck = AbstractStringValueObject.maxLength('description', trimmed, 1000);
+  if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
+  return Result.ok(new GameDescription(trimmed));
+  // MaxLengthError message: "description cannot exceed 1000 characters"
 }
 ```
 
 ### Available Error Classes
 
-| Class                   | Location                 | Default message pattern                | Use case              |
-| ----------------------- | ------------------------ | -------------------------------------- | --------------------- |
-| `NotEmptyError`         | `@Shared/domain/errors/` | `"${field} cannot be empty"`           | Required strings      |
-| `PositiveNumberError`   | `@Shared/domain/errors/` | `"${field} must be a positive number"` | Numeric constraints   |
-| `AllowedValuesError`    | `@Shared/domain/errors/` | `"${field} must be one of: …"`         | Enum/fixed-set values |
-| `DomainValidationError` | `@Shared/domain/errors/` | Custom message required                | Other constraints     |
+| Class                   | Location                 | Default message pattern                      | Use case              |
+| ----------------------- | ------------------------ | -------------------------------------------- | --------------------- |
+| `NotEmptyError`         | `@Shared/domain/errors/` | `"${field} cannot be empty"`                 | Required strings      |
+| `MaxLengthError`        | `@Shared/domain/errors/` | `"${field} cannot exceed ${max} characters"` | String length limit   |
+| `PositiveNumberError`   | `@Shared/domain/errors/` | `"${field} must be a positive number"`       | Numeric constraints   |
+| `AllowedValuesError`    | `@Shared/domain/errors/` | `"${field} must be one of: …"`               | Enum/fixed-set values |
+| `DomainValidationError` | `@Shared/domain/errors/` | Custom message required                      | Other constraints     |
 
 All classes extend `DomainValidationError extends Error implements DomainValidationErrorInterface`. They accept an optional last argument to override the default message.
 
-See [ADR-015](./architecture/adr/ADR-015-domain-validation-error-hierarchy.md) for rationale.
+See [ADR-015](./architecture/adr/ADR-015-domain-validation-error-hierarchy.md) for error hierarchy rationale.
+See [ADR-018](./architecture/adr/ADR-018-abstract-value-object-base-classes.md) for abstract base class rationale.
 
 ## Usage in Entities
 
@@ -204,7 +260,7 @@ export class Game {
 
 ```typescript
 export class Game {
-  static create(props: GameCreateProps): Result<Game, GameError> {
+  static create(props: GameCreateProps): Result<Game, DomainValidationErrorInterface> {
     // Accepts primitives
     const { id, title, platform, format, status } = props;
 
@@ -239,7 +295,7 @@ export class Game {
 
 ```typescript
 export class Game {
-  updateTitle(newTitle: string): Result<void, GameError> {
+  updateTitle(newTitle: string): Result<void, DomainValidationErrorInterface> {
     const titleResult = GameTitle.create(newTitle);
     if (titleResult.isErr()) {
       return Result.err(titleResult.getError());
@@ -249,7 +305,7 @@ export class Game {
     return Result.ok(undefined);
   }
 
-  updateStatus(newStatus: string): Result<void, GameError> {
+  updateStatus(newStatus: string): Result<void, DomainValidationErrorInterface> {
     const statusResult = Status.create(newStatus);
     if (statusResult.isErr()) {
       return Result.err(statusResult.getError());
@@ -315,15 +371,19 @@ const validateTitle = (value: string) => {
 ### ID Value Objects
 
 ```typescript
-class GameId {
-  static create(value: string): Result<GameId, GameIdError> {
-    if (!value || value.trim().length === 0) {
-      return Result.err({ field: 'id', message: 'ID is required' });
-    }
-    return Result.ok(new GameId(value));
+export class GameId extends AbstractStringValueObject {
+  private constructor(value: string) {
+    super(value);
   }
 
-  getId(): string {
+  public static create(value: string): Result<GameId, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty('id', trimmed);
+    if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
+    return Result.ok(new GameId(trimmed));
+  }
+
+  public getId(): string {
     return this.value;
   }
 }
@@ -332,19 +392,20 @@ class GameId {
 ### Optional Text Value Objects
 
 ```typescript
-class GameDescription {
-  static create(value: string): Result<GameDescription, GameDescriptionError> {
-    // Empty is valid
-    if (value.length > 1000) {
-      return Result.err({
-        field: 'description',
-        message: 'Description too long',
-      });
-    }
-    return Result.ok(new GameDescription(value));
+export class GameDescription extends AbstractStringValueObject {
+  private constructor(value: string) {
+    super(value);
   }
 
-  getDescription(): string {
+  public static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
+    const trimmed = AbstractStringValueObject.trim(value);
+    // Empty is valid (optional field)
+    const maxLengthCheck = AbstractStringValueObject.maxLength('description', trimmed, 1000);
+    if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
+    return Result.ok(new GameDescription(trimmed));
+  }
+
+  public getDescription(): string {
     return this.value;
   }
 }
@@ -352,19 +413,35 @@ class GameDescription {
 
 ### Enum Value Objects
 
+Enum VOs do **not** extend `AbstractStringValueObject` — they use `AllowedValuesError` directly:
+
 ```typescript
-enum StatusType {
-  Active = 'Active',
-  Inactive = 'Inactive',
+import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+
+export enum StatusType {
+  OWNED = 'Owned',
+  WISHLIST = 'Wishlist',
+  SOLD = 'Sold',
+  LOANED = 'Loaned',
 }
 
-class Status {
-  static create(value: string): Result<Status, StatusError> {
-    const normalized = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-    if (!Object.values(StatusType).includes(normalized as StatusType)) {
-      return Result.err({ field: 'status', message: 'Invalid status' });
+export class Status {
+  private readonly value: StatusType;
+
+  private constructor(value: StatusType) {
+    this.value = value;
+  }
+
+  public static create(value: string): Result<Status, DomainValidationErrorInterface> {
+    const trimmedValue = value?.trim() ?? '';
+    const allowedValues = Object.values(StatusType);
+    const statusValue = allowedValues.find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+
+    if (!statusValue) {
+      return Result.err(new AllowedValuesError('status', allowedValues));
+      // → "status must be one of: Owned, Wishlist, Sold, Loaned"
     }
-    return Result.ok(new Status(normalized as StatusType));
+    return Result.ok(new Status(statusValue as StatusType));
   }
 
   getStatus(): StatusType {
@@ -396,7 +473,7 @@ describe('GameTitle', () => {
 
       expect(result.isErr()).toBeTruthy();
       expect(result.getError().field).toBe('title');
-      expect(result.getError().message).toContain('required');
+      expect(result.getError().message).toContain('cannot be empty');
     });
 
     it('should trim whitespace', () => {
@@ -441,3 +518,5 @@ For each Value Object, test:
 - Domain-Driven Design by Eric Evans
 - [Martin Fowler - Value Object](https://martinfowler.com/bliki/ValueObject.html)
 - Project Result Pattern: [result-pattern.md](./result-pattern.md)
+- [ADR-015 — Domain Validation Error Hierarchy](./architecture/adr/ADR-015-domain-validation-error-hierarchy.md)
+- [ADR-018 — Abstract Base Classes for Value Object Validation](./architecture/adr/ADR-018-abstract-value-object-base-classes.md)

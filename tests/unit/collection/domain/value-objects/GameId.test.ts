@@ -25,7 +25,7 @@ describe('GameId', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('gameId');
-      expect(error.message).toBe('GameId cannot be empty');
+      expect(error.message).toBe('gameId cannot be empty');
     });
 
     it('should return error for whitespace-only string', () => {
@@ -34,7 +34,7 @@ describe('GameId', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('gameId');
-      expect(error.message).toBe('GameId cannot be empty');
+      expect(error.message).toBe('gameId cannot be empty');
     });
   });
 

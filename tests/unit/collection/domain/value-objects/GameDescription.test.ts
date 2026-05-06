@@ -26,7 +26,7 @@ describe('GameDescription', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError();
       expect(error.field).toBe('description');
-      expect(error.message).toBe('Game description cannot exceed 1000 characters');
+      expect(error.message).toBe('description cannot exceed 1000 characters');
     });
 
     it('should accept description with exactly 1000 characters', () => {
