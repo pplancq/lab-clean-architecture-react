@@ -13,7 +13,7 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never', outputFolder: 'test-reports/e2e/html-report' }],
     ['junit', { outputFile: 'test-reports/e2e/junit-report.xml' }],
-    // ['@bdellegrazie/playwright-sonar-reporter', { outputFile: 'test-reports/e2e/sonar-results.xml', sonarcloud: true }],
+    ['@bdellegrazie/playwright-sonar-reporter', { outputFile: 'test-reports/e2e/sonar-results.xml', sonarcloud: true }],
   ],
   globalSetup: 'tests/e2e/utils/playwright.globalSetup.ts',
   globalTeardown: 'tests/e2e/utils/playwright.globalTeardown.ts',
