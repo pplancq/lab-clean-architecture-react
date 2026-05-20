@@ -60,7 +60,7 @@
     "@pplancq/commitlint-config": "^4.0.0",
     "@pplancq/eslint-config": "^6.0.15",
     "@pplancq/postcss-config": "^3.0.5",
-    "@pplancq/prettier-config": "^2.0.2",
+    "@pplancq/prettier-config": "^3.0.0",
     "@pplancq/stylelint-config": "^5.0.3",
     "@rsbuild/core": "^2.0.6",
     "@rsbuild/plugin-eslint": "^2.0.0",
