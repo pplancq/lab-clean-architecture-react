@@ -1,0 +1,26 @@
+name: Update Renovate PR Limits
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: >
+          New limit for prConcurrentLimit and prHourlyLimit (e.g. 5, 0 = unlimited),
+          or "reset" to remove local overrides and restore shared config defaults.
+        required: true
+        type: string
+        default: 'reset'
+
+jobs:
+  update-renovate-limits:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Update Renovate limits
+        uses: pplancq/actions/renovate-update-limits@745b7a9f48e9670336d693310d022866a0e0da53 # v1.1.0
+        with:
+          limit: ${{ inputs.limit }}
