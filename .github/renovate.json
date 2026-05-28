@@ -3,6 +3,6 @@
   "extends": [
     "github>pplancq/renovate-config"
   ],
-  "prConcurrentLimit": 4,
-  "prHourlyLimit": 4
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 3
 }
