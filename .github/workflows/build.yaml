@@ -131,7 +131,7 @@ jobs:
             test-reports/unit/coverage/lcov.info
             test-reports/unit/sonar-report.xml
             test-reports/e2e/coverage/lcov-coverage.info
-  #            test-reports/e2e/sonar-results.xml
+            test-reports/e2e/sonar-results.xml
   sonarcloud:
     name: SonarCloud Scan
     if: always()
