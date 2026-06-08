@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
 import type { RepositoryInterface } from '@Shared/domain/repositories/RepositoryInterface';
+import type { Result } from '@Shared/domain/result/Result';
 import type { Game } from '../entities/Game';
+import type { GameFilterCriteria } from '../entities/GameFilterCriteria';
 
 /**
  * Repository interface for Game entity persistence
@@ -21,4 +23,23 @@ import type { Game } from '../entities/Game';
  * }
  * ```
  */
-export interface GameRepositoryInterface extends RepositoryInterface<Game> {}
+export interface GameRepositoryInterface extends RepositoryInterface<Game> {
+  /**
+   * Finds games matching the provided criteria.
+   * If criteria is empty, returns all games (equivalent to findAll).
+   *
+   * @param criteria - Filter criteria for the search
+   * @returns Promise resolving to Result with array of matching Games on success, or RepositoryError on failure
+   *
+   * @example
+   * ```typescript
+   * const criteria = GameFilterCriteria.create('Mario').unwrap();
+   * const result = await gameRepository.findByCriteria(criteria);
+   * if (result.isOk()) {
+   *   const games = result.unwrap();
+   *   console.log('Found games:', games);
+   * }
+   * ```
+   */
+  findByCriteria(criteria: GameFilterCriteria): Promise<Result<Game[], RepositoryErrorInterface>>;
+}

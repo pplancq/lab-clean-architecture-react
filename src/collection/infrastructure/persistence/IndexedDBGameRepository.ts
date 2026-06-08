@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import type { Game } from '@Collection/domain/entities/Game';
+import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
 import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
 import type { GameDTO } from '@Collection/infrastructure/persistence/dtos/GameDTO';
 import { DeleteError } from '@Shared/domain/repositories/error/DeleteError';
@@ -183,6 +184,56 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
 
         transaction.onerror = () => {
           reject(new DeleteError(transaction.error));
+        };
+      });
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  /**
+   * Finds games matching the provided filter criteria
+   *
+   * Performs case-insensitive substring matching on game titles.
+   *
+   * @param criteria - Filter criteria for the search
+   * @returns Result with array of matching Games (empty if none match), or RepositoryError on failure
+   */
+  async findByCriteria(criteria: GameFilterCriteria): Promise<Result<Game[], RepositoryErrorInterface>> {
+    try {
+      const db = await this.dbService.getDatabase();
+      const transaction = db.transaction(this.dbService.getStoreName(), 'readonly');
+      const store = transaction.objectStore(this.dbService.getStoreName());
+
+      return await new Promise<Result<Game[], RepositoryErrorInterface>>((resolve, reject) => {
+        const request = store.getAll();
+
+        request.onsuccess = () => {
+          const dtos = request.result as GameDTO[];
+          const normalizedTitleFilter = criteria.getTitleFilterNormalized();
+          const games: Game[] = [];
+
+          dtos.forEach(dto => {
+            // If no title filter, include all games
+            if (!normalizedTitleFilter || dto.title.toLowerCase().includes(normalizedTitleFilter)) {
+              const gameResult = GameMapper.toDomain(dto);
+              if (gameResult.isErr()) {
+                reject(
+                  new Error(
+                    `Failed to map DTO to domain: ${gameResult.getError().field} - ${gameResult.getError().message}`,
+                  ),
+                );
+                return;
+              }
+              games.push(gameResult.unwrap());
+            }
+          });
+
+          resolve(Result.ok(games));
+        };
+
+        request.onerror = () => {
+          reject(new FindAllError(request.error));
         };
       });
     } catch (error) {
