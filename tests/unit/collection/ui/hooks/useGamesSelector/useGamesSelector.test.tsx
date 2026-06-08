@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 
-const defaultState: GamesListState = { games: [], isLoading: false, hasError: false, error: null };
+const defaultState: GamesListState = { games: [], isLoading: false, hasError: false, error: null, criteria: null };
 
 const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
   subscribe: vi.fn().mockReturnValue(() => {}),
@@ -23,6 +23,7 @@ const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
   editGame: vi.fn(),
   addGame: vi.fn(),
   deleteGame: vi.fn(),
+  setFilterCriteria: vi.fn(),
 });
 
 const createWrapper = (state: GamesListState) => {

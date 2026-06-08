@@ -1,4 +1,5 @@
 import type { Game } from '@Collection/domain/entities/Game';
+import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
 import type { AbstractObserverInterface } from '@Shared/application/stores/AbstractObserverInterface';
 import type { Result } from '@Shared/domain/result/Result';
 import type { AddGameDTO } from '../dtos/AddGameDTO';
@@ -16,6 +17,7 @@ export interface GamesListState {
   isLoading: boolean;
   hasError: boolean;
   error: string | null;
+  criteria: GameFilterCriteria | null;
 }
 
 /**
@@ -95,4 +97,17 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
    * @returns Promise resolving to Result with void on success
    */
   deleteGame(id: string): Promise<Result<void, ApplicationErrorInterface>>;
+
+  /**
+   * Sets filter criteria and triggers a new fetch with those criteria.
+   * Pass null or empty criteria to reset to showing all games.
+   *
+   * Synchronously marks the list as loading and notifies observers, then
+   * delegates to GetGamesUseCase with the provided criteria. On success,
+   * updates the games map and rebuilds the list snapshot. On failure,
+   * sets error state in the list snapshot.
+   *
+   * @param criteria - Filter criteria to apply (null to reset)
+   */
+  setFilterCriteria(criteria: GameFilterCriteria | null): void;
 }

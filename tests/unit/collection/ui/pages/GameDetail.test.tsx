@@ -33,11 +33,12 @@ const createEntry = (override: Partial<GameMapEntryState> = {}): GameMapEntrySta
 
 const createStoreMock = (entry: GameMapEntryState): GamesStoreInterface => ({
   subscribe: vi.fn().mockReturnValue(() => {}),
-  getGamesList: vi.fn().mockReturnValue({ games: [], isLoading: false, hasError: false, error: null }),
+  getGamesList: vi.fn().mockReturnValue({ games: [], isLoading: false, hasError: false, error: null, criteria: null }),
   getGame: vi.fn().mockReturnValue(entry),
   editGame: vi.fn(),
   deleteGame: vi.fn().mockResolvedValue(Result.ok(undefined)),
   addGame: vi.fn(),
+  setFilterCriteria: vi.fn(),
 });
 
 const createWrapper =

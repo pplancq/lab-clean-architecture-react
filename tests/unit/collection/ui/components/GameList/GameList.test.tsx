@@ -33,6 +33,7 @@ const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
   editGame: vi.fn(),
   deleteGame: vi.fn(),
   addGame: vi.fn(),
+  setFilterCriteria: vi.fn(),
 });
 
 const createWrapper =
@@ -60,7 +61,7 @@ const renderGameList = (state: GamesListState) => {
 describe('GameList', () => {
   describe('loading state', () => {
     it('should show a loading status while fetching', async () => {
-      renderGameList({ games: [], isLoading: true, hasError: false, error: null });
+      renderGameList({ games: [], isLoading: true, hasError: false, error: null, criteria: null });
 
       const status = screen.getByRole('status');
       expect(status).toBeInTheDocument();
@@ -70,7 +71,7 @@ describe('GameList', () => {
 
   describe('empty state', () => {
     it('should show empty state message when no games exist', async () => {
-      renderGameList({ games: [], isLoading: false, hasError: false, error: null });
+      renderGameList({ games: [], isLoading: false, hasError: false, error: null, criteria: null });
 
       expect(screen.getByText('Add your first game!')).toBeInTheDocument();
     });
@@ -83,6 +84,7 @@ describe('GameList', () => {
         isLoading: false,
         hasError: true,
         error: 'Unable to load games. Please try again.',
+        criteria: null,
       });
 
       const alert = screen.getByRole('alert');
@@ -93,7 +95,7 @@ describe('GameList', () => {
   describe('games list rendering', () => {
     it('should render a list with game cards when games exist', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toBeInTheDocument();
@@ -103,7 +105,7 @@ describe('GameList', () => {
 
     it('should display game title, platform and format for each card', async () => {
       const games = [createGame('1', 'Zelda: Breath of the Wild', 'Nintendo Switch', 'Physical')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByText('Zelda: Breath of the Wild')).toBeInTheDocument();
@@ -114,7 +116,7 @@ describe('GameList', () => {
 
     it('should announce the game count for screen readers', async () => {
       const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByText(/2 games in collection/i)).toBeInTheDocument();
@@ -123,7 +125,7 @@ describe('GameList', () => {
 
     it('should use singular "game" when collection has one item', async () => {
       const games = [createGame('1', 'Zelda')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByText(/1 game in collection/i)).toBeInTheDocument();
@@ -134,7 +136,7 @@ describe('GameList', () => {
   describe('accessibility', () => {
     it('should have an accessible label on each game card link', async () => {
       const games = [createGame('1', 'Zelda', 'Nintendo Switch', 'Physical')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByRole('link', { name: /zelda/i })).toHaveAccessibleName();
@@ -143,7 +145,7 @@ describe('GameList', () => {
 
     it('should have an accessible list label', async () => {
       const games = [createGame('1', 'Zelda')];
-      renderGameList({ games, isLoading: false, hasError: false, error: null });
+      renderGameList({ games, isLoading: false, hasError: false, error: null, criteria: null });
 
       await waitFor(() => {
         expect(screen.getByRole('list', { name: /game collection/i })).toHaveAccessibleName('Game collection');

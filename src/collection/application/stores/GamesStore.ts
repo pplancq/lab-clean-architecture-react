@@ -4,6 +4,7 @@ import type { EditGameUseCaseInterface } from '@Collection/application/use-cases
 import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
 import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
 import type { Game } from '@Collection/domain/entities/Game';
+import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
 import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
 import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
 import type { Result } from '@Shared/domain/result/Result';
@@ -57,7 +58,11 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   private listError: string | null = null;
 
-  private listSnapshot: GamesListState = { games: [], isLoading: false, hasError: false, error: null };
+  private filterCriteria: GameFilterCriteria | null = null;
+
+  private filteredGameIds: Set<string> | null = null;
+
+  private listSnapshot: GamesListState = { games: [], isLoading: false, hasError: false, error: null, criteria: null };
 
   /**
    * Object Calisthenics allows a maximum of 2 instance variables, but this
@@ -85,7 +90,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     if (!this.hasFetchedList) {
       this.hasFetchedList = true;
       this.listIsLoading = true;
-      this.listSnapshot = { games: [], isLoading: true, hasError: false, error: null };
+      this.listSnapshot = { games: [], isLoading: true, hasError: false, error: null, criteria: this.filterCriteria };
       queueMicrotask(() => {
         this.fetchGames();
       });
@@ -185,13 +190,36 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     return result;
   }
 
+  setFilterCriteria(criteria: GameFilterCriteria | null): void {
+    this.filterCriteria = criteria;
+    this.hasFetchedList = true;
+    this.listIsLoading = true;
+    this.listHasError = false;
+    this.listError = null;
+    this.commit(false);
+    queueMicrotask(() => {
+      this.fetchGames();
+    });
+  }
+
   private async fetchGames(): Promise<void> {
-    const result = await this.getGamesUseCase.execute();
+    const result = this.filterCriteria
+      ? await this.getGamesUseCase.execute(this.filterCriteria)
+      : await this.getGamesUseCase.execute();
 
     this.listIsLoading = false;
 
     if (result.isOk()) {
-      result.unwrap().forEach(game => {
+      const games = result.unwrap();
+
+      // When filtering, store the list of matching IDs
+      if (this.filterCriteria) {
+        this.filteredGameIds = new Set(games.map(g => g.getId()));
+      } else {
+        this.filteredGameIds = null;
+      }
+
+      games.forEach(game => {
         const existing = this.gamesMap.get(game.getId());
         if (!existing || existing.isLazy) {
           this.setEntry(game.getId(), game, { isLazy: true });
@@ -259,12 +287,22 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     this.listSnapshot = {
       games: gamesChanged
         ? Array.from(this.gamesMap.values())
-            .filter(e => e.data !== null && !e.hasError)
+            .filter(e => {
+              if (e.data === null || e.hasError) {
+                return false;
+              }
+              // If filtering is active, only include games in the filtered set
+              if (this.filteredGameIds !== null) {
+                return this.filteredGameIds.has(e.data.getId());
+              }
+              return true;
+            })
             .map(e => e.data as Game)
         : this.listSnapshot.games,
       isLoading: this.listIsLoading,
       hasError: this.listHasError,
       error: this.listError,
+      criteria: this.filterCriteria,
     };
     this.notifyObservers();
   }
