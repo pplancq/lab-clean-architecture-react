@@ -192,6 +192,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
   setFilterCriteria(criteria: GameFilterCriteria | null): void {
     this.filterCriteria = criteria;
+    this.filteredGameIds = null;
     this.hasFetchedList = true;
     this.listIsLoading = true;
     this.listHasError = false;

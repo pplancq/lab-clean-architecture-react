@@ -28,7 +28,7 @@ import type { GetGamesUseCaseInterface } from './GetGamesUseCaseInterface';
  * @example
  * ```typescript
  * // Get filtered games
- * const criteria = GameFilterCriteria.create('Mario').unwrap();
+ * const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
  * const result = await getGamesUseCase.execute(criteria);
  * if (result.isOk()) {
  *   const games = result.unwrap();
