@@ -25,6 +25,7 @@ describe('GetGamesUseCase', () => {
       save: vi.fn(),
       findById: vi.fn(),
       findAll: vi.fn(),
+      findByCriteria: vi.fn(),
       delete: vi.fn(),
     };
 
@@ -76,6 +77,62 @@ describe('GetGamesUseCase', () => {
       expect(mockGameRepository.save).not.toHaveBeenCalled();
       expect(mockGameRepository.findById).not.toHaveBeenCalled();
       expect(mockGameRepository.delete).not.toHaveBeenCalled();
+    });
+
+    it('should call findByCriteria when criteria is provided', async () => {
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
+      const games = [createValidGame('game-1')];
+      vi.mocked(mockGameRepository.findByCriteria).mockResolvedValue(Result.ok(games));
+
+      const result = await getGamesUseCase.execute(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      expect(result.unwrap()).toStrictEqual(games);
+      expect(mockGameRepository.findByCriteria).toHaveBeenCalledTimes(1);
+      expect(mockGameRepository.findByCriteria).toHaveBeenCalledWith(criteria);
+      expect(mockGameRepository.findAll).not.toHaveBeenCalled();
+    });
+
+    it('should call findAll with empty criteria', async () => {
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({}).unwrap();
+      const games = [createValidGame('game-1'), createValidGame('game-2')];
+      vi.mocked(mockGameRepository.findAll).mockResolvedValue(Result.ok(games));
+
+      const result = await getGamesUseCase.execute(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      expect(result.unwrap()).toStrictEqual(games);
+      expect(mockGameRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(mockGameRepository.findByCriteria).not.toHaveBeenCalled();
+    });
+
+    it('should return RepositoryError when findByCriteria fails', async () => {
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
+      const repoError = { message: 'IndexedDB unavailable', type: 'Unknown', metadata: {} };
+      vi.mocked(mockGameRepository.findByCriteria).mockResolvedValue(Result.err(repoError));
+
+      const result = await getGamesUseCase.execute(criteria);
+
+      expect(result.isErr()).toBeTruthy();
+      const error = result.getError() as RepositoryError;
+      expect(error).toBeInstanceOf(RepositoryError);
+      expect(error.type).toBe('Repository');
+      expect(error.message).toContain('Failed to retrieve games');
+      expect(error.message).toContain('IndexedDB unavailable');
+    });
+
+    it('should return empty array when no games match criteria', async () => {
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'NonExistent' }).unwrap();
+      vi.mocked(mockGameRepository.findByCriteria).mockResolvedValue(Result.ok([]));
+
+      const result = await getGamesUseCase.execute(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      expect(result.unwrap()).toStrictEqual([]);
     });
   });
 });

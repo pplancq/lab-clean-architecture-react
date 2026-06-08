@@ -29,6 +29,7 @@ describe('EditGameUseCase', () => {
       save: vi.fn(),
       findById: vi.fn(),
       findAll: vi.fn(),
+      findByCriteria: vi.fn(),
       delete: vi.fn(),
     };
 
