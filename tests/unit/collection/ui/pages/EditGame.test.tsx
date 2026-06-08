@@ -41,11 +41,12 @@ const createStoreMock = (
   editGameMock = vi.fn().mockResolvedValue(Result.ok(createGame())),
 ): GamesStoreInterface => ({
   subscribe: vi.fn().mockReturnValue(() => {}),
-  getGamesList: vi.fn().mockReturnValue({ games: [], isLoading: false, hasError: false, error: null }),
+  getGamesList: vi.fn().mockReturnValue({ games: [], isLoading: false, hasError: false, error: null, criteria: null }),
   getGame: vi.fn().mockReturnValue(entry),
   editGame: editGameMock,
   addGame: vi.fn(),
   deleteGame: vi.fn(),
+  setFilterCriteria: vi.fn(),
 });
 
 const createWrapper =

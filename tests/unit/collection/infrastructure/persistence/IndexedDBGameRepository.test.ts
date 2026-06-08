@@ -525,6 +525,183 @@ describe('IndexedDBGameRepository', () => {
     });
   });
 
+  describe('findByCriteria', () => {
+    it('should return all games when criteria is empty', async () => {
+      const game1 = Game.create({
+        id: 'game-1',
+        title: 'Super Mario Bros',
+        description: 'Classic platformer',
+        platform: 'Nintendo',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game2 = Game.create({
+        id: 'game-2',
+        title: 'The Legend of Zelda',
+        description: 'Adventure game',
+        platform: 'Nintendo',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      await repository.save(game1);
+      await repository.save(game2);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({}).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(2);
+    });
+
+    it('should return games matching search text (case-insensitive)', async () => {
+      const game1 = Game.create({
+        id: 'game-1',
+        title: 'Super Mario Bros',
+        description: 'Classic platformer',
+        platform: 'Nintendo',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game2 = Game.create({
+        id: 'game-2',
+        title: 'Mario Kart',
+        description: 'Racing game',
+        platform: 'Nintendo',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game3 = Game.create({
+        id: 'game-3',
+        title: 'The Legend of Zelda',
+        description: 'Adventure game',
+        platform: 'Nintendo',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      await repository.save(game1);
+      await repository.save(game2);
+      await repository.save(game3);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'mario' }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(2);
+      expect(games.some(g => g.getId() === 'game-1')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-2')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-3')).toBeFalsy();
+    });
+
+    it('should handle uppercase search text', async () => {
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Super Mario Bros',
+        description: 'Classic platformer',
+        platform: 'Nintendo',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'MARIO' }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(1);
+      expect(games[0].getId()).toBe('game-1');
+    });
+
+    it('should return empty array when no games match', async () => {
+      const game = Game.create({
+        id: 'game-1',
+        title: 'The Legend of Zelda',
+        description: 'Adventure game',
+        platform: 'Nintendo',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Wishlist',
+      }).unwrap();
+
+      await repository.save(game);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(0);
+    });
+
+    it('should return empty array when database is empty', async () => {
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(0);
+    });
+
+    it('should perform substring matching', async () => {
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Super Mario Bros',
+        description: 'Classic platformer',
+        platform: 'Nintendo',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'uper' }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(1);
+    });
+
+    it('should return FindAllError when IndexedDB request fails', async () => {
+      const failingRepo = new IndexedDBGameRepository(createMockDbServiceWithNullRequestError());
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'Mario' }).unwrap();
+
+      const result = await failingRepo.findByCriteria(criteria);
+
+      expect(result.isErr()).toBeTruthy();
+      expect(result.getError()).toBeInstanceOf(FindAllError);
+    });
+  });
+
   describe('IndexedDB schema', () => {
     it('should create database with correct schema', async () => {
       // Trigger database creation

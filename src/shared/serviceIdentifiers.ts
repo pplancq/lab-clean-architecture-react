@@ -19,4 +19,9 @@ export const SHARED_SERVICES = Object.freeze({
    * Notification service for displaying user-facing messages (toast, etc.)
    */
   NotificationService: Symbol.for('Shared.NotificationService'),
+
+  /**
+   * Debounce service for scheduling stable delayed callbacks
+   */
+  DebounceService: Symbol.for('Shared.DebounceService'),
 } as const);

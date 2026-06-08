@@ -75,7 +75,13 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      expect(store.getGamesList()).toStrictEqual({ games: [], isLoading: true, hasError: false, error: null });
+      expect(store.getGamesList()).toStrictEqual({
+        games: [],
+        isLoading: true,
+        hasError: false,
+        error: null,
+        criteria: null,
+      });
 
       await flushPromises();
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
@@ -95,7 +101,13 @@ describe('GamesStore', () => {
       store.getGamesList();
       await flushPromises();
 
-      expect(store.getGamesList()).toStrictEqual({ games, isLoading: false, hasError: false, error: null });
+      expect(store.getGamesList()).toStrictEqual({
+        games,
+        isLoading: false,
+        hasError: false,
+        error: null,
+        criteria: null,
+      });
     });
 
     it('should set error on use case failure', async () => {
@@ -116,6 +128,7 @@ describe('GamesStore', () => {
         isLoading: false,
         hasError: true,
         error: 'Unable to load games. Please try again.',
+        criteria: null,
       });
     });
 
