@@ -1,4 +1,5 @@
 import { GameList } from '@Collection/ui/components/GameList/GameList';
+import { GameSearch } from '@Collection/ui/components/GameSearch/GameSearch';
 import { Grid, Title } from '@pplancq/shelter-ui-react';
 import type { RouteObject } from 'react-router';
 
@@ -14,6 +15,7 @@ const Home = () => {
           'desktop-small': 12,
         }}
       />
+      <GameSearch />
       <GameList />
     </>
   );
