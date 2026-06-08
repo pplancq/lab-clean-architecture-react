@@ -1,10 +1,10 @@
 import { serviceCollection } from '@Collection/serviceCollection';
-import { sharedServiceCollection } from '@Shared/serviceCollection';
+import { serviceShared } from '@Shared/serviceShared';
 import { serviceToast } from '@Toast/serviceCollection';
 import { Container } from 'inversify';
 
 export const serviceContainer = new Container();
 
 serviceContainer.load(serviceToast);
-serviceContainer.load(sharedServiceCollection);
+serviceContainer.load(serviceShared);
 serviceContainer.load(serviceCollection);

@@ -6,10 +6,35 @@ const mocks = vi.hoisted(() => ({
   setFilterCriteria: vi.fn(),
 }));
 
+const debounceTimers = new WeakMap<() => void, ReturnType<typeof setTimeout>>();
+
+const debounceService = {
+  debounce: vi.fn(<A extends unknown[]>(callback: (...args: A) => void, delay: number) => {
+    return ((...args: A) => {
+      const timeoutId = debounceTimers.get(callback);
+
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+
+      const nextTimeoutId = setTimeout(() => {
+        debounceTimers.delete(callback);
+        callback(...args);
+      }, delay);
+
+      debounceTimers.set(callback, nextTimeoutId);
+    }) as (...args: A) => void;
+  }),
+};
+
 vi.mock('@Collection/ui/hooks/useGamesStore/useGamesStore', () => ({
   useGamesStore: () => ({
     setFilterCriteria: mocks.setFilterCriteria,
   }),
+}));
+
+vi.mock('@Shared/ui/hooks/useService/useService', () => ({
+  useService: () => debounceService,
 }));
 
 describe('GameSearch', () => {

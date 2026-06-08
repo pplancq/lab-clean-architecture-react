@@ -1,8 +1,10 @@
 import { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
 import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
 import { Grid } from '@pplancq/shelter-ui-react';
-import type { ChangeEvent } from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import type { DebounceServiceInterface } from '@Shared/domain/utils/DebounceServiceInterface';
+import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
+import { useService } from '@Shared/ui/hooks/useService/useService';
+import { type ChangeEvent, useCallback } from 'react';
 
 import defaultClasses from './GameSearch.module.css';
 
@@ -22,40 +24,24 @@ import defaultClasses from './GameSearch.module.css';
  */
 export const GameSearch = () => {
   const store = useGamesStore();
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceService = useService<DebounceServiceInterface>(SHARED_SERVICES.DebounceService);
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const searchText = event.currentTarget.value;
+      const searchText = event.target.value;
+      const trimmedSearchText = searchText.trim();
 
-      if (timeoutRef.current !== null) {
-        clearTimeout(timeoutRef.current);
+      if (trimmedSearchText === '') {
+        store.setFilterCriteria(null);
+        return;
       }
 
-      timeoutRef.current = setTimeout(() => {
-        const trimmedSearchText = searchText.trim();
-
-        if (trimmedSearchText === '') {
-          store.setFilterCriteria(null);
-          return;
-        }
-
-        const criteriaResult = GameFilterCriteria.create({ title: trimmedSearchText });
-        if (criteriaResult.isOk()) {
-          store.setFilterCriteria(criteriaResult.unwrap());
-        }
-      }, 300);
+      const criteriaResult = GameFilterCriteria.create({ title: trimmedSearchText });
+      if (criteriaResult.isOk()) {
+        store.setFilterCriteria(criteriaResult.unwrap());
+      }
     },
     [store],
-  );
-
-  useEffect(
-    () => () => {
-      if (timeoutRef.current !== null) {
-        clearTimeout(timeoutRef.current);
-      }
-    },
-    [],
   );
 
   return (
@@ -75,7 +61,7 @@ export const GameSearch = () => {
         id="game-search"
         type="search"
         defaultValue=""
-        onChange={handleChange}
+        onChange={debounceService.debounce(handleChange, 300)}
         placeholder="Search by title..."
         aria-label="Search games by title"
         className={defaultClasses.searchInput}
