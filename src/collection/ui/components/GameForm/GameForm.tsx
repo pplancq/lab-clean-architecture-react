@@ -7,6 +7,7 @@ import { GameDescription } from '@Collection/domain/value-objects/GameDescriptio
 import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
 import { Platform } from '@Collection/domain/value-objects/Platform';
 import { Status, StatusType } from '@Collection/domain/value-objects/Status';
+import { PLATFORMS } from '@Collection/ui/constants/platforms';
 import cloudIcon from '@pplancq/shelter-ui-icon/icon/cloud.svg';
 import compactDiscIcon from '@pplancq/shelter-ui-icon/icon/compact-disc.svg';
 import { Button } from '@pplancq/shelter-ui-react';
@@ -21,8 +22,6 @@ import { FormSelectField } from '@Shared/ui/components/formField/FormSelectField
 import { FormTextAreaField } from '@Shared/ui/components/formField/FormTextAreaField/FormTextAreaField';
 import { useService } from '@Shared/ui/hooks/useService/useService';
 import { FormProvider, useForm } from 'react-hook-form';
-
-const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'PC'];
 
 const FORMATS = [
   { value: 'Physical', label: 'Physical', icon: compactDiscIcon as string },
