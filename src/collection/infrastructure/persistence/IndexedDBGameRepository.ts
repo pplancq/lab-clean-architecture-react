@@ -194,7 +194,9 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   /**
    * Finds games matching the provided filter criteria
    *
-   * Performs case-insensitive substring matching on game titles.
+   * Performs case-insensitive substring matching on game titles,
+   * and case-insensitive exact matching on platforms (OR logic within platforms,
+   * AND logic between title and platform filters).
    *
    * @param criteria - Filter criteria for the search
    * @returns Result with array of matching Games (empty if none match), or RepositoryError on failure
@@ -211,11 +213,15 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
         request.onsuccess = () => {
           const dtos = request.result as GameDTO[];
           const normalizedTitleFilter = criteria.getTitleFilterNormalized();
+          const platforms = criteria.getPlatforms();
+          const normalizedPlatforms = platforms?.map(p => p.toLowerCase());
           const games: Game[] = [];
 
           dtos.forEach(dto => {
-            // If no title filter, include all games
-            if (!normalizedTitleFilter || dto.title.toLowerCase().includes(normalizedTitleFilter)) {
+            const matchesTitle = !normalizedTitleFilter || dto.title.toLowerCase().includes(normalizedTitleFilter);
+            const matchesPlatform = !normalizedPlatforms || normalizedPlatforms.includes(dto.platform.toLowerCase());
+
+            if (matchesTitle && matchesPlatform) {
               const gameResult = GameMapper.toDomain(dto);
               if (gameResult.isErr()) {
                 reject(
