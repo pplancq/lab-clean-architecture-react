@@ -196,9 +196,8 @@ describe('GameForm', () => {
       await user.click(screen.getByRole('button', { name: /add game/i }));
 
       await waitFor(() => {
-        expect(onSubmitMock).toHaveBeenCalledOnce();
+        expect(onSubmitMock).toHaveBeenCalledExactlyOnceWith(expect.any(AddGameDTO));
       });
-      expect(onSubmitMock).toHaveBeenCalledWith(expect.any(AddGameDTO));
     });
 
     it('should pass the correct values to onSubmit', async () => {
@@ -308,7 +307,7 @@ describe('GameForm', () => {
 
         await user.click(screen.getByRole('button', { name: /cancel/i }));
 
-        expect(onCancelMock).toHaveBeenCalledOnce();
+        expect(onCancelMock).toHaveBeenCalledExactlyOnceWith(expect.anything());
       });
     });
 
@@ -322,9 +321,8 @@ describe('GameForm', () => {
         await user.click(screen.getByRole('button', { name: /save changes/i }));
 
         await waitFor(() => {
-          expect(onSubmitMock).toHaveBeenCalledOnce();
+          expect(onSubmitMock).toHaveBeenCalledExactlyOnceWith(expect.any(EditGameDTO));
         });
-        expect(onSubmitMock).toHaveBeenCalledWith(expect.any(EditGameDTO));
       });
 
       it('should call onSuccess after a successful edit', async () => {
@@ -336,7 +334,7 @@ describe('GameForm', () => {
         await user.click(screen.getByRole('button', { name: /save changes/i }));
 
         await waitFor(() => {
-          expect(onSuccessMock).toHaveBeenCalledOnce();
+          expect(onSuccessMock).toHaveBeenCalledExactlyOnceWith();
         });
       });
     });

@@ -1,6 +1,7 @@
 import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
 import type { GameMapEntryState, GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
 import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
+import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
 import { Game } from '@Collection/domain/entities/Game';
 import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
 import { editGameRoutes } from '@Collection/ui/pages/EditGame';
@@ -185,7 +186,7 @@ describe('EditGame', () => {
       await user.click(screen.getByRole('button', { name: /save changes/i }));
 
       await waitFor(() => {
-        expect(editGameMock).toHaveBeenCalledOnce();
+        expect(editGameMock).toHaveBeenCalledExactlyOnceWith(expect.any(EditGameDTO));
       });
     });
   });
