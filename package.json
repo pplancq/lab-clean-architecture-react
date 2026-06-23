@@ -48,7 +48,7 @@
     "inversify": "^8.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-hook-form": "^7.79.0",
+    "react-hook-form": "^7.80.0",
     "react-router": "^8.0.1",
     "yup": "^1.7.1"
   },
