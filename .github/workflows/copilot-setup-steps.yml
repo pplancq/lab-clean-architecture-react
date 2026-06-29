@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Setup Node
-        uses: pplancq/actions/setup-node@745b7a9f48e9670336d693310d022866a0e0da53 # v1.1.0
+        uses: pplancq/actions/setup-node@7cc5778a60fe01a52eff971834f53b2a6201363d # v1.1.1
         with:
           use-mise: 'true'
           disabled-cache: true
