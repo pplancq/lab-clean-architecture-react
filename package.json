@@ -45,7 +45,7 @@
     "@pplancq/svg-react": "^3.0.12",
     "@tanstack/react-query": "^5.101.3",
     "@tanstack/react-query-devtools": "^5.101.3",
-    "inversify": "^8.2.1",
+    "inversify": "^8.2.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.82.0",
