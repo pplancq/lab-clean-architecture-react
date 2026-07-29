@@ -96,6 +96,9 @@
   "overrides": {
     "rsbuild-plugin-stylelint": {
       "stylelint": "$stylelint"
+    },
+    "@hookform/devtools": {
+      "uuid": "^14.0.0"
     }
   },
   "browserslist": {
