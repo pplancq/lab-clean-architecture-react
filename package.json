@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@hookform/devtools": "^4.4.0",
-    "@hookform/resolvers": "^5.5.3",
+    "@hookform/resolvers": "^5.5.7",
     "@pplancq/shelter-ui-css": "^1.0.0-alpha.7",
     "@pplancq/shelter-ui-icon": "^1.0.0-alpha.7",
     "@pplancq/shelter-ui-react": "^1.0.0-alpha.7",
