@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * Platform value object representing the gaming platform
@@ -36,12 +36,12 @@ export class Platform extends AbstractStringValueObject {
   public static create(value: string): Result<Platform, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('platform', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("platform", trimmed);
     if (notEmptyCheck.isErr()) {
       return Result.err(notEmptyCheck.getError());
     }
 
-    const maxLengthCheck = AbstractStringValueObject.maxLength('platform', trimmed, 100);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("platform", trimmed, 100);
     if (maxLengthCheck.isErr()) {
       return Result.err(maxLengthCheck.getError());
     }

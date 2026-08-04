@@ -1,7 +1,7 @@
 name: Toolkit Contribution
 description: Technical story to track a component contribution to shelter-ui and its migration in this project
-title: '[Toolkit] Migrate <ComponentName> to shelter-ui'
-labels: ['toolkit-contrib']
+title: "[Toolkit] Migrate <ComponentName> to shelter-ui"
+labels: ["toolkit-contrib"]
 body:
   - type: markdown
     attributes:
@@ -23,7 +23,7 @@ body:
     attributes:
       label: Component Name
       description: Name of the component to contribute (PascalCase)
-      placeholder: 'SelectField'
+      placeholder: "SelectField"
     validations:
       required: true
 
@@ -32,7 +32,7 @@ body:
     attributes:
       label: Current Location
       description: Path of the component in this project
-      placeholder: 'src/shared/ui/components/SelectField/SelectField.tsx'
+      placeholder: "src/shared/ui/components/SelectField/SelectField.tsx"
     validations:
       required: true
 
@@ -64,7 +64,7 @@ body:
     attributes:
       label: shelter-ui Issue
       description: Link to the issue opened in the shelter-ui repository
-      placeholder: 'https://github.com/pplancq/shelter-ui/issues/XXX'
+      placeholder: "https://github.com/pplancq/shelter-ui/issues/XXX"
     validations:
       required: false
 
@@ -73,7 +73,7 @@ body:
     attributes:
       label: shelter-ui PR
       description: Link to the PR opened in the shelter-ui repository
-      placeholder: 'https://github.com/pplancq/shelter-ui/pull/XXX'
+      placeholder: "https://github.com/pplancq/shelter-ui/pull/XXX"
     validations:
       required: false
 
@@ -82,7 +82,7 @@ body:
     attributes:
       label: shelter-ui Release
       description: Release version that includes this component (fill when available)
-      placeholder: 'v1.2.0-alpha.1'
+      placeholder: "v1.2.0-alpha.1"
     validations:
       required: false
 
@@ -91,7 +91,7 @@ body:
     attributes:
       label: Parent Epic
       description: Parent epic issue number (shelter-ui contributions epic)
-      placeholder: '#XXX'
+      placeholder: "#XXX"
     validations:
       required: true
 
@@ -113,7 +113,7 @@ body:
           required: false
         - label: New shelter-ui release cut (alpha or stable)
           required: false
-        - label: '`@pplancq/shelter-ui-react` version updated in this project'
+        - label: "`@pplancq/shelter-ui-react` version updated in this project"
           required: false
         - label: Project imports updated to use shelter-ui version
           required: false

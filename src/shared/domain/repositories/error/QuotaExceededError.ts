@@ -1,4 +1,4 @@
-import type { QuotaExceededErrorInterface } from '@Shared/domain/repositories/error/QuotaExceededErrorInterface';
+import type { QuotaExceededErrorInterface } from "@Shared/domain/repositories/error/QuotaExceededErrorInterface";
 
 /**
  * Error thrown when storage quota is exceeded
@@ -13,8 +13,8 @@ import type { QuotaExceededErrorInterface } from '@Shared/domain/repositories/er
  * ```
  */
 export class QuotaExceededError extends Error implements QuotaExceededErrorInterface {
-  constructor(message: string = 'Storage quota exceeded') {
+  constructor(message: string = "Storage quota exceeded") {
     super(message);
-    this.name = 'QuotaExceededError';
+    this.name = "QuotaExceededError";
   }
 }

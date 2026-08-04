@@ -42,8 +42,8 @@ export interface GamesStoreInterface extends AbstractObserverInterface {
 
 ```typescript
 // Component usage — zero fetch orchestration
-const { games, isLoading, hasError, error } = useGamesSelector(s => s.getGamesList());
-const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
+const { games, isLoading, hasError, error } = useGamesSelector((s) => s.getGamesList());
+const { data: game, isLoading, hasError, error } = useGamesSelector((s) => s.getGame(id));
 ```
 
 ## Consequences

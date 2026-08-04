@@ -1,6 +1,6 @@
-import { MaxLengthError } from '@Shared/domain/errors/MaxLengthError';
-import { NotEmptyError } from '@Shared/domain/errors/NotEmptyError';
-import { Result } from '@Shared/domain/result/Result';
+import { MaxLengthError } from "@Shared/domain/errors/MaxLengthError";
+import { NotEmptyError } from "@Shared/domain/errors/NotEmptyError";
+import { Result } from "@Shared/domain/result/Result";
 
 /**
  * Abstract base class for string-based value objects.
@@ -32,7 +32,7 @@ export abstract class AbstractStringValueObject {
    * Returns an empty string when given null or undefined.
    */
   protected static trim(value: string): string {
-    return value?.trim() ?? '';
+    return value?.trim() ?? "";
   }
 
   /**

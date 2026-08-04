@@ -1,7 +1,7 @@
-import { Badge } from '@Shared/ui/components/Badge/Badge';
-import playstationIcon from './playstation.svg';
+import { Badge } from "@Shared/ui/components/Badge/Badge";
+import playstationIcon from "./playstation.svg";
 
-import defaultClasses from './PlayStationBadge.module.css';
+import defaultClasses from "./PlayStationBadge.module.css";
 
 export const PlayStationBadge = () => {
   return (

@@ -32,7 +32,7 @@ export class Result<T, E> {
 ### Success Case
 
 ```typescript
-import { Result } from '@Shared/domain/result/Result';
+import { Result } from "@Shared/domain/result/Result";
 
 const result = Result.ok(42);
 // Type: Result<number, never>
@@ -41,9 +41,9 @@ const result = Result.ok(42);
 ### Error Case
 
 ```typescript
-import { Result } from '@Shared/domain/result/Result';
+import { Result } from "@Shared/domain/result/Result";
 
-const result = Result.err('Something went wrong');
+const result = Result.err("Something went wrong");
 // Type: Result<never, string>
 ```
 
@@ -77,7 +77,7 @@ Extracts the value from an Ok Result (unwraps it):
 const result = Result.ok(42);
 result.unwrap(); // 42
 
-const errorResult = Result.err('Not found');
+const errorResult = Result.err("Not found");
 errorResult.unwrap(); // throws Error('Not found')
 errorResult.unwrap(0); // 0 (uses default, doesn't throw)
 ```
@@ -99,7 +99,7 @@ Extracts the error from an Err Result:
 const result = Result.ok(42);
 result.getError(); // throws Error('Called getError on an Ok value')
 
-const errorResult = Result.err('Not found');
+const errorResult = Result.err("Not found");
 errorResult.getError(); // 'Not found'
 ```
 
@@ -113,11 +113,11 @@ Transforms the success value:
 
 ```typescript
 const result = Result.ok(42);
-const transformed = result.transform(n => n.toString());
+const transformed = result.transform((n) => n.toString());
 // Result.ok("42")
 
-const errorResult = Result.err<number, string>('error');
-const transformedError = errorResult.transform(n => n.toString());
+const errorResult = Result.err<number, string>("error");
+const transformedError = errorResult.transform((n) => n.toString());
 // Result.err("error") - unchanged
 ```
 
@@ -126,19 +126,19 @@ const transformedError = errorResult.transform(n => n.toString());
 Transforms the error value:
 
 ```typescript
-const result = Result.err('error');
-const transformed = result.transformErr(e => new Error(e));
+const result = Result.err("error");
+const transformed = result.transformErr((e) => new Error(e));
 // Result.err(Error("error"))
 
 const okResult = Result.ok<number, string>(42);
-const transformedOk = okResult.transformErr(e => new Error(e));
+const transformedOk = okResult.transformErr((e) => new Error(e));
 // Result.ok(42) - unchanged
 ```
 
 ## Usage Example: Use Case
 
 ```typescript
-import { Result } from '@Shared/domain/result/Result';
+import { Result } from "@Shared/domain/result/Result";
 
 type ValidationError = {
   field: string;
@@ -148,33 +148,33 @@ type ValidationError = {
 class CreateUserUseCase {
   execute(email: string): Result<User, ValidationError> {
     // Validate
-    if (!email.includes('@')) {
+    if (!email.includes("@")) {
       return Result.err({
-        field: 'email',
-        message: 'Invalid email format',
+        field: "email",
+        message: "Invalid email format",
       });
     }
 
     // Create user
-    const user = { id: '123', email };
+    const user = { id: "123", email };
     return Result.ok(user);
   }
 }
 
 // Usage with type guards (recommended)
 const useCase = new CreateUserUseCase();
-const result = useCase.execute('user@example.com');
+const result = useCase.execute("user@example.com");
 
 if (result.isOk()) {
   const user = result.unwrap(); // Safe - won't throw
-  console.log('Created:', user);
+  console.log("Created:", user);
 } else {
   const error = result.getError(); // Safe - won't throw
-  console.error('Validation failed:', error.message);
+  console.error("Validation failed:", error.message);
 }
 
 // Usage with default value (safe without type guard)
-const user = result.unwrap({ id: 'default', email: 'default@example.com' });
+const user = result.unwrap({ id: "default", email: "default@example.com" });
 ```
 
 ## Benefits

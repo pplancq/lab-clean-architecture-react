@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.cs , **/*.ts, **/*.js, **/*.tsx, **/*.jsx, **/*.java'
+applyTo: "**/*.cs , **/*.ts, **/*.js, **/*.tsx, **/*.jsx, **/*.java"
 description: Enforces Object Calisthenics principles for business domain code to ensure clean, maintainable, and robust code
 ---
 

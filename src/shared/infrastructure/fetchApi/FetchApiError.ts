@@ -1,4 +1,4 @@
-import type { MimeTypes } from './fetchApi.type';
+import type { MimeTypes } from "./fetchApi.type";
 
 /**
  * Custom error class for API fetch failures.
@@ -28,6 +28,6 @@ export class FetchApiError extends Error {
     public readonly contentType?: MimeTypes,
   ) {
     super(message);
-    this.name = 'FetchApiError';
+    this.name = "FetchApiError";
   }
 }

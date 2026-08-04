@@ -1,7 +1,7 @@
 ---
 # File references (ONLY variables used in this step)
-prdFile: '{prd_file_path}'
-prdPurpose: '../data/prd-purpose.md'
+prdFile: "{prd_file_path}"
+prdPurpose: "../data/prd-purpose.md"
 ---
 
 # Step E-1B: Legacy PRD Conversion Assessment

@@ -1,12 +1,12 @@
-import { TimeoutDebounceService } from '@Shared/infrastructure/utils/TimeoutDebounceService';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { TimeoutDebounceService } from "@Shared/infrastructure/utils/TimeoutDebounceService";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-describe('TimeoutDebounceService', () => {
+describe("TimeoutDebounceService", () => {
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  it('should debounce the same callback by replacing the pending timer', async () => {
+  it("should debounce the same callback by replacing the pending timer", async () => {
     vi.useFakeTimers();
 
     const service = new TimeoutDebounceService();

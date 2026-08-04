@@ -38,7 +38,7 @@ Every skill requires YAML frontmatter with `name` and `description`:
 ```yaml
 ---
 name: <skill-name>
-description: '<What it does>. Use when <specific triggers, scenarios, keywords users might say>.'
+description: "<What it does>. Use when <specific triggers, scenarios, keywords users might say>."
 ---
 ```
 
@@ -64,13 +64,13 @@ description: '<What it does>. Use when <specific triggers, scenarios, keywords u
 **Good example:**
 
 ```yaml
-description: 'Toolkit for testing local web applications using Playwright. Use when asked to verify frontend functionality, debug UI behavior, capture browser screenshots, or view browser console logs. Supports Chrome, Firefox, and WebKit.'
+description: "Toolkit for testing local web applications using Playwright. Use when asked to verify frontend functionality, debug UI behavior, capture browser screenshots, or view browser console logs. Supports Chrome, Firefox, and WebKit."
 ```
 
 **Poor example:**
 
 ```yaml
-description: 'Web testing helpers'
+description: "Web testing helpers"
 ```
 
 ### Step 3: Write the Skill Body

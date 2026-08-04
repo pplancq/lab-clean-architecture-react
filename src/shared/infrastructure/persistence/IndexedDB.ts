@@ -1,4 +1,4 @@
-import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
+import type { IndexedDBInterface } from "@Shared/infrastructure/persistence/IndexedDBInterface";
 
 /**
  * Service for managing IndexedDB database connection and schema
@@ -53,24 +53,24 @@ export class IndexedDB implements IndexedDBInterface {
 
       request.onerror = () => {
         this.dbPromise = null; // Clear promise on error to allow retry
-        reject(new Error(`Failed to open database: ${request.error?.message ?? 'Unknown error'}`));
+        reject(new Error(`Failed to open database: ${request.error?.message ?? "Unknown error"}`));
       };
 
       request.onsuccess = () => {
         resolve(request.result);
       };
 
-      request.onupgradeneeded = event => {
+      request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
         // Create object store if it doesn't exist
         if (!db.objectStoreNames.contains(this.storeName)) {
-          const objectStore = db.createObjectStore(this.storeName, { keyPath: 'id' });
+          const objectStore = db.createObjectStore(this.storeName, { keyPath: "id" });
 
           // Create indexes for common queries
-          objectStore.createIndex('title', 'title', { unique: false });
-          objectStore.createIndex('platform', 'platform', { unique: false });
-          objectStore.createIndex('status', 'status', { unique: false });
+          objectStore.createIndex("title", "title", { unique: false });
+          objectStore.createIndex("platform", "platform", { unique: false });
+          objectStore.createIndex("status", "status", { unique: false });
         }
       };
     });

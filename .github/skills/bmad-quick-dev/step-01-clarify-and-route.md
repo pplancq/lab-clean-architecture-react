@@ -1,6 +1,6 @@
 ---
-deferred_work_file: '{implementation_artifacts}/deferred-work.md'
-spec_file: '' # set at runtime for both routes before leaving this step
+deferred_work_file: "{implementation_artifacts}/deferred-work.md"
+spec_file: "" # set at runtime for both routes before leaving this step
 ---
 
 # Step 1: Clarify and Route

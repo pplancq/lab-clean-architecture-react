@@ -1,10 +1,10 @@
-import { appRoutes } from '@App/routing/appRoutes';
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
-import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
-import { useCallback } from 'react';
-import type { RouteObject } from 'react-router';
-import { useNavigate } from 'react-router';
+import { appRoutes } from "@App/routing/appRoutes";
+import { AddGameDTO } from "@Collection/application/dtos/AddGameDTO";
+import { GameForm } from "@Collection/ui/components/GameForm/GameForm";
+import { useGamesStore } from "@Collection/ui/hooks/useGamesStore/useGamesStore";
+import { useCallback } from "react";
+import type { RouteObject } from "react-router";
+import { useNavigate } from "react-router";
 
 const AddGame = () => {
   const store = useGamesStore();
@@ -25,6 +25,6 @@ const AddGame = () => {
 };
 
 export const addGameRoutes: RouteObject = {
-  path: 'add-game',
+  path: "add-game",
   element: <AddGame />,
 };

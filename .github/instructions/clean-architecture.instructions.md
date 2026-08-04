@@ -1,5 +1,5 @@
 ---
-applyTo: '**/domain/**/*.ts, **/application/**/*.ts, **/infrastructure/**/*.ts'
+applyTo: "**/domain/**/*.ts, **/application/**/*.ts, **/infrastructure/**/*.ts"
 description: Enforces Clean Architecture principles and TypeScript best practices for domain, application, and infrastructure layers
 ---
 
@@ -187,7 +187,7 @@ export interface GameInterface {
 }
 
 // File: Game.ts
-import type { GameInterface } from './GameInterface';
+import type { GameInterface } from "./GameInterface";
 
 export class Game implements GameInterface {
   private constructor(
@@ -238,7 +238,7 @@ export class GameTitle implements GameTitleInterface {
   static create(value: string): Result<GameTitle, ValidationError> {
     if (value.length < this.MIN_LENGTH || value.length > this.MAX_LENGTH) {
       return Result.fail({
-        field: 'title',
+        field: "title",
         message: `Title must be between ${this.MIN_LENGTH} and ${this.MAX_LENGTH} characters`,
       });
     }
@@ -362,8 +362,8 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
     try {
       const dto = GameMapper.toDTO(game);
       const database = await this.db.getDatabase();
-      const transaction = database.transaction('games', 'readwrite');
-      const store = transaction.objectStore('games');
+      const transaction = database.transaction("games", "readwrite");
+      const store = transaction.objectStore("games");
 
       await new Promise<void>((resolve, reject) => {
         const request = store.put(dto);
@@ -378,10 +378,10 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   }
 
   private handleError(error: unknown): Result<void, RepositoryErrorInterface> {
-    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-      return Result.fail(new QuotaExceededError('Storage quota exceeded'));
+    if (error instanceof DOMException && error.name === "QuotaExceededError") {
+      return Result.fail(new QuotaExceededError("Storage quota exceeded"));
     }
-    return Result.fail(new UnknownError(error instanceof Error ? error.message : 'Unknown error'));
+    return Result.fail(new UnknownError(error instanceof Error ? error.message : "Unknown error"));
   }
 }
 ```
@@ -499,20 +499,20 @@ async save(game: Game): Promise<void> {
 ```typescript
 // File: NotFoundErrorInterface.d.ts
 export interface NotFoundErrorInterface extends RepositoryErrorInterface {
-  readonly type: 'NotFound';
+  readonly type: "NotFound";
   readonly entityId: string;
 }
 
 // File: NotFoundError.ts
 export class NotFoundError extends Error implements NotFoundErrorInterface {
-  readonly type = 'NotFound' as const;
+  readonly type = "NotFound" as const;
 
   constructor(
     message: string,
     readonly entityId: string,
   ) {
     super(message);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
   }
 }
 ```
@@ -535,24 +535,24 @@ export class NotFoundError extends Error implements NotFoundErrorInterface {
 ```typescript
 // File: types.ts
 export const TYPES = {
-  IndexedDB: Symbol.for('IndexedDB'),
-  GameRepository: Symbol.for('GameRepository'),
+  IndexedDB: Symbol.for("IndexedDB"),
+  GameRepository: Symbol.for("GameRepository"),
 };
 
 // File: serviceCollection.ts
-import { Container } from 'inversify';
+import { Container } from "inversify";
 
 export const configureServices = (container: Container): void => {
   // Infrastructure services
   container
     .bind<IndexedDBInterface>(TYPES.IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   // Repositories
   container
     .bind<GameRepositoryInterface>(TYPES.GameRepository)
-    .toDynamicValue(ctx => new IndexedDBGameRepository(ctx.get<IndexedDBInterface>(TYPES.IndexedDB)))
+    .toDynamicValue((ctx) => new IndexedDBGameRepository(ctx.get<IndexedDBInterface>(TYPES.IndexedDB)))
     .inSingletonScope();
 };
 ```
@@ -698,7 +698,7 @@ async save(game: Game): Promise<void> {
 
 ```typescript
 // BAD - Domain entity importing from infrastructure
-import { IndexedDB } from '@Infrastructure/persistence/IndexedDB';
+import { IndexedDB } from "@Infrastructure/persistence/IndexedDB";
 
 export class Game {
   constructor(private db: IndexedDB) {} // WRONG!

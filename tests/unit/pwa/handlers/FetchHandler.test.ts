@@ -1,8 +1,8 @@
-import type { CacheStrategyInterface } from '@Pwa/cache/CacheStrategyInterface';
-import { FetchHandler } from '@Pwa/handlers/FetchHandler';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { CacheStrategyInterface } from "@Pwa/cache/CacheStrategyInterface";
+import { FetchHandler } from "@Pwa/handlers/FetchHandler";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-describe('FetchHandler', () => {
+describe("FetchHandler", () => {
   let fetchHandler: FetchHandler;
   let mockCacheStrategy: CacheStrategyInterface;
 
@@ -14,10 +14,10 @@ describe('FetchHandler', () => {
     fetchHandler = new FetchHandler(mockCacheStrategy);
   });
 
-  describe('handle', () => {
-    it('should delegate GET requests to cache strategy', () => {
-      const mockRequest = new Request('https://example.com/test', { method: 'GET' });
-      const mockResponse = new Response('cached data');
+  describe("handle", () => {
+    it("should delegate GET requests to cache strategy", () => {
+      const mockRequest = new Request("https://example.com/test", { method: "GET" });
+      const mockResponse = new Response("cached data");
 
       vi.mocked(mockCacheStrategy.execute).mockResolvedValue(mockResponse);
 
@@ -32,8 +32,8 @@ describe('FetchHandler', () => {
       expect(mockCacheStrategy.execute).toHaveBeenCalledWith(mockRequest);
     });
 
-    it('should ignore non-GET requests', () => {
-      const mockRequest = new Request('https://example.com/api', { method: 'POST' });
+    it("should ignore non-GET requests", () => {
+      const mockRequest = new Request("https://example.com/api", { method: "POST" });
 
       const mockEvent = {
         request: mockRequest,
@@ -46,8 +46,8 @@ describe('FetchHandler', () => {
       expect(mockCacheStrategy.execute).not.toHaveBeenCalled();
     });
 
-    it('should ignore PUT requests', () => {
-      const mockRequest = new Request('https://example.com/api', { method: 'PUT' });
+    it("should ignore PUT requests", () => {
+      const mockRequest = new Request("https://example.com/api", { method: "PUT" });
 
       const mockEvent = {
         request: mockRequest,
@@ -60,8 +60,8 @@ describe('FetchHandler', () => {
       expect(mockCacheStrategy.execute).not.toHaveBeenCalled();
     });
 
-    it('should ignore DELETE requests', () => {
-      const mockRequest = new Request('https://example.com/api', { method: 'DELETE' });
+    it("should ignore DELETE requests", () => {
+      const mockRequest = new Request("https://example.com/api", { method: "DELETE" });
 
       const mockEvent = {
         request: mockRequest,

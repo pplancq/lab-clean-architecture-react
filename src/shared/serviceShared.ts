@@ -1,17 +1,17 @@
-import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
-import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
-import type { DebounceServiceInterface } from '@Shared/domain/utils/DebounceServiceInterface';
-import type { IdGeneratorInterface } from '@Shared/domain/utils/IdGeneratorInterface';
-import { ToastNotificationService } from '@Shared/infrastructure/notifications/ToastNotificationService';
-import { CryptoIdGenerator } from '@Shared/infrastructure/utils/CryptoIdGenerator';
-import { DateFormatter } from '@Shared/infrastructure/utils/DateFormatter';
-import { TimeoutDebounceService } from '@Shared/infrastructure/utils/TimeoutDebounceService';
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
-import { TOAST_SERVICES } from '@Toast/serviceIdentifiers';
-import { ContainerModule } from 'inversify';
-import { SHARED_SERVICES } from './serviceIdentifiers';
+import type { NotificationServiceInterface } from "@Shared/domain/notifications/NotificationServiceInterface";
+import type { DateFormatterInterface } from "@Shared/domain/utils/DateFormatterInterface";
+import type { DebounceServiceInterface } from "@Shared/domain/utils/DebounceServiceInterface";
+import type { IdGeneratorInterface } from "@Shared/domain/utils/IdGeneratorInterface";
+import { ToastNotificationService } from "@Shared/infrastructure/notifications/ToastNotificationService";
+import { CryptoIdGenerator } from "@Shared/infrastructure/utils/CryptoIdGenerator";
+import { DateFormatter } from "@Shared/infrastructure/utils/DateFormatter";
+import { TimeoutDebounceService } from "@Shared/infrastructure/utils/TimeoutDebounceService";
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
+import { TOAST_SERVICES } from "@Toast/serviceIdentifiers";
+import { ContainerModule } from "inversify";
+import { SHARED_SERVICES } from "./serviceIdentifiers";
 
-export const serviceShared: ContainerModule = new ContainerModule(options => {
+export const serviceShared: ContainerModule = new ContainerModule((options) => {
   options
     .bind<DateFormatterInterface>(SHARED_SERVICES.DateFormatter)
     .toDynamicValue(() => new DateFormatter())
@@ -27,7 +27,7 @@ export const serviceShared: ContainerModule = new ContainerModule(options => {
   options
     .bind<NotificationServiceInterface>(SHARED_SERVICES.NotificationService)
     .toDynamicValue(
-      services => new ToastNotificationService(services.get<ToastStoreInterface>(TOAST_SERVICES.ToastStore)),
+      (services) => new ToastNotificationService(services.get<ToastStoreInterface>(TOAST_SERVICES.ToastStore)),
     )
     .inSingletonScope();
 

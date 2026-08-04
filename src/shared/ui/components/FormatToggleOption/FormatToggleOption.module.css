@@ -10,7 +10,7 @@
     --button-color-on: var(--color-primary-main-on);
   }
 
-  > input[type='radio'] {
+  > input[type="radio"] {
     all: unset;
     position: absolute;
     width: 1px;

@@ -1,10 +1,10 @@
-import { HelperText, Label } from '@pplancq/shelter-ui-react';
-import { type ChangeEventHandler, type ReactNode, type SelectHTMLAttributes, useCallback, useId } from 'react';
+import { HelperText, Label } from "@pplancq/shelter-ui-react";
+import { type ChangeEventHandler, type ReactNode, type SelectHTMLAttributes, useCallback, useId } from "react";
 
-import defaultClasses from './SelectField.module.css';
+import defaultClasses from "./SelectField.module.css";
 
 export type SelectFieldProps = {
-  layout?: 'stacked' | 'inline';
+  layout?: "stacked" | "inline";
   required?: boolean;
   label: ReactNode;
   textHelper?: ReactNode;
@@ -12,7 +12,7 @@ export type SelectFieldProps = {
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
 export const SelectField = ({
-  layout = 'stacked',
+  layout = "stacked",
   required,
   label,
   errorMessage,
@@ -33,8 +33,8 @@ export const SelectField = ({
   const hasValue = Boolean(value || defaultValue);
 
   const handleChange = useCallback<ChangeEventHandler<HTMLSelectElement>>(
-    e => {
-      if (e.target.value === '' && !e.target.classList.contains(defaultClasses.selectPlaceholder)) {
+    (e) => {
+      if (e.target.value === "" && !e.target.classList.contains(defaultClasses.selectPlaceholder)) {
         e.target.classList.add(defaultClasses.selectPlaceholder);
       } else {
         e.target.classList.remove(defaultClasses.selectPlaceholder);
@@ -47,9 +47,9 @@ export const SelectField = ({
 
   return (
     <div
-      className={[defaultClasses.selectField, layout === 'inline' && defaultClasses.selectFieldInline, className]
+      className={[defaultClasses.selectField, layout === "inline" && defaultClasses.selectFieldInline, className]
         .filter(Boolean)
-        .join(' ')}
+        .join(" ")}
     >
       <Label htmlFor={selectId} required={required}>
         {label}
@@ -63,7 +63,7 @@ export const SelectField = ({
             isInvalid && defaultClasses.selectError,
           ]
             .filter(Boolean)
-            .join(' ')}
+            .join(" ")}
           required={required}
           aria-invalid={isInvalid || undefined}
           aria-describedby={!isInvalid && textHelper ? helperId : undefined}

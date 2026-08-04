@@ -1,6 +1,6 @@
-import type { Container } from 'inversify';
-import { type PropsWithChildren, useRef } from 'react';
-import { ServiceContext } from './ServiceContext';
+import type { Container } from "inversify";
+import { type PropsWithChildren, useRef } from "react";
+import { ServiceContext } from "./ServiceContext";
 
 export type ServiceProviderProps = {
   container: Container;

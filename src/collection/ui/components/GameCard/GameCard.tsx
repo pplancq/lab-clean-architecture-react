@@ -1,9 +1,9 @@
-import { appRoutes } from '@App/routing/appRoutes';
-import type { Game } from '@Collection/domain/entities/Game';
-import { Typography } from '@pplancq/shelter-ui-react';
-import { Link } from 'react-router';
+import { appRoutes } from "@App/routing/appRoutes";
+import type { Game } from "@Collection/domain/entities/Game";
+import { Typography } from "@pplancq/shelter-ui-react";
+import { Link } from "react-router";
 
-import defaultClasses from './GameCard.module.css';
+import defaultClasses from "./GameCard.module.css";
 
 type GameCardProps = {
   game: Game;

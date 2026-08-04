@@ -1,13 +1,13 @@
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import { RepositoryError } from '@Collection/application/errors/RepositoryError';
-import { ValidationError } from '@Collection/application/errors/ValidationError';
-import { AddGameUseCase } from '@Collection/application/use-cases/AddGameUseCase';
-import { Game } from '@Collection/domain/entities/Game';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AddGameDTO } from "@Collection/application/dtos/AddGameDTO";
+import { RepositoryError } from "@Collection/application/errors/RepositoryError";
+import { ValidationError } from "@Collection/application/errors/ValidationError";
+import { AddGameUseCase } from "@Collection/application/use-cases/AddGameUseCase";
+import { Game } from "@Collection/domain/entities/Game";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-describe('AddGameUseCase', () => {
+describe("AddGameUseCase", () => {
   let addGameUseCase: AddGameUseCase;
   let mockGameRepository: GameRepositoryInterface;
 
@@ -25,17 +25,17 @@ describe('AddGameUseCase', () => {
     addGameUseCase = new AddGameUseCase(mockGameRepository);
   });
 
-  describe('execute', () => {
-    it('should successfully add a valid game', async () => {
+  describe("execute", () => {
+    it("should successfully add a valid game", async () => {
       // Arrange
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
-        new Date('2023-05-12'),
-        'Owned',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
+        new Date("2023-05-12"),
+        "Owned",
       );
 
       vi.mocked(mockGameRepository.save).mockResolvedValue(Result.ok(undefined));
@@ -50,27 +50,27 @@ describe('AddGameUseCase', () => {
       // Verify that the repository was called with a Game entity
       const savedGame = vi.mocked(mockGameRepository.save).mock.calls[0]?.[0];
       expect(savedGame).toBeInstanceOf(Game);
-      expect(savedGame?.getId()).toBe('game-123');
-      expect(savedGame?.getTitle()).toBe('The Legend of Zelda');
+      expect(savedGame?.getId()).toBe("game-123");
+      expect(savedGame?.getTitle()).toBe("The Legend of Zelda");
 
       // Verify the returned Game matches the DTO data
       const returnedGame = result.unwrap();
       expect(returnedGame).toBeInstanceOf(Game);
-      expect(returnedGame.getId()).toBe('game-123');
-      expect(returnedGame.getTitle()).toBe('The Legend of Zelda');
+      expect(returnedGame.getId()).toBe("game-123");
+      expect(returnedGame.getTitle()).toBe("The Legend of Zelda");
     });
 
-    it('should return validation error when domain validation fails (title too long)', async () => {
+    it("should return validation error when domain validation fails (title too long)", async () => {
       // Arrange
-      const longTitle = 'A'.repeat(201); // Exceeds 200 characters max
+      const longTitle = "A".repeat(201); // Exceeds 200 characters max
       const dto = new AddGameDTO(
-        'game-123',
+        "game-123",
         longTitle,
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
         null,
-        'Owned',
+        "Owned",
       );
 
       // Act
@@ -80,22 +80,22 @@ describe('AddGameUseCase', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError() as ValidationError;
       expect(error).toBeInstanceOf(ValidationError);
-      expect(error.type).toBe('Validation');
-      expect(error.field).toBe('title');
+      expect(error.type).toBe("Validation");
+      expect(error.field).toBe("title");
       expect(mockGameRepository.save).not.toHaveBeenCalled();
     });
 
-    it('should return validation error when domain validation fails (platform too long)', async () => {
+    it("should return validation error when domain validation fails (platform too long)", async () => {
       // Arrange
-      const longPlatform = 'A'.repeat(101); // Exceeds 100 characters max
+      const longPlatform = "A".repeat(101); // Exceeds 100 characters max
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
         longPlatform,
-        'Physical',
+        "Physical",
         null,
-        'Owned',
+        "Owned",
       );
 
       // Act
@@ -105,21 +105,21 @@ describe('AddGameUseCase', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError() as ValidationError;
       expect(error).toBeInstanceOf(ValidationError);
-      expect(error.field).toBe('platform');
+      expect(error.field).toBe("platform");
       expect(mockGameRepository.save).not.toHaveBeenCalled();
     });
 
-    it('should return validation error when domain validation fails (format too long)', async () => {
+    it("should return validation error when domain validation fails (format too long)", async () => {
       // Arrange
-      const longFormat = 'A'.repeat(51); // Exceeds 50 characters max
+      const longFormat = "A".repeat(51); // Exceeds 50 characters max
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
         longFormat,
         null,
-        'Owned',
+        "Owned",
       );
 
       // Act
@@ -129,20 +129,20 @@ describe('AddGameUseCase', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError() as ValidationError;
       expect(error).toBeInstanceOf(ValidationError);
-      expect(error.field).toBe('format');
+      expect(error.field).toBe("format");
       expect(mockGameRepository.save).not.toHaveBeenCalled();
     });
 
-    it('should return validation error when domain validation fails (invalid status)', async () => {
+    it("should return validation error when domain validation fails (invalid status)", async () => {
       // Arrange
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
         null,
-        'InvalidStatus', // Invalid status (not in enum)
+        "InvalidStatus", // Invalid status (not in enum)
       );
 
       // Act
@@ -152,25 +152,25 @@ describe('AddGameUseCase', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError() as ValidationError;
       expect(error).toBeInstanceOf(ValidationError);
-      expect(error.field).toBe('status');
+      expect(error.field).toBe("status");
       expect(mockGameRepository.save).not.toHaveBeenCalled();
     });
 
-    it('should return repository error when save fails', async () => {
+    it("should return repository error when save fails", async () => {
       // Arrange
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
         null,
-        'Owned',
+        "Owned",
       );
 
       const repositoryError = {
-        message: 'Database connection failed',
-        metadata: { code: 'DB_ERROR' },
+        message: "Database connection failed",
+        metadata: { code: "DB_ERROR" },
       };
 
       vi.mocked(mockGameRepository.save).mockResolvedValue(Result.err(repositoryError));
@@ -182,23 +182,23 @@ describe('AddGameUseCase', () => {
       expect(result.isErr()).toBeTruthy();
       const error = result.getError() as RepositoryError;
       expect(error).toBeInstanceOf(RepositoryError);
-      expect(error.type).toBe('Repository');
-      expect(error.message).toContain('Failed to save game');
-      expect(error.message).toContain('Database connection failed');
+      expect(error.type).toBe("Repository");
+      expect(error.message).toContain("Failed to save game");
+      expect(error.message).toContain("Database connection failed");
       expect(mockGameRepository.save).toHaveBeenCalledTimes(1);
     });
 
-    it('should handle purchase date correctly', async () => {
+    it("should handle purchase date correctly", async () => {
       // Arrange
-      const purchaseDate = new Date('2023-05-12');
+      const purchaseDate = new Date("2023-05-12");
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
         purchaseDate,
-        'Owned',
+        "Owned",
       );
 
       vi.mocked(mockGameRepository.save).mockResolvedValue(Result.ok(undefined));
@@ -213,16 +213,16 @@ describe('AddGameUseCase', () => {
       expect(savedGame?.getPurchaseDate()).toStrictEqual(purchaseDate);
     });
 
-    it('should handle null purchase date (wishlist item)', async () => {
+    it("should handle null purchase date (wishlist item)", async () => {
       // Arrange
       const dto = new AddGameDTO(
-        'game-123',
-        'The Legend of Zelda',
-        'Classic adventure game',
-        'Nintendo Switch',
-        'Physical',
+        "game-123",
+        "The Legend of Zelda",
+        "Classic adventure game",
+        "Nintendo Switch",
+        "Physical",
         null, // Null purchase date for wishlist
-        'Wishlist',
+        "Wishlist",
       );
 
       vi.mocked(mockGameRepository.save).mockResolvedValue(Result.ok(undefined));

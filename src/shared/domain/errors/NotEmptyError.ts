@@ -1,4 +1,4 @@
-import { DomainValidationError } from './DomainValidationError';
+import { DomainValidationError } from "./DomainValidationError";
 
 /**
  * Validation error raised when a required field is empty or whitespace-only.
@@ -15,6 +15,6 @@ import { DomainValidationError } from './DomainValidationError';
 export class NotEmptyError extends DomainValidationError {
   constructor(field: string, message = `${field} cannot be empty`) {
     super(field, message);
-    this.name = 'NotEmptyError';
+    this.name = "NotEmptyError";
   }
 }

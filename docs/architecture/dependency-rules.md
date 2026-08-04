@@ -67,7 +67,7 @@ export class Game {
 
   private validateTitle(title: string): void {
     if (title.trim().length === 0) {
-      throw new Error('Game title cannot be empty');
+      throw new Error("Game title cannot be empty");
     }
   }
 
@@ -87,9 +87,9 @@ export class Game {
 // ❌ BAD: Dependencies on external libraries
 // src/collection/domain/Game.ts
 
-import axios from 'axios'; // ❌ External HTTP library
-import { IsNotEmpty } from 'class-validator'; // ❌ Decorator library
-import { format } from 'date-fns'; // ❌ Date utility library
+import axios from "axios"; // ❌ External HTTP library
+import { IsNotEmpty } from "class-validator"; // ❌ Decorator library
+import { format } from "date-fns"; // ❌ Date utility library
 
 export class Game {
   @IsNotEmpty() // ❌ Using decorators from external library
@@ -97,12 +97,12 @@ export class Game {
 
   async save(): Promise<void> {
     // ❌ Domain should not know about HTTP or persistence
-    await axios.post('/api/games', this);
+    await axios.post("/api/games", this);
   }
 
   getFormattedDate(): string {
     // ❌ Using external date library
-    return format(this.releaseDate, 'yyyy-MM-dd');
+    return format(this.releaseDate, "yyyy-MM-dd");
   }
 }
 ```
@@ -130,8 +130,8 @@ export class Game {
 // ✅ GOOD: Depends only on Domain and interfaces
 // src/collection/application/AddGameToCollection.ts
 
-import { Game } from '../domain/Game';
-import { IGameRepository } from '../domain/IGameRepository'; // Interface
+import { Game } from "../domain/Game";
+import { IGameRepository } from "../domain/IGameRepository"; // Interface
 
 export class AddGameToCollection {
   constructor(private readonly gameRepository: IGameRepository) {}
@@ -149,9 +149,9 @@ export class AddGameToCollection {
 // ❌ BAD: Direct dependency on infrastructure
 // src/collection/application/AddGameToCollection.ts
 
-import { Game } from '../domain/Game';
-import { GameRepositoryIndexedDB } from '../infrastructure/GameRepositoryIndexedDB'; // ❌ Concrete implementation
-import axios from 'axios'; // ❌ Direct HTTP dependency
+import { Game } from "../domain/Game";
+import { GameRepositoryIndexedDB } from "../infrastructure/GameRepositoryIndexedDB"; // ❌ Concrete implementation
+import axios from "axios"; // ❌ Direct HTTP dependency
 
 export class AddGameToCollection {
   // ❌ Use Case depends on concrete infrastructure
@@ -161,7 +161,7 @@ export class AddGameToCollection {
     const game = new Game(crypto.randomUUID(), title, releaseDate);
 
     // ❌ Direct HTTP call in use case
-    await axios.post('/api/games', game);
+    await axios.post("/api/games", game);
 
     await this.gameRepository.save(game);
   }
@@ -190,23 +190,23 @@ export class AddGameToCollection {
 // ✅ GOOD: Implements domain interface, uses external library
 // src/collection/infrastructure/GameRepositoryIndexedDB.ts
 
-import { openDB, IDBPDatabase } from 'idb'; // ✅ External library allowed
-import { Game } from '../domain/Game';
-import { IGameRepository } from '../domain/IGameRepository';
+import { openDB, IDBPDatabase } from "idb"; // ✅ External library allowed
+import { Game } from "../domain/Game";
+import { IGameRepository } from "../domain/IGameRepository";
 
 export class GameRepositoryIndexedDB implements IGameRepository {
   private db: IDBPDatabase | null = null;
 
   async save(game: Game): Promise<void> {
     if (!this.db) await this.connect();
-    await this.db!.put('games', {
+    await this.db!.put("games", {
       id: game.getId(),
       title: game.getTitle(),
     });
   }
 
   private async connect(): Promise<void> {
-    this.db = await openDB('GameCollectionDB', 1);
+    this.db = await openDB("GameCollectionDB", 1);
   }
 }
 ```
@@ -320,15 +320,15 @@ graph TB
 
 ```typescript
 // src/collection/infrastructure/collection.container.ts
-import { Container } from 'inversify';
-import { IGameRepository } from '../domain/IGameRepository';
-import { GameRepositoryIndexedDB } from './GameRepositoryIndexedDB';
-import { AddGameToCollection } from '../application/AddGameToCollection';
+import { Container } from "inversify";
+import { IGameRepository } from "../domain/IGameRepository";
+import { GameRepositoryIndexedDB } from "./GameRepositoryIndexedDB";
+import { AddGameToCollection } from "../application/AddGameToCollection";
 
 export const container = new Container();
 
 // Bind interface to implementation
-container.bind<IGameRepository>('IGameRepository').to(GameRepositoryIndexedDB);
+container.bind<IGameRepository>("IGameRepository").to(GameRepositoryIndexedDB);
 
 // Bind Use Case with injected dependency
 container.bind(AddGameToCollection).toSelf();
@@ -385,7 +385,7 @@ Consider using:
 
 ```typescript
 // ❌ BAD
-import axios from 'axios';
+import axios from "axios";
 export class Game {
   async fetchDetails() {
     return await axios.get(`/api/games/${this.id}`);

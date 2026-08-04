@@ -9,7 +9,7 @@ on:
           or "reset" to remove local overrides and restore shared config defaults.
         required: true
         type: string
-        default: 'reset'
+        default: "reset"
 
 jobs:
   update-renovate-limits:

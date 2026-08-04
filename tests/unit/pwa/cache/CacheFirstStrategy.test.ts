@@ -1,10 +1,10 @@
-import { CacheFirstStrategy } from '@Pwa/cache/CacheFirstStrategy';
-import type { LoggerInterface } from '@Pwa/logger/LoggerInterface';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { CacheFirstStrategy } from "@Pwa/cache/CacheFirstStrategy";
+import type { LoggerInterface } from "@Pwa/logger/LoggerInterface";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 declare let global: typeof globalThis;
 
-describe('CacheFirstStrategy', () => {
+describe("CacheFirstStrategy", () => {
   let cacheStrategy: CacheFirstStrategy;
   let mockLogger: LoggerInterface;
   let mockCaches: CacheStorage;
@@ -24,7 +24,7 @@ describe('CacheFirstStrategy', () => {
       has: vi.fn(),
     };
 
-    Object.defineProperty(global, 'caches', {
+    Object.defineProperty(global, "caches", {
       value: mockCaches,
       writable: true,
     });
@@ -32,10 +32,10 @@ describe('CacheFirstStrategy', () => {
     cacheStrategy = new CacheFirstStrategy(mockLogger);
   });
 
-  describe('execute', () => {
-    it('should return cached response when available', async () => {
-      const mockRequest = new Request('https://example.com/test');
-      const mockResponse = new Response('cached data');
+  describe("execute", () => {
+    it("should return cached response when available", async () => {
+      const mockRequest = new Request("https://example.com/test");
+      const mockResponse = new Response("cached data");
 
       vi.mocked(mockCaches.match).mockResolvedValue(mockResponse);
 
@@ -43,12 +43,12 @@ describe('CacheFirstStrategy', () => {
 
       expect(result).toBe(mockResponse);
       expect(mockCaches.match).toHaveBeenCalledWith(mockRequest);
-      expect(mockLogger.info).toHaveBeenCalledWith('Cache hit:', 'https://example.com/test');
+      expect(mockLogger.info).toHaveBeenCalledWith("Cache hit:", "https://example.com/test");
     });
 
-    it('should fetch from network when cache misses', async () => {
-      const mockRequest = new Request('https://example.com/test');
-      const mockResponse = new Response('network data');
+    it("should fetch from network when cache misses", async () => {
+      const mockRequest = new Request("https://example.com/test");
+      const mockResponse = new Response("network data");
 
       vi.mocked(mockCaches.match).mockResolvedValue(undefined);
       global.fetch = vi.fn().mockResolvedValue(mockResponse);
@@ -57,20 +57,20 @@ describe('CacheFirstStrategy', () => {
 
       expect(result).toBe(mockResponse);
       expect(mockCaches.match).toHaveBeenCalledWith(mockRequest);
-      expect(mockLogger.info).toHaveBeenCalledWith('Cache miss, fetching:', 'https://example.com/test');
+      expect(mockLogger.info).toHaveBeenCalledWith("Cache miss, fetching:", "https://example.com/test");
       expect(global.fetch).toHaveBeenCalledWith(mockRequest);
     });
 
-    it('should log error and throw when fetch fails', async () => {
-      const mockRequest = new Request('https://example.com/test');
-      const fetchError = new Error('Network error');
+    it("should log error and throw when fetch fails", async () => {
+      const mockRequest = new Request("https://example.com/test");
+      const fetchError = new Error("Network error");
 
       vi.mocked(global.caches.match).mockResolvedValue(undefined);
       global.fetch = vi.fn().mockRejectedValue(fetchError);
 
-      await expect(cacheStrategy.execute(mockRequest)).rejects.toThrow('Network error');
+      await expect(cacheStrategy.execute(mockRequest)).rejects.toThrow("Network error");
 
-      expect(mockLogger.error).toHaveBeenCalledWith('Fetch failed:', fetchError);
+      expect(mockLogger.error).toHaveBeenCalledWith("Fetch failed:", fetchError);
     });
   });
 });

@@ -1,10 +1,10 @@
-import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
-import { ToastBridgeProvider } from '@Shared/ui/ToastBridgeProvider/ToastBridgeProvider';
-import { render, screen } from '@testing-library/react';
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
-import { TOAST_SERVICES } from '@Toast/serviceIdentifiers';
-import { Container } from 'inversify';
-import { describe, expect, it, vi } from 'vitest';
+import { ServiceProvider } from "@App/providers/ServiceProvider/ServiceProvider";
+import { ToastBridgeProvider } from "@Shared/ui/ToastBridgeProvider/ToastBridgeProvider";
+import { render, screen } from "@testing-library/react";
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
+import { TOAST_SERVICES } from "@Toast/serviceIdentifiers";
+import { Container } from "inversify";
+import { describe, expect, it, vi } from "vitest";
 
 const createMockToastStore = (): ToastStoreInterface => {
   const toasts: never[] = [];
@@ -23,8 +23,8 @@ const createContainer = (toastStore: ToastStoreInterface): Container => {
   return container;
 };
 
-describe('ToastBridgeProvider', () => {
-  it('should render children', () => {
+describe("ToastBridgeProvider", () => {
+  it("should render children", () => {
     const container = createContainer(createMockToastStore());
 
     render(
@@ -35,10 +35,10 @@ describe('ToastBridgeProvider', () => {
       </ServiceProvider>,
     );
 
-    expect(screen.getByText('content')).toBeInTheDocument();
+    expect(screen.getByText("content")).toBeInTheDocument();
   });
 
-  it('should provide ToastContext to children', () => {
+  it("should provide ToastContext to children", () => {
     const toastStore = createMockToastStore();
     const container = createContainer(toastStore);
 
@@ -53,13 +53,13 @@ describe('ToastBridgeProvider', () => {
     expect(toastStore.getAllToasts).toHaveBeenCalledWith();
   });
 
-  it('should throw when used outside ServiceProvider', () => {
+  it("should throw when used outside ServiceProvider", () => {
     expect(() => {
       render(
         <ToastBridgeProvider>
           <span>content</span>
         </ToastBridgeProvider>,
       );
-    }).toThrow('useService must be used within a ServiceProvider');
+    }).toThrow("useService must be used within a ServiceProvider");
   });
 });

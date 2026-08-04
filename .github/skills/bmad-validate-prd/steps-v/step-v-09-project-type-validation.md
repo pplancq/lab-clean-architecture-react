@@ -1,10 +1,10 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: './step-v-10-smart-validation.md'
-prdFile: '{prd_file_path}'
-prdFrontmatter: '{prd_frontmatter}'
-validationReportPath: '{validation_report_path}'
-projectTypesData: '../data/project-types.csv'
+nextStepFile: "./step-v-10-smart-validation.md"
+prdFile: "{prd_file_path}"
+prdFrontmatter: "{prd_frontmatter}"
+validationReportPath: "{validation_report_path}"
+projectTypesData: "../data/project-types.csv"
 ---
 
 # Step 9: Project-Type Compliance Validation

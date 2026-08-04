@@ -1,4 +1,4 @@
-import type { UnknownErrorInterface } from '@Shared/domain/repositories/error/UnknownErrorInterface';
+import type { UnknownErrorInterface } from "@Shared/domain/repositories/error/UnknownErrorInterface";
 
 /**
  * Error thrown when an unknown/unexpected error occurs in the repository
@@ -19,10 +19,10 @@ export class UnknownError extends Error implements UnknownErrorInterface {
   public originalError?: Error;
 
   constructor(originalError: Error | string) {
-    super(typeof originalError === 'string' ? originalError : originalError.message);
-    this.name = 'UnknownError';
+    super(typeof originalError === "string" ? originalError : originalError.message);
+    this.name = "UnknownError";
 
-    if (typeof originalError !== 'string') {
+    if (typeof originalError !== "string") {
       this.originalError = originalError;
     }
   }

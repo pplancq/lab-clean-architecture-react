@@ -1,14 +1,14 @@
-import { GamesStore } from '@Collection/application/stores/GamesStore';
-import type { GameMapEntryState } from '@Collection/application/stores/GamesStoreInterface';
-import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
-import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
-import { Game } from '@Collection/domain/entities/Game';
-import { Result } from '@Shared/domain/result/Result';
-import { describe, expect, it, vi } from 'vitest';
+import { GamesStore } from "@Collection/application/stores/GamesStore";
+import type { GameMapEntryState } from "@Collection/application/stores/GamesStoreInterface";
+import type { GetGameByIdUseCaseInterface } from "@Collection/application/use-cases/GetGameByIdUseCaseInterface";
+import type { GetGamesUseCaseInterface } from "@Collection/application/use-cases/GetGamesUseCaseInterface";
+import { Game } from "@Collection/domain/entities/Game";
+import { Result } from "@Shared/domain/result/Result";
+import { describe, expect, it, vi } from "vitest";
 
 // Drains all microtasks and pending promise continuations
 const flushPromises = () =>
-  new Promise<void>(resolve => {
+  new Promise<void>((resolve) => {
     setTimeout(resolve, 0);
   });
 
@@ -16,27 +16,27 @@ const createGame = (id: string, title: string) =>
   Game.create({
     id,
     title,
-    description: '',
-    platform: 'Nintendo Switch',
-    format: 'Physical',
+    description: "",
+    platform: "Nintendo Switch",
+    format: "Physical",
     purchaseDate: null,
-    status: 'Owned',
+    status: "Owned",
   }).unwrap();
 
-const createGetGamesUseCaseMock = (result: Awaited<ReturnType<GetGamesUseCaseInterface['execute']>>) => ({
+const createGetGamesUseCaseMock = (result: Awaited<ReturnType<GetGamesUseCaseInterface["execute"]>>) => ({
   execute: vi.fn().mockResolvedValue(result),
 });
 
-const createGetGameByIdUseCaseMock = (result: Awaited<ReturnType<GetGameByIdUseCaseInterface['execute']>>) => ({
+const createGetGameByIdUseCaseMock = (result: Awaited<ReturnType<GetGameByIdUseCaseInterface["execute"]>>) => ({
   execute: vi.fn().mockResolvedValue(result),
 });
 
 const createNoopGetGameByIdUseCaseMock = () => ({
-  execute: vi.fn().mockResolvedValue(Result.ok(createGame('noop', 'noop'))),
+  execute: vi.fn().mockResolvedValue(Result.ok(createGame("noop", "noop"))),
 });
 
 const createNoopEditGameUseCaseMock = () => ({
-  execute: vi.fn().mockResolvedValue(Result.ok(createGame('noop', 'noop'))),
+  execute: vi.fn().mockResolvedValue(Result.ok(createGame("noop", "noop"))),
 });
 
 const createNoopDeleteGameUseCaseMock = () => ({
@@ -44,7 +44,7 @@ const createNoopDeleteGameUseCaseMock = () => ({
 });
 
 const createNoopAddGameUseCaseMock = () => ({
-  execute: vi.fn().mockResolvedValue(Result.ok(createGame('noop', 'noop'))),
+  execute: vi.fn().mockResolvedValue(Result.ok(createGame("noop", "noop"))),
 });
 
 const createNoopNotificationServiceMock = () => ({
@@ -62,9 +62,9 @@ const FULL_ENTRY = (game: Game): GameMapEntryState => ({
   error: null,
 });
 
-describe('GamesStore', () => {
-  describe('getGamesList', () => {
-    it('should return isLoading true on first call and auto-trigger fetch', async () => {
+describe("GamesStore", () => {
+  describe("getGamesList", () => {
+    it("should return isLoading true on first call and auto-trigger fetch", async () => {
       const useCaseMock = createGetGamesUseCaseMock(Result.ok([]));
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -87,8 +87,8 @@ describe('GamesStore', () => {
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
     });
 
-    it('should set games on success', async () => {
-      const games = [createGame('1', 'Zelda'), createGame('2', 'Mario')];
+    it("should set games on success", async () => {
+      const games = [createGame("1", "Zelda"), createGame("2", "Mario")];
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok(games)),
@@ -110,10 +110,10 @@ describe('GamesStore', () => {
       });
     });
 
-    it('should set error on use case failure', async () => {
+    it("should set error on use case failure", async () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
-        createGetGamesUseCaseMock(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        createGetGamesUseCaseMock(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
         createNoopGetGameByIdUseCaseMock(),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
@@ -127,12 +127,12 @@ describe('GamesStore', () => {
         games: [],
         isLoading: false,
         hasError: true,
-        error: 'Unable to load games. Please try again.',
+        error: "Unable to load games. Please try again.",
         criteria: null,
       });
     });
 
-    it('should not trigger fetch again after first call', async () => {
+    it("should not trigger fetch again after first call", async () => {
       const useCaseMock = createGetGamesUseCaseMock(Result.ok([]));
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -151,7 +151,7 @@ describe('GamesStore', () => {
       expect(useCaseMock.execute).toHaveBeenCalledTimes(1);
     });
 
-    it('should preserve games array reference while loading', () => {
+    it("should preserve games array reference while loading", () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -167,7 +167,7 @@ describe('GamesStore', () => {
       expect(first.games).toBe(second.games);
     });
 
-    it('should return a stable snapshot reference when state has not changed', () => {
+    it("should return a stable snapshot reference when state has not changed", () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -183,8 +183,8 @@ describe('GamesStore', () => {
       expect(snapshot1).toBe(snapshot2);
     });
 
-    it('should notify observers when fetch completes', async () => {
-      const games = [createGame('1', 'Zelda')];
+    it("should notify observers when fetch completes", async () => {
+      const games = [createGame("1", "Zelda")];
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok(games)),
@@ -203,8 +203,8 @@ describe('GamesStore', () => {
     });
   });
 
-  describe('getGame', () => {
-    it('should return a loading entry on first call for an unknown id', () => {
+  describe("getGame", () => {
+    it("should return a loading entry on first call for an unknown id", () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -214,7 +214,7 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      expect(store.getGame('unknown')).toStrictEqual({
+      expect(store.getGame("unknown")).toStrictEqual({
         data: null,
         isLazy: false,
         isLoading: true,
@@ -223,8 +223,8 @@ describe('GamesStore', () => {
       });
     });
 
-    it('should auto-trigger fetchGameById and return full entry on success', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should auto-trigger fetchGameById and return full entry on success", async () => {
+      const game = createGame("game-1", "Zelda");
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -234,28 +234,28 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-1');
+      store.getGame("game-1");
       await flushPromises();
 
-      expect(store.getGame('game-1')).toStrictEqual(FULL_ENTRY(game));
+      expect(store.getGame("game-1")).toStrictEqual(FULL_ENTRY(game));
     });
 
-    it('should set hasError with null error on NotFound', async () => {
+    it("should set hasError with null error on NotFound", async () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
         createGetGameByIdUseCaseMock(
-          Result.err({ type: 'NotFound', message: 'Not found', entityId: 'game-99', metadata: {} }),
+          Result.err({ type: "NotFound", message: "Not found", entityId: "game-99", metadata: {} }),
         ),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-99');
+      store.getGame("game-99");
       await flushPromises();
 
-      expect(store.getGame('game-99')).toStrictEqual({
+      expect(store.getGame("game-99")).toStrictEqual({
         data: null,
         isLazy: false,
         isLoading: false,
@@ -264,30 +264,30 @@ describe('GamesStore', () => {
       });
     });
 
-    it('should set hasError with error message on generic failure', async () => {
+    it("should set hasError with error message on generic failure", async () => {
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
-        createGetGameByIdUseCaseMock(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        createGetGameByIdUseCaseMock(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
         createNoopEditGameUseCaseMock(),
         createNoopDeleteGameUseCaseMock(),
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-1');
+      store.getGame("game-1");
       await flushPromises();
 
-      expect(store.getGame('game-1')).toStrictEqual({
+      expect(store.getGame("game-1")).toStrictEqual({
         data: null,
         isLazy: false,
         isLoading: false,
         hasError: true,
-        error: 'Unable to load game. Please try again.',
+        error: "Unable to load game. Please try again.",
       });
     });
 
-    it('should upgrade a lazy entry from the list to full data', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should upgrade a lazy entry from the list to full data", async () => {
+      const game = createGame("game-1", "Zelda");
       const getGameByIdMock = createGetGameByIdUseCaseMock(Result.ok(game));
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -301,18 +301,18 @@ describe('GamesStore', () => {
       store.getGamesList();
       await flushPromises(); // list loaded — game-1 is now isLazy: true
 
-      const lazyEntry = store.getGame('game-1');
+      const lazyEntry = store.getGame("game-1");
       expect(lazyEntry.isLazy).toBeTruthy();
       expect(lazyEntry.isLoading).toBeTruthy();
 
       await flushPromises(); // full game loaded
 
-      expect(store.getGame('game-1')).toStrictEqual(FULL_ENTRY(game));
-      expect(getGameByIdMock.execute).toHaveBeenCalledWith('game-1');
+      expect(store.getGame("game-1")).toStrictEqual(FULL_ENTRY(game));
+      expect(getGameByIdMock.execute).toHaveBeenCalledWith("game-1");
     });
 
-    it('should not re-fetch if entry is already full', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should not re-fetch if entry is already full", async () => {
+      const game = createGame("game-1", "Zelda");
       const getGameByIdMock = createGetGameByIdUseCaseMock(Result.ok(game));
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -323,21 +323,21 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-1');
+      store.getGame("game-1");
       await flushPromises();
 
-      store.getGame('game-1');
-      store.getGame('game-1');
+      store.getGame("game-1");
+      store.getGame("game-1");
       await flushPromises();
 
       expect(getGameByIdMock.execute).toHaveBeenCalledTimes(1);
     });
 
-    it('should not duplicate fetch if called multiple times before fetch completes', async () => {
+    it("should not duplicate fetch if called multiple times before fetch completes", async () => {
       let resolve!: (value: Result<Game, never>) => void;
       const getGameByIdMock = {
         execute: vi.fn().mockReturnValue(
-          new Promise<Result<Game, never>>(res => {
+          new Promise<Result<Game, never>>((res) => {
             resolve = res;
           }),
         ),
@@ -351,21 +351,21 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-1'); // schedules microtask, isLoading: true
-      store.getGame('game-1'); // isLoading: true → no new microtask
+      store.getGame("game-1"); // schedules microtask, isLoading: true
+      store.getGame("game-1"); // isLoading: true → no new microtask
 
-      await new Promise<void>(r => {
+      await new Promise<void>((r) => {
         queueMicrotask(r);
       }); // drain scheduled microtask
 
       expect(getGameByIdMock.execute).toHaveBeenCalledTimes(1);
 
-      resolve(Result.ok(createGame('game-1', 'Zelda')));
+      resolve(Result.ok(createGame("game-1", "Zelda")));
       await flushPromises();
     });
 
-    it('should return a stable entry reference when state has not changed', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should return a stable entry reference when state has not changed", async () => {
+      const game = createGame("game-1", "Zelda");
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -375,14 +375,14 @@ describe('GamesStore', () => {
         createNoopNotificationServiceMock(),
       );
 
-      store.getGame('game-1');
+      store.getGame("game-1");
       await flushPromises();
 
-      expect(store.getGame('game-1')).toBe(store.getGame('game-1'));
+      expect(store.getGame("game-1")).toBe(store.getGame("game-1"));
     });
 
-    it('should notify observers when game is loaded', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should notify observers when game is loaded", async () => {
+      const game = createGame("game-1", "Zelda");
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([])),
@@ -394,16 +394,16 @@ describe('GamesStore', () => {
       const observer = vi.fn();
       store.subscribe(observer);
 
-      store.getGame('game-1');
+      store.getGame("game-1");
       await flushPromises();
 
       expect(observer).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe('deleteGame', () => {
-    it('should remove the game from the map and rebuild the list on success', async () => {
-      const game = createGame('game-1', 'Zelda');
+  describe("deleteGame", () => {
+    it("should remove the game from the map and rebuild the list on success", async () => {
+      const game = createGame("game-1", "Zelda");
       const deleteUseCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(undefined)) };
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -419,17 +419,17 @@ describe('GamesStore', () => {
 
       expect(store.getGamesList().games).toHaveLength(1);
 
-      const result = await store.deleteGame('game-1');
+      const result = await store.deleteGame("game-1");
 
       expect(result.isOk()).toBeTruthy();
-      expect(deleteUseCaseMock.execute).toHaveBeenCalledWith('game-1');
+      expect(deleteUseCaseMock.execute).toHaveBeenCalledWith("game-1");
       expect(store.getGamesList().games).toHaveLength(0);
     });
 
-    it('should not modify the map and return the error on failure', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should not modify the map and return the error on failure", async () => {
+      const game = createGame("game-1", "Zelda");
       const deleteUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -443,16 +443,16 @@ describe('GamesStore', () => {
       store.getGamesList();
       await flushPromises();
 
-      const result = await store.deleteGame('game-1');
+      const result = await store.deleteGame("game-1");
 
       expect(result.isErr()).toBeTruthy();
       expect(store.getGamesList().games).toHaveLength(1);
     });
 
-    it('should not notify observers on failure', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should not notify observers on failure", async () => {
+      const game = createGame("game-1", "Zelda");
       const deleteUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -465,13 +465,13 @@ describe('GamesStore', () => {
       const observer = vi.fn();
       store.subscribe(observer);
 
-      await store.deleteGame('game-1');
+      await store.deleteGame("game-1");
 
       expect(observer).not.toHaveBeenCalled();
     });
 
-    it('should notify observers on success', async () => {
-      const game = createGame('game-1', 'Zelda');
+    it("should notify observers on success", async () => {
+      const game = createGame("game-1", "Zelda");
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
         createGetGamesUseCaseMock(Result.ok([game])),
@@ -483,12 +483,12 @@ describe('GamesStore', () => {
       const observer = vi.fn();
       store.subscribe(observer);
 
-      await store.deleteGame('game-1');
+      await store.deleteGame("game-1");
 
       expect(observer).toHaveBeenCalledWith();
     });
 
-    it('should call notificationService.success on successful delete', async () => {
+    it("should call notificationService.success on successful delete", async () => {
       const notificationService = createNoopNotificationServiceMock();
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -499,16 +499,16 @@ describe('GamesStore', () => {
         notificationService,
       );
 
-      await store.deleteGame('game-1');
+      await store.deleteGame("game-1");
 
-      expect(notificationService.success).toHaveBeenCalledWith('Game deleted successfully');
+      expect(notificationService.success).toHaveBeenCalledWith("Game deleted successfully");
       expect(notificationService.error).not.toHaveBeenCalled();
     });
 
-    it('should call notificationService.error on failed delete', async () => {
+    it("should call notificationService.error on failed delete", async () => {
       const notificationService = createNoopNotificationServiceMock();
       const deleteUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -519,18 +519,18 @@ describe('GamesStore', () => {
         notificationService,
       );
 
-      await store.deleteGame('game-1');
+      await store.deleteGame("game-1");
 
       expect(notificationService.error).toHaveBeenCalledWith(
-        'An error occurred while saving the game. Please try again.',
+        "An error occurred while saving the game. Please try again.",
       );
       expect(notificationService.success).not.toHaveBeenCalled();
     });
   });
 
-  describe('addGame', () => {
-    it('should add the game to the map and rebuild the list on success', async () => {
-      const addedGame = createGame('game-1', 'Zelda');
+  describe("addGame", () => {
+    it("should add the game to the map and rebuild the list on success", async () => {
+      const addedGame = createGame("game-1", "Zelda");
       const addUseCaseMock = { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) };
       const store = new GamesStore(
         addUseCaseMock,
@@ -547,22 +547,22 @@ describe('GamesStore', () => {
       expect(store.getGamesList().games).toHaveLength(0);
 
       const result = await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
       expect(result.isOk()).toBeTruthy();
       expect(store.getGamesList().games).toHaveLength(1);
     });
 
-    it('should not modify the map and return the error on failure', async () => {
+    it("should not modify the map and return the error on failure", async () => {
       const addUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         addUseCaseMock,
@@ -577,22 +577,22 @@ describe('GamesStore', () => {
       await flushPromises();
 
       const result = await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
       expect(result.isErr()).toBeTruthy();
       expect(store.getGamesList().games).toHaveLength(0);
     });
 
-    it('should not notify observers on failure', async () => {
+    it("should not notify observers on failure", async () => {
       const addUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         addUseCaseMock,
@@ -606,20 +606,20 @@ describe('GamesStore', () => {
       store.subscribe(observer);
 
       await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
       expect(observer).not.toHaveBeenCalled();
     });
 
-    it('should notify observers on success', async () => {
-      const addedGame = createGame('game-1', 'Zelda');
+    it("should notify observers on success", async () => {
+      const addedGame = createGame("game-1", "Zelda");
       const store = new GamesStore(
         { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) },
         createGetGamesUseCaseMock(Result.ok([])),
@@ -632,20 +632,20 @@ describe('GamesStore', () => {
       store.subscribe(observer);
 
       await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
       expect(observer).toHaveBeenCalledWith();
     });
 
-    it('should call notificationService.success on successful add', async () => {
-      const addedGame = createGame('game-1', 'Zelda');
+    it("should call notificationService.success on successful add", async () => {
+      const addedGame = createGame("game-1", "Zelda");
       const notificationService = createNoopNotificationServiceMock();
       const store = new GamesStore(
         { execute: vi.fn().mockResolvedValue(Result.ok(addedGame)) },
@@ -657,23 +657,23 @@ describe('GamesStore', () => {
       );
 
       await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
-      expect(notificationService.success).toHaveBeenCalledWith('Game added successfully');
+      expect(notificationService.success).toHaveBeenCalledWith("Game added successfully");
       expect(notificationService.error).not.toHaveBeenCalled();
     });
 
-    it('should call notificationService.error on failed add', async () => {
+    it("should call notificationService.error on failed add", async () => {
       const notificationService = createNoopNotificationServiceMock();
       const addUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         addUseCaseMock,
@@ -685,25 +685,25 @@ describe('GamesStore', () => {
       );
 
       await store.addGame({
-        id: 'game-1',
-        title: 'Zelda',
-        description: '',
-        platform: 'Nintendo Switch',
-        format: 'Physical',
+        id: "game-1",
+        title: "Zelda",
+        description: "",
+        platform: "Nintendo Switch",
+        format: "Physical",
         purchaseDate: null,
-        status: 'owned',
+        status: "owned",
       });
 
       expect(notificationService.error).toHaveBeenCalledWith(
-        'An error occurred while saving the game. Please try again.',
+        "An error occurred while saving the game. Please try again.",
       );
       expect(notificationService.success).not.toHaveBeenCalled();
     });
   });
 
-  describe('editGame', () => {
-    it('should call notificationService.success on successful edit', async () => {
-      const editedGame = createGame('game-1', 'Zelda Updated');
+  describe("editGame", () => {
+    it("should call notificationService.success on successful edit", async () => {
+      const editedGame = createGame("game-1", "Zelda Updated");
       const notificationService = createNoopNotificationServiceMock();
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -715,21 +715,21 @@ describe('GamesStore', () => {
       );
 
       await store.editGame({
-        id: 'game-1',
-        title: 'Zelda Updated',
-        description: '',
+        id: "game-1",
+        title: "Zelda Updated",
+        description: "",
         purchaseDate: null,
-        status: 'Owned',
+        status: "Owned",
       });
 
-      expect(notificationService.success).toHaveBeenCalledWith('Game updated successfully');
+      expect(notificationService.success).toHaveBeenCalledWith("Game updated successfully");
       expect(notificationService.error).not.toHaveBeenCalled();
     });
 
-    it('should call notificationService.error on failed edit', async () => {
+    it("should call notificationService.error on failed edit", async () => {
       const notificationService = createNoopNotificationServiceMock();
       const editUseCaseMock = {
-        execute: vi.fn().mockResolvedValue(Result.err({ type: 'Repository', message: 'DB error', metadata: {} })),
+        execute: vi.fn().mockResolvedValue(Result.err({ type: "Repository", message: "DB error", metadata: {} })),
       };
       const store = new GamesStore(
         createNoopAddGameUseCaseMock(),
@@ -740,10 +740,10 @@ describe('GamesStore', () => {
         notificationService,
       );
 
-      await store.editGame({ id: 'game-1', title: 'Zelda', description: '', purchaseDate: null, status: 'Owned' });
+      await store.editGame({ id: "game-1", title: "Zelda", description: "", purchaseDate: null, status: "Owned" });
 
       expect(notificationService.error).toHaveBeenCalledWith(
-        'An error occurred while saving the game. Please try again.',
+        "An error occurred while saving the game. Please try again.",
       );
       expect(notificationService.success).not.toHaveBeenCalled();
     });

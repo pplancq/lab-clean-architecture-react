@@ -160,7 +160,7 @@ export class Result<T, E> {
     if (!this.success) {
       return this.data as E;
     }
-    throw new Error('Called getError on an Ok value');
+    throw new Error("Called getError on an Ok value");
   }
 
   /**

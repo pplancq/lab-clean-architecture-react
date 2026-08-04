@@ -2,9 +2,9 @@
   all: unset;
   display: grid;
   grid-template-areas:
-    'label'
-    'input'
-    'helper-text';
+    "label"
+    "input"
+    "helper-text";
   align-items: center;
   gap: 6px;
 
@@ -20,8 +20,8 @@
 
 .textAreaFieldInline {
   grid-template-areas:
-    'label input'
-    'null helper-text';
+    "label input"
+    "null helper-text";
 
   & :global(.label) {
     min-width: 100px;

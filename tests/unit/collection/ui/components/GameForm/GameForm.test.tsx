@@ -1,18 +1,18 @@
-import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
-import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
-import type { Game } from '@Collection/domain/entities/Game';
-import { GameForm } from '@Collection/ui/components/GameForm/GameForm';
-import { Result } from '@Shared/domain/result/Result';
-import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
-import { DateFormatter } from '@Shared/infrastructure/utils/DateFormatter';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { render, screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { Container } from 'inversify';
-import type { ReactNode } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { ServiceProvider } from "@App/providers/ServiceProvider/ServiceProvider";
+import { AddGameDTO } from "@Collection/application/dtos/AddGameDTO";
+import { EditGameDTO } from "@Collection/application/dtos/EditGameDTO";
+import type { ApplicationErrorInterface } from "@Collection/application/errors/ApplicationErrorInterface";
+import type { Game } from "@Collection/domain/entities/Game";
+import { GameForm } from "@Collection/ui/components/GameForm/GameForm";
+import { Result } from "@Shared/domain/result/Result";
+import type { DateFormatterInterface } from "@Shared/domain/utils/DateFormatterInterface";
+import { DateFormatter } from "@Shared/infrastructure/utils/DateFormatter";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { Container } from "inversify";
+import type { ReactNode } from "react";
+import { describe, expect, it, vi } from "vitest";
 
 const createWrapper =
   (container: Container) =>
@@ -37,17 +37,17 @@ const renderEditGameForm = (
   options?: {
     onSuccess?: () => void;
     onCancel?: () => void;
-    initialData?: Parameters<typeof GameForm>[0]['initialData'];
+    initialData?: Parameters<typeof GameForm>[0]["initialData"];
   },
 ) => {
   const container = createContainer();
   const initialData = options?.initialData ?? {
-    title: 'The Legend of Zelda',
-    platform: 'Nintendo Switch',
-    format: 'Physical',
-    purchaseDate: '2023-05-12',
-    description: 'Classic adventure game',
-    status: 'Owned',
+    title: "The Legend of Zelda",
+    platform: "Nintendo Switch",
+    format: "Physical",
+    purchaseDate: "2023-05-12",
+    description: "Classic adventure game",
+    status: "Owned",
   };
   return render(
     <GameForm
@@ -63,275 +63,275 @@ const renderEditGameForm = (
 };
 
 const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.type(screen.getByRole('textbox', { name: /game title/i }), 'The Legend of Zelda');
-  await user.selectOptions(screen.getByRole('combobox', { name: /platform/i }), 'Nintendo Switch');
+  await user.type(screen.getByRole("textbox", { name: /game title/i }), "The Legend of Zelda");
+  await user.selectOptions(screen.getByRole("combobox", { name: /platform/i }), "Nintendo Switch");
 };
 
-describe('GameForm', () => {
-  describe('rendering', () => {
-    it('should render the form with an accessible label', async () => {
+describe("GameForm", () => {
+  describe("rendering", () => {
+    it("should render the form with an accessible label", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('form', { name: /add game form/i })).toBeInTheDocument();
+        expect(screen.getByRole("form", { name: /add game form/i })).toBeInTheDocument();
       });
     });
 
-    it('should render all form fields', async () => {
+    it("should render all form fields", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toBeInTheDocument();
-        expect(screen.getByRole('combobox', { name: /platform/i })).toBeInTheDocument();
-        expect(screen.getByRole('radiogroup', { name: /format/i })).toBeInTheDocument();
-        expect(screen.getByRole('textbox', { name: /description/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /add game/i })).toBeInTheDocument();
+        expect(screen.getByRole("textbox", { name: /game title/i })).toBeInTheDocument();
+        expect(screen.getByRole("combobox", { name: /platform/i })).toBeInTheDocument();
+        expect(screen.getByRole("radiogroup", { name: /format/i })).toBeInTheDocument();
+        expect(screen.getByRole("textbox", { name: /description/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /add game/i })).toBeInTheDocument();
       });
     });
 
-    it('should pre-select Physical format by default', async () => {
+    it("should pre-select Physical format by default", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('radio', { name: 'Physical' })).toBeChecked();
-        expect(screen.getByRole('radio', { name: 'Digital' })).not.toBeChecked();
+        expect(screen.getByRole("radio", { name: "Physical" })).toBeChecked();
+        expect(screen.getByRole("radio", { name: "Digital" })).not.toBeChecked();
       });
     });
 
-    it('should have today as default purchase date', async () => {
+    it("should have today as default purchase date", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
         const d = new Date();
-        const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
         const dateInput = screen.getByLabelText(/purchase date/i);
         expect(dateInput).toHaveValue(today);
       });
     });
   });
 
-  describe('accessibility', () => {
-    it('should have ARIA labels on all form fields', async () => {
+  describe("accessibility", () => {
+    it("should have ARIA labels on all form fields", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toHaveAccessibleName();
-        expect(screen.getByRole('combobox', { name: /platform/i })).toHaveAccessibleName();
-        expect(screen.getByRole('radiogroup', { name: /format/i })).toHaveAccessibleName();
-        expect(screen.getByRole('textbox', { name: /description/i })).toHaveAccessibleName();
+        expect(screen.getByRole("textbox", { name: /game title/i })).toHaveAccessibleName();
+        expect(screen.getByRole("combobox", { name: /platform/i })).toHaveAccessibleName();
+        expect(screen.getByRole("radiogroup", { name: /format/i })).toHaveAccessibleName();
+        expect(screen.getByRole("textbox", { name: /description/i })).toHaveAccessibleName();
       });
     });
 
-    it('should mark title as required', async () => {
+    it("should mark title as required", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toBeRequired();
+        expect(screen.getByRole("textbox", { name: /game title/i })).toBeRequired();
       });
     });
 
-    it('should mark platform as required', async () => {
+    it("should mark platform as required", async () => {
       renderGameForm(vi.fn());
 
       await waitFor(() => {
-        expect(screen.getByRole('combobox', { name: /platform/i })).toBeRequired();
+        expect(screen.getByRole("combobox", { name: /platform/i })).toBeRequired();
       });
     });
   });
 
-  describe('validation', () => {
-    it('should display an error when title is submitted empty', async () => {
+  describe("validation", () => {
+    it("should display an error when title is submitted empty", async () => {
       const user = userEvent.setup();
       renderGameForm(vi.fn());
 
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('title cannot be empty')).toBeInTheDocument();
+        expect(screen.getByText("title cannot be empty")).toBeInTheDocument();
       });
     });
 
-    it('should display an error when platform is not selected', async () => {
+    it("should display an error when platform is not selected", async () => {
       const user = userEvent.setup();
       renderGameForm(vi.fn());
 
-      await user.type(screen.getByRole('textbox', { name: /game title/i }), 'Some Game');
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.type(screen.getByRole("textbox", { name: /game title/i }), "Some Game");
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
-        expect(screen.getByText('platform cannot be empty')).toBeInTheDocument();
+        expect(screen.getByText("platform cannot be empty")).toBeInTheDocument();
       });
     });
 
-    it('should associate validation errors with their fields via aria-errormessage', async () => {
+    it("should associate validation errors with their fields via aria-errormessage", async () => {
       const user = userEvent.setup();
       renderGameForm(vi.fn());
 
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
-        const titleInput = screen.getByRole('textbox', { name: /game title/i });
-        expect(titleInput).toHaveAccessibleErrorMessage('title cannot be empty');
+        const titleInput = screen.getByRole("textbox", { name: /game title/i });
+        expect(titleInput).toHaveAccessibleErrorMessage("title cannot be empty");
       });
     });
 
-    it('should not call onSubmit when the form is invalid', async () => {
+    it("should not call onSubmit when the form is invalid", async () => {
       const user = userEvent.setup();
       const onSubmitMock = vi.fn();
       renderGameForm(onSubmitMock);
 
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       expect(onSubmitMock).not.toHaveBeenCalled();
     });
   });
 
-  describe('submission', () => {
-    it('should call onSubmit with an AddGameDTO on valid submit', async () => {
+  describe("submission", () => {
+    it("should call onSubmit with an AddGameDTO on valid submit", async () => {
       const user = userEvent.setup();
       const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
       renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
         expect(onSubmitMock).toHaveBeenCalledExactlyOnceWith(expect.any(AddGameDTO));
       });
     });
 
-    it('should pass the correct values to onSubmit', async () => {
+    it("should pass the correct values to onSubmit", async () => {
       const user = userEvent.setup();
       const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
       renderGameForm(onSubmitMock);
 
-      await user.type(screen.getByRole('textbox', { name: /game title/i }), 'Zelda');
-      await user.selectOptions(screen.getByRole('combobox', { name: /platform/i }), 'Nintendo Switch');
-      await user.click(screen.getByRole('radio', { name: 'Digital' }));
+      await user.type(screen.getByRole("textbox", { name: /game title/i }), "Zelda");
+      await user.selectOptions(screen.getByRole("combobox", { name: /platform/i }), "Nintendo Switch");
+      await user.click(screen.getByRole("radio", { name: "Digital" }));
 
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
         const dto: AddGameDTO = onSubmitMock.mock.calls[0][0];
-        expect(dto.title).toBe('Zelda');
-        expect(dto.platform).toBe('Nintendo Switch');
-        expect(dto.format).toBe('Digital');
-        expect(dto.status).toBe('Owned');
+        expect(dto.title).toBe("Zelda");
+        expect(dto.platform).toBe("Nintendo Switch");
+        expect(dto.format).toBe("Digital");
+        expect(dto.status).toBe("Owned");
       });
     });
 
-    it('should reset the form after successful submission', async () => {
+    it("should reset the form after successful submission", async () => {
       const user = userEvent.setup();
       const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
       renderGameForm(onSubmitMock);
 
       await fillRequiredFields(user);
-      await user.click(screen.getByRole('button', { name: /add game/i }));
+      await user.click(screen.getByRole("button", { name: /add game/i }));
 
       await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toHaveValue('');
+        expect(screen.getByRole("textbox", { name: /game title/i })).toHaveValue("");
       });
     });
   });
 
-  describe('edit mode', () => {
-    describe('rendering', () => {
-      it('should render the form with an accessible edit label', async () => {
+  describe("edit mode", () => {
+    describe("rendering", () => {
+      it("should render the form with an accessible edit label", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.getByRole('form', { name: /edit game form/i })).toBeInTheDocument();
+          expect(screen.getByRole("form", { name: /edit game form/i })).toBeInTheDocument();
         });
       });
 
-      it('should pre-populate all fields from initialData', async () => {
+      it("should pre-populate all fields from initialData", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.getByRole('textbox', { name: /game title/i })).toHaveValue('The Legend of Zelda');
-          expect(screen.getByRole('combobox', { name: /status/i })).toHaveValue('Owned');
+          expect(screen.getByRole("textbox", { name: /game title/i })).toHaveValue("The Legend of Zelda");
+          expect(screen.getByRole("combobox", { name: /status/i })).toHaveValue("Owned");
         });
       });
 
-      it('should not render platform and format fields in edit mode', async () => {
+      it("should not render platform and format fields in edit mode", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.queryByRole('combobox', { name: /platform/i })).not.toBeInTheDocument();
-          expect(screen.queryByRole('radiogroup', { name: /format/i })).not.toBeInTheDocument();
+          expect(screen.queryByRole("combobox", { name: /platform/i })).not.toBeInTheDocument();
+          expect(screen.queryByRole("radiogroup", { name: /format/i })).not.toBeInTheDocument();
         });
       });
 
-      it('should render Save changes button instead of Add game', async () => {
+      it("should render Save changes button instead of Add game", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument();
-          expect(screen.queryByRole('button', { name: /add game/i })).not.toBeInTheDocument();
+          expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
+          expect(screen.queryByRole("button", { name: /add game/i })).not.toBeInTheDocument();
         });
       });
 
-      it('should render the Cancel button', async () => {
+      it("should render the Cancel button", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+          expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
         });
       });
 
-      it('should render the status field', async () => {
+      it("should render the status field", async () => {
         renderEditGameForm(vi.fn());
 
         await waitFor(() => {
-          expect(screen.getByRole('combobox', { name: /status/i })).toBeInTheDocument();
-        });
-      });
-    });
-
-    describe('accessibility', () => {
-      it('should have accessible labels on all edit mode fields including status', async () => {
-        renderEditGameForm(vi.fn());
-
-        await waitFor(() => {
-          expect(screen.getByRole('combobox', { name: /status/i })).toHaveAccessibleName();
-          expect(screen.getByRole('button', { name: /cancel/i })).toHaveAccessibleName();
+          expect(screen.getByRole("combobox", { name: /status/i })).toBeInTheDocument();
         });
       });
     });
 
-    describe('cancel interaction', () => {
-      it('should call onCancel when cancel button is clicked', async () => {
+    describe("accessibility", () => {
+      it("should have accessible labels on all edit mode fields including status", async () => {
+        renderEditGameForm(vi.fn());
+
+        await waitFor(() => {
+          expect(screen.getByRole("combobox", { name: /status/i })).toHaveAccessibleName();
+          expect(screen.getByRole("button", { name: /cancel/i })).toHaveAccessibleName();
+        });
+      });
+    });
+
+    describe("cancel interaction", () => {
+      it("should call onCancel when cancel button is clicked", async () => {
         const user = userEvent.setup();
         const onCancelMock = vi.fn();
         renderEditGameForm(vi.fn(), { onCancel: onCancelMock });
 
-        await user.click(screen.getByRole('button', { name: /cancel/i }));
+        await user.click(screen.getByRole("button", { name: /cancel/i }));
 
         expect(onCancelMock).toHaveBeenCalledExactlyOnceWith(expect.anything());
       });
     });
 
-    describe('submission', () => {
-      it('should call onSubmit with an EditGameDTO on valid submit', async () => {
+    describe("submission", () => {
+      it("should call onSubmit with an EditGameDTO on valid submit", async () => {
         const user = userEvent.setup();
         const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
         const onSuccessMock = vi.fn();
         renderEditGameForm(onSubmitMock, { onSuccess: onSuccessMock });
 
-        await user.click(screen.getByRole('button', { name: /save changes/i }));
+        await user.click(screen.getByRole("button", { name: /save changes/i }));
 
         await waitFor(() => {
           expect(onSubmitMock).toHaveBeenCalledExactlyOnceWith(expect.any(EditGameDTO));
         });
       });
 
-      it('should call onSuccess after a successful edit', async () => {
+      it("should call onSuccess after a successful edit", async () => {
         const user = userEvent.setup();
         const onSubmitMock = vi.fn().mockResolvedValue(Result.ok(undefined));
         const onSuccessMock = vi.fn();
         renderEditGameForm(onSubmitMock, { onSuccess: onSuccessMock });
 
-        await user.click(screen.getByRole('button', { name: /save changes/i }));
+        await user.click(screen.getByRole("button", { name: /save changes/i }));
 
         await waitFor(() => {
           expect(onSuccessMock).toHaveBeenCalledExactlyOnceWith();

@@ -1,5 +1,5 @@
 ---
-applyTo: 'tests/unit/**/*.test.ts, tests/unit/**/*.test.tsx, tests/unit/**/*.test.js, tests/unit/**/*.test.jsx'
+applyTo: "tests/unit/**/*.test.ts, tests/unit/**/*.test.tsx, tests/unit/**/*.test.js, tests/unit/**/*.test.jsx"
 description: Instructions for writing unit and integration tests with Vitest in the front-end project.
 ---
 
@@ -69,10 +69,10 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
   ```typescript
   // ✅ Good - strict type checking
   expect(user.age).toBe(25);
-  expect(user.name).toBe('John');
+  expect(user.name).toBe("John");
 
   // ❌ Bad - would fail if types mismatch
-  expect(user.age).toBe('25'); // Fails if age is number
+  expect(user.age).toBe("25"); // Fails if age is number
   ```
 
 ## Best Practices
@@ -90,23 +90,23 @@ Ensure the quality, readability, maintainability, and accessibility of unit and 
 ### Good Example
 
 ```tsx
-import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { describe, it, expect } from 'vitest';
-import { MyButton } from '../MyButton';
+import { render, screen } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { describe, it, expect } from "vitest";
+import { MyButton } from "../MyButton";
 
-describe('MyButton', () => {
-  it('should render the button with accessible name', () => {
+describe("MyButton", () => {
+  it("should render the button with accessible name", () => {
     render(<MyButton label="Submit" />);
-    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Submit' })).toHaveAccessibleName('Submit');
+    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Submit" })).toHaveAccessibleName("Submit");
   });
 
-  it('should call onClick when clicked', async () => {
+  it("should call onClick when clicked", async () => {
     const onClick = vi.fn();
     render(<MyButton label="Submit" onClick={onClick} />);
     const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: 'Submit' }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
@@ -115,15 +115,15 @@ describe('MyButton', () => {
 ### Bad Example
 
 ```tsx
-import { render } from '@testing-library/react';
-import { MyButton } from '../MyButton';
+import { render } from "@testing-library/react";
+import { MyButton } from "../MyButton";
 
-test('renders', () => {
+test("renders", () => {
   render(<MyButton label="Submit" />);
   // No use of getByRole or accessibility assertion
 });
 
-it('should click', () => {
+it("should click", () => {
   // No use of userEvent, no effect verification
 });
 ```

@@ -46,16 +46,16 @@ export class ToastNotificationService implements NotificationServiceInterface {
   constructor(private readonly toastStore: ToastStoreInterface) {}
 
   success(message: string): void {
-    this.toastStore.addToast(message, 'success');
+    this.toastStore.addToast(message, "success");
   }
   error(message: string): void {
-    this.toastStore.addToast(message, 'error');
+    this.toastStore.addToast(message, "error");
   }
   info(message: string): void {
-    this.toastStore.addToast(message, 'info');
+    this.toastStore.addToast(message, "info");
   }
   warning(message: string): void {
-    this.toastStore.addToast(message, 'warning');
+    this.toastStore.addToast(message, "warning");
   }
 }
 ```

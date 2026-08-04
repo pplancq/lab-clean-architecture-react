@@ -35,11 +35,11 @@ Throughout the process, you captured context beyond what fits in the PRFAQ. Sour
 
 ```yaml
 ---
-title: 'PRFAQ Distillate: {project_name}'
+title: "PRFAQ Distillate: {project_name}"
 type: llm-distillate
-source: 'prfaq-{project_name}.md'
-created: '{timestamp}'
-purpose: 'Token-efficient context for downstream PRD creation'
+source: "prfaq-{project_name}.md"
+created: "{timestamp}"
+purpose: "Token-efficient context for downstream PRD creation"
 ---
 ```
 

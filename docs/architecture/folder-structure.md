@@ -280,20 +280,20 @@ Each bounded context and major layer has a dedicated alias:
 
    ```typescript
    // ✅ Clear: This comes from Collection context
-   import { Game } from '@Collection/domain/Game';
+   import { Game } from "@Collection/domain/Game";
 
    // ❌ Confusing: Where does this come from?
-   import { Game } from '../../../collection/domain/Game';
+   import { Game } from "../../../collection/domain/Game";
    ```
 
 2. **Architectural Boundaries** - Prevents accidental cross-context dependencies
 
    ```typescript
    // ✅ Intended: Import from another context
-   import { Game } from '@Collection/domain/Game';
+   import { Game } from "@Collection/domain/Game";
 
    // ❌ Prevented: Relative path bypasses the alias intent
-   import { Game } from '../collection/domain/Game';
+   import { Game } from "../collection/domain/Game";
    ```
 
 3. **Refactoring Safety** - Moving folders doesn't break imports:
@@ -313,21 +313,21 @@ Each bounded context and major layer has a dedicated alias:
 
   ```typescript
   // OK: Same folder
-  import { helper } from './helper';
-  import { child } from './child/component';
+  import { helper } from "./helper";
+  import { child } from "./child/component";
 
   // Use alias: Different layer or context
-  import { Game } from '@Collection/domain/Game';
+  import { Game } from "@Collection/domain/Game";
   ```
 
 - ✅ Prefer **specific aliases** over `@Front/`:
 
   ```typescript
   // ✅ Good: Clear context
-  import { Game } from '@Collection/domain/Game';
+  import { Game } from "@Collection/domain/Game";
 
   // ❌ Avoid: Ambiguous, deprecated
-  import { Game } from '@Front/collection/domain/Game';
+  import { Game } from "@Front/collection/domain/Game";
   ```
 
 ### Adding New Bounded Contexts

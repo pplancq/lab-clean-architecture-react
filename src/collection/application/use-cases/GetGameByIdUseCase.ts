@@ -1,10 +1,10 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import { NotFoundError } from '../errors/NotFoundError';
-import { RepositoryError } from '../errors/RepositoryError';
-import type { GetGameByIdUseCaseInterface } from './GetGameByIdUseCaseInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import { NotFoundError } from "../errors/NotFoundError";
+import { RepositoryError } from "../errors/RepositoryError";
+import type { GetGameByIdUseCaseInterface } from "./GetGameByIdUseCaseInterface";
 
 /**
  * Use case for retrieving a single game by its identifier
@@ -37,7 +37,7 @@ export class GetGameByIdUseCase implements GetGameByIdUseCaseInterface {
     if (result.isErr()) {
       const repoError = result.getError();
 
-      if ('entityId' in repoError) {
+      if ("entityId" in repoError) {
         return Result.err(
           new NotFoundError(repoError.entityId as string, repoError.message, { repositoryError: repoError }),
         );

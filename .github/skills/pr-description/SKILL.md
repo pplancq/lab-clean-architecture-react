@@ -208,12 +208,12 @@ Use GitHub MCP server tools if available:
 ```javascript
 // Use github-mcp-server-create_pull_request tool
 create_pull_request({
-  owner: 'repository-owner',
-  repo: 'repository-name',
-  title: 'PR title from issue',
-  body: 'Complete PR description',
-  head: 'feature/branch-name',
-  base: 'main',
+  owner: "repository-owner",
+  repo: "repository-name",
+  title: "PR title from issue",
+  body: "Complete PR description",
+  head: "feature/branch-name",
+  base: "main",
 });
 ```
 

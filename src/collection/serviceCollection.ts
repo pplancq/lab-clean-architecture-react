@@ -1,36 +1,36 @@
-import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
-import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
-import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { ContainerModule } from 'inversify';
-import { GamesStore } from './application/stores/GamesStore';
-import type { GamesStoreInterface } from './application/stores/GamesStoreInterface';
-import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
-import type { AddGameUseCaseInterface } from './application/use-cases/AddGameUseCaseInterface';
-import { DeleteGameUseCase } from './application/use-cases/DeleteGameUseCase';
-import type { DeleteGameUseCaseInterface } from './application/use-cases/DeleteGameUseCaseInterface';
-import { EditGameUseCase } from './application/use-cases/EditGameUseCase';
-import type { EditGameUseCaseInterface } from './application/use-cases/EditGameUseCaseInterface';
-import { GetGameByIdUseCase } from './application/use-cases/GetGameByIdUseCase';
-import type { GetGameByIdUseCaseInterface } from './application/use-cases/GetGameByIdUseCaseInterface';
-import { GetGamesUseCase } from './application/use-cases/GetGamesUseCase';
-import type { GetGamesUseCaseInterface } from './application/use-cases/GetGamesUseCaseInterface';
-import type { GameRepositoryInterface } from './domain/repositories/GameRepositoryInterface';
-import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
-import { COLLECTION_SERVICES } from './serviceIdentifiers';
+import type { NotificationServiceInterface } from "@Shared/domain/notifications/NotificationServiceInterface";
+import { IndexedDB } from "@Shared/infrastructure/persistence/IndexedDB";
+import type { IndexedDBInterface } from "@Shared/infrastructure/persistence/IndexedDBInterface";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { ContainerModule } from "inversify";
+import { GamesStore } from "./application/stores/GamesStore";
+import type { GamesStoreInterface } from "./application/stores/GamesStoreInterface";
+import { AddGameUseCase } from "./application/use-cases/AddGameUseCase";
+import type { AddGameUseCaseInterface } from "./application/use-cases/AddGameUseCaseInterface";
+import { DeleteGameUseCase } from "./application/use-cases/DeleteGameUseCase";
+import type { DeleteGameUseCaseInterface } from "./application/use-cases/DeleteGameUseCaseInterface";
+import { EditGameUseCase } from "./application/use-cases/EditGameUseCase";
+import type { EditGameUseCaseInterface } from "./application/use-cases/EditGameUseCaseInterface";
+import { GetGameByIdUseCase } from "./application/use-cases/GetGameByIdUseCase";
+import type { GetGameByIdUseCaseInterface } from "./application/use-cases/GetGameByIdUseCaseInterface";
+import { GetGamesUseCase } from "./application/use-cases/GetGamesUseCase";
+import type { GetGamesUseCaseInterface } from "./application/use-cases/GetGamesUseCaseInterface";
+import type { GameRepositoryInterface } from "./domain/repositories/GameRepositoryInterface";
+import { IndexedDBGameRepository } from "./infrastructure/persistence/IndexedDBGameRepository";
+import { COLLECTION_SERVICES } from "./serviceIdentifiers";
 
-export const serviceCollection: ContainerModule = new ContainerModule(options => {
+export const serviceCollection: ContainerModule = new ContainerModule((options) => {
   // Bind IndexedDB implementation to interface
   options
     .bind<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   // Bind GameRepository implementation to interface
   options
     .bind<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)
     .toDynamicValue(
-      services => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
+      (services) => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
     )
     .inSingletonScope();
 
@@ -38,7 +38,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase)
     .toDynamicValue(
-      services => new AddGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+      (services) => new AddGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
@@ -46,7 +46,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<EditGameUseCaseInterface>(COLLECTION_SERVICES.EditGameUseCase)
     .toDynamicValue(
-      services => new EditGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+      (services) => new EditGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
@@ -54,7 +54,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<DeleteGameUseCaseInterface>(COLLECTION_SERVICES.DeleteGameUseCase)
     .toDynamicValue(
-      services => new DeleteGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+      (services) => new DeleteGameUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
@@ -62,7 +62,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase)
     .toDynamicValue(
-      services => new GetGamesUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+      (services) => new GetGamesUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
@@ -70,7 +70,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<GetGameByIdUseCaseInterface>(COLLECTION_SERVICES.GetGameByIdUseCase)
     .toDynamicValue(
-      services => new GetGameByIdUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
+      (services) => new GetGameByIdUseCase(services.get<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)),
     )
     .inSingletonScope();
 
@@ -78,7 +78,7 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
   options
     .bind<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore)
     .toDynamicValue(
-      services =>
+      (services) =>
         new GamesStore(
           services.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase),
           services.get<GetGamesUseCaseInterface>(COLLECTION_SERVICES.GetGamesUseCase),

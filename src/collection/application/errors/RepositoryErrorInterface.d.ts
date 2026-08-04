@@ -1,4 +1,4 @@
-import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
+import type { ApplicationErrorInterface } from "./ApplicationErrorInterface";
 
 /**
  * Repository error wrapper for application layer
@@ -6,5 +6,5 @@ import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
  * Wraps repository errors to provide application-level context
  */
 export interface RepositoryErrorInterface extends ApplicationErrorInterface {
-  readonly type: 'Repository';
+  readonly type: "Repository";
 }

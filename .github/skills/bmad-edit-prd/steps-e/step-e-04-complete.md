@@ -1,6 +1,6 @@
 ---
 # File references (ONLY variables used in this step)
-prdFile: '{prd_file_path}'
+prdFile: "{prd_file_path}"
 ---
 
 # Step E-4: Complete & Validate

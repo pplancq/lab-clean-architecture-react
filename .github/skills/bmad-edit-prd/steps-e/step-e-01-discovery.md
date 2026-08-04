@@ -1,6 +1,6 @@
 ---
 # File references (ONLY variables used in this step)
-prdPurpose: '../data/prd-purpose.md'
+prdPurpose: "../data/prd-purpose.md"
 ---
 
 # Step E-1: Discovery & Understanding

@@ -7,6 +7,7 @@
 ## Related Issue
 
 <!-- Link to the related issue(s) -->
+
 Closes #<!-- issue number -->
 
 ## Type of Change
@@ -75,9 +76,11 @@ Closes #<!-- issue number -->
 <!-- If applicable, add screenshots or videos to demonstrate the changes -->
 
 ### Before
+
 <!-- Screenshot before changes -->
 
 ### After
+
 <!-- Screenshot after changes -->
 
 ## Browser/Device Testing

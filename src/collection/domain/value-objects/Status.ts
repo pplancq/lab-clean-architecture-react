@@ -1,12 +1,12 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
-import { Result } from '@Shared/domain/result/Result';
+import { AllowedValuesError } from "@Shared/domain/errors/AllowedValuesError";
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
 
 export enum StatusType {
-  OWNED = 'Owned',
-  WISHLIST = 'Wishlist',
-  SOLD = 'Sold',
-  LOANED = 'Loaned',
+  OWNED = "Owned",
+  WISHLIST = "Wishlist",
+  SOLD = "Sold",
+  LOANED = "Loaned",
 }
 
 /**
@@ -39,12 +39,12 @@ export class Status {
    * @returns Result containing Status or validation error
    */
   public static create(value: string): Result<Status, DomainValidationErrorInterface> {
-    const trimmedValue = value?.trim() ?? '';
+    const trimmedValue = value?.trim() ?? "";
     const allowedValues = Object.values(StatusType);
-    const statusValue = allowedValues.find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+    const statusValue = allowedValues.find((s) => s.toLowerCase() === trimmedValue.toLowerCase());
 
     if (!statusValue) {
-      return Result.err(new AllowedValuesError('status', allowedValues));
+      return Result.err(new AllowedValuesError("status", allowedValues));
     }
 
     return Result.ok(new Status(statusValue as StatusType));

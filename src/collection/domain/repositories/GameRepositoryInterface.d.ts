@@ -1,8 +1,8 @@
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-import type { RepositoryInterface } from '@Shared/domain/repositories/RepositoryInterface';
-import type { Result } from '@Shared/domain/result/Result';
-import type { Game } from '../entities/Game';
-import type { GameFilterCriteria } from '../entities/GameFilterCriteria';
+import type { RepositoryErrorInterface } from "@Shared/domain/repositories/error/RepositoryErrorInterface";
+import type { RepositoryInterface } from "@Shared/domain/repositories/RepositoryInterface";
+import type { Result } from "@Shared/domain/result/Result";
+import type { Game } from "../entities/Game";
+import type { GameFilterCriteria } from "../entities/GameFilterCriteria";
 
 /**
  * Repository interface for Game entity persistence

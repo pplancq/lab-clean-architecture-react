@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * GameDescription value object representing a game description
@@ -33,7 +33,7 @@ export class GameDescription extends AbstractStringValueObject {
   public static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const maxLengthCheck = AbstractStringValueObject.maxLength('description', trimmed, 1000);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("description", trimmed, 1000);
     if (maxLengthCheck.isErr()) {
       return Result.err(maxLengthCheck.getError());
     }

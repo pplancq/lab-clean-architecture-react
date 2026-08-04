@@ -1,9 +1,9 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: './step-v-03-density-validation.md'
-altStepFile: './step-v-02b-parity-check.md'
-prdFile: '{prd_file_path}'
-validationReportPath: '{validation_report_path}'
+nextStepFile: "./step-v-03-density-validation.md"
+altStepFile: "./step-v-02b-parity-check.md"
+prdFile: "{prd_file_path}"
+validationReportPath: "{validation_report_path}"
 ---
 
 # Step 2: Format Detection & Structure Analysis

@@ -1,9 +1,9 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: './step-v-13-report-complete.md'
-prdFile: '{prd_file_path}'
-prdFrontmatter: '{prd_frontmatter}'
-validationReportPath: '{validation_report_path}'
+nextStepFile: "./step-v-13-report-complete.md"
+prdFile: "{prd_file_path}"
+prdFrontmatter: "{prd_frontmatter}"
+validationReportPath: "{validation_report_path}"
 ---
 
 # Step 12: Completeness Validation

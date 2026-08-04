@@ -137,7 +137,7 @@ Five zero-prop wrapper components, each hardcoding the brand identity of a game 
 Files live in `src/shared/ui/components/GameBadges/` with no barrel file. Import each component individually:
 
 ```tsx
-import { NintendoBadge } from '@Shared/ui/components/GameBadges/NintendoBadge';
+import { NintendoBadge } from "@Shared/ui/components/GameBadges/NintendoBadge";
 ```
 
 ---
@@ -281,14 +281,14 @@ Fetches are **auto-triggered** by the store internals via `queueMicrotask`. Comp
 ```typescript
 // GameList — fetches are auto-triggered on first getGamesList() call
 export const GameList = () => {
-  const { games, isLoading, hasError, error } = useGamesSelector(s => s.getGamesList());
+  const { games, isLoading, hasError, error } = useGamesSelector((s) => s.getGamesList());
   // ...
 };
 
 // GameDetail — fetchGameById is auto-triggered if entry is absent or lazy
 export const GameDetail = () => {
-  const { id = '' } = useParams<{ id: string }>();
-  const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
+  const { id = "" } = useParams<{ id: string }>();
+  const { data: game, isLoading, hasError, error } = useGamesSelector((s) => s.getGame(id));
   // hasError && error   → generic error
   // ...
 };
@@ -302,13 +302,13 @@ export const GameDetail = () => {
 
 ```typescript
 // Re-renders only when isLoading changes (boolean)
-const isLoading = useGamesSelector(s => s.getGamesList().isLoading);
+const isLoading = useGamesSelector((s) => s.getGamesList().isLoading);
 
 // Re-renders only when the games array reference changes
-const games = useGamesSelector(s => s.getGamesList().games);
+const games = useGamesSelector((s) => s.getGamesList().games);
 
 // Re-renders when any of the 3 values change (current GameList usage)
-const { games, error, isLoading } = useGamesSelector(s => s.getGamesList());
+const { games, error, isLoading } = useGamesSelector((s) => s.getGamesList());
 ```
 
 > **Stable references:** `GamesStore.commit(gamesChanged)` only rebuilds the `games` array when the Map actually changed. A loading-state commit preserves the existing array reference, so `useGamesSelector(s => s.getGamesList().games)` skips the re-render.
@@ -323,7 +323,7 @@ export const useGamesSelector = <T>(selector: (store: GamesStoreInterface) => T)
   const selectorRef = useRef(selector);
   selectorRef.current = selector;
   return useSyncExternalStore(
-    useCallback(cb => store.subscribe(cb), [store]),
+    useCallback((cb) => store.subscribe(cb), [store]),
     useCallback(() => selectorRef.current(store), [store]),
   );
 };

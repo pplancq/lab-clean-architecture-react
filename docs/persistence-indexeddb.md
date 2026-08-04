@@ -100,19 +100,19 @@ IndexedDB → GameDTO → GameMapper.toDomain() → Result<Game, GameError>
 The repository is registered in the DI container (`serviceCollection.ts`):
 
 ```typescript
-import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
-import { ContainerModule } from 'inversify';
-import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
+import { IndexedDB } from "@Shared/infrastructure/persistence/IndexedDB";
+import { ContainerModule } from "inversify";
+import { IndexedDBGameRepository } from "./infrastructure/persistence/IndexedDBGameRepository";
 
-export const serviceCollection: ContainerModule = new ContainerModule(options => {
+export const serviceCollection: ContainerModule = new ContainerModule((options) => {
   options
     .bind(IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   options
     .bind(IndexedDBGameRepository)
-    .toDynamicValue(service => new IndexedDBGameRepository(service.get(IndexedDB)))
+    .toDynamicValue((service) => new IndexedDBGameRepository(service.get(IndexedDB)))
     .inSingletonScope();
 });
 ```
@@ -120,9 +120,9 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
 ### Basic Operations
 
 ```typescript
-import { container } from '@Front/di/container';
-import { IndexedDBGameRepository } from '@Collection/infrastructure/persistence/IndexedDBGameRepository';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
+import { container } from "@Front/di/container";
+import { IndexedDBGameRepository } from "@Collection/infrastructure/persistence/IndexedDBGameRepository";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
 
 // Get repository from DI container
 const repository = container.get<GameRepositoryInterface>(IndexedDBGameRepository);
@@ -130,7 +130,7 @@ const repository = container.get<GameRepositoryInterface>(IndexedDBGameRepositor
 // Save a game
 const saveResult = await repository.save(game);
 if (saveResult.isOk()) {
-  console.log('Game saved successfully');
+  console.log("Game saved successfully");
 } else {
   const error = saveResult.getError();
   if (error instanceof QuotaExceededError) {
@@ -139,14 +139,14 @@ if (saveResult.isOk()) {
 }
 
 // Find game by ID
-const findResult = await repository.findById('game-123');
+const findResult = await repository.findById("game-123");
 if (findResult.isOk()) {
   const game = findResult.unwrap();
   console.log(`Found: ${game.getTitle()}`);
 } else {
   const error = findResult.getError();
   if (error instanceof NotFoundError) {
-    console.log('Game not found');
+    console.log("Game not found");
   }
 }
 
@@ -158,9 +158,9 @@ if (allResult.isOk()) {
 }
 
 // Delete a game
-const deleteResult = await repository.delete('game-123');
+const deleteResult = await repository.delete("game-123");
 if (deleteResult.isOk()) {
-  console.log('Game deleted');
+  console.log("Game deleted");
 }
 ```
 
@@ -191,7 +191,7 @@ if (result.isErr()) {
     // Entity doesn't exist (shouldn't happen on save)
   } else if (error instanceof UnknownError) {
     // Log error details and show generic error message
-    console.error('Database error:', error.originalError);
+    console.error("Database error:", error.originalError);
   }
 }
 ```
@@ -203,9 +203,9 @@ if (result.isErr()) {
 The `utils/indexedDBTestUtils.ts` provides helpers for integration testing:
 
 ```typescript
-import { setupTestDatabase, cleanupTestDatabase } from './utils/indexedDBTestUtils';
+import { setupTestDatabase, cleanupTestDatabase } from "./utils/indexedDBTestUtils";
 
-describe('Repository Tests', () => {
+describe("Repository Tests", () => {
   beforeEach(async () => {
     await setupTestDatabase();
   });
@@ -214,7 +214,7 @@ describe('Repository Tests', () => {
     await cleanupTestDatabase();
   });
 
-  it('should save and retrieve game', async () => {
+  it("should save and retrieve game", async () => {
     // Test implementation
   });
 });
@@ -226,7 +226,7 @@ Integration tests use `fake-indexeddb` to simulate IndexedDB in Node.js:
 
 ```typescript
 // vitest.setup.ts
-import 'fake-indexeddb/auto';
+import "fake-indexeddb/auto";
 ```
 
 This provides a real IndexedDB implementation for tests without requiring a browser.
@@ -253,7 +253,7 @@ Use indexes for common queries:
 
 ```typescript
 // Uses 'platform' index - fast
-const playstationGames = (await repository.findAll()).unwrap().filter(g => g.getPlatform() === 'PlayStation');
+const playstationGames = (await repository.findAll()).unwrap().filter((g) => g.getPlatform() === "PlayStation");
 
 // Better: Implement findByPlatform() using IDBCursor for efficiency
 ```

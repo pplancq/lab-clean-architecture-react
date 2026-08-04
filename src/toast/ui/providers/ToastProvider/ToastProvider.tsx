@@ -1,7 +1,7 @@
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
-import { ToastContainer } from '@Toast/ui/components/ToastContainer/ToastContainer';
-import { ToastContext } from '@Toast/ui/providers/ToastProvider/ToastContext';
-import { type PropsWithChildren, useRef } from 'react';
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
+import { ToastContainer } from "@Toast/ui/components/ToastContainer/ToastContainer";
+import { ToastContext } from "@Toast/ui/providers/ToastProvider/ToastContext";
+import { type PropsWithChildren, useRef } from "react";
 
 type ToastProviderProps = PropsWithChildren<{
   /**

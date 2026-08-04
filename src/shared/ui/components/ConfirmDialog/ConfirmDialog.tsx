@@ -1,7 +1,7 @@
-import { Button } from '@pplancq/shelter-ui-react';
-import { useEffect, useId, useRef } from 'react';
+import { Button } from "@pplancq/shelter-ui-react";
+import { useEffect, useId, useRef } from "react";
 
-import defaultClasses from './ConfirmDialog.module.css';
+import defaultClasses from "./ConfirmDialog.module.css";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -26,8 +26,8 @@ export const ConfirmDialog = ({
   open,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
   onConfirm,
   onCancel,
   onClose,
@@ -58,7 +58,7 @@ export const ConfirmDialog = ({
       className={defaultClasses.dialog}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      onCancel={e => {
+      onCancel={(e) => {
         e.preventDefault();
         onCancel();
       }}

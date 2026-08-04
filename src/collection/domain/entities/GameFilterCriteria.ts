@@ -1,7 +1,7 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
 
-import { GameTitle } from '../value-objects/GameTitle';
+import { GameTitle } from "../value-objects/GameTitle";
 
 /**
  * GameFilterCriteria entity representing search/filter criteria for games

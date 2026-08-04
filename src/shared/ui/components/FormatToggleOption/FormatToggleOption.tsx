@@ -1,10 +1,10 @@
-import { Button, Icon } from '@pplancq/shelter-ui-react';
-import type { ComponentProps, ReactNode } from 'react';
-import { useId } from 'react';
+import { Button, Icon } from "@pplancq/shelter-ui-react";
+import type { ComponentProps, ReactNode } from "react";
+import { useId } from "react";
 
-import defaultClasses from './FormatToggleOption.module.css';
+import defaultClasses from "./FormatToggleOption.module.css";
 
-export type FormatToggleOptionProps = Omit<ComponentProps<'input'>, 'type'> & {
+export type FormatToggleOptionProps = Omit<ComponentProps<"input">, "type"> & {
   isInvalid?: boolean;
   label: ReactNode;
   icon: string;
@@ -17,7 +17,7 @@ export const FormatToggleOption = ({ label, icon, id, isInvalid, ref, ...inputPr
   return (
     <Button
       as="label"
-      className={[defaultClasses.option, isInvalid && defaultClasses.invalid].filter(Boolean).join(' ')}
+      className={[defaultClasses.option, isInvalid && defaultClasses.invalid].filter(Boolean).join(" ")}
       size="large"
       htmlFor={inputId}
       startIcon={<Icon icon={icon} size="medium" role="presentation" />}

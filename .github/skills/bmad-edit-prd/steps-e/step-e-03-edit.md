@@ -1,7 +1,7 @@
 ---
 # File references (ONLY variables used in this step)
-prdFile: '{prd_file_path}'
-prdPurpose: '../data/prd-purpose.md'
+prdFile: "{prd_file_path}"
+prdPurpose: "../data/prd-purpose.md"
 ---
 
 # Step E-3: Edit & Update
@@ -161,18 +161,18 @@ BMAD standard structure applied.
 
 ```yaml
 ---
-workflowType: 'prd'
-workflow: 'create' # or 'validate' or 'edit'
+workflowType: "prd"
+workflow: "create" # or 'validate' or 'edit'
 classification:
-  domain: '{domain}'
-  projectType: '{project_type}'
-  complexity: '{complexity}'
+  domain: "{domain}"
+  projectType: "{project_type}"
+  complexity: "{complexity}"
 inputDocuments: [list of input documents]
-stepsCompleted: ['step-e-01-discovery', 'step-e-02-review', 'step-e-03-edit']
-lastEdited: '{current_date}'
+stepsCompleted: ["step-e-01-discovery", "step-e-02-review", "step-e-03-edit"]
+lastEdited: "{current_date}"
 editHistory:
-  - date: '{current_date}'
-    changes: '{summary of changes}'
+  - date: "{current_date}"
+    changes: "{summary of changes}"
 ---
 ```
 

@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * ToastMessage value object representing the notification text.
@@ -17,7 +17,7 @@ export class ToastMessage extends AbstractStringValueObject {
   public static create(value: string): Result<ToastMessage, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('message', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("message", trimmed);
     if (notEmptyCheck.isErr()) {
       return Result.err(notEmptyCheck.getError());
     }

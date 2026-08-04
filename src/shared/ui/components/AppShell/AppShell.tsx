@@ -1,7 +1,7 @@
-import { Grid } from '@pplancq/shelter-ui-react';
-import { Outlet } from 'react-router';
+import { Grid } from "@pplancq/shelter-ui-react";
+import { Outlet } from "react-router";
 
-import defaultClasses from './AppShell.module.css';
+import defaultClasses from "./AppShell.module.css";
 
 export const AppShell = () => {
   return (

@@ -74,23 +74,23 @@ If additional data arrives empty or invalid from the UI, the domain validation w
 ### Basic Usage
 
 ```typescript
-import { serviceContainer } from '@App/config/serviceContainer';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
+import { serviceContainer } from "@App/config/serviceContainer";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { AddGameDTO } from "@Collection/application/dtos/AddGameDTO";
+import type { AddGameUseCaseInterface } from "@Collection/application/use-cases/AddGameUseCaseInterface";
 
 // Get the use case from DI container
 const addGameUseCase = serviceContainer.get<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
 
 // Create DTO from user input
 const dto = new AddGameDTO(
-  'game-123',
-  'The Legend of Zelda: Breath of the Wild',
-  'Open-world action-adventure game',
-  'Nintendo Switch',
-  'Physical',
-  new Date('2023-05-12'),
-  'Owned',
+  "game-123",
+  "The Legend of Zelda: Breath of the Wild",
+  "Open-world action-adventure game",
+  "Nintendo Switch",
+  "Physical",
+  new Date("2023-05-12"),
+  "Owned",
 );
 
 // Execute the use case

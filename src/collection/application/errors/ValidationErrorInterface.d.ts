@@ -1,4 +1,4 @@
-import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
+import type { ApplicationErrorInterface } from "./ApplicationErrorInterface";
 
 /**
  * Validation error for application layer
@@ -7,7 +7,7 @@ import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
  * including both input validation and domain validation errors.
  */
 export interface ValidationErrorInterface extends ApplicationErrorInterface {
-  readonly type: 'Validation';
+  readonly type: "Validation";
 
   /**
    * Field that failed validation

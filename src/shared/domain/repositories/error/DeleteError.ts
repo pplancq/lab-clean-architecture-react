@@ -1,5 +1,5 @@
-import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
-import type { DeleteErrorInterface } from '@Shared/domain/repositories/error/DeleteErrorInterface';
+import type { DeleteErrorInterface } from "@Shared/domain/repositories/error/DeleteErrorInterface";
+import { IndexedDBRequestError } from "@Shared/domain/repositories/error/IndexedDBRequestError";
 
 /**
  * Error thrown when an IndexedDB delete operation fails
@@ -11,7 +11,7 @@ import type { DeleteErrorInterface } from '@Shared/domain/repositories/error/Del
  */
 export class DeleteError extends IndexedDBRequestError implements DeleteErrorInterface {
   constructor(originalError: DOMException | null) {
-    super('IndexedDB delete request failed', originalError);
-    this.name = 'DeleteError';
+    super("IndexedDB delete request failed", originalError);
+    this.name = "DeleteError";
   }
 }

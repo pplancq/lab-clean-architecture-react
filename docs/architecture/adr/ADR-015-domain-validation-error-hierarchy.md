@@ -9,7 +9,7 @@
 Value objects validate their inputs and return `Result.err(...)` on failure. Before this ADR, validation errors were plain anonymous objects:
 
 ```typescript
-return Result.err({ field: 'title', message: 'title cannot be empty' });
+return Result.err({ field: "title", message: "title cannot be empty" });
 ```
 
 Problems:
@@ -49,7 +49,7 @@ export class DomainValidationError extends Error implements DomainValidationErro
     readonly message: string,
   ) {
     super(message);
-    this.name = 'DomainValidationError';
+    this.name = "DomainValidationError";
   }
 }
 ```
@@ -57,13 +57,13 @@ export class DomainValidationError extends Error implements DomainValidationErro
 ### Specialised classes (auto-generated messages)
 
 ```typescript
-new NotEmptyError('message');
+new NotEmptyError("message");
 // → message: "message cannot be empty"
 
-new PositiveNumberError('duration');
+new PositiveNumberError("duration");
 // → message: "duration must be a positive number"
 
-new AllowedValuesError('type', ['success', 'info', 'warning', 'error']);
+new AllowedValuesError("type", ["success", "info", "warning", "error"]);
 // → message: "type must be one of: success, info, warning, error"
 ```
 

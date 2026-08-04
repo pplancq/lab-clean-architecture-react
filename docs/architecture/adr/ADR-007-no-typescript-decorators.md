@@ -54,7 +54,7 @@ In Clean Architecture, the **domain layer must be technology-agnostic** and free
 
 ```typescript
 // src/collection/domain/entities/Game.ts
-import { injectable } from 'inversify'; // ❌ Domain depends on DI library
+import { injectable } from "inversify"; // ❌ Domain depends on DI library
 
 @injectable() // ❌ Domain class coupled to InversifyJS
 export class Game {
@@ -72,7 +72,7 @@ export class Game {
 }
 
 // src/collection/serviceCollection.ts
-import { Game } from './domain/entities/Game';
+import { Game } from "./domain/entities/Game";
 
 // ✅ Infrastructure configures DI, not domain
 container.bind(Game).toSelf();
@@ -102,12 +102,12 @@ With manual binding, the domain remains pure and the DI configuration lives in t
 @injectable()
 export class MyService {
   constructor() {
-    console.log('MyService created');
+    console.log("MyService created");
   }
 }
 
 // Just importing this file runs the @injectable() decorator function
-import { MyService } from './MyService';
+import { MyService } from "./MyService";
 ```
 
 With manual binding, initialization is explicit and controlled:
@@ -116,7 +116,7 @@ With manual binding, initialization is explicit and controlled:
 // No side effects on import
 export class MyService {
   constructor() {
-    console.log('MyService created');
+    console.log("MyService created");
   }
 }
 
@@ -160,13 +160,13 @@ Each bounded context has a `serviceCollection.ts` module:
 
 ```typescript
 // src/collection/serviceCollection.ts
-import { Container } from 'inversify';
+import { Container } from "inversify";
 
 // Import domain, application, infrastructure
-import { Game } from './domain/entities/Game';
-import { AddGameUseCase } from './application/use-cases/AddGameUseCase';
-import { IGameRepository } from './application/ports/IGameRepository';
-import { IndexedDBGameRepository } from './infrastructure/repositories/IndexedDBGameRepository';
+import { Game } from "./domain/entities/Game";
+import { AddGameUseCase } from "./application/use-cases/AddGameUseCase";
+import { IGameRepository } from "./application/ports/IGameRepository";
+import { IndexedDBGameRepository } from "./infrastructure/repositories/IndexedDBGameRepository";
 
 export const registerCollectionServices = (container: Container): void => {
   // Domain entities (if needed)
@@ -176,7 +176,7 @@ export const registerCollectionServices = (container: Container): void => {
   container.bind(AddGameUseCase).toSelf();
 
   // Repositories (interface to implementation)
-  container.bind<IGameRepository>('IGameRepository').to(IndexedDBGameRepository);
+  container.bind<IGameRepository>("IGameRepository").to(IndexedDBGameRepository);
 };
 ```
 
@@ -186,9 +186,9 @@ The main service container aggregates all context service collections:
 
 ```typescript
 // src/app/config/serviceContainer.ts
-import { Container } from 'inversify';
-import { registerCollectionServices } from '@Front/collection/serviceCollection';
-import { registerWishlistServices } from '@Front/wishlist/serviceCollection';
+import { Container } from "inversify";
+import { registerCollectionServices } from "@Front/collection/serviceCollection";
+import { registerWishlistServices } from "@Front/wishlist/serviceCollection";
 
 export const createServiceContainer = (): Container => {
   const container = new Container();

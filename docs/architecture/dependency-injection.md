@@ -57,10 +57,10 @@ graph TB
 **Location:** `src/app/config/serviceContainer.ts`
 
 ```typescript
-import { serviceCollection } from '@Collection/serviceCollection';
-import { sharedServiceCollection } from '@Shared/serviceCollection';
-import { serviceToast } from '@Toast/serviceCollection';
-import { Container } from 'inversify';
+import { serviceCollection } from "@Collection/serviceCollection";
+import { sharedServiceCollection } from "@Shared/serviceCollection";
+import { serviceToast } from "@Toast/serviceCollection";
+import { Container } from "inversify";
 
 export const serviceContainer = new Container();
 
@@ -81,9 +81,9 @@ Example for Collection context:
 
 ```typescript
 // src/collection/serviceCollection.ts
-import { ContainerModule } from 'inversify';
+import { ContainerModule } from "inversify";
 
-export const serviceCollection: ContainerModule = new ContainerModule(bind => {
+export const serviceCollection: ContainerModule = new ContainerModule((bind) => {
   // Collection services bindings go here
   // Example:
   // bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
@@ -96,8 +96,8 @@ export const serviceCollection: ContainerModule = new ContainerModule(bind => {
 
 ```typescript
 // ServiceContext.ts
-import type { Container } from 'inversify';
-import { createContext } from 'react';
+import type { Container } from "inversify";
+import { createContext } from "react";
 
 type ServiceContextProps = {
   container: Container;
@@ -131,15 +131,15 @@ export const ServiceProvider = ({
 **Location:** `src/shared/ui/hooks/useService/useService.ts`
 
 ```typescript
-import { ServiceContext } from '@Front/app/providers/ServiceProvider/ServiceContext';
-import type { ServiceIdentifier } from 'inversify';
-import { useContext } from 'react';
+import { ServiceContext } from "@Front/app/providers/ServiceProvider/ServiceContext";
+import type { ServiceIdentifier } from "inversify";
+import { useContext } from "react";
 
 export const useService = <T = unknown>(serviceIdentifier: ServiceIdentifier<T>): T => {
   const context = useContext(ServiceContext);
 
   if (!context) {
-    throw new Error('useService must be used within a ServiceProvider');
+    throw new Error("useService must be used within a ServiceProvider");
   }
 
   return context.container.get<T>(serviceIdentifier);
@@ -157,8 +157,8 @@ Create a `types.ts` file for your context:
 ```typescript
 // src/collection/types.ts
 export const TYPES = {
-  GameRepository: Symbol.for('GameRepository'),
-  Logger: Symbol.for('Logger'),
+  GameRepository: Symbol.for("GameRepository"),
+  Logger: Symbol.for("Logger"),
 };
 ```
 
@@ -168,11 +168,11 @@ export const TYPES = {
 
 ```typescript
 // src/collection/serviceCollection.ts
-import { ContainerModule } from 'inversify';
-import { TYPES } from './types';
-import { GameRepository } from './infrastructure/GameRepository';
+import { ContainerModule } from "inversify";
+import { TYPES } from "./types";
+import { GameRepository } from "./infrastructure/GameRepository";
 
-export const serviceCollection: ContainerModule = new ContainerModule(bind => {
+export const serviceCollection: ContainerModule = new ContainerModule((bind) => {
   bind<IGameRepository>(TYPES.GameRepository).to(GameRepository);
 });
 ```
@@ -184,30 +184,30 @@ Here's the actual implementation from the Collection bounded context:
 ```typescript
 // src/collection/config/serviceIdentifiers.ts
 export const COLLECTION_SERVICES = Object.freeze({
-  IndexedDB: Symbol.for('Collection.IndexedDB'),
-  GameRepository: Symbol.for('Collection.GameRepository'),
+  IndexedDB: Symbol.for("Collection.IndexedDB"),
+  GameRepository: Symbol.for("Collection.GameRepository"),
 } as const);
 
 // src/collection/serviceCollection.ts
-import { ContainerModule } from 'inversify';
-import type { GameRepositoryInterface } from './domain/repositories/GameRepositoryInterface';
-import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
-import { IndexedDB } from '@Shared/infrastructure/persistence/IndexedDB';
-import { IndexedDBGameRepository } from './infrastructure/persistence/IndexedDBGameRepository';
-import { COLLECTION_SERVICES } from './config/serviceIdentifiers';
+import { ContainerModule } from "inversify";
+import type { GameRepositoryInterface } from "./domain/repositories/GameRepositoryInterface";
+import type { IndexedDBInterface } from "@Shared/infrastructure/persistence/IndexedDBInterface";
+import { IndexedDB } from "@Shared/infrastructure/persistence/IndexedDB";
+import { IndexedDBGameRepository } from "./infrastructure/persistence/IndexedDBGameRepository";
+import { COLLECTION_SERVICES } from "./config/serviceIdentifiers";
 
-export const serviceCollection: ContainerModule = new ContainerModule(options => {
+export const serviceCollection: ContainerModule = new ContainerModule((options) => {
   // Bind IndexedDB implementation to interface
   options
     .bind<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   // Bind GameRepository implementation to interface
   options
     .bind<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)
     .toDynamicValue(
-      services => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
+      (services) => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
     )
     .inSingletonScope();
 });
@@ -245,19 +245,19 @@ Use for custom instantiation logic, dependency resolution, or configuration:
 // Simple factory
 options
   .bind(Logger)
-  .toDynamicValue(() => new Logger('Collection'))
+  .toDynamicValue(() => new Logger("Collection"))
   .inSingletonScope();
 
 // With dependency injection
 options
   .bind(GameRepository)
-  .toDynamicValue(ctx => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
+  .toDynamicValue((ctx) => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
   .inSingletonScope();
 
 // With configuration
 options
   .bind(IndexedDB)
-  .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+  .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
   .inSingletonScope();
 ```
 
@@ -273,14 +273,14 @@ options
 Use for singletons or pre-configured instances:
 
 ```typescript
-const logger = new Logger('Collection');
+const logger = new Logger("Collection");
 options.bind(Logger).toConstantValue(logger);
 
 // Or with configuration
 const config = {
-  dbName: 'GameCollectionDB',
+  dbName: "GameCollectionDB",
   version: 1,
-  storeName: 'games',
+  storeName: "games",
 };
 options.bind(TYPES.Config).toConstantValue(config);
 ```
@@ -308,7 +308,7 @@ Control the lifetime of your services:
 ```typescript
 options
   .bind(IndexedDB)
-  .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+  .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
   .inSingletonScope(); // ✅ Single shared instance
 ```
 
@@ -324,7 +324,7 @@ options
 ```typescript
 options
   .bind(GameService)
-  .toDynamicValue(ctx => new GameService(ctx.get(GameRepository)))
+  .toDynamicValue((ctx) => new GameService(ctx.get(GameRepository)))
   .inTransientScope(); // New instance every time
 ```
 
@@ -345,34 +345,34 @@ options.bind(RequestContext).to(RequestContext).inRequestScope(); // One per req
 #### Complex Example: Multiple Dependencies
 
 ```typescript
-export const serviceCollection: ContainerModule = new ContainerModule(options => {
+export const serviceCollection: ContainerModule = new ContainerModule((options) => {
   // Infrastructure - IndexedDB
   options
     .bind(IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   // Infrastructure - Logger
   options
     .bind(Logger)
-    .toDynamicValue(() => new Logger('Collection'))
+    .toDynamicValue(() => new Logger("Collection"))
     .inSingletonScope();
 
   // Repository - Game Repository
   options
     .bind(GameRepository)
-    .toDynamicValue(ctx => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
+    .toDynamicValue((ctx) => new GameRepository(ctx.get(IndexedDB), ctx.get(Logger)))
     .inSingletonScope();
 
   // Application - Use Cases
   options
     .bind(AddGameUseCase)
-    .toDynamicValue(ctx => new AddGameUseCase(ctx.get(GameRepository), ctx.get(Logger)))
+    .toDynamicValue((ctx) => new AddGameUseCase(ctx.get(GameRepository), ctx.get(Logger)))
     .inTransientScope(); // New instance per call
 
   options
     .bind(GetGameUseCase)
-    .toDynamicValue(ctx => new GetGameUseCase(ctx.get(GameRepository)))
+    .toDynamicValue((ctx) => new GetGameUseCase(ctx.get(GameRepository)))
     .inTransientScope();
 });
 ```
@@ -392,9 +392,9 @@ When adding a new service:
 
 ```typescript
 // src/collection/ui/pages/GameList.tsx
-import { useService } from '@Front/shared/ui/hooks/useService/useService';
-import { TYPES } from '@Front/collection/types';
-import type { IGameRepository } from '@Front/collection/domain/IGameRepository';
+import { useService } from "@Front/shared/ui/hooks/useService/useService";
+import { TYPES } from "@Front/collection/types";
+import type { IGameRepository } from "@Front/collection/domain/IGameRepository";
 
 export const GameList = () => {
   const gameRepo = useService<IGameRepository>(TYPES.GameRepository);
@@ -428,8 +428,8 @@ export interface IGameRepository {
 
 ```typescript
 // ✅ GOOD: Implementation without decorators
-import type { IGameRepository } from '@Front/collection/domain/IGameRepository';
-import { Game } from '@Front/collection/domain/Game';
+import type { IGameRepository } from "@Front/collection/domain/IGameRepository";
+import { Game } from "@Front/collection/domain/Game";
 
 export class GameRepository implements IGameRepository {
   async findById(id: string): Promise<Game | null> {
@@ -470,7 +470,7 @@ export class GetGameUseCase {
 const gameRepo = useService<IGameRepository>(TYPES.GameRepository);
 
 // ❌ BAD: Direct container import
-import { serviceContainer } from '@Front/app/config/serviceContainer';
+import { serviceContainer } from "@Front/app/config/serviceContainer";
 const gameRepo = serviceContainer.get(TYPES.GameRepository);
 ```
 

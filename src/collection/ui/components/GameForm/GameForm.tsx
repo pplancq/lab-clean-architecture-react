@@ -1,32 +1,32 @@
-import { AddGameDTO } from '@Collection/application/dtos/AddGameDTO';
-import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
-import type { ApplicationErrorInterface } from '@Collection/application/errors/ApplicationErrorInterface';
-import type { Game } from '@Collection/domain/entities/Game';
-import { Format } from '@Collection/domain/value-objects/Format';
-import { GameDescription } from '@Collection/domain/value-objects/GameDescription';
-import { GameTitle } from '@Collection/domain/value-objects/GameTitle';
-import { Platform } from '@Collection/domain/value-objects/Platform';
-import { Status, StatusType } from '@Collection/domain/value-objects/Status';
-import cloudIcon from '@pplancq/shelter-ui-icon/icon/cloud.svg';
-import compactDiscIcon from '@pplancq/shelter-ui-icon/icon/compact-disc.svg';
-import { Button } from '@pplancq/shelter-ui-react';
-import type { Result } from '@Shared/domain/result/Result';
-import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { FormatToggleOption } from '@Shared/ui/components/FormatToggleOption/FormatToggleOption';
-import { FormDevTool } from '@Shared/ui/components/FormDevTool/FormDevTool';
-import { FormInputField } from '@Shared/ui/components/formField/FormInputField/FormInputField';
-import { FormRadioGroup } from '@Shared/ui/components/formField/FormRadioGroup/FormRadioGroup';
-import { FormSelectField } from '@Shared/ui/components/formField/FormSelectField/FormSelectField';
-import { FormTextAreaField } from '@Shared/ui/components/formField/FormTextAreaField/FormTextAreaField';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import { FormProvider, useForm } from 'react-hook-form';
+import { AddGameDTO } from "@Collection/application/dtos/AddGameDTO";
+import { EditGameDTO } from "@Collection/application/dtos/EditGameDTO";
+import type { ApplicationErrorInterface } from "@Collection/application/errors/ApplicationErrorInterface";
+import type { Game } from "@Collection/domain/entities/Game";
+import { Format } from "@Collection/domain/value-objects/Format";
+import { GameDescription } from "@Collection/domain/value-objects/GameDescription";
+import { GameTitle } from "@Collection/domain/value-objects/GameTitle";
+import { Platform } from "@Collection/domain/value-objects/Platform";
+import { Status, StatusType } from "@Collection/domain/value-objects/Status";
+import cloudIcon from "@pplancq/shelter-ui-icon/icon/cloud.svg";
+import compactDiscIcon from "@pplancq/shelter-ui-icon/icon/compact-disc.svg";
+import { Button } from "@pplancq/shelter-ui-react";
+import type { Result } from "@Shared/domain/result/Result";
+import type { DateFormatterInterface } from "@Shared/domain/utils/DateFormatterInterface";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { FormatToggleOption } from "@Shared/ui/components/FormatToggleOption/FormatToggleOption";
+import { FormDevTool } from "@Shared/ui/components/FormDevTool/FormDevTool";
+import { FormInputField } from "@Shared/ui/components/formField/FormInputField/FormInputField";
+import { FormRadioGroup } from "@Shared/ui/components/formField/FormRadioGroup/FormRadioGroup";
+import { FormSelectField } from "@Shared/ui/components/formField/FormSelectField/FormSelectField";
+import { FormTextAreaField } from "@Shared/ui/components/formField/FormTextAreaField/FormTextAreaField";
+import { useService } from "@Shared/ui/hooks/useService/useService";
+import { FormProvider, useForm } from "react-hook-form";
 
-const PLATFORMS = ['PlayStation 5', 'PlayStation 4', 'Xbox Series X|S', 'Xbox One', 'Nintendo Switch', 'PC'];
+const PLATFORMS = ["PlayStation 5", "PlayStation 4", "Xbox Series X|S", "Xbox One", "Nintendo Switch", "PC"];
 
 const FORMATS = [
-  { value: 'Physical', label: 'Physical', icon: compactDiscIcon as string },
-  { value: 'Digital', label: 'Digital', icon: cloudIcon as string },
+  { value: "Physical", label: "Physical", icon: compactDiscIcon as string },
+  { value: "Digital", label: "Digital", icon: cloudIcon as string },
 ] as const;
 
 const STATUS_OPTIONS = Object.values(StatusType);
@@ -99,11 +99,11 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
             status: initialData.status,
           }
         : {
-            title: '',
-            platform: '',
-            format: 'Physical',
+            title: "",
+            platform: "",
+            format: "Physical",
             purchaseDate: dateFormatter.toLocalDateString(new Date()),
-            description: '',
+            description: "",
             status: StatusType.OWNED,
           },
   });
@@ -137,7 +137,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
         data.platform,
         data.format,
         data.purchaseDate ? dateFormatter.fromLocalDateString(data.purchaseDate) : null,
-        'Owned',
+        "Owned",
       );
 
       const result = await onSubmit(dto);
@@ -152,14 +152,14 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
   return (
     <FormProvider {...methods}>
       <FormDevTool />
-      <form onSubmit={handleSubmit(onFormSubmit)} noValidate aria-label={edit ? 'Edit game form' : 'Add game form'}>
+      <form onSubmit={handleSubmit(onFormSubmit)} noValidate aria-label={edit ? "Edit game form" : "Add game form"}>
         <FormInputField
           name="title"
           label="Game title"
           required
           autoComplete="off"
           rules={{
-            validate: value => {
+            validate: (value) => {
               const result = GameTitle.create(value);
 
               return result.isOk() || result.getError().message;
@@ -174,7 +174,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
               label="Platform"
               required
               rules={{
-                validate: value => {
+                validate: (value) => {
                   const result = Platform.create(value);
 
                   return result.isOk() || result.getError().message;
@@ -182,7 +182,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
               }}
             >
               <option value="">Select a platform</option>
-              {PLATFORMS.map(platform => (
+              {PLATFORMS.map((platform) => (
                 <option key={platform} value={platform}>
                   {platform}
                 </option>
@@ -195,7 +195,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
               required
               itemsLayout="inline"
               rules={{
-                validate: value => {
+                validate: (value) => {
                   const result = Format.create(value);
 
                   return result.isOk() || result.getError().message;
@@ -216,7 +216,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
           label="Description"
           textHelper="Optional — max 1000 characters"
           rules={{
-            validate: value => {
+            validate: (value) => {
               const result = GameDescription.create(value);
 
               return result.isOk() || result.getError().message;
@@ -231,14 +231,14 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
             label="Status"
             required
             rules={{
-              validate: value => {
+              validate: (value) => {
                 const result = Status.create(value);
 
                 return result.isOk() || result.getError().message;
               },
             }}
           >
-            {STATUS_OPTIONS.map(status => (
+            {STATUS_OPTIONS.map((status) => (
               <option key={status} value={status}>
                 {status}
               </option>
@@ -247,7 +247,7 @@ export const GameForm = ({ edit = false, gameId, initialData, onSuccess, onCance
         ) : null}
 
         <Button type="submit" disabled={isSubmitting}>
-          {edit ? 'Save changes' : 'Add game'}
+          {edit ? "Save changes" : "Add game"}
         </Button>
 
         {edit ? (

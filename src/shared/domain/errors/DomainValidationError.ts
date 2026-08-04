@@ -1,4 +1,4 @@
-import type { DomainValidationErrorInterface } from './DomainValidationErrorInterface';
+import type { DomainValidationErrorInterface } from "./DomainValidationErrorInterface";
 
 /**
  * Domain validation error raised by value objects and entities when
@@ -15,6 +15,6 @@ export class DomainValidationError extends Error implements DomainValidationErro
     message: string,
   ) {
     super(message);
-    this.name = 'DomainValidationError';
+    this.name = "DomainValidationError";
   }
 }

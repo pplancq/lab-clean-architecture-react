@@ -10,10 +10,10 @@ Every distillate includes YAML frontmatter. Source paths are relative to the dis
 ---
 type: bmad-distillate
 sources:
-  - 'product-brief-example.md'
-  - 'product-brief-example-discovery-notes.md'
-downstream_consumer: 'PRD creation'
-created: '2026-03-13'
+  - "product-brief-example.md"
+  - "product-brief-example-discovery-notes.md"
+downstream_consumer: "PRD creation"
+created: "2026-03-13"
 token_estimate: 1200
 parts: 1
 ---
@@ -127,10 +127,10 @@ A complete distillate produced from a product brief and its discovery notes, tar
 ---
 type: bmad-distillate
 sources:
-  - 'product-brief-bmad-next-gen-installer.md'
-  - 'product-brief-bmad-next-gen-installer-discovery-notes.md'
-downstream_consumer: 'PRD creation'
-created: '2026-03-13'
+  - "product-brief-bmad-next-gen-installer.md"
+  - "product-brief-bmad-next-gen-installer-discovery-notes.md"
+downstream_consumer: "PRD creation"
+created: "2026-03-13"
 token_estimate: 1450
 parts: 1
 ---

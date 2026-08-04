@@ -1,8 +1,8 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: './step-v-11-holistic-quality-validation.md'
-prdFile: '{prd_file_path}'
-validationReportPath: '{validation_report_path}'
+nextStepFile: "./step-v-11-holistic-quality-validation.md"
+prdFile: "{prd_file_path}"
+validationReportPath: "{validation_report_path}"
 ---
 
 # Step 10: SMART Requirements Validation

@@ -1,19 +1,19 @@
-import type { IdGeneratorInterface } from '@Shared/domain/utils/IdGeneratorInterface';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { ContainerModule } from 'inversify';
-import { ToastStore } from './application/stores/ToastStore';
-import type { ToastStoreInterface } from './application/stores/ToastStoreInterface';
-import { AddToastUseCase } from './application/use-cases/AddToastUseCase';
-import type { AddToastUseCaseInterface } from './application/use-cases/AddToastUseCaseInterface';
-import { GetToastsUseCase } from './application/use-cases/GetToastsUseCase';
-import type { GetToastsUseCaseInterface } from './application/use-cases/GetToastsUseCaseInterface';
-import { RemoveToastUseCase } from './application/use-cases/RemoveToastUseCase';
-import type { RemoveToastUseCaseInterface } from './application/use-cases/RemoveToastUseCaseInterface';
-import type { ToastRepositoryInterface } from './domain/repositories/ToastRepositoryInterface';
-import { ImmutableInMemoryToastRepository } from './infrastructure/persistence/ImmutableInMemoryToastRepository';
-import { TOAST_SERVICES } from './serviceIdentifiers';
+import type { IdGeneratorInterface } from "@Shared/domain/utils/IdGeneratorInterface";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { ContainerModule } from "inversify";
+import { ToastStore } from "./application/stores/ToastStore";
+import type { ToastStoreInterface } from "./application/stores/ToastStoreInterface";
+import { AddToastUseCase } from "./application/use-cases/AddToastUseCase";
+import type { AddToastUseCaseInterface } from "./application/use-cases/AddToastUseCaseInterface";
+import { GetToastsUseCase } from "./application/use-cases/GetToastsUseCase";
+import type { GetToastsUseCaseInterface } from "./application/use-cases/GetToastsUseCaseInterface";
+import { RemoveToastUseCase } from "./application/use-cases/RemoveToastUseCase";
+import type { RemoveToastUseCaseInterface } from "./application/use-cases/RemoveToastUseCaseInterface";
+import type { ToastRepositoryInterface } from "./domain/repositories/ToastRepositoryInterface";
+import { ImmutableInMemoryToastRepository } from "./infrastructure/persistence/ImmutableInMemoryToastRepository";
+import { TOAST_SERVICES } from "./serviceIdentifiers";
 
-export const serviceToast: ContainerModule = new ContainerModule(options => {
+export const serviceToast: ContainerModule = new ContainerModule((options) => {
   // Bind repository — single source of truth for active toasts
   options
     .bind<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository)
@@ -24,7 +24,7 @@ export const serviceToast: ContainerModule = new ContainerModule(options => {
   options
     .bind<AddToastUseCaseInterface>(TOAST_SERVICES.AddToastUseCase)
     .toDynamicValue(
-      services =>
+      (services) =>
         new AddToastUseCase(
           services.get<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository),
           services.get<IdGeneratorInterface>(SHARED_SERVICES.IdGenerator),
@@ -36,7 +36,7 @@ export const serviceToast: ContainerModule = new ContainerModule(options => {
   options
     .bind<RemoveToastUseCaseInterface>(TOAST_SERVICES.RemoveToastUseCase)
     .toDynamicValue(
-      services => new RemoveToastUseCase(services.get<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository)),
+      (services) => new RemoveToastUseCase(services.get<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository)),
     )
     .inSingletonScope();
 
@@ -44,7 +44,7 @@ export const serviceToast: ContainerModule = new ContainerModule(options => {
   options
     .bind<GetToastsUseCaseInterface>(TOAST_SERVICES.GetToastsUseCase)
     .toDynamicValue(
-      services => new GetToastsUseCase(services.get<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository)),
+      (services) => new GetToastsUseCase(services.get<ToastRepositoryInterface>(TOAST_SERVICES.ToastRepository)),
     )
     .inSingletonScope();
 
@@ -52,7 +52,7 @@ export const serviceToast: ContainerModule = new ContainerModule(options => {
   options
     .bind<ToastStoreInterface>(TOAST_SERVICES.ToastStore)
     .toDynamicValue(
-      services =>
+      (services) =>
         new ToastStore(
           services.get<AddToastUseCaseInterface>(TOAST_SERVICES.AddToastUseCase),
           services.get<RemoveToastUseCaseInterface>(TOAST_SERVICES.RemoveToastUseCase),

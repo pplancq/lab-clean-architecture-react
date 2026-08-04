@@ -1,4 +1,4 @@
-export type ToastTypeValue = 'success' | 'error' | 'info' | 'warning';
+export type ToastTypeValue = "success" | "error" | "info" | "warning";
 
 /**
  * Interface for the Toast entity.

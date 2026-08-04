@@ -1,5 +1,5 @@
-import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
-import { describe, expect, it, vi } from 'vitest';
+import { AbstractObserver } from "@Shared/application/stores/AbstractObserver";
+import { describe, expect, it, vi } from "vitest";
 
 class TestStore extends AbstractObserver {
   private value = 0;
@@ -14,9 +14,9 @@ class TestStore extends AbstractObserver {
   }
 }
 
-describe('AbstractObserver', () => {
-  describe('subscribe', () => {
-    it('should call the observer when notifyObservers is triggered', () => {
+describe("AbstractObserver", () => {
+  describe("subscribe", () => {
+    it("should call the observer when notifyObservers is triggered", () => {
       const store = new TestStore();
       const observer = vi.fn();
       store.subscribe(observer);
@@ -26,7 +26,7 @@ describe('AbstractObserver', () => {
       expect(observer).toHaveBeenCalledTimes(1);
     });
 
-    it('should return an unsubscribe function that removes the observer', () => {
+    it("should return an unsubscribe function that removes the observer", () => {
       const store = new TestStore();
       const observer = vi.fn();
       const unsubscribe = store.subscribe(observer);
@@ -37,7 +37,7 @@ describe('AbstractObserver', () => {
       expect(observer).not.toHaveBeenCalled();
     });
 
-    it('should only notify remaining observers after unsubscribe', () => {
+    it("should only notify remaining observers after unsubscribe", () => {
       const store = new TestStore();
       const observer1 = vi.fn();
       const observer2 = vi.fn();
@@ -54,7 +54,7 @@ describe('AbstractObserver', () => {
       expect(observer3).toHaveBeenCalledTimes(1);
     });
 
-    it('should notify all subscribers on each change', () => {
+    it("should notify all subscribers on each change", () => {
       const store = new TestStore();
       const observer = vi.fn();
       store.subscribe(observer);

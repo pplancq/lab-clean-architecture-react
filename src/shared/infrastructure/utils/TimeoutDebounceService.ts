@@ -1,4 +1,4 @@
-import type { DebounceServiceInterface } from '@Shared/domain/utils/DebounceServiceInterface';
+import type { DebounceServiceInterface } from "@Shared/domain/utils/DebounceServiceInterface";
 
 type TimeoutId = ReturnType<typeof setTimeout>;
 

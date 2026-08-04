@@ -50,7 +50,7 @@ export class AddGameUseCase {
     // Validation (type-safe)
     const titleResult = GameTitle.create(data.title);
     if (!titleResult.success) {
-      return Result.fail(new ValidationError('Invalid title'));
+      return Result.fail(new ValidationError("Invalid title"));
     }
 
     // Business logic
@@ -81,17 +81,17 @@ const handleSubmit = async (data: GameDTO) => {
   if (!result.success) {
     // TypeScript knows result.error exists here
     if (result.error instanceof ValidationError) {
-      showToast(result.error.message, 'error'); // User-friendly
+      showToast(result.error.message, "error"); // User-friendly
     } else if (result.error instanceof RepositoryError) {
       logError(result.error); // Log for debugging
-      showToast('Failed to save game. Please try again.', 'error');
+      showToast("Failed to save game. Please try again.", "error");
     }
     return;
   }
 
   // TypeScript knows result.value exists here
-  showToast(`Game "${result.value.title}" added!`, 'success');
-  navigate('/collection');
+  showToast(`Game "${result.value.title}" added!`, "success");
+  navigate("/collection");
 };
 ```
 

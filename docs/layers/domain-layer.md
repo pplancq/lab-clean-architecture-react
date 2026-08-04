@@ -22,9 +22,9 @@ Domain entities are the easiest to test:
 
 ```typescript
 // No database, no HTTP, no framework - just pure logic
-const game = new Game('id-123', 'The Legend of Zelda', new Date('1986-02-21'));
-expect(game.getTitle()).toBe('The Legend of Zelda');
-expect(game.isReleasedAfter(new Date('1985-01-01'))).toBe(true);
+const game = new Game("id-123", "The Legend of Zelda", new Date("1986-02-21"));
+expect(game.getTitle()).toBe("The Legend of Zelda");
+expect(game.isReleasedAfter(new Date("1985-01-01"))).toBe(true);
 ```
 
 ### Longevity
@@ -64,10 +64,10 @@ export class Game {
 
   private validateTitle(title: string): void {
     if (title.trim().length === 0) {
-      throw new Error('Game title cannot be empty');
+      throw new Error("Game title cannot be empty");
     }
     if (title.length > 200) {
-      throw new Error('Game title cannot exceed 200 characters');
+      throw new Error("Game title cannot exceed 200 characters");
     }
   }
 
@@ -115,10 +115,10 @@ export class GameTitle {
 
   private validate(title: string): void {
     if (title.trim().length === 0) {
-      throw new Error('Game title cannot be empty');
+      throw new Error("Game title cannot be empty");
     }
     if (title.length > 200) {
-      throw new Error('Game title cannot exceed 200 characters');
+      throw new Error("Game title cannot exceed 200 characters");
     }
   }
 
@@ -146,8 +146,8 @@ export class GameTitle {
 
 ```typescript
 // src/collection/domain/CollectionService.ts
-import { Game } from './Game';
-import { Console } from './Console';
+import { Game } from "./Game";
+import { Console } from "./Console";
 
 export class CollectionService {
   calculateCollectionValue(games: Game[], pricingStrategy: IPricingStrategy): number {
@@ -171,7 +171,7 @@ export class CollectionService {
 
 ```typescript
 // src/collection/domain/IGameRepository.ts
-import { Game } from './Game';
+import { Game } from "./Game";
 
 export interface IGameRepository {
   save(game: Game): Promise<void>;
@@ -216,14 +216,14 @@ export class GameAddedToCollection {
 2. **Other domain entities/value objects**
 
    ```typescript
-   import { Game } from './Game';
-   import { GameTitle } from './GameTitle';
+   import { Game } from "./Game";
+   import { GameTitle } from "./GameTitle";
    ```
 
 3. **Shared domain primitives**
 
    ```typescript
-   import { EntityId } from '../../../shared/domain/EntityId';
+   import { EntityId } from "../../../shared/domain/EntityId";
    ```
 
 4. **Pure TypeScript libraries (rare exceptions)**
@@ -282,11 +282,11 @@ export class GameAddedToCollection {
 **❌ BAD:**
 
 ```typescript
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export class Game {
   getFormattedReleaseDate(): string {
-    return format(this.releaseDate, 'yyyy-MM-dd');
+    return format(this.releaseDate, "yyyy-MM-dd");
   }
 }
 ```
@@ -302,7 +302,7 @@ export class Game {
 }
 
 // UI: Format the date
-const formattedDate = format(game.getReleaseDate(), 'yyyy-MM-dd');
+const formattedDate = format(game.getReleaseDate(), "yyyy-MM-dd");
 ```
 
 ### Pitfall 2: "I need to validate with a library"
@@ -310,7 +310,7 @@ const formattedDate = format(game.getReleaseDate(), 'yyyy-MM-dd');
 **❌ BAD:**
 
 ```typescript
-import { IsEmail } from 'class-validator';
+import { IsEmail } from "class-validator";
 
 export class User {
   @IsEmail()
@@ -332,7 +332,7 @@ export class Email {
   private validate(email: string): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      throw new Error('Invalid email format');
+      throw new Error("Invalid email format");
     }
   }
 
@@ -347,7 +347,7 @@ export class Email {
 **❌ BAD:**
 
 ```typescript
-import axios from 'axios';
+import axios from "axios";
 
 export class Game {
   async fetchMetadata(): Promise<void> {
@@ -379,12 +379,12 @@ export class GameMetadataServiceHTTP implements IGameMetadataService {
 **❌ BAD:**
 
 ```typescript
-import { openDB } from 'idb';
+import { openDB } from "idb";
 
 export class Game {
   async save(): Promise<void> {
-    const db = await openDB('GameDB', 1);
-    await db.put('games', this);
+    const db = await openDB("GameDB", 1);
+    await db.put("games", this);
   }
 }
 ```
@@ -400,8 +400,8 @@ export interface IGameRepository {
 // Infrastructure: Implement with IndexedDB
 export class GameRepositoryIndexedDB implements IGameRepository {
   async save(game: Game): Promise<void> {
-    const db = await openDB('GameDB', 1);
-    await db.put('games', { id: game.getId(), title: game.getTitle() });
+    const db = await openDB("GameDB", 1);
+    await db.put("games", { id: game.getId(), title: game.getTitle() });
   }
 }
 ```
@@ -414,29 +414,29 @@ export class GameRepositoryIndexedDB implements IGameRepository {
 
 ```typescript
 // tests/unit/collection/domain/Game.test.ts
-import { describe, it, expect } from 'vitest';
-import { Game } from '@/collection/domain/Game';
+import { describe, it, expect } from "vitest";
+import { Game } from "@/collection/domain/Game";
 
-describe('Game', () => {
-  it('should create a valid game', () => {
-    const game = new Game('id-123', 'Zelda', new Date('1986-02-21'));
+describe("Game", () => {
+  it("should create a valid game", () => {
+    const game = new Game("id-123", "Zelda", new Date("1986-02-21"));
 
-    expect(game.getId()).toBe('id-123');
-    expect(game.getTitle()).toBe('Zelda');
+    expect(game.getId()).toBe("id-123");
+    expect(game.getTitle()).toBe("Zelda");
   });
 
-  it('should throw error for empty title', () => {
+  it("should throw error for empty title", () => {
     expect(() => {
-      new Game('id-123', '', new Date());
-    }).toThrow('Game title cannot be empty');
+      new Game("id-123", "", new Date());
+    }).toThrow("Game title cannot be empty");
   });
 
-  it('should update title when valid', () => {
-    const game = new Game('id-123', 'Zelda', new Date());
+  it("should update title when valid", () => {
+    const game = new Game("id-123", "Zelda", new Date());
 
-    game.updateTitle('The Legend of Zelda');
+    game.updateTitle("The Legend of Zelda");
 
-    expect(game.getTitle()).toBe('The Legend of Zelda');
+    expect(game.getTitle()).toBe("The Legend of Zelda");
   });
 });
 ```
@@ -472,7 +472,7 @@ Before committing domain code, verify:
 
 ```typescript
 // 100% test coverage with zero mocks
-const game = new Game('id', 'title', new Date());
+const game = new Game("id", "title", new Date());
 expect(game.isValid()).toBe(true);
 ```
 

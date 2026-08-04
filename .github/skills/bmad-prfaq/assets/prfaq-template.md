@@ -1,9 +1,9 @@
 ---
-title: 'PRFAQ: {project_name}'
-status: '{status}'
-created: '{timestamp}'
-updated: '{timestamp}'
-stage: '{current_stage}'
+title: "PRFAQ: {project_name}"
+status: "{status}"
+created: "{timestamp}"
+updated: "{timestamp}"
+stage: "{current_stage}"
 inputs: []
 ---
 

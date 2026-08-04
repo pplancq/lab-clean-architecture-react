@@ -1,5 +1,5 @@
 ---
-applyTo: '*'
+applyTo: "*"
 ---
 
 # Follow-up Question Instruction

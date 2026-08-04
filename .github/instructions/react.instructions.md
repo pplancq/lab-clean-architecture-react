@@ -1,6 +1,6 @@
 ---
-applyTo: '**/*.jsx, **/*.tsx, **/*.js, **/*.ts, **/*.css, **/*.scss'
-description: 'React development standards, best practices, and component instructions.'
+applyTo: "**/*.jsx, **/*.tsx, **/*.js, **/*.ts, **/*.css, **/*.scss"
+description: "React development standards, best practices, and component instructions."
 ---
 
 # React Development Instructions
@@ -286,29 +286,29 @@ export const MyComponent = ({ label, onClick, children }: MyComponentProps) => {
 ### Using useState
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 type CounterProps = { initial: number };
 
 export const Counter = ({ initial }: CounterProps) => {
   const [count, setCount] = useState(initial);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+  return <button onClick={() => setCount((c) => c + 1)}>{count}</button>;
 };
 ```
 
 ### Using useReducer
 
 ```tsx
-import { useReducer } from 'react';
+import { useReducer } from "react";
 
 type State = { count: number };
-type Action = { type: 'increment' } | { type: 'decrement' };
+type Action = { type: "increment" } | { type: "decrement" };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { count: state.count + 1 };
-    case 'decrement':
+    case "decrement":
       return { count: state.count - 1 };
     default:
       return state;
@@ -321,9 +321,9 @@ export const CounterReducer = ({ initial }: CounterReducerProps) => {
   const [state, dispatch] = useReducer(reducer, { count: initial });
   return (
     <>
-      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
       <span>{state.count}</span>
-      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
     </>
   );
 };
@@ -332,7 +332,7 @@ export const CounterReducer = ({ initial }: CounterReducerProps) => {
 ### Accessibility Example (Form)
 
 ```tsx
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 type FormProps = {};
 
@@ -345,14 +345,14 @@ export const Form = ({}: FormProps) => {
     formState: { errors },
   } = useForm<FormData>();
   return (
-    <form onSubmit={handleSubmit(data => console.log(data))}>
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
       <label htmlFor="email">Email *</label>
       <input
         id="email"
         type="email"
-        {...register('email', { required: 'Email is required' })}
+        {...register("email", { required: "Email is required" })}
         aria-invalid={!!errors.email}
-        aria-describedby={errors.email ? 'email-error' : undefined}
+        aria-describedby={errors.email ? "email-error" : undefined}
       />
       {errors.email && (
         <span id="email-error" role="alert">

@@ -1,22 +1,22 @@
-import { appRoutes } from '@App/routing/appRoutes';
-import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { Button, Grid, Title, Typography } from '@pplancq/shelter-ui-react';
-import { ConfirmDialog } from '@Shared/ui/components/ConfirmDialog/ConfirmDialog';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import type { MouseEvent } from 'react';
-import { useCallback, useRef, useState } from 'react';
-import type { RouteObject } from 'react-router';
-import { Link, useNavigate, useParams } from 'react-router';
+import { appRoutes } from "@App/routing/appRoutes";
+import type { GamesStoreInterface } from "@Collection/application/stores/GamesStoreInterface";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { useGamesSelector } from "@Collection/ui/hooks/useGamesSelector/useGamesSelector";
+import { Button, Grid, Title, Typography } from "@pplancq/shelter-ui-react";
+import { ConfirmDialog } from "@Shared/ui/components/ConfirmDialog/ConfirmDialog";
+import { useService } from "@Shared/ui/hooks/useService/useService";
+import type { MouseEvent } from "react";
+import { useCallback, useRef, useState } from "react";
+import type { RouteObject } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
-import defaultClasses from './GameDetail.module.css';
+import defaultClasses from "./GameDetail.module.css";
 
 const GameDetail = () => {
-  const { id = '' } = useParams<{ id: string }>();
+  const { id = "" } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const store = useService<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore);
-  const { data: game, isLoading, hasError, error } = useGamesSelector(s => s.getGame(id));
+  const { data: game, isLoading, hasError, error } = useGamesSelector((s) => s.getGame(id));
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const deleteTriggerRef = useRef<HTMLElement | null>(null);
@@ -50,7 +50,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         color="secondary"
         className={defaultClasses.loading}
@@ -69,7 +69,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
       >
         <Grid
@@ -77,7 +77,7 @@ const GameDetail = () => {
           colSpan={{
             mobile: 4,
             tablet: 8,
-            'desktop-small': 12,
+            "desktop-small": 12,
           }}
           className={defaultClasses.notFound}
           role="alert"
@@ -88,7 +88,7 @@ const GameDetail = () => {
           colSpan={{
             mobile: 4,
             tablet: 8,
-            'desktop-small': 12,
+            "desktop-small": 12,
           }}
           className={defaultClasses.nav}
         >
@@ -105,7 +105,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         className={defaultClasses.error}
         role="alert"
@@ -125,7 +125,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         className={defaultClasses.nav}
       >
@@ -138,7 +138,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
       />
 
@@ -146,7 +146,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         className={defaultClasses.detail}
       >
@@ -168,7 +168,7 @@ const GameDetail = () => {
             </Typography>
           )}
           <Typography as="p">
-            <strong>Purchase date:</strong> {game.getPurchaseDate()?.toLocaleDateString() ?? '—'}
+            <strong>Purchase date:</strong> {game.getPurchaseDate()?.toLocaleDateString() ?? "—"}
           </Typography>
         </div>
       </Grid>
@@ -177,7 +177,7 @@ const GameDetail = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         className={defaultClasses.actions}
       >
@@ -204,6 +204,6 @@ const GameDetail = () => {
 };
 
 export const gameDetailRoutes: RouteObject = {
-  path: 'games/:id',
+  path: "games/:id",
   element: <GameDetail />,
 };

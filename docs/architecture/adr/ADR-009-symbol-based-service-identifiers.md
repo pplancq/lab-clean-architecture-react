@@ -58,30 +58,30 @@ export const {CONTEXT}_SERVICES = Object.freeze({
  */
 export const COLLECTION_SERVICES = Object.freeze({
   /** IndexedDB database interface for game collection storage */
-  IndexedDB: Symbol.for('Collection.IndexedDB'),
+  IndexedDB: Symbol.for("Collection.IndexedDB"),
 
   /** Repository interface for Game entity persistence */
-  GameRepository: Symbol.for('Collection.GameRepository'),
+  GameRepository: Symbol.for("Collection.GameRepository"),
 
   /** Use case for adding a game to the collection */
-  AddGameUseCase: Symbol.for('Collection.AddGameUseCase'),
+  AddGameUseCase: Symbol.for("Collection.AddGameUseCase"),
 } as const);
 ```
 
 ```typescript
 // src/collection/serviceCollection.ts — registration
-import { COLLECTION_SERVICES } from './serviceIdentifiers';
+import { COLLECTION_SERVICES } from "./serviceIdentifiers";
 
-export const serviceCollection: ContainerModule = new ContainerModule(options => {
+export const serviceCollection: ContainerModule = new ContainerModule((options) => {
   options
     .bind<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)
-    .toDynamicValue(() => new IndexedDB('GameCollectionDB', 1, 'games'))
+    .toDynamicValue(() => new IndexedDB("GameCollectionDB", 1, "games"))
     .inSingletonScope();
 
   options
     .bind<GameRepositoryInterface>(COLLECTION_SERVICES.GameRepository)
     .toDynamicValue(
-      services => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
+      (services) => new IndexedDBGameRepository(services.get<IndexedDBInterface>(COLLECTION_SERVICES.IndexedDB)),
     )
     .inSingletonScope();
 });
@@ -89,8 +89,8 @@ export const serviceCollection: ContainerModule = new ContainerModule(options =>
 
 ```typescript
 // src/collection/ui/hooks/useAddGame.ts — consumer
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import type { AddGameUseCaseInterface } from "@Collection/application/use-cases/AddGameUseCaseInterface";
 
 const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.AddGameUseCase);
 ```
@@ -103,13 +103,13 @@ const addGameUseCase = useService<AddGameUseCaseInterface>(COLLECTION_SERVICES.A
 
 ```typescript
 // ✅ Symbol.for() — consistent across modules
-const id1 = Symbol.for('Collection.GameRepository');
-const id2 = Symbol.for('Collection.GameRepository');
+const id1 = Symbol.for("Collection.GameRepository");
+const id2 = Symbol.for("Collection.GameRepository");
 console.log(id1 === id2); // true — same Symbol, container.get() works
 
 // ❌ Symbol() — each call creates a unique Symbol
-const id1 = Symbol('Collection.GameRepository');
-const id2 = Symbol('Collection.GameRepository');
+const id1 = Symbol("Collection.GameRepository");
+const id2 = Symbol("Collection.GameRepository");
 console.log(id1 === id2); // false — different Symbols, container.get() would fail
 ```
 

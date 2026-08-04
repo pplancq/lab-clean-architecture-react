@@ -1,7 +1,7 @@
-import { TextAreaField, type TextAreaFieldProps } from '@Shared/ui/components/TextAreaField/TextAreaField';
-import { type RegisterOptions, useFormContext } from 'react-hook-form';
+import { TextAreaField, type TextAreaFieldProps } from "@Shared/ui/components/TextAreaField/TextAreaField";
+import { type RegisterOptions, useFormContext } from "react-hook-form";
 
-export type FormTextAreaFieldProps = Omit<TextAreaFieldProps, 'name'> & {
+export type FormTextAreaFieldProps = Omit<TextAreaFieldProps, "name"> & {
   name: string;
   rules?: RegisterOptions;
 };

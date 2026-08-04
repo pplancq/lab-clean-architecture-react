@@ -170,13 +170,13 @@ Dependency injection setup using `toDynamicValue()` for proper dependency resolu
 ```typescript
 // Symbols for dependency lookup
 export const SERVICE_NAME = Object.freeze({
-  Logger: Symbol.for('ConsoleLogger'),
-  Config: Symbol.for('ServiceWorkerConfig'),
-  CacheStrategy: Symbol.for('CacheFirstStrategy'),
-  InstallHandler: Symbol.for('InstallHandler'),
-  ActivateHandler: Symbol.for('ActivateHandler'),
-  FetchHandler: Symbol.for('FetchHandler'),
-  MessageHandler: Symbol.for('MessageHandler'),
+  Logger: Symbol.for("ConsoleLogger"),
+  Config: Symbol.for("ServiceWorkerConfig"),
+  CacheStrategy: Symbol.for("CacheFirstStrategy"),
+  InstallHandler: Symbol.for("InstallHandler"),
+  ActivateHandler: Symbol.for("ActivateHandler"),
+  FetchHandler: Symbol.for("FetchHandler"),
+  MessageHandler: Symbol.for("MessageHandler"),
 });
 
 // Singleton logger
@@ -193,13 +193,13 @@ serviceContainer
 // Cache strategy with logger dependency
 serviceContainer
   .bind<CacheStrategyInterface>(SERVICE_NAME.CacheStrategy)
-  .toDynamicValue(services => new CacheFirstStrategy(services.get<LoggerInterface>(SERVICE_NAME.Logger)));
+  .toDynamicValue((services) => new CacheFirstStrategy(services.get<LoggerInterface>(SERVICE_NAME.Logger)));
 
 // Handlers with auto-resolved dependencies
 serviceContainer
   .bind<HandlerInterface>(SERVICE_NAME.InstallHandler)
   .toDynamicValue(
-    services =>
+    (services) =>
       new InstallHandler(
         services.get<ServiceWorkerConfigInterface>(SERVICE_NAME.Config),
         services.get<LoggerInterface>(SERVICE_NAME.Logger),
@@ -235,8 +235,8 @@ Page-side registration logic:
 Service Worker entry point (built by Rsbuild):
 
 ```typescript
-import { serviceContainer } from '@Pwa/config/serviceContainer';
-import { ServiceWorkerController } from '@Pwa/ServiceWorkerController';
+import { serviceContainer } from "@Pwa/config/serviceContainer";
+import { ServiceWorkerController } from "@Pwa/ServiceWorkerController";
 
 // Initialize controller with pre-configured container
 ServiceWorkerController.initialize(serviceContainer);
@@ -249,7 +249,7 @@ ServiceWorkerController.initialize(serviceContainer);
 React app entry point:
 
 ```typescript
-import { registerServiceWorker } from '@Pwa/registration/RegisterServiceWorker';
+import { registerServiceWorker } from "@Pwa/registration/RegisterServiceWorker";
 
 // ... React app initialization ...
 
@@ -331,7 +331,7 @@ class PushNotificationHandler {
     const data = event.data?.json();
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: '/icon.png',
+      icon: "/icon.png",
     });
   }
 }
@@ -353,14 +353,14 @@ Service Worker ↔ App communication via `postMessage`:
 ```typescript
 // App → Service Worker
 navigator.serviceWorker.controller?.postMessage({
-  type: 'SYNC_NOW',
-  payload: { collectionId: '123' },
+  type: "SYNC_NOW",
+  payload: { collectionId: "123" },
 });
 
 // Service Worker → App
-self.clients.matchAll().then(clients => {
-  clients.forEach(client => {
-    client.postMessage({ type: 'SYNC_COMPLETE' });
+self.clients.matchAll().then((clients) => {
+  clients.forEach((client) => {
+    client.postMessage({ type: "SYNC_COMPLETE" });
   });
 });
 ```

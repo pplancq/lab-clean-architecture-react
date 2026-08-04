@@ -1,4 +1,4 @@
-import { HEADERS, METHODS, MIME_TYPES } from './constant';
+import { HEADERS, METHODS, MIME_TYPES } from "./constant";
 
 type JsonValue = JsonObject | JsonArray | string | number | boolean | null;
 type JsonArray = Array<JsonValue>;

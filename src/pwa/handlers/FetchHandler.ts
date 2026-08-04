@@ -1,5 +1,5 @@
-import type { CacheStrategyInterface } from '@Pwa/cache/CacheStrategyInterface';
-import type { HandlerInterface } from '@Pwa/handlers/HandlerInterface';
+import type { CacheStrategyInterface } from "@Pwa/cache/CacheStrategyInterface";
+import type { HandlerInterface } from "@Pwa/handlers/HandlerInterface";
 
 /**
  * Fetch Event Handler
@@ -10,7 +10,7 @@ export class FetchHandler implements HandlerInterface {
 
   handle(event: FetchEvent): void {
     // Only cache GET requests
-    if (event.request.method !== 'GET') {
+    if (event.request.method !== "GET") {
       return;
     }
 

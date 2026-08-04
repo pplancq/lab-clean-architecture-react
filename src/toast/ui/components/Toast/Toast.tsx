@@ -1,6 +1,6 @@
-import { Alert } from '@pplancq/shelter-ui-react';
-import type { ToastInterface } from '@Toast/domain/entities/ToastInterface';
-import { useToastService } from '@Toast/ui/hooks/useToastService/useToastService';
+import { Alert } from "@pplancq/shelter-ui-react";
+import type { ToastInterface } from "@Toast/domain/entities/ToastInterface";
+import { useToastService } from "@Toast/ui/hooks/useToastService/useToastService";
 
 type ToastProps = {
   toast: ToastInterface;

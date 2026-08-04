@@ -1,4 +1,4 @@
-import defaultConfig from '@pplancq/postcss-config';
+import defaultConfig from "@pplancq/postcss-config";
 
 export default {
   ...defaultConfig,
