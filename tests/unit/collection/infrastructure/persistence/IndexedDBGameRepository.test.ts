@@ -700,6 +700,181 @@ describe('IndexedDBGameRepository', () => {
       expect(result.isErr()).toBeTruthy();
       expect(result.getError()).toBeInstanceOf(FindAllError);
     });
+
+    it('should filter games by a single platform', async () => {
+      const game1 = Game.create({
+        id: 'game-1',
+        title: 'Horizon Zero Dawn',
+        description: 'Action RPG',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game2 = Game.create({
+        id: 'game-2',
+        title: 'Halo Infinite',
+        description: 'FPS',
+        platform: 'Xbox',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game1);
+      await repository.save(game2);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ platforms: ['PlayStation'] }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(1);
+      expect(games[0].getId()).toBe('game-1');
+    });
+
+    it('should filter games by multiple platforms using OR logic', async () => {
+      const game1 = Game.create({
+        id: 'game-1',
+        title: 'Horizon Zero Dawn',
+        description: 'Action RPG',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game2 = Game.create({
+        id: 'game-2',
+        title: 'Halo Infinite',
+        description: 'FPS',
+        platform: 'Xbox',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game3 = Game.create({
+        id: 'game-3',
+        title: 'The Legend of Zelda',
+        description: 'Adventure',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game1);
+      await repository.save(game2);
+      await repository.save(game3);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ platforms: ['PlayStation', 'Xbox'] }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(2);
+      expect(games.some(g => g.getId() === 'game-1')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-2')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-3')).toBeFalsy();
+    });
+
+    it('should filter by platform case-insensitively', async () => {
+      const game = Game.create({
+        id: 'game-1',
+        title: 'God of War',
+        description: 'Action adventure',
+        platform: 'PlayStation',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ platforms: ['playstation'] }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      expect(result.unwrap()).toHaveLength(1);
+    });
+
+    it('should apply title and platform filters with AND logic', async () => {
+      const game1 = Game.create({
+        id: 'game-1',
+        title: 'Super Mario Bros',
+        description: 'Platformer',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game2 = Game.create({
+        id: 'game-2',
+        title: 'Super Mario Odyssey',
+        description: 'Platformer',
+        platform: 'Nintendo Switch',
+        format: 'Physical',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      const game3 = Game.create({
+        id: 'game-3',
+        title: 'Super Metroid',
+        description: 'Action',
+        platform: 'PlayStation',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game1);
+      await repository.save(game2);
+      await repository.save(game3);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ title: 'mario', platforms: ['Nintendo Switch'] }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      const games = result.unwrap();
+      expect(games).toHaveLength(2);
+      expect(games.some(g => g.getId() === 'game-1')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-2')).toBeTruthy();
+      expect(games.some(g => g.getId() === 'game-3')).toBeFalsy();
+    });
+
+    it('should return empty array when platform does not match any game', async () => {
+      const game = Game.create({
+        id: 'game-1',
+        title: 'Halo Infinite',
+        description: 'FPS',
+        platform: 'Xbox',
+        format: 'Digital',
+        purchaseDate: null,
+        status: 'Owned',
+      }).unwrap();
+
+      await repository.save(game);
+
+      const { GameFilterCriteria } = await import('@Collection/domain/entities/GameFilterCriteria');
+      const criteria = GameFilterCriteria.create({ platforms: ['PlayStation'] }).unwrap();
+
+      const result = await repository.findByCriteria(criteria);
+
+      expect(result.isOk()).toBeTruthy();
+      expect(result.unwrap()).toHaveLength(0);
+    });
   });
 
   describe('IndexedDB schema', () => {

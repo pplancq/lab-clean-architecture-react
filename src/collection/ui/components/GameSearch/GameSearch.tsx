@@ -1,48 +1,23 @@
-import { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
 import { Grid } from '@pplancq/shelter-ui-react';
-import type { DebounceServiceInterface } from '@Shared/domain/utils/DebounceServiceInterface';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import { type ChangeEvent, useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import defaultClasses from './GameSearch.module.css';
 
 /**
- * Search component for filtering games by title
+ * Search input field for filtering games by title.
  *
- * Features:
- * - Debounced search input (300ms delay)
- * - Case-insensitive substring matching
- * - Accessible with proper labels and ARIA attributes
- * - Integrates with GamesStore to trigger filtered fetches
+ * Must be rendered inside a FormProvider (provided by FilterForm).
+ * Registers the "title" field into the parent RHF form context.
  *
  * @example
  * ```tsx
- * <GameSearch />
+ * <FormProvider {...methods}>
+ *   <GameSearch />
+ * </FormProvider>
  * ```
  */
 export const GameSearch = () => {
-  const store = useGamesStore();
-  const debounceService = useService<DebounceServiceInterface>(SHARED_SERVICES.DebounceService);
-
-  const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const searchText = event.target.value;
-      const trimmedSearchText = searchText.trim();
-
-      if (trimmedSearchText === '') {
-        store.setFilterCriteria(null);
-        return;
-      }
-
-      const criteriaResult = GameFilterCriteria.create({ title: trimmedSearchText });
-      if (criteriaResult.isOk()) {
-        store.setFilterCriteria(criteriaResult.unwrap());
-      }
-    },
-    [store],
-  );
+  const { register } = useFormContext<{ title: string }>();
 
   return (
     <Grid
@@ -60,11 +35,10 @@ export const GameSearch = () => {
       <input
         id="game-search"
         type="search"
-        defaultValue=""
-        onChange={debounceService.debounce(handleChange, 300)}
         placeholder="Search by title..."
         aria-label="Search games by title"
         className={defaultClasses.searchInput}
+        {...register('title')}
       />
     </Grid>
   );

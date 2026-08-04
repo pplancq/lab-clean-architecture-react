@@ -1,60 +1,44 @@
 import { GameSearch } from '@Collection/ui/components/GameSearch/GameSearch';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { describe, expect, it } from 'vitest';
+import { FormProvider, useForm } from 'react-hook-form';
+import type { PropsWithChildren } from 'react';
 
-const mocks = vi.hoisted(() => ({
-  setFilterCriteria: vi.fn(),
-}));
-
-const debounceTimers = new WeakMap<() => void, ReturnType<typeof setTimeout>>();
-
-const debounceService = {
-  debounce: vi.fn(<A extends unknown[]>(callback: (...args: A) => void, delay: number) => {
-    return ((...args: A) => {
-      const timeoutId = debounceTimers.get(callback as (...args: A) => void);
-
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-      }
-
-      const nextTimeoutId = setTimeout(() => {
-        debounceTimers.delete(callback as (...args: A) => void);
-        callback(...args);
-      }, delay);
-
-      debounceTimers.set(callback as (...args: A) => void, nextTimeoutId);
-    }) as (...args: A) => void;
-  }),
+const FormWrapper = ({ children }: PropsWithChildren) => {
+  const methods = useForm({ defaultValues: { title: '', platforms: [] } });
+  return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-vi.mock('@Collection/ui/hooks/useGamesStore/useGamesStore', () => ({
-  useGamesStore: () => ({
-    setFilterCriteria: mocks.setFilterCriteria,
-  }),
-}));
-
-vi.mock('@Shared/ui/hooks/useService/useService', () => ({
-  useService: () => debounceService,
-}));
-
 describe('GameSearch', () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-    vi.useRealTimers();
-  });
-
-  it('should reset the filter when the search input is cleared', async () => {
-    vi.useFakeTimers();
-    render(<GameSearch />);
+  it('should render a search input with accessible label and name', () => {
+    render(<GameSearch />, { wrapper: FormWrapper });
 
     const input = screen.getByRole('searchbox', { name: /search games by title/i });
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAccessibleName('Search games by title');
+  });
 
-    fireEvent.change(input, { target: { value: 'Mario' } });
-    await vi.advanceTimersByTimeAsync(300);
-    expect(mocks.setFilterCriteria).toHaveBeenLastCalledWith(expect.anything());
+  it('should render placeholder text', () => {
+    render(<GameSearch />, { wrapper: FormWrapper });
 
-    fireEvent.change(input, { target: { value: '' } });
-    await vi.advanceTimersByTimeAsync(300);
-    expect(mocks.setFilterCriteria).toHaveBeenLastCalledWith(null);
+    expect(screen.getByPlaceholderText(/search by title/i)).toBeInTheDocument();
+  });
+
+  it('should register the title field and accept user input', async () => {
+    const user = userEvent.setup();
+    render(<GameSearch />, { wrapper: FormWrapper });
+
+    const input = screen.getByRole('searchbox', { name: /search games by title/i });
+    await user.type(input, 'Mario');
+
+    expect(input).toHaveValue('Mario');
+  });
+
+  it('should be of type search', () => {
+    render(<GameSearch />, { wrapper: FormWrapper });
+
+    const input = screen.getByRole('searchbox', { name: /search games by title/i });
+    expect(input).toHaveAttribute('type', 'search');
   });
 });
