@@ -1,0 +1,60 @@
+.topBar {
+  display: flex;
+  width: 100%;
+  padding: var(--gap-1) var(--gap-2);
+  align-items: center;
+  gap: var(--gap-2);
+}
+
+.logo {
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.desktopNav {
+  display: none;
+  flex: 1;
+}
+
+.navList {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: var(--gap-2);
+  list-style: none;
+}
+
+.navLink {
+  text-decoration: none;
+}
+
+.navLinkActive {
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: var(--gap-1);
+}
+
+.burgerButton {
+  padding: var(--gap-0-5);
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  background: none;
+  cursor: pointer;
+}
+
+@media (width >= 64rem) {
+  .desktopNav {
+    display: flex;
+  }
+
+  .burgerButton {
+    display: none;
+  }
+}
