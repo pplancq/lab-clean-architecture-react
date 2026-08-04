@@ -15,11 +15,11 @@
     position: absolute;
     width: 1px;
     height: 1px;
-    margin: -1px;
     padding: 0;
-    border-width: 0;
+    margin: -1px;
     overflow: hidden;
     white-space: nowrap;
+    border-width: 0;
   }
 }
 

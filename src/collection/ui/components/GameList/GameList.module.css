@@ -5,9 +5,9 @@
 
 .error {
   padding: var(--padding-2);
-  border-radius: var(--border-radius-small);
   color: var(--color-tertiary-alt-onbase);
   background-color: var(--color-tertiary-alt-base);
+  border-radius: var(--border-radius-small);
 }
 
 .emptyState {
