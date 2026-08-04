@@ -1,6 +1,6 @@
-import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { useService } from '@Shared/ui/hooks/useService/useService';
+import type { GamesStoreInterface } from "@Collection/application/stores/GamesStoreInterface";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { useService } from "@Shared/ui/hooks/useService/useService";
 
 /**
  * Returns the GamesStore singleton from the DI container.

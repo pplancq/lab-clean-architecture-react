@@ -1,10 +1,10 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import { RepositoryError } from '../errors/RepositoryError';
-import type { GetGamesUseCaseInterface } from './GetGamesUseCaseInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import { RepositoryError } from "../errors/RepositoryError";
+import type { GetGamesUseCaseInterface } from "./GetGamesUseCaseInterface";
 
 /**
  * Use case for retrieving games from the collection

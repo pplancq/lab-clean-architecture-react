@@ -1,5 +1,5 @@
 ---
-outputFile: '{planning_artifacts}/implementation-readiness-report-{{date}}.md'
+outputFile: "{planning_artifacts}/implementation-readiness-report-{{date}}.md"
 ---
 
 # Step 1: Document Discovery

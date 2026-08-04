@@ -1,7 +1,7 @@
-import cloudIcon from '@pplancq/shelter-ui-icon/icon/cloud.svg';
-import { Badge } from '@Shared/ui/components/Badge/Badge';
+import cloudIcon from "@pplancq/shelter-ui-icon/icon/cloud.svg";
+import { Badge } from "@Shared/ui/components/Badge/Badge";
 
-import defaultClasses from './DigitalBadge.module.css';
+import defaultClasses from "./DigitalBadge.module.css";
 
 export const DigitalBadge = () => {
   return (

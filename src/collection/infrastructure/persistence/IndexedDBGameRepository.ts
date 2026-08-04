@@ -1,20 +1,20 @@
 /* eslint-disable class-methods-use-this */
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import type { GameDTO } from '@Collection/infrastructure/persistence/dtos/GameDTO';
-import { DeleteError } from '@Shared/domain/repositories/error/DeleteError';
-import { FindAllError } from '@Shared/domain/repositories/error/FindAllError';
-import { FindByIdError } from '@Shared/domain/repositories/error/FindByIdError';
-import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
-import { NotFoundError } from '@Shared/domain/repositories/error/NotFoundError';
-import { QuotaExceededError } from '@Shared/domain/repositories/error/QuotaExceededError';
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-import { SaveError } from '@Shared/domain/repositories/error/SaveError';
-import { UnknownError } from '@Shared/domain/repositories/error/UnknownError';
-import { Result } from '@Shared/domain/result/Result';
-import type { IndexedDBInterface } from '@Shared/infrastructure/persistence/IndexedDBInterface';
-import { GameMapper } from './mappers/GameMapper';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import type { GameDTO } from "@Collection/infrastructure/persistence/dtos/GameDTO";
+import { DeleteError } from "@Shared/domain/repositories/error/DeleteError";
+import { FindAllError } from "@Shared/domain/repositories/error/FindAllError";
+import { FindByIdError } from "@Shared/domain/repositories/error/FindByIdError";
+import { IndexedDBRequestError } from "@Shared/domain/repositories/error/IndexedDBRequestError";
+import { NotFoundError } from "@Shared/domain/repositories/error/NotFoundError";
+import { QuotaExceededError } from "@Shared/domain/repositories/error/QuotaExceededError";
+import type { RepositoryErrorInterface } from "@Shared/domain/repositories/error/RepositoryErrorInterface";
+import { SaveError } from "@Shared/domain/repositories/error/SaveError";
+import { UnknownError } from "@Shared/domain/repositories/error/UnknownError";
+import { Result } from "@Shared/domain/result/Result";
+import type { IndexedDBInterface } from "@Shared/infrastructure/persistence/IndexedDBInterface";
+import { GameMapper } from "./mappers/GameMapper";
 
 /**
  * IndexedDB implementation of the Game repository
@@ -48,7 +48,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
       const db = await this.dbService.getDatabase();
       const dto = GameMapper.toDTO(game);
 
-      const transaction = db.transaction(this.dbService.getStoreName(), 'readwrite');
+      const transaction = db.transaction(this.dbService.getStoreName(), "readwrite");
       const store = transaction.objectStore(this.dbService.getStoreName());
       const request = store.put(dto);
 
@@ -79,7 +79,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   async findById(id: string): Promise<Result<Game, RepositoryErrorInterface>> {
     try {
       const db = await this.dbService.getDatabase();
-      const transaction = db.transaction(this.dbService.getStoreName(), 'readonly');
+      const transaction = db.transaction(this.dbService.getStoreName(), "readonly");
       const store = transaction.objectStore(this.dbService.getStoreName());
 
       return await new Promise<Result<Game, RepositoryErrorInterface>>((resolve, reject) => {
@@ -123,7 +123,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   async findAll(): Promise<Result<Game[], RepositoryErrorInterface>> {
     try {
       const db = await this.dbService.getDatabase();
-      const transaction = db.transaction(this.dbService.getStoreName(), 'readonly');
+      const transaction = db.transaction(this.dbService.getStoreName(), "readonly");
       const store = transaction.objectStore(this.dbService.getStoreName());
 
       return await new Promise<Result<Game[], RepositoryErrorInterface>>((resolve, reject) => {
@@ -133,7 +133,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
           const dtos = request.result as GameDTO[];
           const games: Game[] = [];
 
-          dtos.forEach(dto => {
+          dtos.forEach((dto) => {
             const gameResult = GameMapper.toDomain(dto);
             if (gameResult.isErr()) {
               reject(
@@ -169,7 +169,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   async delete(id: string): Promise<Result<void, RepositoryErrorInterface>> {
     try {
       const db = await this.dbService.getDatabase();
-      const transaction = db.transaction(this.dbService.getStoreName(), 'readwrite');
+      const transaction = db.transaction(this.dbService.getStoreName(), "readwrite");
       const store = transaction.objectStore(this.dbService.getStoreName());
       const request = store.delete(id);
 
@@ -202,7 +202,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
   async findByCriteria(criteria: GameFilterCriteria): Promise<Result<Game[], RepositoryErrorInterface>> {
     try {
       const db = await this.dbService.getDatabase();
-      const transaction = db.transaction(this.dbService.getStoreName(), 'readonly');
+      const transaction = db.transaction(this.dbService.getStoreName(), "readonly");
       const store = transaction.objectStore(this.dbService.getStoreName());
 
       return await new Promise<Result<Game[], RepositoryErrorInterface>>((resolve, reject) => {
@@ -213,7 +213,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
           const normalizedTitleFilter = criteria.getTitleFilterNormalized();
           const games: Game[] = [];
 
-          dtos.forEach(dto => {
+          dtos.forEach((dto) => {
             // If no title filter, include all games
             if (!normalizedTitleFilter || dto.title.toLowerCase().includes(normalizedTitleFilter)) {
               const gameResult = GameMapper.toDomain(dto);
@@ -254,7 +254,7 @@ export class IndexedDBGameRepository implements GameRepositoryInterface {
     }
 
     // Check for quota exceeded error
-    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+    if (error instanceof DOMException && error.name === "QuotaExceededError") {
       return Result.err(new QuotaExceededError());
     }
 

@@ -1,5 +1,5 @@
-import type { Result } from '@Shared/domain/result/Result';
-import type { Toast } from '../entities/Toast';
+import type { Result } from "@Shared/domain/result/Result";
+import type { Toast } from "../entities/Toast";
 
 /**
  * Repository interface for Toast persistence.

@@ -1,5 +1,5 @@
-import type { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
+import type { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
 
 /**
  * Interface for DeleteGame use case

@@ -1,11 +1,11 @@
-import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
-import type { Toast } from '@Toast/domain/entities/Toast';
-import type { ToastTypeValue } from '@Toast/domain/entities/ToastInterface';
-import { AddToastDTO } from '../dtos/AddToastDTO';
-import type { AddToastUseCaseInterface } from '../use-cases/AddToastUseCaseInterface';
-import type { GetToastsUseCaseInterface } from '../use-cases/GetToastsUseCaseInterface';
-import type { RemoveToastUseCaseInterface } from '../use-cases/RemoveToastUseCaseInterface';
-import type { ToastStoreInterface } from './ToastStoreInterface';
+import { AbstractObserver } from "@Shared/application/stores/AbstractObserver";
+import type { Toast } from "@Toast/domain/entities/Toast";
+import type { ToastTypeValue } from "@Toast/domain/entities/ToastInterface";
+import { AddToastDTO } from "../dtos/AddToastDTO";
+import type { AddToastUseCaseInterface } from "../use-cases/AddToastUseCaseInterface";
+import type { GetToastsUseCaseInterface } from "../use-cases/GetToastsUseCaseInterface";
+import type { RemoveToastUseCaseInterface } from "../use-cases/RemoveToastUseCaseInterface";
+import type { ToastStoreInterface } from "./ToastStoreInterface";
 
 /**
  * Observable store managing active toast notifications.

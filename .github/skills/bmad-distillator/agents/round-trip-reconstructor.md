@@ -51,8 +51,8 @@ Each reconstruction should include a header noting it was reconstructed:
 ```markdown
 ---
 type: distillate-reconstruction
-source_distillate: '{distillate path}'
-reconstructed_from: '{original source name}'
+source_distillate: "{distillate path}"
+reconstructed_from: "{original source name}"
 reconstruction_number: { N }
 ---
 ```

@@ -1,11 +1,11 @@
-import { Result } from '@Shared/domain/result/Result';
-import type { IdGeneratorInterface } from '@Shared/domain/utils/IdGeneratorInterface';
-import { Toast } from '@Toast/domain/entities/Toast';
-import type { ToastRepositoryInterface } from '@Toast/domain/repositories/ToastRepositoryInterface';
-import type { AddToastDTO } from '../dtos/AddToastDTO';
-import type { ToastApplicationErrorInterface } from '../errors/ToastApplicationErrorInterface';
-import { ToastValidationError } from '../errors/ToastValidationError';
-import type { AddToastUseCaseInterface } from './AddToastUseCaseInterface';
+import { Result } from "@Shared/domain/result/Result";
+import type { IdGeneratorInterface } from "@Shared/domain/utils/IdGeneratorInterface";
+import { Toast } from "@Toast/domain/entities/Toast";
+import type { ToastRepositoryInterface } from "@Toast/domain/repositories/ToastRepositoryInterface";
+import type { AddToastDTO } from "../dtos/AddToastDTO";
+import type { ToastApplicationErrorInterface } from "../errors/ToastApplicationErrorInterface";
+import { ToastValidationError } from "../errors/ToastValidationError";
+import type { AddToastUseCaseInterface } from "./AddToastUseCaseInterface";
 
 /**
  * Use case for creating a new toast notification.

@@ -1,4 +1,4 @@
-import type { IndexedDBRequestErrorInterface } from '@Shared/domain/repositories/error/IndexedDBRequestErrorInterface';
+import type { IndexedDBRequestErrorInterface } from "@Shared/domain/repositories/error/IndexedDBRequestErrorInterface";
 
 /**
  * Base error class for IndexedDB request and transaction failures
@@ -16,7 +16,7 @@ export class IndexedDBRequestError extends Error implements IndexedDBRequestErro
    */
   constructor(message: string, originalError: DOMException | null) {
     super(message);
-    this.name = 'IndexedDBRequestError';
+    this.name = "IndexedDBRequestError";
     this.originalError = originalError;
   }
 }

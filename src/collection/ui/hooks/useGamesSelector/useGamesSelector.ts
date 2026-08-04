@@ -1,7 +1,7 @@
-import type { GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import { useCallback, useRef, useSyncExternalStore } from 'react';
+import type { GamesStoreInterface } from "@Collection/application/stores/GamesStoreInterface";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { useService } from "@Shared/ui/hooks/useService/useService";
+import { useCallback, useRef, useSyncExternalStore } from "react";
 
 /**
  * Subscribes a component to a specific slice of the GamesStore state.
@@ -27,7 +27,7 @@ export const useGamesSelector = <T>(selector: (store: GamesStoreInterface) => T)
   selectorRef.current = selector;
 
   return useSyncExternalStore(
-    useCallback(cb => store.subscribe(cb), [store]),
+    useCallback((cb) => store.subscribe(cb), [store]),
     useCallback(() => selectorRef.current(store), [store]),
   );
 };

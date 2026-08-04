@@ -1,6 +1,6 @@
-import type { ServiceWorkerConfigInterface } from '@Pwa/config/ServiceWorkerConfigInterface';
-import type { HandlerInterface } from '@Pwa/handlers/HandlerInterface';
-import type { LoggerInterface } from '@Pwa/logger/LoggerInterface';
+import type { ServiceWorkerConfigInterface } from "@Pwa/config/ServiceWorkerConfigInterface";
+import type { HandlerInterface } from "@Pwa/handlers/HandlerInterface";
+import type { LoggerInterface } from "@Pwa/logger/LoggerInterface";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -15,7 +15,7 @@ export class InstallHandler implements HandlerInterface {
   ) {}
 
   handle(event: ExtendableEvent): void {
-    this.logger.info('Install event');
+    this.logger.info("Install event");
 
     event.waitUntil(this.install());
   }
@@ -25,15 +25,15 @@ export class InstallHandler implements HandlerInterface {
 
     try {
       const cache = await caches.open(cacheName);
-      this.logger.info('Caching app shell assets');
+      this.logger.info("Caching app shell assets");
 
       await cache.addAll(assetsToCacheOnInstall);
 
-      this.logger.info('App shell cached successfully');
+      this.logger.info("App shell cached successfully");
 
       await self.skipWaiting();
     } catch (error) {
-      this.logger.error('Failed to cache app shell:', error);
+      this.logger.error("Failed to cache app shell:", error);
     }
   }
 }

@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * GameTitle value object representing a game title
@@ -33,12 +33,12 @@ export class GameTitle extends AbstractStringValueObject {
   public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("title", trimmed);
     if (notEmptyCheck.isErr()) {
       return Result.err(notEmptyCheck.getError());
     }
 
-    const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("title", trimmed, 200);
     if (maxLengthCheck.isErr()) {
       return Result.err(maxLengthCheck.getError());
     }

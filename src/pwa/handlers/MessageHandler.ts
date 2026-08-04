@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import type { HandlerInterface } from '@Pwa/handlers/HandlerInterface';
+import type { HandlerInterface } from "@Pwa/handlers/HandlerInterface";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -9,7 +9,7 @@ declare const self: ServiceWorkerGlobalScope;
  */
 export class MessageHandler implements HandlerInterface {
   handle(event: ExtendableMessageEvent): void {
-    if (event.data && (event.data as { type?: string }).type === 'SKIP_WAITING') {
+    if (event.data && (event.data as { type?: string }).type === "SKIP_WAITING") {
       self.skipWaiting();
     }
   }

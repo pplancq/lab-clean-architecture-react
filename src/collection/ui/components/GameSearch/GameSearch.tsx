@@ -1,12 +1,12 @@
-import { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import { useGamesStore } from '@Collection/ui/hooks/useGamesStore/useGamesStore';
-import { Grid } from '@pplancq/shelter-ui-react';
-import type { DebounceServiceInterface } from '@Shared/domain/utils/DebounceServiceInterface';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { useService } from '@Shared/ui/hooks/useService/useService';
-import { type ChangeEvent, useCallback } from 'react';
+import { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import { useGamesStore } from "@Collection/ui/hooks/useGamesStore/useGamesStore";
+import { Grid } from "@pplancq/shelter-ui-react";
+import type { DebounceServiceInterface } from "@Shared/domain/utils/DebounceServiceInterface";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { useService } from "@Shared/ui/hooks/useService/useService";
+import { type ChangeEvent, useCallback } from "react";
 
-import defaultClasses from './GameSearch.module.css';
+import defaultClasses from "./GameSearch.module.css";
 
 /**
  * Search component for filtering games by title
@@ -31,7 +31,7 @@ export const GameSearch = () => {
       const searchText = event.target.value;
       const trimmedSearchText = searchText.trim();
 
-      if (trimmedSearchText === '') {
+      if (trimmedSearchText === "") {
         store.setFilterCriteria(null);
         return;
       }
@@ -49,7 +49,7 @@ export const GameSearch = () => {
       colSpan={{
         mobile: 4,
         tablet: 8,
-        'desktop-small': 12,
+        "desktop-small": 12,
       }}
       className={defaultClasses.searchContainer}
     >

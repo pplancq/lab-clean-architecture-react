@@ -20,10 +20,10 @@ Two options were considered:
 // In a page component
 const result = await store.addGame(dto);
 if (result.isOk()) {
-  notificationService.success('Game added successfully');
+  notificationService.success("Game added successfully");
   onSuccess();
 } else {
-  notificationService.error('Failed to add game');
+  notificationService.error("Failed to add game");
 }
 ```
 

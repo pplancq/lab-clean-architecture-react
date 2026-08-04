@@ -1,7 +1,7 @@
 ---
 stepsCompleted: []
 inputDocuments: []
-workflowType: 'prd'
+workflowType: "prd"
 ---
 
 # Product Requirements Document - {{project_name}}

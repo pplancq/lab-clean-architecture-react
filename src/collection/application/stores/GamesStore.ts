@@ -1,17 +1,17 @@
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
-import type { DeleteGameUseCaseInterface } from '@Collection/application/use-cases/DeleteGameUseCaseInterface';
-import type { EditGameUseCaseInterface } from '@Collection/application/use-cases/EditGameUseCaseInterface';
-import type { GetGameByIdUseCaseInterface } from '@Collection/application/use-cases/GetGameByIdUseCaseInterface';
-import type { GetGamesUseCaseInterface } from '@Collection/application/use-cases/GetGamesUseCaseInterface';
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import { AbstractObserver } from '@Shared/application/stores/AbstractObserver';
-import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
-import type { Result } from '@Shared/domain/result/Result';
-import type { AddGameDTO } from '../dtos/AddGameDTO';
-import type { EditGameDTO } from '../dtos/EditGameDTO';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import type { GameMapEntryState, GamesListState, GamesStoreInterface } from './GamesStoreInterface';
+import type { AddGameUseCaseInterface } from "@Collection/application/use-cases/AddGameUseCaseInterface";
+import type { DeleteGameUseCaseInterface } from "@Collection/application/use-cases/DeleteGameUseCaseInterface";
+import type { EditGameUseCaseInterface } from "@Collection/application/use-cases/EditGameUseCaseInterface";
+import type { GetGameByIdUseCaseInterface } from "@Collection/application/use-cases/GetGameByIdUseCaseInterface";
+import type { GetGamesUseCaseInterface } from "@Collection/application/use-cases/GetGamesUseCaseInterface";
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import { AbstractObserver } from "@Shared/application/stores/AbstractObserver";
+import type { NotificationServiceInterface } from "@Shared/domain/notifications/NotificationServiceInterface";
+import type { Result } from "@Shared/domain/result/Result";
+import type { AddGameDTO } from "../dtos/AddGameDTO";
+import type { EditGameDTO } from "../dtos/EditGameDTO";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import type { GameMapEntryState, GamesListState, GamesStoreInterface } from "./GamesStoreInterface";
 
 /**
  * Observable store for the games collection.
@@ -26,19 +26,19 @@ import type { GameMapEntryState, GamesListState, GamesStoreInterface } from './G
  * Register as a singleton in the DI container so all components share state.
  */
 export class GamesStore extends AbstractObserver implements GamesStoreInterface {
-  private static readonly ADD_SUCCESS_MESSAGE = 'Game added successfully';
+  private static readonly ADD_SUCCESS_MESSAGE = "Game added successfully";
 
-  private static readonly EDIT_SUCCESS_MESSAGE = 'Game updated successfully';
+  private static readonly EDIT_SUCCESS_MESSAGE = "Game updated successfully";
 
-  private static readonly DELETE_SUCCESS_MESSAGE = 'Game deleted successfully';
+  private static readonly DELETE_SUCCESS_MESSAGE = "Game deleted successfully";
 
   private static readonly OPERATION_ERROR_MESSAGES: Record<string, string> = {
-    Repository: 'An error occurred while saving the game. Please try again.',
-    Validation: 'Please check your input and try again.',
-    NotFound: 'Game not found. It may have been deleted.',
+    Repository: "An error occurred while saving the game. Please try again.",
+    Validation: "Please check your input and try again.",
+    NotFound: "Game not found. It may have been deleted.",
   };
 
-  private static readonly DEFAULT_OPERATION_ERROR_MESSAGE = 'An unexpected error occurred. Please try again.';
+  private static readonly DEFAULT_OPERATION_ERROR_MESSAGE = "An unexpected error occurred. Please try again.";
 
   private readonly DEFAULT_LOADING_ENTRY: GameMapEntryState = {
     data: null,
@@ -215,12 +215,12 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
 
       // When filtering, store the list of matching IDs
       if (this.filterCriteria) {
-        this.filteredGameIds = new Set(games.map(g => g.getId()));
+        this.filteredGameIds = new Set(games.map((g) => g.getId()));
       } else {
         this.filteredGameIds = null;
       }
 
-      games.forEach(game => {
+      games.forEach((game) => {
         const existing = this.gamesMap.get(game.getId());
         if (!existing || existing.isLazy) {
           this.setEntry(game.getId(), game, { isLazy: true });
@@ -232,7 +232,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     }
 
     this.listHasError = true;
-    this.listError = 'Unable to load games. Please try again.';
+    this.listError = "Unable to load games. Please try again.";
     this.commit(false);
   }
 
@@ -246,7 +246,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     }
 
     const appError = result.getError();
-    const errorMessage = appError.type === 'NotFound' ? null : 'Unable to load game. Please try again.';
+    const errorMessage = appError.type === "NotFound" ? null : "Unable to load game. Please try again.";
     const existing = this.gamesMap.get(id);
     this.gamesMap.set(id, {
       data: existing?.data ?? null,
@@ -288,7 +288,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
     this.listSnapshot = {
       games: gamesChanged
         ? Array.from(this.gamesMap.values())
-            .filter(e => {
+            .filter((e) => {
               if (e.data === null || e.hasError) {
                 return false;
               }
@@ -298,7 +298,7 @@ export class GamesStore extends AbstractObserver implements GamesStoreInterface 
               }
               return true;
             })
-            .map(e => e.data as Game)
+            .map((e) => e.data as Game)
         : this.listSnapshot.games,
       isLoading: this.listIsLoading,
       hasError: this.listHasError,

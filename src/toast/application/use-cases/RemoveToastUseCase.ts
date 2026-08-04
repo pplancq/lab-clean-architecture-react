@@ -1,9 +1,9 @@
-import { Result } from '@Shared/domain/result/Result';
-import type { ToastRepositoryInterface } from '@Toast/domain/repositories/ToastRepositoryInterface';
-import type { ToastApplicationErrorInterface } from '../errors/ToastApplicationErrorInterface';
-import { ToastNotFoundError } from '../errors/ToastNotFoundError';
-import { ToastValidationError } from '../errors/ToastValidationError';
-import type { RemoveToastUseCaseInterface } from './RemoveToastUseCaseInterface';
+import { Result } from "@Shared/domain/result/Result";
+import type { ToastRepositoryInterface } from "@Toast/domain/repositories/ToastRepositoryInterface";
+import type { ToastApplicationErrorInterface } from "../errors/ToastApplicationErrorInterface";
+import { ToastNotFoundError } from "../errors/ToastNotFoundError";
+import { ToastValidationError } from "../errors/ToastValidationError";
+import type { RemoveToastUseCaseInterface } from "./RemoveToastUseCaseInterface";
 
 /**
  * Use case for removing a toast notification.
@@ -20,7 +20,7 @@ export class RemoveToastUseCase implements RemoveToastUseCaseInterface {
 
   execute(id: string): Result<void, ToastApplicationErrorInterface> {
     if (!id || id.trim().length === 0) {
-      return Result.err(new ToastValidationError('Toast ID cannot be empty', 'id'));
+      return Result.err(new ToastValidationError("Toast ID cannot be empty", "id"));
     }
 
     if (this.repository.findById(id).unwrap() === undefined) {

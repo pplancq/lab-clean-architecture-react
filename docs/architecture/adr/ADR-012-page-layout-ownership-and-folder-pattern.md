@@ -80,10 +80,10 @@ Imports reference the full path, not a barrel:
 
 ```typescript
 // ✅
-import { homeRoutes } from '@Collection/ui/pages/Home/Home';
+import { homeRoutes } from "@Collection/ui/pages/Home/Home";
 
 // ❌ No barrel
-import { homeRoutes } from '@Collection/ui/pages/Home';
+import { homeRoutes } from "@Collection/ui/pages/Home";
 ```
 
 ## Consequences

@@ -1,6 +1,6 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
 
 /**
  * Interface for GetGameById use case

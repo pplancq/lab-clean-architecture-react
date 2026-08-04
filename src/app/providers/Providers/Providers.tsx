@@ -1,7 +1,7 @@
-import { type ClientProviderProps, QueryClientProvider } from '@App/providers/QueryClientProvider/QueryClientProvider';
-import { ServiceProvider, type ServiceProviderProps } from '@App/providers/ServiceProvider/ServiceProvider';
-import { ToastBridgeProvider } from '@Shared/ui/ToastBridgeProvider/ToastBridgeProvider';
-import type { PropsWithChildren } from 'react';
+import { type ClientProviderProps, QueryClientProvider } from "@App/providers/QueryClientProvider/QueryClientProvider";
+import { ServiceProvider, type ServiceProviderProps } from "@App/providers/ServiceProvider/ServiceProvider";
+import { ToastBridgeProvider } from "@Shared/ui/ToastBridgeProvider/ToastBridgeProvider";
+import type { PropsWithChildren } from "react";
 
 type ProvidersProps = ClientProviderProps & ServiceProviderProps;
 

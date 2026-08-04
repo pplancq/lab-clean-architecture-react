@@ -1,10 +1,10 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import type { AbstractObserverInterface } from '@Shared/application/stores/AbstractObserverInterface';
-import type { Result } from '@Shared/domain/result/Result';
-import type { AddGameDTO } from '../dtos/AddGameDTO';
-import type { EditGameDTO } from '../dtos/EditGameDTO';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import type { AbstractObserverInterface } from "@Shared/application/stores/AbstractObserverInterface";
+import type { Result } from "@Shared/domain/result/Result";
+import type { AddGameDTO } from "../dtos/AddGameDTO";
+import type { EditGameDTO } from "../dtos/EditGameDTO";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
 
 /**
  * Snapshot returned by getGamesList() — stable reference for useSyncExternalStore.

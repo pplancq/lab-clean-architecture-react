@@ -1,9 +1,9 @@
-import type { ToastInterface } from '@Toast/domain/entities/ToastInterface';
-import { Toast } from '@Toast/ui/components/Toast/Toast';
-import { useToastSelector } from '@Toast/ui/hooks/useToastSelector/useToastSelector';
-import { memo } from 'react';
+import type { ToastInterface } from "@Toast/domain/entities/ToastInterface";
+import { Toast } from "@Toast/ui/components/Toast/Toast";
+import { useToastSelector } from "@Toast/ui/hooks/useToastSelector/useToastSelector";
+import { memo } from "react";
 
-import defaultClasses from './ToastContainer.module.css';
+import defaultClasses from "./ToastContainer.module.css";
 
 const ToastMemo = memo(Toast);
 
@@ -18,7 +18,7 @@ const ToastMemo = memo(Toast);
  * The container is removed from the DOM entirely when there are no toasts.
  */
 export const ToastContainer = () => {
-  const toasts = useToastSelector(store => store.getAllToasts());
+  const toasts = useToastSelector((store) => store.getAllToasts());
 
   if (toasts.length === 0) {
     return null;

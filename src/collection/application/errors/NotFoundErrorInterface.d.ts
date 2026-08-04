@@ -1,4 +1,4 @@
-import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
+import type { ApplicationErrorInterface } from "./ApplicationErrorInterface";
 
 /**
  * Not found error interface for application layer
@@ -7,7 +7,7 @@ import type { ApplicationErrorInterface } from './ApplicationErrorInterface';
  * Used to distinguish 404-style errors from generic repository failures.
  */
 export interface NotFoundErrorInterface extends ApplicationErrorInterface {
-  readonly type: 'NotFound';
+  readonly type: "NotFound";
 
   /**
    * Identifier of the entity that was not found

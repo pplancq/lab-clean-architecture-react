@@ -1,6 +1,6 @@
 ---
-main_config: '{project-root}/_bmad/bmm/config.yaml'
-outputFile: '{planning_artifacts}/prd.md'
+main_config: "{project-root}/_bmad/bmm/config.yaml"
+outputFile: "{planning_artifacts}/prd.md"
 ---
 
 # PRD Create Workflow

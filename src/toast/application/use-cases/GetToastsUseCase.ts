@@ -1,7 +1,7 @@
-import { Result } from '@Shared/domain/result/Result';
-import type { Toast } from '@Toast/domain/entities/Toast';
-import type { ToastRepositoryInterface } from '@Toast/domain/repositories/ToastRepositoryInterface';
-import type { GetToastsUseCaseInterface } from './GetToastsUseCaseInterface';
+import { Result } from "@Shared/domain/result/Result";
+import type { Toast } from "@Toast/domain/entities/Toast";
+import type { ToastRepositoryInterface } from "@Toast/domain/repositories/ToastRepositoryInterface";
+import type { GetToastsUseCaseInterface } from "./GetToastsUseCaseInterface";
 
 /**
  * Use case for retrieving all active toast notifications.

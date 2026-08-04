@@ -34,7 +34,7 @@ Use **IndexedDB** as the primary client-side storage mechanism, with the `idb` l
 
 ```typescript
 // shared/infrastructure/storage/db.ts
-import { openDB, DBSchema } from 'idb';
+import { openDB, DBSchema } from "idb";
 
 interface AppDB extends DBSchema {
   games: {
@@ -43,26 +43,24 @@ interface AppDB extends DBSchema {
       id: string;
       title: string;
       platform: string;
-      status: 'owned' | 'playing' | 'completed';
+      status: "owned" | "playing" | "completed";
       addedAt: number;
     };
-    indexes: { 'by-platform': string; 'by-status': string };
+    indexes: { "by-platform": string; "by-status": string };
   };
   wishlist: {
     key: string;
-    value: {
-      /* ... */
-    };
-    indexes: { 'by-priority': string };
+    value: {/* ... */};
+    indexes: { "by-priority": string };
   };
   // One object store per bounded context
 }
 
-export const db = await openDB<AppDB>('game-collection-db', 1, {
+export const db = await openDB<AppDB>("game-collection-db", 1, {
   upgrade(db) {
-    const gameStore = db.createObjectStore('games', { keyPath: 'id' });
-    gameStore.createIndex('by-platform', 'platform');
-    gameStore.createIndex('by-status', 'status');
+    const gameStore = db.createObjectStore("games", { keyPath: "id" });
+    gameStore.createIndex("by-platform", "platform");
+    gameStore.createIndex("by-status", "status");
     // ... other stores
   },
 });
@@ -75,17 +73,17 @@ export const db = await openDB<AppDB>('game-collection-db', 1, {
 export class IndexedDBGameRepository implements IGameRepository {
   async save(game: Game): Promise<Result<void, RepositoryError>> {
     try {
-      await db.put('games', game.toPersistence());
+      await db.put("games", game.toPersistence());
       return Result.ok(undefined);
     } catch (error) {
-      return Result.fail(new RepositoryError('save', error as Error));
+      return Result.fail(new RepositoryError("save", error as Error));
     }
   }
 
   async findById(id: GameId): Promise<Result<Game, NotFoundError>> {
-    const data = await db.get('games', id.value);
+    const data = await db.get("games", id.value);
     if (!data) {
-      return Result.fail(new NotFoundError('Game', id.value));
+      return Result.fail(new NotFoundError("Game", id.value));
     }
     return Result.ok(Game.fromPersistence(data));
   }
@@ -124,11 +122,11 @@ export class IndexedDBGameRepository implements IGameRepository {
 
 ```typescript
 // Version 2 migration example
-export const db = await openDB<AppDB>('game-collection-db', 2, {
+export const db = await openDB<AppDB>("game-collection-db", 2, {
   upgrade(db, oldVersion) {
     if (oldVersion < 2) {
-      const gameStore = db.transaction.objectStore('games');
-      gameStore.createIndex('by-genre', 'genre'); // New index
+      const gameStore = db.transaction.objectStore("games");
+      gameStore.createIndex("by-genre", "genre"); // New index
     }
   },
 });

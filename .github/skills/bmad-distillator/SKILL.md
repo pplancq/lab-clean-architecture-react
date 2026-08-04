@@ -76,10 +76,10 @@ After the compressor (or merge compressor) returns:
    ---
    type: bmad-distillate
    sources:
-     - '{relative path to source file 1}'
-     - '{relative path to source file 2}'
+     - "{relative path to source file 1}"
+     - "{relative path to source file 2}"
    downstream_consumer: "{consumer or 'general'}"
-   created: '{date}'
+   created: "{date}"
    token_estimate: { approximate token count }
    parts: 1
    ---
@@ -151,9 +151,9 @@ This stage proves the distillate is lossless by reconstructing source documents 
    ```markdown
    ---
    type: distillate-validation
-   distillate: '{distillate path}'
-   sources: ['{source paths}']
-   created: '{date}'
+   distillate: "{distillate path}"
+   sources: ["{source paths}"]
+   created: "{date}"
    ---
 
    ## Validation Summary

@@ -1,10 +1,10 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: './step-v-09-project-type-validation.md'
-prdFile: '{prd_file_path}'
-prdFrontmatter: '{prd_frontmatter}'
-validationReportPath: '{validation_report_path}'
-domainComplexityData: '../data/domain-complexity.csv'
+nextStepFile: "./step-v-09-project-type-validation.md"
+prdFile: "{prd_file_path}"
+prdFrontmatter: "{prd_frontmatter}"
+validationReportPath: "{validation_report_path}"
+domainComplexityData: "../data/domain-complexity.csv"
 ---
 
 # Step 8: Domain Compliance Validation

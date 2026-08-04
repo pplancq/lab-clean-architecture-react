@@ -1,11 +1,11 @@
-import { Game } from '@Collection/domain/entities/Game';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import { Result } from '@Shared/domain/result/Result';
-import type { AddGameDTO } from '../dtos/AddGameDTO';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import { RepositoryError } from '../errors/RepositoryError';
-import { ValidationError } from '../errors/ValidationError';
-import type { AddGameUseCaseInterface } from './AddGameUseCaseInterface';
+import { Game } from "@Collection/domain/entities/Game";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import { Result } from "@Shared/domain/result/Result";
+import type { AddGameDTO } from "../dtos/AddGameDTO";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import { RepositoryError } from "../errors/RepositoryError";
+import { ValidationError } from "../errors/ValidationError";
+import type { AddGameUseCaseInterface } from "./AddGameUseCaseInterface";
 
 /**
  * Use case for adding a game to the collection

@@ -1,7 +1,7 @@
-import type { ServiceWorkerConfigInterface } from '@Pwa/config/ServiceWorkerConfigInterface';
-import { InstallHandler } from '@Pwa/handlers/InstallHandler';
-import type { LoggerInterface } from '@Pwa/logger/LoggerInterface';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ServiceWorkerConfigInterface } from "@Pwa/config/ServiceWorkerConfigInterface";
+import { InstallHandler } from "@Pwa/handlers/InstallHandler";
+import type { LoggerInterface } from "@Pwa/logger/LoggerInterface";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 declare let global: typeof globalThis;
 
@@ -9,9 +9,9 @@ const mockSelf = {
   skipWaiting: vi.fn().mockResolvedValue(undefined),
 } as unknown as ServiceWorkerGlobalScope;
 
-vi.stubGlobal('self', mockSelf);
+vi.stubGlobal("self", mockSelf);
 
-describe('InstallHandler', () => {
+describe("InstallHandler", () => {
   let installHandler: InstallHandler;
   let mockConfig: ServiceWorkerConfigInterface;
   let mockLogger: LoggerInterface;
@@ -20,9 +20,9 @@ describe('InstallHandler', () => {
 
   beforeEach(() => {
     mockConfig = {
-      cacheName: 'gcm-cache-v1',
-      cachePrefix: 'gcm-cache',
-      assetsToCacheOnInstall: ['/index.html', '/app.js', '/styles.css'],
+      cacheName: "gcm-cache-v1",
+      cachePrefix: "gcm-cache",
+      assetsToCacheOnInstall: ["/index.html", "/app.js", "/styles.css"],
     };
 
     mockLogger = {
@@ -48,7 +48,7 @@ describe('InstallHandler', () => {
       has: vi.fn(),
     } as unknown as CacheStorage;
 
-    Object.defineProperty(global, 'caches', {
+    Object.defineProperty(global, "caches", {
       value: mockCaches,
       writable: true,
     });
@@ -58,8 +58,8 @@ describe('InstallHandler', () => {
     installHandler = new InstallHandler(mockConfig, mockLogger);
   });
 
-  describe('handle', () => {
-    it('should cache app shell assets on install', async () => {
+  describe("handle", () => {
+    it("should cache app shell assets on install", async () => {
       let promiseToWait: Promise<unknown> | undefined;
       const mockEvent = {
         waitUntil: vi.fn((promise: Promise<unknown>) => {
@@ -71,16 +71,16 @@ describe('InstallHandler', () => {
 
       await promiseToWait;
 
-      expect(mockLogger.info).toHaveBeenCalledWith('Install event');
-      expect(mockCaches.open).toHaveBeenCalledWith('gcm-cache-v1');
-      expect(mockCache.addAll).toHaveBeenCalledWith(['/index.html', '/app.js', '/styles.css']);
-      expect(mockLogger.info).toHaveBeenCalledWith('Caching app shell assets');
-      expect(mockLogger.info).toHaveBeenCalledWith('App shell cached successfully');
+      expect(mockLogger.info).toHaveBeenCalledWith("Install event");
+      expect(mockCaches.open).toHaveBeenCalledWith("gcm-cache-v1");
+      expect(mockCache.addAll).toHaveBeenCalledWith(["/index.html", "/app.js", "/styles.css"]);
+      expect(mockLogger.info).toHaveBeenCalledWith("Caching app shell assets");
+      expect(mockLogger.info).toHaveBeenCalledWith("App shell cached successfully");
       expect(mockSelf.skipWaiting).toHaveBeenCalledWith();
     });
 
-    it('should log error when caching fails', async () => {
-      const cacheError = new Error('Cache error');
+    it("should log error when caching fails", async () => {
+      const cacheError = new Error("Cache error");
       vi.mocked(mockCache.addAll).mockRejectedValue(cacheError);
 
       let promiseToWait: Promise<unknown> | undefined;
@@ -94,7 +94,7 @@ describe('InstallHandler', () => {
 
       await promiseToWait?.catch(() => {});
 
-      expect(mockLogger.error).toHaveBeenCalledWith('Failed to cache app shell:', cacheError);
+      expect(mockLogger.error).toHaveBeenCalledWith("Failed to cache app shell:", cacheError);
     });
   });
 });

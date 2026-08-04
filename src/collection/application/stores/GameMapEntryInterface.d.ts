@@ -1,4 +1,4 @@
-import type { Game } from '@Collection/domain/entities/Game';
+import type { Game } from "@Collection/domain/entities/Game";
 
 /**
  * Represents a single game entry in the games map.

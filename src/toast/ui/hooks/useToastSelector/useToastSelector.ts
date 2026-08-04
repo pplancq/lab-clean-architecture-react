@@ -1,6 +1,6 @@
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
-import { useToastService } from '@Toast/ui/hooks/useToastService/useToastService';
-import { useCallback, useRef, useSyncExternalStore } from 'react';
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
+import { useToastService } from "@Toast/ui/hooks/useToastService/useToastService";
+import { useCallback, useRef, useSyncExternalStore } from "react";
 
 /**
  * Subscribe to a slice of the ToastStore with concurrent mode safety.
@@ -20,7 +20,7 @@ export const useToastSelector = <T>(selector: (store: ToastStoreInterface) => T)
   selectorRef.current = selector;
 
   return useSyncExternalStore(
-    useCallback(cb => store.subscribe(cb), [store]),
+    useCallback((cb) => store.subscribe(cb), [store]),
     useCallback(() => selectorRef.current(store), [store]),
     useCallback(() => selectorRef.current(store), [store]),
   );

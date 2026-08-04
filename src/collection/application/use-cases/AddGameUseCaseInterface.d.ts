@@ -1,7 +1,7 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { Result } from '@Shared/domain/result/Result';
-import type { AddGameDTO } from '../dtos/AddGameDTO';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { Result } from "@Shared/domain/result/Result";
+import type { AddGameDTO } from "../dtos/AddGameDTO";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
 
 /**
  * Interface for AddGame use case

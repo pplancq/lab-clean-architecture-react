@@ -77,13 +77,13 @@ export class AddGameUseCase {
   async execute(data: AddGameDTO): Promise<Result<Game, AddGameError>> {
     // Validation - business rule
     if (!data.title || data.title.trim().length === 0) {
-      return Result.err(new AddGameError('Title is required'));
+      return Result.err(new AddGameError("Title is required"));
     }
 
     // Check duplicate - business rule
     const existing = await this.repository.findByTitle(data.title);
     if (existing.isOk()) {
-      return Result.err(new AddGameError('Game already exists in collection'));
+      return Result.err(new AddGameError("Game already exists in collection"));
     }
 
     // Persist - can fail (network, storage quota, etc.)
@@ -96,13 +96,13 @@ export class AddGameUseCase {
 export class IndexedDBGameRepository {
   async save(game: Game): Promise<Result<Game, RepositoryError>> {
     try {
-      const transaction = this.db.transaction(['games'], 'readwrite');
-      const store = transaction.objectStore('games');
+      const transaction = this.db.transaction(["games"], "readwrite");
+      const store = transaction.objectStore("games");
       await store.put(game);
       return Result.ok(game);
     } catch (error) {
       // Infrastructure failure - return Result error
-      return Result.err(new RepositoryError('Failed to save game', error));
+      return Result.err(new RepositoryError("Failed to save game", error));
     }
   }
 }
@@ -121,8 +121,8 @@ const AddGameForm = () => {
     }
 
     // Success
-    toast.success('Game added successfully');
-    navigate('/collection');
+    toast.success("Game added successfully");
+    navigate("/collection");
   };
 };
 ```
@@ -195,7 +195,7 @@ export const useService = <T,>(identifier: ServiceIdentifier<T>): T => {
 export class Game {
   constructor(title: string): Result<Game, ValidationError> {
     if (!title) {
-      return Result.err(new ValidationError('Title required'));
+      return Result.err(new ValidationError("Title required"));
       // This is a programming error, not a business validation!
       // Constructor misuse should throw, not return Result
     }
@@ -207,7 +207,7 @@ export class Game {
 export class AddGameUseCase {
   async execute(data: AddGameDTO): Promise<Game> {
     if (await this.isDuplicate(data.title)) {
-      throw new Error('Game already exists');
+      throw new Error("Game already exists");
       // Business logic should return Result, not throw!
     }
     return this.repository.save(game);
@@ -254,7 +254,7 @@ export class AddGameUseCase {
 // Startup configuration - throw
 export const initializeApp = () => {
   if (!import.meta.env.VITE_APP_NAME) {
-    throw new Error('VITE_APP_NAME is required in .env');
+    throw new Error("VITE_APP_NAME is required in .env");
   }
   // App cannot function without this
 };
@@ -263,7 +263,7 @@ export const initializeApp = () => {
 export class IGDBService {
   async fetchGameMetadata(title: string): Promise<Result<GameMetadata, APIError>> {
     if (!this.apiKey) {
-      return Result.err(new APIError('IGDB API key not configured'));
+      return Result.err(new APIError("IGDB API key not configured"));
       // Feature degrades gracefully, doesn't crash app
     }
     // ...
@@ -282,7 +282,7 @@ export class GetGameByIdUseCase {
   async execute(id: string): Promise<Result<Game, NotFoundError>> {
     const result = await this.repository.findById(id);
     if (result.isErr()) {
-      return Result.err(new NotFoundError('Game not found'));
+      return Result.err(new NotFoundError("Game not found"));
       // User might have bad URL or deleted game
     }
     return result;

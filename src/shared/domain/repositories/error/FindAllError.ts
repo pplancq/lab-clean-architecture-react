@@ -1,5 +1,5 @@
-import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
-import type { FindAllErrorInterface } from '@Shared/domain/repositories/error/FindAllErrorInterface';
+import type { FindAllErrorInterface } from "@Shared/domain/repositories/error/FindAllErrorInterface";
+import { IndexedDBRequestError } from "@Shared/domain/repositories/error/IndexedDBRequestError";
 
 /**
  * Error thrown when an IndexedDB findAll operation fails
@@ -11,7 +11,7 @@ import type { FindAllErrorInterface } from '@Shared/domain/repositories/error/Fi
  */
 export class FindAllError extends IndexedDBRequestError implements FindAllErrorInterface {
   constructor(originalError: DOMException | null) {
-    super('IndexedDB findAll request failed', originalError);
-    this.name = 'FindAllError';
+    super("IndexedDB findAll request failed", originalError);
+    this.name = "FindAllError";
   }
 }

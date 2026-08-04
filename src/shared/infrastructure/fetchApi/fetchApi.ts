@@ -1,6 +1,6 @@
-import { HEADERS, MIME_TYPES } from './constant';
-import type { MimeTypes } from './fetchApi.type';
-import { FetchApiError } from './FetchApiError';
+import { HEADERS, MIME_TYPES } from "./constant";
+import type { MimeTypes } from "./fetchApi.type";
+import { FetchApiError } from "./FetchApiError";
 
 /**
  * Generic API fetch utility with automatic type conversion and error handling.
@@ -66,7 +66,7 @@ export const fetchApi = async <T>(url: string, options: RequestInit): Promise<T>
     );
   }
 
-  const contentType = response.headers.get(HEADERS.contentType) ?? '';
+  const contentType = response.headers.get(HEADERS.contentType) ?? "";
 
   if (contentType.includes(MIME_TYPES.json)) {
     return (await response.json()) as T;

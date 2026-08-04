@@ -16,6 +16,7 @@
 **Objective**: Validate the availability and feasibility of external APIs before starting implementation.
 
 **Research Completed**:
+
 - ✅ **IGDB** - Game metadata (SELECTED: Partial FR support, 4 req/sec free tier)
 - ✅ **RAWG** - Alternative metadata (EVALUATED: English only, backup option)
 - ✅ **PSN Trophies** - psn-api library (DEFERRED POST-MVP: Reverse-engineered, ban risk)
@@ -24,12 +25,14 @@
 - ✅ **General Marketplaces** - eBay/Amazon/Leboncoin (NOT SUITABLE: No price history or approval required)
 
 **Delivered Artifacts**:
+
 - ✅ [Metadata API Research](/_bmad-output/planning-artifacts/research/technical-api-metadata-jeux-research-2026-01-21.md) - IGDB selected
 - ✅ [Price Tracking Research](/_bmad-output/planning-artifacts/research/technical-price-tracking-wishlist-research-2026-01-22.md) - DEFERRED POST-MVP
 - ✅ HTTP Client tests (http_client/igdb/auth.http, games.http) - IGDB validated
 - ✅ Go/No-Go decisions documented per API
 
 **Key Decisions**:
+
 1. ✅ **IGDB for Metadata** - MVP will auto-fetch game data (title, cover, genre, platform)
 2. ⏸️ **Trophies DEFERRED** - Manual entry only in MVP, psn-api researched for future
 3. ⏸️ **Price Tracking DEFERRED** - Manual wishlist in MVP, IsThereAnyDeal researched for future
@@ -49,6 +52,7 @@
 **Objective**: Define the Clean Architecture structure before writing any code.
 
 **Delivered artifacts**:
+
 - ✅ Complete Architecture Decision Document (`_bmad-output/planning-artifacts/architecture.md`)
 - ✅ Clean Architecture + DDD Bounded Contexts hybrid structure
 - ✅ 10 core architectural decisions (DB schema, migrations, validation, cache, errors, PWA, DI, events, tests, performance)
@@ -58,6 +62,7 @@
 - ✅ Project context file for AI agent consistency (`project-context.md`)
 
 **Key decisions made**:
+
 - ✅ Single IndexedDB with 5 stores (allows future migration to separate DBs)
 - ✅ Manual migrations with code (documented in DECISIONS.md/MIGRATIONS.md)
 - ✅ Hybrid validation (React Hook Form UI + Value Objects domain)
@@ -82,6 +87,7 @@
 **Status**: ✅ **COMPLETE**
 
 **Delivered artifacts**:
+
 - ✅ Complete UX Design Specification (`_bmad-output/planning-artifacts/ux-design-specification.md`)
 - ✅ Mobile-first responsive strategy (320px-1440px, shelter-ui breakpoints)
 - ✅ 4 critical user journey flows documented (Verify Ownership, Add Game, Browse Collection, Console Maintenance)
@@ -94,6 +100,7 @@
 - ✅ 4-sprint implementation roadmap (Foundation → Collection UI → Maintenance → Polish)
 
 **Key decisions**:
+
 - Design system: shelter-ui (custom Sass/CSS Modules, no Tailwind)
 - Platform colors: PS5=#006FCD, Xbox=#107C10, Nintendo=#E60012, PC=#888888
 - Emotional goals: Serenity + Confidence ("control tower" metaphor)
@@ -112,6 +119,7 @@
 **Objective**: Turn FRs into epics and implementable user stories, then create GitHub Issues.
 
 **Delivered artifacts**:
+
 - ✅ Complete Epic & Story Breakdown (`_bmad-output/planning-artifacts/epics.md`)
 - ✅ 6 epics organized by user value (not technical layers)
 - ✅ 46 implementation-ready stories with detailed acceptance criteria
@@ -124,6 +132,7 @@
 - ✅ 4 GitHub Issue templates + PR template created
 
 **Epic Structure**:
+
 1. **Epic 1: Foundation, Clean Architecture & PWA Setup** ([#7](https://github.com/pplancq/lab-clean-architecture-react/issues/7)) - 7 stories
    - FRs: FR23-FR27, FR33-FR37
    - Stories: #1, #2, #3, #4, #5, #6, #52 (all P0)
@@ -162,6 +171,7 @@
    - Delivers: Export/import JSON, conflict resolution
 
 **Story Breakdown:**
+
 - **Total Issues:** 52 (6 epics + 46 stories)
 - **By Priority:** 14 P0 (critical), 18 P1 (important), 14 P2 (nice-to-have)
 - **By Size:** 2 XS, 13 S, 17 M, 6 L, 0 XL (all stories appropriately sized)
@@ -169,6 +179,7 @@
 - **New Infrastructure:** Story #52 added for CI + SonarCloud + GitHub Copilot Agent support
 
 **Key Decisions**:
+
 - Stories sized for single dev agent completion (~1 week with 5h/week)
 - Acceptance criteria use Given/When/Then format
 - Each epic delivers complete standalone value
@@ -178,6 +189,7 @@
 - No XL stories remaining - all decomposed for sprint-sized delivery
 
 **GitHub Implementation**:
+
 - ✅ Epic = GitHub Issue with `epic` label
 - ✅ Story = Sub-issue linked to parent epic
 - ✅ 4 Issue templates (Epic, Story, Bug, Enhancement) in English
@@ -197,6 +209,7 @@
 **Objective**: Initialize Sprint 1 with proper Scrum structure before coding begins.
 
 **Delivered artifacts**:
+
 - ✅ Sprint 1 created in sprint-status.yaml (27 jan → 13 fév 2026)
 - ✅ 15 P0 stories assigned to Sprint 1 (Epic 1 + Epic 2)
 - ✅ All stories moved to `ready-for-dev` status
@@ -207,6 +220,7 @@
 - ✅ Complete sprint metrics documented (P0-P2 breakdown, XS-XL sizes)
 
 **Sprint 1 Scope:**
+
 - **Duration:** 2.5 weeks (27 jan → 13 fév 2026)
 - **Capacity:** 12 working days
 - **Stories:** 15 P0 stories (Epic 1: 7 stories, Epic 2: 8 stories)
@@ -220,6 +234,7 @@
   - CI/CD Pipeline with SonarCloud
 
 **Key Decisions:**
+
 - ✅ Combined Epic 1 + Epic 2 in Sprint 1 (both P0, foundational)
 - ✅ All 15 stories sized and prioritized (12 days total effort)
 - ✅ GitHub Project metadata synchronized (P0-P2 priorities, XS-XL sizes)
@@ -234,6 +249,7 @@
 **Status**: ⏭️ **READY TO START**
 
 **Initial setup**:
+
 - [ ] Clone starter template: `@pplancq/dev-tools/react-template`
 - [ ] Setup Rsbuild configuration
 - [ ] Configure TypeScript (strict mode)
@@ -245,12 +261,14 @@
 - [ ] Initialize DECISIONS.md, LEARNINGS.md, REGRETS.md
 
 **PWA Setup**:
+
 - [ ] Install Rsbuild PWA Plugin
 - [ ] Configure Service Worker (app shell caching)
 - [ ] Test MSW + PWA coexistence (resolve conflict if needed)
 - [ ] Document strategy in DECISIONS.md
 
 **DI Setup**:
+
 - [ ] Install InversifyJS
 - [ ] Setup DI container
 - [ ] Create initial bindings (examples)
@@ -260,6 +278,7 @@
 ### Phase 5: MVP Development (Weeks 1-10)
 
 **Week 1-4: Game Collection Management**
+
 - [ ] Domain entities (Game, GameId, Platform)
 - [ ] CRUD Use Cases (AddGame, EditGame, DeleteGame, GetGames)
 - [ ] Repository Interface + IndexedDB Adapter
@@ -267,18 +286,21 @@
 - [ ] **Shipping Goal**: Fully functional end-to-end CRUD
 
 **Week 5-6: Search & Filtering**
+
 - [ ] Use Cases (SearchGames, FilterGames, SortGames)
 - [ ] Optimized IndexedDB queries
 - [ ] UI search bar + filters
 - [ ] **Shipping Goal**: Operational search and filtering
 
 **Week 7-8: Wishlist Management**
+
 - [ ] Wishlist Use Cases
 - [ ] Priority management
 - [ ] Wishlist → Collection conversion
 - [ ] **Shipping Goal**: Functional wishlist
 
 **Week 9-10: PWA Fundamentals**
+
 - [ ] Finalized Service Worker
 - [ ] Full offline support
 - [ ] Install prompt
@@ -289,6 +311,7 @@
 ## 🎯 Shipping Discipline
 
 **Golden rules**:
+
 - ✅ **1 feature shipped per week** (no compromise)
 - ✅ **Max 1 day of architecture per feature** (strict time-boxing)
 - ✅ **"Good enough" code > Perfect code** (pragmatism)
@@ -296,11 +319,13 @@
 - ✅ **Weekends OFF** (unless naturally motivated)
 
 **Kill Switches**:
+
 - ⚠️ If architecture blocks shipping >2 weeks → Simplify
 - ⚠️ If PWA takes >2 weeks → Pivot to LocalStorage
 - ⚠️ If APIs unavailable → Pivot to manual-first
 
 **Real-time documentation**:
+
 - 📝 DECISIONS.md - Update every decision (within 24h)
 - 📝 LEARNINGS.md - Weekly reflection every Friday (15min)
 - 📝 REGRETS.md - Mistakes documented without shame
@@ -310,15 +335,18 @@
 ## 📊 Continuous Validation
 
 **Every 2 weeks**:
+
 - [ ] Team demo (safe feedback)
 - [ ] LinkedIn/Twitter post (architecture insights)
 - [ ] GitHub push with detailed commit message
 
 **Monthly**:
+
 - [ ] Blog post (500-1000 words, 1 specific learning)
 - [ ] Demo video (5min, optional)
 
 **Quarterly**:
+
 - [ ] "3 months of Clean Arch React" summary post
 - [ ] Conference submission (Devoxx/DevFest)
 
@@ -350,12 +378,14 @@
 7. **Phase 5 Sprint 1 Coding** - Epic 1 + Epic 2 complete (15 stories P0, 12 days)
 
 **Phase 0 API Research Complete**:
+
 - ✅ IGDB metadata API selected (partial FR support, free tier)
 - ⏸️ Trophy sync deferred post-MVP (psn-api researched, ban risk)
 - ⏸️ Price tracking deferred post-MVP (IsThereAnyDeal researched)
 - ✅ Manual-first MVP approach validated
 
 **Phase 1 Architecture Complete**:
+
 - ✅ Clean Architecture + DDD Bounded Contexts structure
 - ✅ 10 core architectural decisions documented
 - ✅ 15+ implementation patterns for consistency
@@ -366,6 +396,7 @@
 - ✅ Result<T, E> pattern for type-safe errors
 
 **Phase 2 UX Specification Complete**:
+
 - ✅ Component implementation (12 custom + 17 shelter-ui)
 - ✅ Responsive breakpoints (mobile/tablet/desktop strategy)
 - ✅ Accessibility requirements (WCAG AA, keyboard nav, screen readers)
@@ -373,6 +404,7 @@
 - ✅ Visual design (colors, typography, spacing tokens)
 
 **Phase 3 Epic Breakdown + GitHub Issues Complete**:
+
 - ✅ 6 epics organized by user value (Foundation, Collection, Search, API, Wishlist, Backup)
 - ✅ 46 implementation-ready stories with detailed acceptance criteria
 - ✅ 100% coverage of 37 functional requirements
@@ -388,6 +420,7 @@
 - ✅ Issue templates (Epic, Story, Bug, Enhancement) created
 
 **Phase 4a Sprint Planning Complete**:
+
 - ✅ Sprint 1 initialized (27 jan → 13 fév 2026, 12 working days)
 - ✅ 15 P0 stories assigned to Sprint 1 (Epic 1: 7 stories, Epic 2: 8 stories)
 - ✅ Sprint goal defined: "Establish technical foundations and implement core collection management"

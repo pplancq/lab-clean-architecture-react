@@ -1,5 +1,5 @@
 ---
-main_config: '{project-root}/_bmad/bmm/config.yaml'
+main_config: "{project-root}/_bmad/bmm/config.yaml"
 ---
 
 # Quick Dev New Preview Workflow

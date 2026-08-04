@@ -1,8 +1,8 @@
-import { RadioGroup, type RadioGroupProps } from '@pplancq/shelter-ui-react';
-import { Children, cloneElement, useMemo } from 'react';
-import { type RegisterOptions, useFormContext } from 'react-hook-form';
+import { RadioGroup, type RadioGroupProps } from "@pplancq/shelter-ui-react";
+import { Children, cloneElement, useMemo } from "react";
+import { type RegisterOptions, useFormContext } from "react-hook-form";
 
-export type FormRadioGroupProps = Omit<RadioGroupProps, 'name'> & {
+export type FormRadioGroupProps = Omit<RadioGroupProps, "name"> & {
   name: string;
   rules?: RegisterOptions;
 };
@@ -13,7 +13,7 @@ export const FormRadioGroup = ({ rules, name, id, children, ...props }: FormRadi
 
   const radioOptions = useMemo(
     () =>
-      Children.map(children, child =>
+      Children.map(children, (child) =>
         cloneElement(child, {
           ...register(name, rules),
           ...child.props,

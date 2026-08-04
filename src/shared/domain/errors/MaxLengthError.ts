@@ -1,4 +1,4 @@
-import { DomainValidationError } from './DomainValidationError';
+import { DomainValidationError } from "./DomainValidationError";
 
 /**
  * Validation error raised when a field value exceeds its maximum allowed length.
@@ -15,6 +15,6 @@ import { DomainValidationError } from './DomainValidationError';
 export class MaxLengthError extends DomainValidationError {
   constructor(field: string, maxLength: number, message = `${field} cannot exceed ${maxLength} characters`) {
     super(field, message);
-    this.name = 'MaxLengthError';
+    this.name = "MaxLengthError";
   }
 }

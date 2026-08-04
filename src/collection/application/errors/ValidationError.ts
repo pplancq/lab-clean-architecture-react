@@ -1,10 +1,10 @@
-import type { ValidationErrorInterface } from './ValidationErrorInterface';
+import type { ValidationErrorInterface } from "./ValidationErrorInterface";
 
 /**
  * Validation error implementation
  */
 export class ValidationError extends Error implements ValidationErrorInterface {
-  readonly type = 'Validation' as const;
+  readonly type = "Validation" as const;
 
   constructor(
     message: string,
@@ -12,6 +12,6 @@ export class ValidationError extends Error implements ValidationErrorInterface {
     readonly metadata?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }

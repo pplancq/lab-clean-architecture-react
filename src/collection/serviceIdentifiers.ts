@@ -8,40 +8,40 @@ export const COLLECTION_SERVICES = Object.freeze({
   /**
    * IndexedDB database interface for game collection storage
    */
-  IndexedDB: Symbol.for('Collection.IndexedDB'),
+  IndexedDB: Symbol.for("Collection.IndexedDB"),
 
   /**
    * Repository interface for Game entity persistence
    */
-  GameRepository: Symbol.for('Collection.GameRepository'),
+  GameRepository: Symbol.for("Collection.GameRepository"),
 
   /**
    * Use case for adding a game to the collection
    */
-  AddGameUseCase: Symbol.for('Collection.AddGameUseCase'),
+  AddGameUseCase: Symbol.for("Collection.AddGameUseCase"),
 
   /**
    * Use case for retrieving all games from the collection
    */
-  GetGamesUseCase: Symbol.for('Collection.GetGamesUseCase'),
+  GetGamesUseCase: Symbol.for("Collection.GetGamesUseCase"),
 
   /**
    * Use case for retrieving a single game by its identifier
    */
-  GetGameByIdUseCase: Symbol.for('Collection.GetGameByIdUseCase'),
+  GetGameByIdUseCase: Symbol.for("Collection.GetGameByIdUseCase"),
 
   /**
    * Use case for editing an existing game in the collection
    */
-  EditGameUseCase: Symbol.for('Collection.EditGameUseCase'),
+  EditGameUseCase: Symbol.for("Collection.EditGameUseCase"),
 
   /**
    * Use case for deleting a game from the collection
    */
-  DeleteGameUseCase: Symbol.for('Collection.DeleteGameUseCase'),
+  DeleteGameUseCase: Symbol.for("Collection.DeleteGameUseCase"),
 
   /**
    * Observable store for the games collection
    */
-  GamesStore: Symbol.for('Collection.GamesStore'),
+  GamesStore: Symbol.for("Collection.GamesStore"),
 } as const);

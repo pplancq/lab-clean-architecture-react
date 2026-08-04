@@ -2,9 +2,9 @@
   all: unset;
   display: grid;
   grid-template-areas:
-    'label'
-    'input'
-    'helper-text';
+    "label"
+    "input"
+    "helper-text";
   align-items: center;
   gap: 6px;
 
@@ -20,8 +20,8 @@
 
 .selectFieldInline {
   grid-template-areas:
-    'label input'
-    'null helper-text';
+    "label input"
+    "null helper-text";
 
   & :global(.label) {
     min-width: 100px;
@@ -91,7 +91,7 @@
     border-left: 6px solid transparent;
     color: var(--color-text-primary);
     pointer-events: none;
-    content: '';
+    content: "";
   }
 }
 

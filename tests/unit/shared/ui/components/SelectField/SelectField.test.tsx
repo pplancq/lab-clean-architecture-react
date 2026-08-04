@@ -1,21 +1,21 @@
-import { SelectField } from '@Shared/ui/components/SelectField/SelectField';
-import { render, screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { SelectField } from "@Shared/ui/components/SelectField/SelectField";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { describe, expect, it } from "vitest";
 
-describe('SelectField', () => {
-  describe('rendering', () => {
-    it('should render a combobox with an accessible label', () => {
+describe("SelectField", () => {
+  describe("rendering", () => {
+    it("should render a combobox with an accessible label", () => {
       render(
         <SelectField id="platform" label="Platform">
           <option value="ps5">PlayStation 5</option>
         </SelectField>,
       );
 
-      expect(screen.getByRole('combobox', { name: 'Platform' })).toBeInTheDocument();
+      expect(screen.getByRole("combobox", { name: "Platform" })).toBeInTheDocument();
     });
 
-    it('should render provided options', () => {
+    it("should render provided options", () => {
       render(
         <SelectField id="platform" label="Platform">
           <option value="">Select a platform</option>
@@ -24,23 +24,23 @@ describe('SelectField', () => {
         </SelectField>,
       );
 
-      expect(screen.getByRole('option', { name: 'PlayStation 5' })).toBeInTheDocument();
-      expect(screen.getByRole('option', { name: 'Nintendo Switch' })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "PlayStation 5" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Nintendo Switch" })).toBeInTheDocument();
     });
 
-    it('should indicate required fields to assistive technologies', () => {
+    it("should indicate required fields to assistive technologies", () => {
       render(
         <SelectField id="platform" label="Platform" required>
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      expect(screen.getByRole('combobox', { name: /Platform/ })).toBeRequired();
+      expect(screen.getByRole("combobox", { name: /Platform/ })).toBeRequired();
     });
   });
 
-  describe('helper text', () => {
-    it('should render helper text when provided', async () => {
+  describe("helper text", () => {
+    it("should render helper text when provided", async () => {
       render(
         <SelectField id="platform" label="Platform" textHelper="Choose your gaming platform">
           <option value="">Select a platform</option>
@@ -48,11 +48,11 @@ describe('SelectField', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('Choose your gaming platform')).toBeInTheDocument();
+        expect(screen.getByText("Choose your gaming platform")).toBeInTheDocument();
       });
     });
 
-    it('should associate helper text with the select via aria-describedby', async () => {
+    it("should associate helper text with the select via aria-describedby", async () => {
       render(
         <SelectField id="platform" label="Platform" textHelper="Choose your gaming platform">
           <option value="">Select a platform</option>
@@ -60,14 +60,14 @@ describe('SelectField', () => {
       );
 
       await waitFor(() => {
-        const select = screen.getByRole('combobox', { name: 'Platform' });
-        expect(select).toHaveAccessibleDescription('Choose your gaming platform');
+        const select = screen.getByRole("combobox", { name: "Platform" });
+        expect(select).toHaveAccessibleDescription("Choose your gaming platform");
       });
     });
   });
 
-  describe('error state', () => {
-    it('should render an error message when provided', async () => {
+  describe("error state", () => {
+    it("should render an error message when provided", async () => {
       render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
@@ -75,11 +75,11 @@ describe('SelectField', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('Platform is required')).toBeInTheDocument();
+        expect(screen.getByText("Platform is required")).toBeInTheDocument();
       });
     });
 
-    it('should mark the select as invalid when errorMessage is provided', async () => {
+    it("should mark the select as invalid when errorMessage is provided", async () => {
       render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
@@ -87,11 +87,11 @@ describe('SelectField', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByRole('combobox', { name: 'Platform' })).toHaveAttribute('aria-invalid', 'true');
+        expect(screen.getByRole("combobox", { name: "Platform" })).toHaveAttribute("aria-invalid", "true");
       });
     });
 
-    it('should have an accessible error message via aria-errormessage', async () => {
+    it("should have an accessible error message via aria-errormessage", async () => {
       render(
         <SelectField id="platform" label="Platform" errorMessage="Platform is required">
           <option value="">Select a platform</option>
@@ -99,24 +99,24 @@ describe('SelectField', () => {
       );
 
       await waitFor(() => {
-        const select = screen.getByRole('combobox', { name: 'Platform' });
-        expect(select).toHaveAccessibleErrorMessage('Platform is required');
+        const select = screen.getByRole("combobox", { name: "Platform" });
+        expect(select).toHaveAccessibleErrorMessage("Platform is required");
       });
     });
 
-    it('should not mark the select as invalid when no errorMessage is provided', () => {
+    it("should not mark the select as invalid when no errorMessage is provided", () => {
       render(
         <SelectField id="platform" label="Platform">
           <option value="">Select a platform</option>
         </SelectField>,
       );
 
-      expect(screen.getByRole('combobox', { name: 'Platform' })).not.toHaveAttribute('aria-invalid');
+      expect(screen.getByRole("combobox", { name: "Platform" })).not.toHaveAttribute("aria-invalid");
     });
   });
 
-  describe('interaction', () => {
-    it('should allow selecting an option', async () => {
+  describe("interaction", () => {
+    it("should allow selecting an option", async () => {
       const user = userEvent.setup();
 
       render(
@@ -127,10 +127,10 @@ describe('SelectField', () => {
         </SelectField>,
       );
 
-      const select = screen.getByRole('combobox', { name: 'Platform' });
-      await user.selectOptions(select, 'ps5');
+      const select = screen.getByRole("combobox", { name: "Platform" });
+      await user.selectOptions(select, "ps5");
 
-      expect(select).toHaveValue('ps5');
+      expect(select).toHaveValue("ps5");
     });
   });
 });

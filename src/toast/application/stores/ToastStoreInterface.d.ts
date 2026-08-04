@@ -1,5 +1,5 @@
-import type { Toast } from '@Toast/domain/entities/Toast';
-import type { ToastTypeValue } from '@Toast/domain/entities/ToastInterface';
+import type { Toast } from "@Toast/domain/entities/Toast";
+import type { ToastTypeValue } from "@Toast/domain/entities/ToastInterface";
 
 /**
  * Interface for the observable toast store.

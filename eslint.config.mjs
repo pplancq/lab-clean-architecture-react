@@ -1,24 +1,24 @@
-import { defineConfig } from '@pplancq/eslint-config';
+import { defineConfig } from "@pplancq/eslint-config";
 
 export default defineConfig({
   enableReact: true,
-  enablePrettier: 'on',
+  enablePrettier: "on",
   enableVitest: true,
-  unitTestFiles: ['tests/unit/**/*.{test,spec,steps}.{js,jsx,ts,tsx}'],
+  unitTestFiles: ["tests/unit/**/*.{test,spec,steps}.{js,jsx,ts,tsx}"],
   enablePlaywright: true,
-  unitE2eFiles: ['tests/e2e/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+  unitE2eFiles: ["tests/e2e/**/*.{test,spec}.{js,jsx,ts,tsx}"],
   extendConfig: [
     {
-      files: ['mocks/**/*'],
+      files: ["mocks/**/*"],
       rules: {
-        'import/no-extraneous-dependencies': 'off',
+        "import/no-extraneous-dependencies": "off",
       },
     },
     {
-      files: ['**/*.config.{js,cjs,mjs,ts,cts,mts}'],
+      files: ["**/*.config.{js,cjs,mjs,ts,cts,mts}"],
       rules: {
-        'import/no-default-export': 'off',
-        'import/no-extraneous-dependencies': 'off',
+        "import/no-default-export": "off",
+        "import/no-extraneous-dependencies": "off",
       },
     },
   ],

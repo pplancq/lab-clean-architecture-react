@@ -1,5 +1,5 @@
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-import type { Result } from '@Shared/domain/result/Result';
+import type { RepositoryErrorInterface } from "@Shared/domain/repositories/error/RepositoryErrorInterface";
+import type { Result } from "@Shared/domain/result/Result";
 
 /**
  * RepositoryInterface defines the contract for a generic repository that manages entities of type T.

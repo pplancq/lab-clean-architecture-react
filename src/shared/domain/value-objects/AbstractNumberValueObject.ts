@@ -1,5 +1,5 @@
-import { PositiveNumberError } from '@Shared/domain/errors/PositiveNumberError';
-import { Result } from '@Shared/domain/result/Result';
+import { PositiveNumberError } from "@Shared/domain/errors/PositiveNumberError";
+import { Result } from "@Shared/domain/result/Result";
 
 /**
  * Abstract base class for number-based value objects.

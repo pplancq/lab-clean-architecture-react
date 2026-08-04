@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * GameId value object representing a unique game identifier
@@ -32,7 +32,7 @@ export class GameId extends AbstractStringValueObject {
   public static create(value: string): Result<GameId, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('gameId', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("gameId", trimmed);
     if (notEmptyCheck.isErr()) {
       return Result.err(notEmptyCheck.getError());
     }

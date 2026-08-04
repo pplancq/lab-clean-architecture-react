@@ -1,5 +1,5 @@
-import type { NotificationServiceInterface } from '@Shared/domain/notifications/NotificationServiceInterface';
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
+import type { NotificationServiceInterface } from "@Shared/domain/notifications/NotificationServiceInterface";
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
 
 /**
  * Adapter that implements NotificationServiceInterface by delegating to the toast store.
@@ -12,18 +12,18 @@ export class ToastNotificationService implements NotificationServiceInterface {
   constructor(private readonly toastStore: ToastStoreInterface) {}
 
   success(message: string): void {
-    this.toastStore.addToast(message, 'success');
+    this.toastStore.addToast(message, "success");
   }
 
   error(message: string): void {
-    this.toastStore.addToast(message, 'error');
+    this.toastStore.addToast(message, "error");
   }
 
   info(message: string): void {
-    this.toastStore.addToast(message, 'info');
+    this.toastStore.addToast(message, "info");
   }
 
   warning(message: string): void {
-    this.toastStore.addToast(message, 'warning');
+    this.toastStore.addToast(message, "warning");
   }
 }

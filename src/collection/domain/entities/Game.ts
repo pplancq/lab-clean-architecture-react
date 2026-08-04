@@ -1,11 +1,11 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { GameId } from '../value-objects/GameId';
-import { GameTitle } from '../value-objects/GameTitle';
-import { GameDescription } from '../value-objects/GameDescription';
-import { Platform } from '../value-objects/Platform';
-import { Format } from '../value-objects/Format';
-import { Status, StatusType } from '../value-objects/Status';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { Format } from "../value-objects/Format";
+import { GameDescription } from "../value-objects/GameDescription";
+import { GameId } from "../value-objects/GameId";
+import { GameTitle } from "../value-objects/GameTitle";
+import { Platform } from "../value-objects/Platform";
+import { Status, StatusType } from "../value-objects/Status";
 
 /**
  * Props for creating a Game entity (using primitives)

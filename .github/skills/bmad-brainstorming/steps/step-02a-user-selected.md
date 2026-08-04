@@ -166,8 +166,8 @@ If user confirms:
 
 ```yaml
 ---
-selected_approach: 'user-selected'
-techniques_used: ['technique1', 'technique2', 'technique3']
+selected_approach: "user-selected"
+techniques_used: ["technique1", "technique2", "technique3"]
 stepsCompleted: [1, 2]
 ---
 ```

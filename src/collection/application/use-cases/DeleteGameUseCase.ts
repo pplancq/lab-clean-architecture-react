@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import { NotFoundError } from '../errors/NotFoundError';
-import { RepositoryError } from '../errors/RepositoryError';
-import type { DeleteGameUseCaseInterface } from './DeleteGameUseCaseInterface';
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import type { RepositoryErrorInterface } from "@Shared/domain/repositories/error/RepositoryErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import { NotFoundError } from "../errors/NotFoundError";
+import { RepositoryError } from "../errors/RepositoryError";
+import type { DeleteGameUseCaseInterface } from "./DeleteGameUseCaseInterface";
 
 /**
  * Use case for deleting a game from the collection.
@@ -29,7 +29,7 @@ export class DeleteGameUseCase implements DeleteGameUseCaseInterface {
   }
 
   private mapError(error: RepositoryErrorInterface): Result<never, ApplicationErrorInterface> {
-    if ('entityId' in error) {
+    if ("entityId" in error) {
       return Result.err(new NotFoundError(error.entityId as string, error.message, { repositoryError: error }));
     }
     return Result.err(new RepositoryError(`Failed to delete game: ${error.message}`, { repositoryError: error }));

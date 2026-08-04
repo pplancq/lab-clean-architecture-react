@@ -135,7 +135,7 @@ const result = await store.editGame(dto);
 
 if (result.isErr()) {
   const error = result.getError();
-  if (error.type === 'Validation') {
+  if (error.type === "Validation") {
     // Inline display in the form
   } else {
     // Generic error message

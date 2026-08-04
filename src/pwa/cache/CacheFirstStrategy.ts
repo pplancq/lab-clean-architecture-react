@@ -1,5 +1,5 @@
-import type { LoggerInterface } from '@Pwa/logger/LoggerInterface';
-import type { CacheStrategyInterface } from './CacheStrategyInterface';
+import type { LoggerInterface } from "@Pwa/logger/LoggerInterface";
+import type { CacheStrategyInterface } from "./CacheStrategyInterface";
 
 /**
  * Cache-First Strategy
@@ -14,17 +14,17 @@ export class CacheFirstStrategy implements CacheStrategyInterface {
     const cachedResponse = await caches.match(request);
 
     if (cachedResponse) {
-      this.logger.info('Cache hit:', request.url);
+      this.logger.info("Cache hit:", request.url);
       return cachedResponse;
     }
 
     // Cache miss - fetch from network
-    this.logger.info('Cache miss, fetching:', request.url);
+    this.logger.info("Cache miss, fetching:", request.url);
 
     try {
       return await fetch(request);
     } catch (error) {
-      this.logger.error('Fetch failed:', error);
+      this.logger.error("Fetch failed:", error);
       throw error;
     }
   }

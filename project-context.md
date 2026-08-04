@@ -1,10 +1,10 @@
 ---
-project_name: 'lab-clean-architecture-react'
-user_name: 'Paul'
-date: '2026-01-26'
+project_name: "lab-clean-architecture-react"
+user_name: "Paul"
+date: "2026-01-26"
 sections_completed:
-  ['technology_stack', 'architecture', 'naming_conventions', 'code_patterns', 'testing', 'anti_patterns']
-source_documents: ['architecture.md', 'prd.md', 'ux-design-specification.md']
+  ["technology_stack", "architecture", "naming_conventions", "code_patterns", "testing", "anti_patterns"]
+source_documents: ["architecture.md", "prd.md", "ux-design-specification.md"]
 ---
 
 # Project Context for AI Agents
@@ -193,7 +193,7 @@ src/
 export const addGame = async (data: GameDTO): Promise<Result<void, RepositoryError>> => {
   // Implementation
   if (error) {
-    return Result.err(new RepositoryError('Failed to save game'));
+    return Result.err(new RepositoryError("Failed to save game"));
   }
   return Result.ok(undefined);
 };
@@ -210,14 +210,14 @@ export const addGame = async (data: GameDTO): Promise<Result<void, RepositoryErr
 
 ```typescript
 // collection/infrastructure/di/collection.container.ts
-import { Container } from 'inversify';
-import { TYPES } from './types';
+import { Container } from "inversify";
+import { TYPES } from "./types";
 
 export const collectionContainer = new Container();
 
 collectionContainer.bind<GameRepositoryInterface>(TYPES.GameRepository).to(IndexedDBGameRepository);
 
-collectionContainer.bind<AddGameUseCase>(TYPES.AddGameUseCase).toDynamicValue(context => {
+collectionContainer.bind<AddGameUseCase>(TYPES.AddGameUseCase).toDynamicValue((context) => {
   const repo = context.get<GameRepositoryInterface>(TYPES.GameRepository);
   return new AddGameUseCase(repo);
 });
@@ -227,7 +227,7 @@ collectionContainer.bind<AddGameUseCase>(TYPES.AddGameUseCase).toDynamicValue(co
 
 ```typescript
 // ❌ FORBIDDEN
-import { injectable } from 'inversify';
+import { injectable } from "inversify";
 
 @injectable() // ❌ Domain layer depends on InversifyJS
 export class Game {}
@@ -244,7 +244,7 @@ export class Game {}
 ```typescript
 // wishlist/application/use-cases/MoveToCollection.ts
 eventBus.publish({
-  type: 'wishlist.item.moved',
+  type: "wishlist.item.moved",
   payload: {
     gameId: item.gameId,
     title: item.title,
@@ -256,7 +256,7 @@ eventBus.publish({
 
 // collection/ subscribes in DI container
 // collection/infrastructure/di/collection.container.ts
-eventBus.subscribe('wishlist.item.moved', async event => {
+eventBus.subscribe("wishlist.item.moved", async (event) => {
   const addGameUseCase = container.get<AddGameUseCase>(TYPES.AddGameUseCase);
   await addGameUseCase.execute(event.payload);
 });
@@ -277,10 +277,10 @@ export class GameTitle {
 
   constructor(title: string) {
     if (!title || title.trim().length === 0) {
-      throw new ValidationError('Game title cannot be empty');
+      throw new ValidationError("Game title cannot be empty");
     }
     if (title.length > 200) {
-      throw new ValidationError('Game title too long (max 200 chars)');
+      throw new ValidationError("Game title too long (max 200 chars)");
     }
     this.value = title.trim();
   }
@@ -309,18 +309,18 @@ export class GameTitle {
 
 ```typescript
 // Single database with separate stores (Option A from architecture decisions)
-const db = await openDB('GameCollectionDB', 1, {
+const db = await openDB("GameCollectionDB", 1, {
   upgrade(db) {
     // Collection context
-    db.createObjectStore('games', { keyPath: 'id' });
-    db.createObjectStore('game_metadata', { keyPath: 'gameId' });
+    db.createObjectStore("games", { keyPath: "id" });
+    db.createObjectStore("game_metadata", { keyPath: "gameId" });
 
     // Wishlist context
-    db.createObjectStore('wishlist', { keyPath: 'id' });
+    db.createObjectStore("wishlist", { keyPath: "id" });
 
     // Maintenance context
-    db.createObjectStore('consoles', { keyPath: 'id' });
-    db.createObjectStore('maintenance', { keyPath: 'id' });
+    db.createObjectStore("consoles", { keyPath: "id" });
+    db.createObjectStore("maintenance", { keyPath: "id" });
   },
 });
 ```
@@ -450,28 +450,28 @@ export const GameCard = () => {};
 ```typescript
 // ❌ WRONG - NO index.ts files
 // src/collection/domain/index.ts
-export * from './Game';
-export * from './GameId';
+export * from "./Game";
+export * from "./GameId";
 
 // ✅ CORRECT - Import directly
-import { Game } from '@Collection/domain/entities/Game';
+import { Game } from "@Collection/domain/entities/Game";
 ```
 
 ### ❌ Relative Imports Across Contexts
 
 ```typescript
 // ❌ WRONG
-import { EventBus } from '../../../shared/infrastructure/events/EventBus';
+import { EventBus } from "../../../shared/infrastructure/events/EventBus";
 
 // ✅ CORRECT
-import { EventBus } from '@Shared/infrastructure/events/EventBus';
+import { EventBus } from "@Shared/infrastructure/events/EventBus";
 ```
 
 ### ❌ Decorators in Domain Layer
 
 ```typescript
 // ❌ WRONG
-import { injectable } from 'inversify';
+import { injectable } from "inversify";
 
 @injectable()
 export class Game {}
@@ -497,7 +497,7 @@ export abstract class AbstractRepository {}
 
 ```typescript
 // ❌ WRONG - Domain depends on application DTOs
-import { GameDTO } from '@Collection/application/dtos/GameDTO';
+import { GameDTO } from "@Collection/application/dtos/GameDTO";
 
 export class Game {
   constructor(dto: GameDTO) {} // ❌ Domain knows about DTOs

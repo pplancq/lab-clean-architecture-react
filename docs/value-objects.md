@@ -18,9 +18,9 @@ Value Objects are immutable objects that represent domain concepts through their
 Value Objects extend the appropriate abstract base class from `@Shared/domain/value-objects/` and compose validation helpers in their static `create` factory.
 
 ```typescript
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
-import { Result } from '@Shared/domain/result/Result';
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
+import { Result } from "@Shared/domain/result/Result";
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
 
 export class GameTitle extends AbstractStringValueObject {
   private constructor(value: string) {
@@ -29,9 +29,9 @@ export class GameTitle extends AbstractStringValueObject {
 
   public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("title", trimmed);
     if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
-    const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("title", trimmed, 200);
     if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
     return Result.ok(new GameTitle(trimmed));
   }
@@ -175,17 +175,17 @@ public static create(value: number): Result<ToastDuration, DomainValidationError
 ### Enum / Allowed Values
 
 ```typescript
-import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
-import type { ToastTypeValue } from '../entities/ToastInterface';
+import { AllowedValuesError } from "@Shared/domain/errors/AllowedValuesError";
+import type { ToastTypeValue } from "../entities/ToastInterface";
 
 export class ToastType {
-  private static readonly VALID_TYPES: ToastTypeValue[] = ['success', 'error', 'info', 'warning'];
+  private static readonly VALID_TYPES: ToastTypeValue[] = ["success", "error", "info", "warning"];
 
   private constructor(private readonly value: ToastTypeValue) {}
 
   static create(value: string): Result<ToastType, DomainValidationErrorInterface> {
     if (!this.VALID_TYPES.includes(value as ToastTypeValue)) {
-      return Result.err(new AllowedValuesError('type', this.VALID_TYPES));
+      return Result.err(new AllowedValuesError("type", this.VALID_TYPES));
       // → message: "type must be one of: success, error, info, warning"
     }
     return Result.ok(new ToastType(value as ToastTypeValue));
@@ -378,7 +378,7 @@ export class GameId extends AbstractStringValueObject {
 
   public static create(value: string): Result<GameId, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('id', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("id", trimmed);
     if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
     return Result.ok(new GameId(trimmed));
   }
@@ -400,7 +400,7 @@ export class GameDescription extends AbstractStringValueObject {
   public static create(value: string): Result<GameDescription, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
     // Empty is valid (optional field)
-    const maxLengthCheck = AbstractStringValueObject.maxLength('description', trimmed, 1000);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("description", trimmed, 1000);
     if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
     return Result.ok(new GameDescription(trimmed));
   }
@@ -416,13 +416,13 @@ export class GameDescription extends AbstractStringValueObject {
 Enum VOs do **not** extend `AbstractStringValueObject` — they use `AllowedValuesError` directly:
 
 ```typescript
-import { AllowedValuesError } from '@Shared/domain/errors/AllowedValuesError';
+import { AllowedValuesError } from "@Shared/domain/errors/AllowedValuesError";
 
 export enum StatusType {
-  OWNED = 'Owned',
-  WISHLIST = 'Wishlist',
-  SOLD = 'Sold',
-  LOANED = 'Loaned',
+  OWNED = "Owned",
+  WISHLIST = "Wishlist",
+  SOLD = "Sold",
+  LOANED = "Loaned",
 }
 
 export class Status {
@@ -433,12 +433,12 @@ export class Status {
   }
 
   public static create(value: string): Result<Status, DomainValidationErrorInterface> {
-    const trimmedValue = value?.trim() ?? '';
+    const trimmedValue = value?.trim() ?? "";
     const allowedValues = Object.values(StatusType);
-    const statusValue = allowedValues.find(s => s.toLowerCase() === trimmedValue.toLowerCase());
+    const statusValue = allowedValues.find((s) => s.toLowerCase() === trimmedValue.toLowerCase());
 
     if (!statusValue) {
-      return Result.err(new AllowedValuesError('status', allowedValues));
+      return Result.err(new AllowedValuesError("status", allowedValues));
       // → "status must be one of: Owned, Wishlist, Sold, Loaned"
     }
     return Result.ok(new Status(statusValue as StatusType));
@@ -455,48 +455,48 @@ export class Status {
 ### Test Structure
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { GameTitle } from './GameTitle';
+import { describe, it, expect } from "vitest";
+import { GameTitle } from "./GameTitle";
 
-describe('GameTitle', () => {
-  describe('create', () => {
-    it('should create a valid GameTitle', () => {
-      const result = GameTitle.create('The Legend of Zelda');
+describe("GameTitle", () => {
+  describe("create", () => {
+    it("should create a valid GameTitle", () => {
+      const result = GameTitle.create("The Legend of Zelda");
 
       expect(result.isOk()).toBeTruthy();
       const title = result.unwrap();
-      expect(title.getTitle()).toBe('The Legend of Zelda');
+      expect(title.getTitle()).toBe("The Legend of Zelda");
     });
 
-    it('should return error for empty title', () => {
-      const result = GameTitle.create('');
+    it("should return error for empty title", () => {
+      const result = GameTitle.create("");
 
       expect(result.isErr()).toBeTruthy();
-      expect(result.getError().field).toBe('title');
-      expect(result.getError().message).toContain('cannot be empty');
+      expect(result.getError().field).toBe("title");
+      expect(result.getError().message).toContain("cannot be empty");
     });
 
-    it('should trim whitespace', () => {
-      const result = GameTitle.create('  Zelda  ');
+    it("should trim whitespace", () => {
+      const result = GameTitle.create("  Zelda  ");
 
       expect(result.isOk()).toBeTruthy();
-      expect(result.unwrap().getTitle()).toBe('Zelda');
+      expect(result.unwrap().getTitle()).toBe("Zelda");
     });
 
-    it('should return error for title exceeding max length', () => {
-      const longTitle = 'a'.repeat(201);
+    it("should return error for title exceeding max length", () => {
+      const longTitle = "a".repeat(201);
       const result = GameTitle.create(longTitle);
 
       expect(result.isErr()).toBeTruthy();
-      expect(result.getError().message).toContain('200 characters');
+      expect(result.getError().message).toContain("200 characters");
     });
   });
 
-  describe('getTitle', () => {
-    it('should return the title', () => {
-      const title = GameTitle.create('Zelda').unwrap();
+  describe("getTitle", () => {
+    it("should return the title", () => {
+      const title = GameTitle.create("Zelda").unwrap();
 
-      expect(title.getTitle()).toBe('Zelda');
+      expect(title.getTitle()).toBe("Zelda");
     });
   });
 });

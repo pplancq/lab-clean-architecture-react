@@ -1,4 +1,4 @@
-import type { AbstractObserverInterface, VoidFunction } from './AbstractObserverInterface';
+import type { AbstractObserverInterface, VoidFunction } from "./AbstractObserverInterface";
 
 /**
  * Abstract base class implementing the Observer (pub/sub) pattern.
@@ -28,6 +28,6 @@ export abstract class AbstractObserver implements AbstractObserverInterface {
   }
 
   protected notifyObservers(): void {
-    this.observers.forEach(observer => observer());
+    this.observers.forEach((observer) => observer());
   }
 }

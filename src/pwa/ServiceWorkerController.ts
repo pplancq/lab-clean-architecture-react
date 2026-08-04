@@ -1,7 +1,7 @@
-import { SERVICE_NAME } from '@Pwa/config/serviceContainer';
-import type { HandlerInterface } from '@Pwa/handlers/HandlerInterface';
-import type { LoggerInterface } from '@Pwa/logger/LoggerInterface';
-import type { Container } from 'inversify';
+import { SERVICE_NAME } from "@Pwa/config/serviceContainer";
+import type { HandlerInterface } from "@Pwa/handlers/HandlerInterface";
+import type { LoggerInterface } from "@Pwa/logger/LoggerInterface";
+import type { Container } from "inversify";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -21,12 +21,12 @@ export class ServiceWorkerController {
     this.container = container;
     const logger = container.get<LoggerInterface>(SERVICE_NAME.Logger);
 
-    self.addEventListener('install', this.onInstall.bind(this));
-    self.addEventListener('activate', this.onActivate.bind(this));
-    self.addEventListener('fetch', this.onFetch.bind(this));
-    self.addEventListener('message', this.onMessage.bind(this));
+    self.addEventListener("install", this.onInstall.bind(this));
+    self.addEventListener("activate", this.onActivate.bind(this));
+    self.addEventListener("fetch", this.onFetch.bind(this));
+    self.addEventListener("message", this.onMessage.bind(this));
 
-    logger.info('Service Worker initialized with DI container');
+    logger.info("Service Worker initialized with DI container");
   }
 
   private static onInstall(event: ExtendableEvent): void {

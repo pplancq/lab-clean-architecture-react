@@ -1,4 +1,4 @@
-import type { ToastTypeValue } from '@Toast/domain/entities/ToastInterface';
+import type { ToastTypeValue } from "@Toast/domain/entities/ToastInterface";
 
 /**
  * DTO for adding a new toast notification.

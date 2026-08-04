@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import type { IdGeneratorInterface } from '@Shared/domain/utils/IdGeneratorInterface';
+import type { IdGeneratorInterface } from "@Shared/domain/utils/IdGeneratorInterface";
 
 /**
  * ID generator implementation using the Web Crypto API (crypto.randomUUID).

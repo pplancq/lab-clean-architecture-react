@@ -1,4 +1,4 @@
-import type { NotFoundErrorInterface } from '@Shared/domain/repositories/error/NotFoundErrorInterface';
+import type { NotFoundErrorInterface } from "@Shared/domain/repositories/error/NotFoundErrorInterface";
 
 /**
  * Error thrown when an entity is not found in the repository
@@ -20,7 +20,7 @@ export class NotFoundError extends Error implements NotFoundErrorInterface {
     metadata?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
     this.entityId = entityId;
     this.metadata = metadata;
   }

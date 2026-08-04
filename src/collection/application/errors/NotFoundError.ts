@@ -1,10 +1,10 @@
-import type { NotFoundErrorInterface } from './NotFoundErrorInterface';
+import type { NotFoundErrorInterface } from "./NotFoundErrorInterface";
 
 /**
  * Not found error implementation for application layer
  */
 export class NotFoundError extends Error implements NotFoundErrorInterface {
-  readonly type = 'NotFound' as const;
+  readonly type = "NotFound" as const;
 
   constructor(
     readonly entityId: string,
@@ -12,6 +12,6 @@ export class NotFoundError extends Error implements NotFoundErrorInterface {
     readonly metadata?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
   }
 }

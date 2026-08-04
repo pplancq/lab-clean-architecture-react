@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractStringValueObject } from '@Shared/domain/value-objects/AbstractStringValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractStringValueObject } from "@Shared/domain/value-objects/AbstractStringValueObject";
 
 /**
  * Format value object representing the game format
@@ -36,12 +36,12 @@ export class Format extends AbstractStringValueObject {
   public static create(value: string): Result<Format, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
 
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('format', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("format", trimmed);
     if (notEmptyCheck.isErr()) {
       return Result.err(notEmptyCheck.getError());
     }
 
-    const maxLengthCheck = AbstractStringValueObject.maxLength('format', trimmed, 50);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("format", trimmed, 50);
     if (maxLengthCheck.isErr()) {
       return Result.err(maxLengthCheck.getError());
     }

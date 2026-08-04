@@ -1,10 +1,10 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { ToastDuration } from '../value-objects/ToastDuration';
-import { ToastId } from '../value-objects/ToastId';
-import { ToastMessage } from '../value-objects/ToastMessage';
-import { ToastType } from '../value-objects/ToastType';
-import type { ToastInterface, ToastTypeValue } from './ToastInterface';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { ToastDuration } from "../value-objects/ToastDuration";
+import { ToastId } from "../value-objects/ToastId";
+import { ToastMessage } from "../value-objects/ToastMessage";
+import { ToastType } from "../value-objects/ToastType";
+import type { ToastInterface, ToastTypeValue } from "./ToastInterface";
 
 type ToastCreateProps = {
   id: string;

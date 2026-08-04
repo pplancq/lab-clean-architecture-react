@@ -34,25 +34,25 @@ Implement **Progressive Web App (PWA)** from the initial setup using Rsbuild PWA
 
 ```typescript
 // rsbuild.config.ts
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
-import { pluginPWA } from '@rsbuild/plugin-pwa';
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginPWA } from "@rsbuild/plugin-pwa";
 
 export default defineConfig({
   plugins: [
     pluginReact(),
     pluginPWA({
       manifest: {
-        name: 'Game Collection Manager',
-        short_name: 'GameCollection',
-        description: 'Manage your video game collection offline',
-        theme_color: '#1a1a2e',
-        background_color: '#16213e',
-        display: 'standalone',
-        start_url: '/',
+        name: "Game Collection Manager",
+        short_name: "GameCollection",
+        description: "Manage your video game collection offline",
+        theme_color: "#1a1a2e",
+        background_color: "#16213e",
+        display: "standalone",
+        start_url: "/",
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+          { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
         ],
       },
       workbox: {
@@ -60,17 +60,17 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
+            handler: "CacheFirst",
             options: {
-              cacheName: 'google-fonts-cache',
+              cacheName: "google-fonts-cache",
               expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
             },
           },
           {
             urlPattern: /^https:\/\/api\.igdb\.com\/.*/i,
-            handler: 'NetworkFirst',
+            handler: "NetworkFirst",
             options: {
-              cacheName: 'igdb-api-cache',
+              cacheName: "igdb-api-cache",
               expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
             },
           },

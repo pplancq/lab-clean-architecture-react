@@ -1,6 +1,6 @@
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { AbstractNumberValueObject } from '@Shared/domain/value-objects/AbstractNumberValueObject';
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { AbstractNumberValueObject } from "@Shared/domain/value-objects/AbstractNumberValueObject";
 
 /**
  * ToastDuration value object representing the auto-dismiss delay in milliseconds.
@@ -14,7 +14,7 @@ export class ToastDuration extends AbstractNumberValueObject {
   }
 
   public static create(value: number): Result<ToastDuration, DomainValidationErrorInterface> {
-    const check = AbstractNumberValueObject.positiveNumber('duration', value);
+    const check = AbstractNumberValueObject.positiveNumber("duration", value);
     if (check.isErr()) {
       return Result.err(check.getError());
     }

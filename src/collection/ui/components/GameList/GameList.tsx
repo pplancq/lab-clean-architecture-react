@@ -1,12 +1,12 @@
-import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { Grid, Typography } from '@pplancq/shelter-ui-react';
-import type { CSSProperties } from 'react';
-import { GameCard } from '../GameCard/GameCard';
+import { useGamesSelector } from "@Collection/ui/hooks/useGamesSelector/useGamesSelector";
+import { Grid, Typography } from "@pplancq/shelter-ui-react";
+import type { CSSProperties } from "react";
+import { GameCard } from "../GameCard/GameCard";
 
-import defaultClasses from './GameList.module.css';
+import defaultClasses from "./GameList.module.css";
 
 export const GameList = () => {
-  const { games, hasError, error, isLoading } = useGamesSelector(s => s.getGamesList());
+  const { games, hasError, error, isLoading } = useGamesSelector((s) => s.getGamesList());
 
   if (isLoading) {
     return (
@@ -15,7 +15,7 @@ export const GameList = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         color="secondary"
         className={defaultClasses.loading}
@@ -34,7 +34,7 @@ export const GameList = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         className={defaultClasses.error}
         role="alert"
@@ -51,7 +51,7 @@ export const GameList = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         color="secondary"
         className={defaultClasses.emptyState}
@@ -67,20 +67,20 @@ export const GameList = () => {
       colSpan={{
         mobile: 4,
         tablet: 8,
-        'desktop-small': 12,
+        "desktop-small": 12,
       }}
-      style={{ '--gap': 'var(--gap-4)' } as CSSProperties}
+      style={{ "--gap": "var(--gap-4)" } as CSSProperties}
     >
       <Grid
         as="p"
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         aria-live="polite"
       >
-        {games.length} {games.length === 1 ? 'game' : 'games'} in collection
+        {games.length} {games.length === 1 ? "game" : "games"} in collection
       </Grid>
 
       <Grid
@@ -88,14 +88,14 @@ export const GameList = () => {
         colSpan={{
           mobile: 4,
           tablet: 8,
-          'desktop-small': 12,
+          "desktop-small": 12,
         }}
         container
         aria-label="Game collection"
-        style={{ listStyle: 'none', padding: 0, margin: 0 }}
+        style={{ listStyle: "none", padding: 0, margin: 0 }}
       >
-        {games.map(game => (
-          <Grid key={game.getId()} as="li" colSpan={{ mobile: 4, tablet: 4, 'desktop-small': 3 }}>
+        {games.map((game) => (
+          <Grid key={game.getId()} as="li" colSpan={{ mobile: 4, tablet: 4, "desktop-small": 3 }}>
             <GameCard game={game} />
           </Grid>
         ))}

@@ -1,7 +1,7 @@
-import { Game } from '@Collection/domain/entities/Game';
-import type { DomainValidationErrorInterface } from '@Shared/domain/errors/DomainValidationErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import { GameDTO } from '../dtos/GameDTO';
+import { Game } from "@Collection/domain/entities/Game";
+import type { DomainValidationErrorInterface } from "@Shared/domain/errors/DomainValidationErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import { GameDTO } from "../dtos/GameDTO";
 
 /**
  * Mapper between Game entity and GameDTO

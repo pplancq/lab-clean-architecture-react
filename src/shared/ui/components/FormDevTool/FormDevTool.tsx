@@ -1,6 +1,6 @@
-import { DevTool } from '@hookform/devtools';
-import { createPortal } from 'react-dom';
-import { useFormContext } from 'react-hook-form';
+import { DevTool } from "@hookform/devtools";
+import { createPortal } from "react-dom";
+import { useFormContext } from "react-hook-form";
 
 export const FormDevTool = () => {
   const { control } = useFormContext();

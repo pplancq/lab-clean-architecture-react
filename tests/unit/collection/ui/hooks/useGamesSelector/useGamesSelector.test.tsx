@@ -1,12 +1,12 @@
-import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
-import type { GamesListState, GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { useGamesSelector } from '@Collection/ui/hooks/useGamesSelector/useGamesSelector';
-import { renderHook } from '@testing-library/react';
-import { Container } from 'inversify';
-import type { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
-import { describe, expect, it, vi } from 'vitest';
+import { ServiceProvider } from "@App/providers/ServiceProvider/ServiceProvider";
+import type { GamesListState, GamesStoreInterface } from "@Collection/application/stores/GamesStoreInterface";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { useGamesSelector } from "@Collection/ui/hooks/useGamesSelector/useGamesSelector";
+import { renderHook } from "@testing-library/react";
+import { Container } from "inversify";
+import type { ReactNode } from "react";
+import { MemoryRouter } from "react-router";
+import { describe, expect, it, vi } from "vitest";
 
 const defaultState: GamesListState = { games: [], isLoading: false, hasError: false, error: null, criteria: null };
 
@@ -37,36 +37,36 @@ const createWrapper = (state: GamesListState) => {
   );
 };
 
-describe('useGamesSelector', () => {
-  describe('selector behaviour', () => {
-    it('should return the full state when selecting getGamesList()', () => {
+describe("useGamesSelector", () => {
+  describe("selector behaviour", () => {
+    it("should return the full state when selecting getGamesList()", () => {
       const state = { ...defaultState, isLoading: true };
-      const { result } = renderHook(() => useGamesSelector(s => s.getGamesList()), {
+      const { result } = renderHook(() => useGamesSelector((s) => s.getGamesList()), {
         wrapper: createWrapper(state),
       });
 
       expect(result.current).toStrictEqual(state);
     });
 
-    it('should return only isLoading when selecting a boolean slice', () => {
-      const { result } = renderHook(() => useGamesSelector(s => s.getGamesList().isLoading), {
+    it("should return only isLoading when selecting a boolean slice", () => {
+      const { result } = renderHook(() => useGamesSelector((s) => s.getGamesList().isLoading), {
         wrapper: createWrapper({ ...defaultState, isLoading: true }),
       });
 
       expect(result.current).toBeTruthy();
     });
 
-    it('should return only error when selecting the error slice', () => {
-      const errorMsg = 'Unable to load games. Please try again.';
-      const { result } = renderHook(() => useGamesSelector(s => s.getGamesList().error), {
+    it("should return only error when selecting the error slice", () => {
+      const errorMsg = "Unable to load games. Please try again.";
+      const { result } = renderHook(() => useGamesSelector((s) => s.getGamesList().error), {
         wrapper: createWrapper({ ...defaultState, error: errorMsg }),
       });
 
       expect(result.current).toBe(errorMsg);
     });
 
-    it('should return null error when there is no error', () => {
-      const { result } = renderHook(() => useGamesSelector(s => s.getGamesList().error), {
+    it("should return null error when there is no error", () => {
+      const { result } = renderHook(() => useGamesSelector((s) => s.getGamesList().error), {
         wrapper: createWrapper(defaultState),
       });
 

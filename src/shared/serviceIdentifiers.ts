@@ -8,20 +8,20 @@ export const SHARED_SERVICES = Object.freeze({
   /**
    * Date formatting utility for local-timezone-safe date conversions
    */
-  DateFormatter: Symbol.for('Shared.DateFormatter'),
+  DateFormatter: Symbol.for("Shared.DateFormatter"),
 
   /**
    * Unique identifier generator (crypto.randomUUID by default)
    */
-  IdGenerator: Symbol.for('Shared.IdGenerator'),
+  IdGenerator: Symbol.for("Shared.IdGenerator"),
 
   /**
    * Notification service for displaying user-facing messages (toast, etc.)
    */
-  NotificationService: Symbol.for('Shared.NotificationService'),
+  NotificationService: Symbol.for("Shared.NotificationService"),
 
   /**
    * Debounce service for scheduling stable delayed callbacks
    */
-  DebounceService: Symbol.for('Shared.DebounceService'),
+  DebounceService: Symbol.for("Shared.DebounceService"),
 } as const);

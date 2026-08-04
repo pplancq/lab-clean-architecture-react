@@ -1,7 +1,7 @@
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameFilterCriteria } from '@Collection/domain/entities/GameFilterCriteria';
-import type { Result } from '@Shared/domain/result/Result';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameFilterCriteria } from "@Collection/domain/entities/GameFilterCriteria";
+import type { Result } from "@Shared/domain/result/Result";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
 
 /**
  * Interface for GetGames use case

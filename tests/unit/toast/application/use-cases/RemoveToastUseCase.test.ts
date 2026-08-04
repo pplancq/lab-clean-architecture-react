@@ -1,9 +1,9 @@
-import type { IdGeneratorInterface } from '@Shared/domain/utils/IdGeneratorInterface';
-import { AddToastDTO } from '@Toast/application/dtos/AddToastDTO';
-import { AddToastUseCase } from '@Toast/application/use-cases/AddToastUseCase';
-import { RemoveToastUseCase } from '@Toast/application/use-cases/RemoveToastUseCase';
-import { ImmutableInMemoryToastRepository } from '@Toast/infrastructure/persistence/ImmutableInMemoryToastRepository';
-import { describe, expect, it } from 'vitest';
+import type { IdGeneratorInterface } from "@Shared/domain/utils/IdGeneratorInterface";
+import { AddToastDTO } from "@Toast/application/dtos/AddToastDTO";
+import { AddToastUseCase } from "@Toast/application/use-cases/AddToastUseCase";
+import { RemoveToastUseCase } from "@Toast/application/use-cases/RemoveToastUseCase";
+import { ImmutableInMemoryToastRepository } from "@Toast/infrastructure/persistence/ImmutableInMemoryToastRepository";
+import { describe, expect, it } from "vitest";
 
 class SequentialIdGenerator implements IdGeneratorInterface {
   private count = 0;
@@ -23,11 +23,11 @@ const createUseCase = () => {
   };
 };
 
-describe('RemoveToastUseCase', () => {
-  describe('execute', () => {
-    it('should remove an existing toast from the repository', () => {
+describe("RemoveToastUseCase", () => {
+  describe("execute", () => {
+    it("should remove an existing toast from the repository", () => {
       const { repository, addUseCase, removeUseCase } = createUseCase();
-      const addResult = addUseCase.execute(new AddToastDTO('Hello', 'info'));
+      const addResult = addUseCase.execute(new AddToastDTO("Hello", "info"));
       const toastId = addResult.unwrap().getId();
 
       expect(repository.getAll().unwrap()).toHaveLength(1);
@@ -38,43 +38,43 @@ describe('RemoveToastUseCase', () => {
       expect(repository.getAll().unwrap()).toHaveLength(0);
     });
 
-    it('should return a NotFound error when removing a non-existent ID', () => {
+    it("should return a NotFound error when removing a non-existent ID", () => {
       const { removeUseCase } = createUseCase();
-      const result = removeUseCase.execute('non-existent-id');
+      const result = removeUseCase.execute("non-existent-id");
 
       expect(result.isErr()).toBeTruthy();
-      expect(result.getError().type).toBe('NotFound');
+      expect(result.getError().type).toBe("NotFound");
     });
 
-    it('should include the toast ID in the NotFound error', () => {
+    it("should include the toast ID in the NotFound error", () => {
       const { removeUseCase } = createUseCase();
-      const result = removeUseCase.execute('unknown-id');
+      const result = removeUseCase.execute("unknown-id");
 
-      expect(result.getError()).toMatchObject({ type: 'NotFound', toastId: 'unknown-id' });
+      expect(result.getError()).toMatchObject({ type: "NotFound", toastId: "unknown-id" });
     });
 
-    it('should return a Validation error for an empty ID', () => {
+    it("should return a Validation error for an empty ID", () => {
       const { removeUseCase } = createUseCase();
-      const result = removeUseCase.execute('');
+      const result = removeUseCase.execute("");
 
       expect(result.isErr()).toBeTruthy();
-      expect(result.getError().type).toBe('Validation');
-      expect(result.getError().field).toBe('id');
+      expect(result.getError().type).toBe("Validation");
+      expect(result.getError().field).toBe("id");
     });
 
-    it('should return a Validation error for a whitespace-only ID', () => {
+    it("should return a Validation error for a whitespace-only ID", () => {
       const { removeUseCase } = createUseCase();
-      const result = removeUseCase.execute('   ');
+      const result = removeUseCase.execute("   ");
 
       expect(result.isErr()).toBeTruthy();
-      expect(result.getError().type).toBe('Validation');
+      expect(result.getError().type).toBe("Validation");
     });
 
-    it('should not alter the repository when validation fails', () => {
+    it("should not alter the repository when validation fails", () => {
       const { repository, addUseCase, removeUseCase } = createUseCase();
-      addUseCase.execute(new AddToastDTO('Hello', 'success'));
+      addUseCase.execute(new AddToastDTO("Hello", "success"));
 
-      removeUseCase.execute('');
+      removeUseCase.execute("");
 
       expect(repository.getAll().unwrap()).toHaveLength(1);
     });

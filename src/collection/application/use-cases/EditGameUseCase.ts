@@ -1,14 +1,14 @@
 /* eslint-disable class-methods-use-this */
-import type { Game } from '@Collection/domain/entities/Game';
-import type { GameRepositoryInterface } from '@Collection/domain/repositories/GameRepositoryInterface';
-import type { RepositoryErrorInterface } from '@Shared/domain/repositories/error/RepositoryErrorInterface';
-import { Result } from '@Shared/domain/result/Result';
-import type { EditGameDTO } from '../dtos/EditGameDTO';
-import type { ApplicationErrorInterface } from '../errors/ApplicationErrorInterface';
-import { NotFoundError } from '../errors/NotFoundError';
-import { RepositoryError } from '../errors/RepositoryError';
-import { ValidationError } from '../errors/ValidationError';
-import type { EditGameUseCaseInterface } from './EditGameUseCaseInterface';
+import type { Game } from "@Collection/domain/entities/Game";
+import type { GameRepositoryInterface } from "@Collection/domain/repositories/GameRepositoryInterface";
+import type { RepositoryErrorInterface } from "@Shared/domain/repositories/error/RepositoryErrorInterface";
+import { Result } from "@Shared/domain/result/Result";
+import type { EditGameDTO } from "../dtos/EditGameDTO";
+import type { ApplicationErrorInterface } from "../errors/ApplicationErrorInterface";
+import { NotFoundError } from "../errors/NotFoundError";
+import { RepositoryError } from "../errors/RepositoryError";
+import { ValidationError } from "../errors/ValidationError";
+import type { EditGameUseCaseInterface } from "./EditGameUseCaseInterface";
 
 /**
  * Use case for editing an existing game in the collection.
@@ -75,7 +75,7 @@ export class EditGameUseCase implements EditGameUseCaseInterface {
   }
 
   private mapFindError(repoError: RepositoryErrorInterface): Result<never, ApplicationErrorInterface> {
-    if ('entityId' in repoError) {
+    if ("entityId" in repoError) {
       return Result.err(
         new NotFoundError(repoError.entityId as string, repoError.message, { repositoryError: repoError }),
       );

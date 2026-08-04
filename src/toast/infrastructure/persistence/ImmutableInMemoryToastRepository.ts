@@ -1,6 +1,6 @@
-import { Result } from '@Shared/domain/result/Result';
-import type { Toast } from '@Toast/domain/entities/Toast';
-import type { ToastRepositoryInterface } from '@Toast/domain/repositories/ToastRepositoryInterface';
+import { Result } from "@Shared/domain/result/Result";
+import type { Toast } from "@Toast/domain/entities/Toast";
+import type { ToastRepositoryInterface } from "@Toast/domain/repositories/ToastRepositoryInterface";
 
 /**
  * In-memory repository for Toast entities.
@@ -20,15 +20,15 @@ export class ImmutableInMemoryToastRepository implements ToastRepositoryInterfac
   }
 
   remove(id: string): Result<void, never> {
-    if (this.toasts.some(toast => toast.getId() === id)) {
-      this.toasts = this.toasts.filter(toast => toast.getId() !== id);
+    if (this.toasts.some((toast) => toast.getId() === id)) {
+      this.toasts = this.toasts.filter((toast) => toast.getId() !== id);
     }
 
     return Result.ok(undefined);
   }
 
   findById(id: string): Result<Toast | undefined, never> {
-    return Result.ok(this.toasts.find(toast => toast.getId() === id));
+    return Result.ok(this.toasts.find((toast) => toast.getId() === id));
   }
 
   getAll(): Result<Toast[], never> {

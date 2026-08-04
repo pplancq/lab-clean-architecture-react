@@ -11,10 +11,10 @@ After ADR-015 introduced the `DomainValidationError` subclass hierarchy, each Va
 ```typescript
 // Duplicated across every VO
 if (!value || value.trim().length === 0) {
-  return Result.err(new NotEmptyError('title'));
+  return Result.err(new NotEmptyError("title"));
 }
 if (value.trim().length > 200) {
-  return Result.err(new DomainValidationError('title', 'title cannot exceed 200 characters'));
+  return Result.err(new DomainValidationError("title", "title cannot exceed 200 characters"));
 }
 ```
 
@@ -34,7 +34,7 @@ Introduce two abstract base classes in `src/shared/domain/value-objects/` and on
 A new concrete subclass of `DomainValidationError`:
 
 ```typescript
-new MaxLengthError('title', 200);
+new MaxLengthError("title", 200);
 // → message: "title cannot exceed 200 characters"
 ```
 
@@ -70,9 +70,9 @@ export class GameTitle extends AbstractStringValueObject {
 
   public static create(value: string): Result<GameTitle, DomainValidationErrorInterface> {
     const trimmed = AbstractStringValueObject.trim(value);
-    const notEmptyCheck = AbstractStringValueObject.notEmpty('title', trimmed);
+    const notEmptyCheck = AbstractStringValueObject.notEmpty("title", trimmed);
     if (notEmptyCheck.isErr()) return Result.err(notEmptyCheck.getError());
-    const maxLengthCheck = AbstractStringValueObject.maxLength('title', trimmed, 200);
+    const maxLengthCheck = AbstractStringValueObject.maxLength("title", trimmed, 200);
     if (maxLengthCheck.isErr()) return Result.err(maxLengthCheck.getError());
     return Result.ok(new GameTitle(trimmed));
   }

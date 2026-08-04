@@ -1,4 +1,4 @@
-import { DomainValidationError } from './DomainValidationError';
+import { DomainValidationError } from "./DomainValidationError";
 
 /**
  * Validation error raised when a numeric field is not strictly positive.
@@ -15,6 +15,6 @@ import { DomainValidationError } from './DomainValidationError';
 export class PositiveNumberError extends DomainValidationError {
   constructor(field: string, message = `${field} must be a positive number`) {
     super(field, message);
-    this.name = 'PositiveNumberError';
+    this.name = "PositiveNumberError";
   }
 }

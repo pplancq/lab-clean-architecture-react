@@ -35,7 +35,7 @@ The domain layer (entities, value objects, use cases) must remain **completely f
 
 ```typescript
 // domain/entities/Game.ts - AVOID THIS
-import { injectable } from 'inversify'; // ❌ Domain depends on InversifyJS
+import { injectable } from "inversify"; // ❌ Domain depends on InversifyJS
 
 @injectable() // ❌ Decorator couples domain to DI framework
 class Game {
@@ -62,20 +62,20 @@ export class Game {
 }
 
 // collection/infrastructure/di/collection.container.ts
-import { Container } from 'inversify';
-import { IGameRepository } from '@Collection/domain/repositories/IGameRepository';
-import { IndexedDBGameRepository } from '@Collection/infrastructure/persistence/IndexedDBGameRepository';
-import { AddGameUseCase } from '@Collection/application/use-cases/AddGame';
+import { Container } from "inversify";
+import { IGameRepository } from "@Collection/domain/repositories/IGameRepository";
+import { IndexedDBGameRepository } from "@Collection/infrastructure/persistence/IndexedDBGameRepository";
+import { AddGameUseCase } from "@Collection/application/use-cases/AddGame";
 
 export const collectionContainer = new Container();
 
 // Manual registration (domain stays pure)
-collectionContainer.bind<IGameRepository>('IGameRepository').to(IndexedDBGameRepository).inSingletonScope();
+collectionContainer.bind<IGameRepository>("IGameRepository").to(IndexedDBGameRepository).inSingletonScope();
 
 collectionContainer
-  .bind<AddGameUseCase>('AddGameUseCase')
-  .toDynamicValue(context => {
-    return new AddGameUseCase(context.get<IGameRepository>('IGameRepository'));
+  .bind<AddGameUseCase>("AddGameUseCase")
+  .toDynamicValue((context) => {
+    return new AddGameUseCase(context.get<IGameRepository>("IGameRepository"));
   })
   .inSingletonScope();
 ```
@@ -84,10 +84,10 @@ collectionContainer
 
 ```typescript
 // app/config/di-container.ts
-import { Container } from 'inversify';
-import { sharedContainer } from '@Shared/infrastructure/di/shared.container';
-import { collectionContainer } from '@Collection/infrastructure/di/collection.container';
-import { wishlistContainer } from '@Wishlist/infrastructure/di/wishlist.container';
+import { Container } from "inversify";
+import { sharedContainer } from "@Shared/infrastructure/di/shared.container";
+import { collectionContainer } from "@Collection/infrastructure/di/collection.container";
+import { wishlistContainer } from "@Wishlist/infrastructure/di/wishlist.container";
 
 export const appContainer = Container.merge(sharedContainer, collectionContainer, wishlistContainer);
 ```
@@ -145,8 +145,8 @@ export const AddGamePage = () => {
 ```typescript
 // Use symbols instead of strings for type safety
 export const TYPES = {
-  GameRepository: Symbol.for('IGameRepository'),
-  AddGameUseCase: Symbol.for('AddGameUseCase'),
+  GameRepository: Symbol.for("IGameRepository"),
+  AddGameUseCase: Symbol.for("AddGameUseCase"),
 };
 
 collectionContainer.bind<IGameRepository>(TYPES.GameRepository).to(IndexedDBGameRepository);

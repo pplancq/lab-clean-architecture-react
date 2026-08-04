@@ -1,30 +1,30 @@
-import { ServiceProvider } from '@App/providers/ServiceProvider/ServiceProvider';
-import type { GameMapEntryState, GamesStoreInterface } from '@Collection/application/stores/GamesStoreInterface';
-import type { AddGameUseCaseInterface } from '@Collection/application/use-cases/AddGameUseCaseInterface';
-import { EditGameDTO } from '@Collection/application/dtos/EditGameDTO';
-import { Game } from '@Collection/domain/entities/Game';
-import { COLLECTION_SERVICES } from '@Collection/serviceIdentifiers';
-import { editGameRoutes } from '@Collection/ui/pages/EditGame';
-import { Result } from '@Shared/domain/result/Result';
-import type { DateFormatterInterface } from '@Shared/domain/utils/DateFormatterInterface';
-import { DateFormatter } from '@Shared/infrastructure/utils/DateFormatter';
-import { SHARED_SERVICES } from '@Shared/serviceIdentifiers';
-import { render, screen, waitFor } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { Container } from 'inversify';
-import type { ReactElement, ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router';
-import { describe, expect, it, type Mock, vi } from 'vitest';
+import { ServiceProvider } from "@App/providers/ServiceProvider/ServiceProvider";
+import { EditGameDTO } from "@Collection/application/dtos/EditGameDTO";
+import type { GameMapEntryState, GamesStoreInterface } from "@Collection/application/stores/GamesStoreInterface";
+import type { AddGameUseCaseInterface } from "@Collection/application/use-cases/AddGameUseCaseInterface";
+import { Game } from "@Collection/domain/entities/Game";
+import { COLLECTION_SERVICES } from "@Collection/serviceIdentifiers";
+import { editGameRoutes } from "@Collection/ui/pages/EditGame";
+import { Result } from "@Shared/domain/result/Result";
+import type { DateFormatterInterface } from "@Shared/domain/utils/DateFormatterInterface";
+import { DateFormatter } from "@Shared/infrastructure/utils/DateFormatter";
+import { SHARED_SERVICES } from "@Shared/serviceIdentifiers";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { Container } from "inversify";
+import type { ReactElement, ReactNode } from "react";
+import { MemoryRouter, Route, Routes } from "react-router";
+import { describe, expect, it, type Mock, vi } from "vitest";
 
 const createGame = (overrides: Partial<Parameters<typeof Game.create>[0]> = {}) =>
   Game.create({
-    id: 'game-1',
-    title: 'The Legend of Zelda',
-    description: 'A classic adventure game.',
-    platform: 'Nintendo Switch',
-    format: 'Physical',
-    purchaseDate: new Date('2023-05-12'),
-    status: 'Owned',
+    id: "game-1",
+    title: "The Legend of Zelda",
+    description: "A classic adventure game.",
+    platform: "Nintendo Switch",
+    format: "Physical",
+    purchaseDate: new Date("2023-05-12"),
+    status: "Owned",
     ...overrides,
   }).unwrap();
 
@@ -51,7 +51,7 @@ const createStoreMock = (
 });
 
 const createWrapper =
-  (container: Container, initialPath = '/games/game-1/edit') =>
+  (container: Container, initialPath = "/games/game-1/edit") =>
   // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => (
     <MemoryRouter initialEntries={[initialPath]}>
@@ -81,109 +81,109 @@ const renderEditGame = (entry: GameMapEntryState, editGameMock?: Mock) => {
   return { storeMock };
 };
 
-describe('EditGame', () => {
-  describe('loading state', () => {
-    it('should show a loading status while fetching', () => {
+describe("EditGame", () => {
+  describe("loading state", () => {
+    it("should show a loading status while fetching", () => {
       renderEditGame(createEntry({ data: null, isLoading: true }));
 
-      expect(screen.getByRole('status')).toHaveTextContent(/loading/i);
+      expect(screen.getByRole("status")).toHaveTextContent(/loading/i);
     });
   });
 
-  describe('not found state', () => {
-    it('should show an accessible alert and back link when game is not found', () => {
+  describe("not found state", () => {
+    it("should show an accessible alert and back link when game is not found", () => {
       renderEditGame(createEntry({ data: null, hasError: true, error: null }));
 
-      expect(screen.getByRole('alert')).toHaveTextContent(/not found/i);
-      expect(screen.getByRole('link', { name: /back to collection/i })).toBeInTheDocument();
+      expect(screen.getByRole("alert")).toHaveTextContent(/not found/i);
+      expect(screen.getByRole("link", { name: /back to collection/i })).toBeInTheDocument();
     });
   });
 
-  describe('error state', () => {
-    it('should show an accessible alert on generic error', () => {
-      renderEditGame(createEntry({ data: null, hasError: true, error: 'Unable to load game. Please try again.' }));
+  describe("error state", () => {
+    it("should show an accessible alert on generic error", () => {
+      renderEditGame(createEntry({ data: null, hasError: true, error: "Unable to load game. Please try again." }));
 
-      expect(screen.getByRole('alert')).toHaveTextContent(/unable to load game/i);
+      expect(screen.getByRole("alert")).toHaveTextContent(/unable to load game/i);
     });
   });
 
-  describe('form rendering', () => {
-    it('should render the edit game form with accessible label', async () => {
+  describe("form rendering", () => {
+    it("should render the edit game form with accessible label", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('form', { name: /edit game form/i })).toBeInTheDocument();
+        expect(screen.getByRole("form", { name: /edit game form/i })).toBeInTheDocument();
       });
     });
 
-    it('should pre-populate the title field with the game title', async () => {
+    it("should pre-populate the title field with the game title", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toHaveValue('The Legend of Zelda');
+        expect(screen.getByRole("textbox", { name: /game title/i })).toHaveValue("The Legend of Zelda");
       });
     });
 
-    it('should not render platform and format fields in edit mode', async () => {
+    it("should not render platform and format fields in edit mode", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.queryByRole('combobox', { name: /platform/i })).not.toBeInTheDocument();
-        expect(screen.queryByRole('radiogroup', { name: /format/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole("combobox", { name: /platform/i })).not.toBeInTheDocument();
+        expect(screen.queryByRole("radiogroup", { name: /format/i })).not.toBeInTheDocument();
       });
     });
 
-    it('should pre-populate the status field', async () => {
+    it("should pre-populate the status field", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('combobox', { name: /status/i })).toHaveValue('Owned');
+        expect(screen.getByRole("combobox", { name: /status/i })).toHaveValue("Owned");
       });
     });
 
-    it('should render the Save changes button', async () => {
+    it("should render the Save changes button", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /save changes/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
       });
     });
 
-    it('should render the Cancel button', async () => {
+    it("should render the Cancel button", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe('accessibility', () => {
-    it('should have accessible labels on all form fields', async () => {
-      renderEditGame(createEntry());
-
-      await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toHaveAccessibleName();
-        expect(screen.getByRole('combobox', { name: /status/i })).toHaveAccessibleName();
-      });
-    });
-
-    it('should mark title as required', async () => {
-      renderEditGame(createEntry());
-
-      await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /game title/i })).toBeRequired();
+        expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
       });
     });
   });
 
-  describe('submission', () => {
-    it('should call store.editGame on valid submit', async () => {
+  describe("accessibility", () => {
+    it("should have accessible labels on all form fields", async () => {
+      renderEditGame(createEntry());
+
+      await waitFor(() => {
+        expect(screen.getByRole("textbox", { name: /game title/i })).toHaveAccessibleName();
+        expect(screen.getByRole("combobox", { name: /status/i })).toHaveAccessibleName();
+      });
+    });
+
+    it("should mark title as required", async () => {
+      renderEditGame(createEntry());
+
+      await waitFor(() => {
+        expect(screen.getByRole("textbox", { name: /game title/i })).toBeRequired();
+      });
+    });
+  });
+
+  describe("submission", () => {
+    it("should call store.editGame on valid submit", async () => {
       const user = userEvent.setup();
       const editGameMock = vi.fn().mockResolvedValue(Result.ok(createGame()));
       renderEditGame(createEntry(), editGameMock);
 
-      await user.click(screen.getByRole('button', { name: /save changes/i }));
+      await user.click(screen.getByRole("button", { name: /save changes/i }));
 
       await waitFor(() => {
         expect(editGameMock).toHaveBeenCalledExactlyOnceWith(expect.any(EditGameDTO));
@@ -191,23 +191,23 @@ describe('EditGame', () => {
     });
   });
 
-  describe('cancel navigation', () => {
-    it('should render cancel button with accessible name', async () => {
+  describe("cancel navigation", () => {
+    it("should render cancel button with accessible name", async () => {
       renderEditGame(createEntry());
 
       await waitFor(() => {
-        const cancelBtn = screen.getByRole('button', { name: /cancel/i });
-        expect(cancelBtn).toHaveAccessibleName('Cancel');
+        const cancelBtn = screen.getByRole("button", { name: /cancel/i });
+        expect(cancelBtn).toHaveAccessibleName("Cancel");
       });
     });
   });
 
-  describe('store interaction', () => {
-    it('should call getGame with the route id', async () => {
+  describe("store interaction", () => {
+    it("should call getGame with the route id", async () => {
       const { storeMock } = renderEditGame(createEntry());
 
       await waitFor(() => {
-        expect(storeMock.getGame).toHaveBeenCalledWith('game-1');
+        expect(storeMock.getGame).toHaveBeenCalledWith("game-1");
       });
     });
   });

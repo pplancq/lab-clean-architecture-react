@@ -153,8 +153,8 @@ If user confirms random selection:
 
 ```yaml
 ---
-selected_approach: 'random-selection'
-techniques_used: ['technique1', 'technique2', 'technique3']
+selected_approach: "random-selection"
+techniques_used: ["technique1", "technique2", "technique3"]
 stepsCompleted: [1, 2]
 ---
 ```

@@ -71,7 +71,7 @@ if (result.isOk()) {
   });
 } else {
   const appError = result.getError();
-  const errorMessage = appError.type !== 'NotFound' ? 'Unable to load game. Please try again.' : null;
+  const errorMessage = appError.type !== "NotFound" ? "Unable to load game. Please try again." : null;
 
   this.gamesMap.set(id, {
     data: null,

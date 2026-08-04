@@ -1,8 +1,8 @@
 ---
 # File references (ONLY variables used in this step)
-prdFile: '{prd_file_path}'
-validationReport: '{validation_report_path}' # If provided
-prdPurpose: '../data/prd-purpose.md'
+prdFile: "{prd_file_path}"
+validationReport: "{validation_report_path}" # If provided
+prdPurpose: "../data/prd-purpose.md"
 ---
 
 # Step E-2: Deep Review & Analysis

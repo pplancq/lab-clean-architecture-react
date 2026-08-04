@@ -95,7 +95,7 @@ export class GameMapper {
       game.getDescription(),
       game.getPlatform(),
       game.getFormat(),
-      game.getPurchaseDate()?.toISOString().split('T')[0] ?? null, // Date → 'YYYY-MM-DD'
+      game.getPurchaseDate()?.toISOString().split("T")[0] ?? null, // Date → 'YYYY-MM-DD'
       game.getStatus(),
     );
   }

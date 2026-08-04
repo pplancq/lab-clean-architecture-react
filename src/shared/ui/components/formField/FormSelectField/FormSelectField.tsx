@@ -1,7 +1,7 @@
-import { SelectField, type SelectFieldProps } from '@Shared/ui/components/SelectField/SelectField';
-import { type RegisterOptions, useFormContext } from 'react-hook-form';
+import { SelectField, type SelectFieldProps } from "@Shared/ui/components/SelectField/SelectField";
+import { type RegisterOptions, useFormContext } from "react-hook-form";
 
-export type FormSelectFieldProps = Omit<SelectFieldProps, 'name'> & {
+export type FormSelectFieldProps = Omit<SelectFieldProps, "name"> & {
   name: string;
   rules?: RegisterOptions;
 };

@@ -1,5 +1,5 @@
-import { IndexedDBRequestError } from '@Shared/domain/repositories/error/IndexedDBRequestError';
-import type { FindByIdErrorInterface } from '@Shared/domain/repositories/error/FindByIdErrorInterface';
+import type { FindByIdErrorInterface } from "@Shared/domain/repositories/error/FindByIdErrorInterface";
+import { IndexedDBRequestError } from "@Shared/domain/repositories/error/IndexedDBRequestError";
 
 /**
  * Error thrown when an IndexedDB findById operation fails
@@ -11,7 +11,7 @@ import type { FindByIdErrorInterface } from '@Shared/domain/repositories/error/F
  */
 export class FindByIdError extends IndexedDBRequestError implements FindByIdErrorInterface {
   constructor(originalError: DOMException | null) {
-    super('IndexedDB findById request failed', originalError);
-    this.name = 'FindByIdError';
+    super("IndexedDB findById request failed", originalError);
+    this.name = "FindByIdError";
   }
 }

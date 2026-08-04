@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>pplancq/renovate-config"
-  ],
+  "extends": ["github>pplancq/renovate-config"],
   "prConcurrentLimit": 4,
   "prHourlyLimit": 4
 }

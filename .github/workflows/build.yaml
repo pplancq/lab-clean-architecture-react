@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node
         uses: pplancq/actions/setup-node@b248bd44a83e2d0c9f9334aff7e33771fdd77c76 # v1.1.2
         with:
-          use-mise: 'true'
+          use-mise: "true"
 
       - name: Check package-lock.json
         run: npm run package:check
@@ -49,7 +49,7 @@ jobs:
       - name: Setup Node
         uses: pplancq/actions/setup-node@b248bd44a83e2d0c9f9334aff7e33771fdd77c76 # v1.1.2
         with:
-          use-mise: 'true'
+          use-mise: "true"
 
       # https://commitlint.js.org/guides/ci-setup.html#github-actions
       - name: Validate PR commits with commitlint
@@ -69,7 +69,7 @@ jobs:
       - name: Setup Node
         uses: pplancq/actions/setup-node@b248bd44a83e2d0c9f9334aff7e33771fdd77c76 # v1.1.2
         with:
-          use-mise: 'true'
+          use-mise: "true"
 
       - name: Run eslint
         if: always()
@@ -101,7 +101,7 @@ jobs:
       - name: Setup Node
         uses: pplancq/actions/setup-node@b248bd44a83e2d0c9f9334aff7e33771fdd77c76 # v1.1.2
         with:
-          use-mise: 'true'
+          use-mise: "true"
 
       - name: Run unit test
         if: always()
@@ -172,7 +172,7 @@ jobs:
       - name: Setup Node
         uses: pplancq/actions/setup-node@b248bd44a83e2d0c9f9334aff7e33771fdd77c76 # v1.1.2
         with:
-          use-mise: 'true'
+          use-mise: "true"
 
       - name: Run build
         run: npm run build

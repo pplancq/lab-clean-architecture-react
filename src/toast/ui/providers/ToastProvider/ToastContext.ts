@@ -1,5 +1,5 @@
-import type { ToastStoreInterface } from '@Toast/application/stores/ToastStoreInterface';
-import { createContext } from 'react';
+import type { ToastStoreInterface } from "@Toast/application/stores/ToastStoreInterface";
+import { createContext } from "react";
 
 type ToastContextValue = {
   toast: ToastStoreInterface;

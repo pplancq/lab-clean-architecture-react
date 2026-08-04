@@ -1,7 +1,7 @@
-import { InputField, type InputFieldProps } from '@pplancq/shelter-ui-react';
-import { type RegisterOptions, useFormContext } from 'react-hook-form';
+import { InputField, type InputFieldProps } from "@pplancq/shelter-ui-react";
+import { type RegisterOptions, useFormContext } from "react-hook-form";
 
-export type FormInputFieldProps = Omit<InputFieldProps, 'name'> & {
+export type FormInputFieldProps = Omit<InputFieldProps, "name"> & {
   name: string;
   rules?: RegisterOptions;
 };

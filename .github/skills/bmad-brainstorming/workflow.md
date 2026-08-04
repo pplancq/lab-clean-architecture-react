@@ -1,5 +1,5 @@
 ---
-context_file: '' # Optional context file path for project-specific guidance
+context_file: "" # Optional context file path for project-specific guidance
 ---
 
 # Brainstorming Session Workflow
