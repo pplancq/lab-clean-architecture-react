@@ -4,16 +4,16 @@
 
   position: relative;
   display: inline-flex;
-  padding: 0.125rem 0.5rem;
-  border-radius: 1rem;
-  align-items: center;
   gap: 0.25rem;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.5;
-  white-space: nowrap;
   color: var(--badge-color);
+  white-space: nowrap;
   background: var(--badge-background);
+  border-radius: 1rem;
 
   > svg {
     fill: var(--badge-color);

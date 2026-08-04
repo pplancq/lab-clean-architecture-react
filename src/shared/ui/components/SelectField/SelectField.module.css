@@ -5,8 +5,8 @@
     "label"
     "input"
     "helper-text";
-  align-items: center;
   gap: 6px;
+  align-items: center;
 
   & :global(.label) {
     grid-area: label;
@@ -39,20 +39,20 @@
 
   all: unset;
   position: relative;
+  flex-grow: 1;
+  grid-area: input;
   padding: var(--select-padding-vertical) var(--select-padding-horizontal);
   padding-right: calc(var(--select-padding-horizontal) + 1rem);
-  border: var(--select-border-width) solid var(--select-border-color);
-  border-radius: var(--select-border-radius);
-  grid-area: input;
-  flex-grow: 1;
   font-family: var(--font-family-content);
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-regular);
-  letter-spacing: var(--letter-spacing-default);
   line-height: var(--line-height-24);
   color: var(--select-color);
-  background-color: var(--select-background-color);
+  letter-spacing: var(--letter-spacing-default);
   cursor: pointer;
+  background-color: var(--select-background-color);
+  border: var(--select-border-width) solid var(--select-border-color);
+  border-radius: var(--select-border-radius);
 
   &:hover {
     --select-border-color: var(--color-primary-main-light);
@@ -70,8 +70,8 @@
     --select-color: var(--color-text-disabled);
     --select-background-color: var(--color-disabled-background);
 
-    box-shadow: unset;
     cursor: not-allowed;
+    box-shadow: unset;
   }
 }
 
@@ -86,12 +86,12 @@
     right: 1rem;
     width: 0;
     height: 0;
-    border-top: 6px solid currentcolor;
-    border-right: 6px solid transparent;
-    border-left: 6px solid transparent;
     color: var(--color-text-primary);
     pointer-events: none;
     content: "";
+    border-top: 6px solid currentcolor;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
   }
 }
 

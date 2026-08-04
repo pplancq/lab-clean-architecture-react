@@ -5,8 +5,8 @@
     "label"
     "input"
     "helper-text";
-  align-items: center;
   gap: 6px;
+  align-items: center;
 
   & :global(.label) {
     grid-area: label;
@@ -38,18 +38,18 @@
   --textarea-background-color: var(--color-neutral-light);
 
   all: unset;
-  padding: var(--textarea-padding-vertical) var(--textarea-padding-horizontal);
-  border: var(--textarea-border-width) solid var(--textarea-border-color);
-  border-radius: var(--textarea-border-radius);
   grid-area: input;
+  padding: var(--textarea-padding-vertical) var(--textarea-padding-horizontal);
   font-family: var(--font-family-content);
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-regular);
-  letter-spacing: var(--letter-spacing-default);
   line-height: var(--line-height-24);
   color: var(--textarea-color);
-  background-color: var(--textarea-background-color);
+  letter-spacing: var(--letter-spacing-default);
   resize: both;
+  background-color: var(--textarea-background-color);
+  border: var(--textarea-border-width) solid var(--textarea-border-color);
+  border-radius: var(--textarea-border-radius);
 
   &::placeholder {
     --textarea-color: var(--color-text-hint);
@@ -74,8 +74,8 @@
     --textarea-color: var(--color-text-disabled);
     --textarea-background-color: var(--color-disabled-background);
 
-    box-shadow: unset;
     cursor: not-allowed;
+    box-shadow: unset;
   }
 }
 

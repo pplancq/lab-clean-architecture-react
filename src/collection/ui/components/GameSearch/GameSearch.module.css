@@ -12,21 +12,21 @@
 .searchInput {
   width: 100%;
   padding: var(--gap-2) var(--gap-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
   font-family: inherit;
   font-size: 1rem;
   color: var(--color-text-primary);
   background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
 }
 
 .searchInput:focus {
+  outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-alpha);
-  outline: none;
 }
 
 .searchInput::placeholder {
