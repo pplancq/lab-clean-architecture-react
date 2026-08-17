@@ -63,7 +63,7 @@
     "@pplancq/postcss-config": "^3.0.6",
     "@pplancq/prettier-config": "^4.0.0",
     "@pplancq/stylelint-config": "^6.0.0",
-    "@rsbuild/core": "^2.1.10",
+    "@rsbuild/core": "^2.1.13",
     "@rsbuild/plugin-eslint": "^2.0.2",
     "@rsbuild/plugin-react": "^2.1.0",
     "@rsbuild/plugin-sass": "^2.0.1",
