@@ -2,12 +2,15 @@ import { defineConfig } from "@pplancq/eslint-config";
 
 export default defineConfig({
   enableReact: true,
-  enablePrettier: "on",
+  enablePrettier: "disableStyleOnly",
   enableVitest: true,
   unitTestFiles: ["tests/unit/**/*.{test,spec,steps}.{js,jsx,ts,tsx}"],
   enablePlaywright: true,
   unitE2eFiles: ["tests/e2e/**/*.{test,spec}.{js,jsx,ts,tsx}"],
   extendConfig: [
+    {
+      ignores: ["build"],
+    },
     {
       files: ["mocks/**/*"],
       rules: {

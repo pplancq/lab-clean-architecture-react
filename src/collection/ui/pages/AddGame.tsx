@@ -14,12 +14,7 @@ const AddGame = () => {
     navigate(appRoutes.home);
   }, [navigate]);
 
-  const handleSubmit = useCallback(
-    (dto: AddGameDTO) => {
-      return store.addGame(dto);
-    },
-    [store],
-  );
+  const handleSubmit = useCallback((dto: AddGameDTO) => store.addGame(dto), [store]);
 
   return <GameForm onSubmit={handleSubmit} onSuccess={handleSuccess} />;
 };

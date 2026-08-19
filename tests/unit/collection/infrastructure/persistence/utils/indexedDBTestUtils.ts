@@ -20,8 +20,8 @@
  * });
  * ```
  */
-export const deleteDatabase = (dbName: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
+export const deleteDatabase = (dbName: string): Promise<void> =>
+  new Promise((resolve, reject) => {
     const request = indexedDB.deleteDatabase(dbName);
 
     request.onsuccess = () => {
@@ -38,4 +38,3 @@ export const deleteDatabase = (dbName: string): Promise<void> => {
       resolve();
     };
   });
-};

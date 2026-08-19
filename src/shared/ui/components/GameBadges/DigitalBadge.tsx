@@ -3,10 +3,8 @@ import { Badge } from "@Shared/ui/components/Badge/Badge";
 
 import defaultClasses from "./DigitalBadge.module.css";
 
-export const DigitalBadge = () => {
-  return (
-    <Badge icon={cloudIcon} className={defaultClasses.digitalBadge}>
-      Digital
-    </Badge>
-  );
-};
+export const DigitalBadge = () => (
+  <Badge icon={cloudIcon} className={defaultClasses.digitalBadge}>
+    Digital
+  </Badge>
+);
