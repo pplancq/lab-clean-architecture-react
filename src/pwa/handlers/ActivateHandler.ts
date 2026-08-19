@@ -26,9 +26,7 @@ export class ActivateHandler implements HandlerInterface {
     try {
       const cacheNames = await caches.keys();
 
-      const staleCacheNames = cacheNames.filter((name) => {
-        return name !== cacheName && name.startsWith(cachePrefix);
-      });
+      const staleCacheNames = cacheNames.filter((name) => name !== cacheName && name.startsWith(cachePrefix));
 
       const deletions = staleCacheNames.map((name) => {
         this.logger.info("Deleting old cache:", name);

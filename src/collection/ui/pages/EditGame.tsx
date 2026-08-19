@@ -27,12 +27,7 @@ const EditGame = () => {
     navigate(appRoutes.gameDetail(id));
   }, [navigate, id]);
 
-  const handleSubmit = useCallback(
-    (dto: EditGameDTO) => {
-      return store.editGame(dto);
-    },
-    [store],
-  );
+  const handleSubmit = useCallback((dto: EditGameDTO) => store.editGame(dto), [store]);
 
   if (isLoading) {
     return (

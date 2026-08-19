@@ -3,10 +3,8 @@ import playstationIcon from "./playstation.svg";
 
 import defaultClasses from "./PlayStationBadge.module.css";
 
-export const PlayStationBadge = () => {
-  return (
-    <Badge icon={playstationIcon} className={defaultClasses.playStationBadge}>
-      PlayStation
-    </Badge>
-  );
-};
+export const PlayStationBadge = () => (
+  <Badge icon={playstationIcon} className={defaultClasses.playStationBadge}>
+    PlayStation
+  </Badge>
+);

@@ -9,26 +9,24 @@ type GameCardProps = {
   game: Game;
 };
 
-export const GameCard = ({ game }: GameCardProps) => {
-  return (
-    <article className={defaultClasses.card}>
-      <Link
-        to={appRoutes.gameDetail(game.getId())}
-        aria-label={`${game.getTitle()} — ${game.getPlatform()}, ${game.getFormat()}`}
-      >
-        <div className={defaultClasses.coverPlaceholder} aria-hidden="true" />
-        <div className={defaultClasses.info}>
-          <Typography variant="heading" size={3}>
-            {game.getTitle()}
-          </Typography>
-          <Typography variant="text" color="secondary">
-            {game.getPlatform()}
-          </Typography>
-          <Typography variant="text" color="secondary">
-            {game.getFormat()}
-          </Typography>
-        </div>
-      </Link>
-    </article>
-  );
-};
+export const GameCard = ({ game }: GameCardProps) => (
+  <article className={defaultClasses.card}>
+    <Link
+      to={appRoutes.gameDetail(game.getId())}
+      aria-label={`${game.getTitle()} — ${game.getPlatform()}, ${game.getFormat()}`}
+    >
+      <div className={defaultClasses.coverPlaceholder} aria-hidden="true" />
+      <div className={defaultClasses.info}>
+        <Typography variant="heading" size={3}>
+          {game.getTitle()}
+        </Typography>
+        <Typography variant="text" color="secondary">
+          {game.getPlatform()}
+        </Typography>
+        <Typography variant="text" color="secondary">
+          {game.getFormat()}
+        </Typography>
+      </div>
+    </Link>
+  </article>
+);

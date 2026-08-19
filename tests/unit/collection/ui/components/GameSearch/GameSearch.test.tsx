@@ -9,22 +9,23 @@ const mocks = vi.hoisted(() => ({
 const debounceTimers = new WeakMap<() => void, ReturnType<typeof setTimeout>>();
 
 const debounceService = {
-  debounce: vi.fn(<A extends unknown[]>(callback: (...args: A) => void, delay: number) => {
-    return ((...args: A) => {
-      const timeoutId = debounceTimers.get(callback as (...args: A) => void);
+  debounce: vi.fn(
+    <A extends unknown[]>(callback: (...args: A) => void, delay: number) =>
+      ((...args: A) => {
+        const timeoutId = debounceTimers.get(callback as (...args: A) => void);
 
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-      }
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId);
+        }
 
-      const nextTimeoutId = setTimeout(() => {
-        debounceTimers.delete(callback as (...args: A) => void);
-        callback(...args);
-      }, delay);
+        const nextTimeoutId = setTimeout(() => {
+          debounceTimers.delete(callback as (...args: A) => void);
+          callback(...args);
+        }, delay);
 
-      debounceTimers.set(callback as (...args: A) => void, nextTimeoutId);
-    }) as (...args: A) => void;
-  }),
+        debounceTimers.set(callback as (...args: A) => void, nextTimeoutId);
+      }) as (...args: A) => void,
+  ),
 };
 
 vi.mock("@Collection/ui/hooks/useGamesStore/useGamesStore", () => ({
