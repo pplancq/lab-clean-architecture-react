@@ -60,7 +60,6 @@
     "@playwright/test": "^1.63.0",
     "@pplancq/commitlint-config": "^4.0.6",
     "@pplancq/eslint-config": "^6.1.1",
-    "@pplancq/postcss-config": "^3.0.6",
     "@pplancq/prettier-config": "^4.0.2",
     "@pplancq/stylelint-config": "^6.1.1",
     "@rsbuild/core": "^2.2.5",

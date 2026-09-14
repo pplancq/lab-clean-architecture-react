@@ -9,7 +9,7 @@ export default defineConfig({
   unitE2eFiles: ["tests/e2e/**/*.{test,spec}.{js,jsx,ts,tsx}"],
   extendConfig: [
     {
-      ignores: ["build"],
+      ignores: ["build", "test-reports"],
     },
     {
       files: ["mocks/**/*"],
