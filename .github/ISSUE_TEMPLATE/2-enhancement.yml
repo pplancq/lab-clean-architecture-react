@@ -1,7 +1,7 @@
 name: Enhancement
 description: Propose an improvement or new feature
 title: "[Enhancement]: "
-labels: ["enhancement"]
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
@@ -133,9 +133,9 @@ body:
       label: MVP Scope
       description: Should this feature be in the MVP?
       options:
-        - "Yes - Essential for MVP"
-        - "No - Post-MVP"
-        - "Maybe - To discuss"
+        - Yes - Essential for MVP
+        - No - Post-MVP
+        - Maybe - To discuss
     validations:
       required: false
 

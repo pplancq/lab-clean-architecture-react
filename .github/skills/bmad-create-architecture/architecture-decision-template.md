@@ -1,7 +1,7 @@
 ---
 stepsCompleted: []
 inputDocuments: []
-workflowType: "architecture"
+workflowType: architecture
 project_name: "{{project_name}}"
 user_name: "{{user_name}}"
 date: "{{date}}"

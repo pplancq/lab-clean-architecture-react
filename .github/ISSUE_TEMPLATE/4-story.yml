@@ -1,7 +1,7 @@
 name: Story
 description: User story for a feature implementable by a single developer
 title: "Story N.M: [Story Title]"
-labels: ["story"]
+labels: [story]
 body:
   - type: markdown
     attributes:

@@ -1,7 +1,7 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: "./step-v-02-format-detection.md"
-prdPurpose: "../data/prd-purpose.md"
+nextStepFile: ./step-v-02-format-detection.md
+prdPurpose: ../data/prd-purpose.md
 ---
 
 # Step 1: Document Discovery & Confirmation
