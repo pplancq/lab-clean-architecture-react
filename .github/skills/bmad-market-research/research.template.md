@@ -1,7 +1,7 @@
 ---
 stepsCompleted: []
 inputDocuments: []
-workflowType: "research"
+workflowType: research
 lastStep: 1
 research_type: "{{research_type}}"
 research_topic: "{{research_topic}}"

@@ -1,7 +1,7 @@
 name: Sonar
 description: Issue template for SonarQube findings that require attention from project maintainers. Use this template to document and track Sonar issues, their impact, and the steps needed to resolve them.
 title: "Sonar: "
-labels: ["sonar"]
+labels: [sonar]
 body:
   - type: markdown
     attributes:

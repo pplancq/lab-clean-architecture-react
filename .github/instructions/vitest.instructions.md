@@ -1,5 +1,5 @@
 ---
-applyTo: "tests/unit/**/*.test.ts, tests/unit/**/*.test.tsx, tests/unit/**/*.test.js, tests/unit/**/*.test.jsx"
+applyTo: tests/unit/**/*.test.ts, tests/unit/**/*.test.tsx, tests/unit/**/*.test.js, tests/unit/**/*.test.jsx
 description: Instructions for writing unit and integration tests with Vitest in the front-end project.
 ---
 

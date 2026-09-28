@@ -25,7 +25,7 @@ Include YAML frontmatter:
 ```yaml
 ---
 title: "Product Brief: {project_name}"
-status: "draft"
+status: draft
 created: "{timestamp}"
 updated: "{timestamp}"
 inputs: [list of input files used]

@@ -37,9 +37,9 @@ Throughout the process, you captured context beyond what fits in the PRFAQ. Sour
 ---
 title: "PRFAQ Distillate: {project_name}"
 type: llm-distillate
-source: "prfaq-{project_name}.md"
+source: prfaq-{project_name}.md
 created: "{timestamp}"
-purpose: "Token-efficient context for downstream PRD creation"
+purpose: Token-efficient context for downstream PRD creation
 ---
 ```
 

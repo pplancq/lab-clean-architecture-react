@@ -172,8 +172,7 @@ project_key: { project_key }
 tracking_system: { tracking_system }
 story_location: { story_location }
 
-development_status:
-  # All epics, stories, and retrospectives in order
+development_status: # All epics, stories, and retrospectives in order
 ```
 
 <action>Write the complete sprint status YAML to {status_file}</action>

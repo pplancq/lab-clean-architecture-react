@@ -1,7 +1,7 @@
 name: Bug Report
 description: Report a bug or incorrect behavior
 title: "[Bug]: "
-labels: ["bug"]
+labels: [bug]
 body:
   - type: markdown
     attributes:
@@ -122,7 +122,7 @@ body:
     attributes:
       label: Browser Version
       description: Browser version
-      placeholder: "Chrome 120.0.6099.109"
+      placeholder: Chrome 120.0.6099.109
     validations:
       required: false
 
@@ -157,9 +157,9 @@ body:
       label: Is this a regression?
       description: Did this bug exist in a previous version?
       options:
-        - "Yes - It worked before"
-        - "No - Never worked"
-        - "Unknown"
+        - Yes - It worked before
+        - No - Never worked
+        - Unknown
     validations:
       required: false
 

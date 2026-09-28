@@ -1,6 +1,6 @@
 ---
 # File references (ONLY variables used in this step)
-nextStepFile: "./step-v-05-measurability-validation.md"
+nextStepFile: ./step-v-05-measurability-validation.md
 prdFile: "{prd_file_path}"
 productBrief: "{product_brief_path}"
 validationReportPath: "{validation_report_path}"

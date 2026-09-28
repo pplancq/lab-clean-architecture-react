@@ -5,11 +5,10 @@ on:
     inputs:
       limit:
         description: >
-          New limit for prConcurrentLimit and prHourlyLimit (e.g. 5, 0 = unlimited),
-          or "reset" to remove local overrides and restore shared config defaults.
+          New limit for prConcurrentLimit and prHourlyLimit (e.g. 5, 0 = unlimited), or "reset" to remove local overrides and restore shared config defaults.
         required: true
         type: string
-        default: "reset"
+        default: reset
 
 jobs:
   update-renovate-limits:

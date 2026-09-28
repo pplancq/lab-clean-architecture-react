@@ -1,6 +1,6 @@
 ---
 main_config: "{project-root}/_bmad/bmm/config.yaml"
-validateWorkflow: "./steps-v/step-v-01-discovery.md"
+validateWorkflow: ./steps-v/step-v-01-discovery.md
 ---
 
 # PRD Validate Workflow

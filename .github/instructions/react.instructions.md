@@ -1,6 +1,6 @@
 ---
 applyTo: "**/*.jsx, **/*.tsx, **/*.js, **/*.ts, **/*.css, **/*.scss"
-description: "React development standards, best practices, and component instructions."
+description: React development standards, best practices, and component instructions.
 ---
 
 # React Development Instructions

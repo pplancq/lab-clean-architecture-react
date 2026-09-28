@@ -28,9 +28,9 @@ Throughout the discovery process, you likely captured detail that doesn't belong
 ---
 title: "Product Brief Distillate: {project_name}"
 type: llm-distillate
-source: "product-brief-{project_name}.md"
+source: product-brief-{project_name}.md
 created: "{timestamp}"
-purpose: "Token-efficient context for downstream PRD creation"
+purpose: Token-efficient context for downstream PRD creation
 ---
 ```
 
