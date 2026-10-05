@@ -1,15 +1,17 @@
-import { server } from "@Mocks/server";
 import { HEADERS, METHODS, MIME_TYPES } from "@Shared/infrastructure/fetchApi/constant";
 import { fetchApi } from "@Shared/infrastructure/fetchApi/fetchApi";
 import { FetchApiError } from "@Shared/infrastructure/fetchApi/FetchApiError";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 describe("fetchApi", () => {
   const fetchMock = vi.fn();
-  window.fetch = fetchMock;
 
   beforeAll(() => {
-    server.close();
+    vi.stubGlobal("fetch", fetchMock);
+  });
+
+  afterAll(() => {
+    vi.unstubAllGlobals();
   });
 
   it("should return JSON data on success", async () => {

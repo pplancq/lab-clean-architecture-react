@@ -48,6 +48,15 @@ npm create @pplancq/react-app@latest lab-clean-architecture-react
    npm run postinstall
    ```
 
+### MSW 3 compatibility
+
+MSW 3 is ESM-only and requires Node.js 22+ and TypeScript 5.9+. The project's Node.js 24 and TypeScript 6 meet these requirements.
+Keep `msw` 3.x and `@msw/playwright` 0.7.x compatible when updating dependencies.
+Use `onUnhandledFrame` instead of `onUnhandledRequest` in `worker.start()` and `server.listen()`.
+Re-run `npm run postinstall` after updating MSW to regenerate the ignored `public/mockServiceWorker.js` file.
+When using fake timers with delayed MSW responses, advance the timers explicitly.
+Call `server.close()` only once per `server.listen()`; closing an already disabled server now throws.
+
 ## Available Scripts
 
 ### Development
@@ -181,7 +190,7 @@ git commit -m "docs: update setup guide"
 - **Formatting**: Prettier 3.8.1
 - **State Management**: TanStack Query 5.90.19
 - **Routing**: React Router 7.12.0
-- **Mocking**: MSW 2.12.7
+- **Mocking**: MSW 3.x + @msw/playwright 0.7.x
 
 ## Browser Support
 
