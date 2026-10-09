@@ -58,7 +58,7 @@
     "@commitlint/cli": "^21.2.3",
     "@msw/playwright": "^0.7.0",
     "@playwright/test": "^1.63.0",
-    "@pplancq/commitlint-config": "^4.0.9",
+    "@pplancq/commitlint-config": "^4.0.10",
     "@pplancq/eslint-config": "^6.1.4",
     "@pplancq/prettier-config": "^5.0.1",
     "@pplancq/stylelint-config": "^6.1.4",
