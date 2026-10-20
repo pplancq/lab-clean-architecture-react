@@ -20,6 +20,6 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Update Renovate limits
-        uses: pplancq/actions/renovate-update-limits@72cc7f266d747ce0558318611cf11857c894e6ff # v1.1.4
+        uses: pplancq/actions/renovate-update-limits@2c562638cd9f0ca64f237af46f6052e71b2536b8 # v1.1.5
         with:
           limit: ${{ inputs.limit }}
