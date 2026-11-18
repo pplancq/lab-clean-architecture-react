@@ -6,3 +6,4 @@ type ToastContextValue = {
 };
 
 export const ToastContext = createContext<ToastContextValue | null>(null);
+ToastContext.displayName = "ToastContext";

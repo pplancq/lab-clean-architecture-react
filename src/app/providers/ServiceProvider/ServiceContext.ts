@@ -6,3 +6,4 @@ type ServiceContextProps = {
 };
 
 export const ServiceContext = createContext<ServiceContextProps | null>(null);
+ServiceContext.displayName = "ServiceContext";
