@@ -38,7 +38,6 @@ const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
 
 const createWrapper =
   (container: Container) =>
-  // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => (
     <MemoryRouter>
       <ServiceProvider container={container}>{children}</ServiceProvider>

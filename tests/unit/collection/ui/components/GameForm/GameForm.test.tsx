@@ -16,7 +16,6 @@ import { describe, expect, it, vi } from "vitest";
 
 const createWrapper =
   (container: Container) =>
-  // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => <ServiceProvider container={container}>{children}</ServiceProvider>;
 
 const createContainer = () => {
