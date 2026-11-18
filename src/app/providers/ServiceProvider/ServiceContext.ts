@@ -6,4 +6,6 @@ type ServiceContextProps = {
 };
 
 export const ServiceContext = createContext<ServiceContextProps | null>(null);
-ServiceContext.displayName = "ServiceContext";
+if (import.meta.env.DEV) {
+  ServiceContext.displayName = "ServiceContext";
+}

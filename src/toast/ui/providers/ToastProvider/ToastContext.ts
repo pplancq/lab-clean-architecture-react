@@ -6,4 +6,6 @@ type ToastContextValue = {
 };
 
 export const ToastContext = createContext<ToastContextValue | null>(null);
-ToastContext.displayName = "ToastContext";
+if (import.meta.env.DEV) {
+  ToastContext.displayName = "ToastContext";
+}
