@@ -29,7 +29,6 @@ const createStoreMock = (state: GamesListState): GamesStoreInterface => ({
 const createWrapper = (state: GamesListState) => {
   const container = new Container();
   container.bind<GamesStoreInterface>(COLLECTION_SERVICES.GamesStore).toConstantValue(createStoreMock(state));
-  // eslint-disable-next-line react/display-name
   return ({ children }: { children: ReactNode }) => (
     <MemoryRouter>
       <ServiceProvider container={container}>{children}</ServiceProvider>

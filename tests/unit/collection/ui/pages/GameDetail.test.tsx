@@ -43,7 +43,6 @@ const createStoreMock = (entry: GameMapEntryState): GamesStoreInterface => ({
 
 const createWrapper =
   (container: Container, initialPath = "/games/game-1") =>
-  // eslint-disable-next-line react/display-name
   ({ children }: { children: ReactNode }) => (
     <MemoryRouter initialEntries={[initialPath]}>
       <ServiceProvider container={container}>
