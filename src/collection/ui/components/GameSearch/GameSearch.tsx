@@ -53,7 +53,7 @@ export const GameSearch = () => {
       }}
       className={defaultClasses.searchContainer}
     >
-      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+      {/* eslint-disable-next-line jsx-a11y-x/label-has-associated-control */}
       <label htmlFor="game-search" className={defaultClasses.label}>
         Search games
       </label>
